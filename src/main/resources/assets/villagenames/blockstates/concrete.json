@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "color=white": { "model":"VillageNames:concrete_white" },
+        "color=orange": { "model":"VillageNames:concrete_orange" },
+        "color=magenta": { "model":"VillageNames:concrete_magenta" },
+        "color=light_blue": { "model":"VillageNames:concrete_light_blue" },
+        "color=yellow": { "model":"VillageNames:concrete_yellow" },
+        "color=lime": { "model":"VillageNames:concrete_lime" },
+        "color=pink": { "model":"VillageNames:concrete_pink" },
+        "color=gray": { "model":"VillageNames:concrete_gray" },
+        "color=silver": { "model":"VillageNames:concrete_silver" },
+        "color=cyan": { "model":"VillageNames:concrete_cyan" },
+        "color=purple": { "model":"VillageNames:concrete_purple" },
+        "color=blue": { "model":"VillageNames:concrete_blue" },
+        "color=brown": { "model":"VillageNames:concrete_brown" },
+        "color=green": { "model":"VillageNames:concrete_green" },
+        "color=red": { "model":"VillageNames:concrete_red" },
+        "color=black": { "model":"VillageNames:concrete_black" }
+    }
+}
