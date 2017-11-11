@@ -1,0 +1,7 @@
+{
+	"parent": "block/cube_all",
+    "textures": {
+	    "particle": "villagenames:blocks/lunaringoldbrick",
+        "all": "villagenames:blocks/lunaringoldbrick"
+    }
+}

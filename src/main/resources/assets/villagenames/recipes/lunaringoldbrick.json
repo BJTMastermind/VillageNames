@@ -1,0 +1,33 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "minecraft:gold_ingot",
+			"data": 0
+		},
+		{
+			"item": "minecraft:gold_ingot",
+			"data": 0
+		},
+		{
+			"item": "minecraft:gold_ingot",
+			"data": 0
+		},
+		{
+			"item": "minecraft:gold_ingot",
+			"data": 0
+		},
+		{
+			"item": "minecraft:gold_ingot",
+			"data": 0
+		},
+		{
+			"item": "minecraft:gold_ingot",
+			"data": 0
+		}
+	],
+	"result": {
+		"item": "villagenames:lunaringoldbrick",
+		"count": 1
+	}
+}

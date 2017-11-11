@@ -1,0 +1,13 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "villagenames:lunarinironbrick",
+			"data": 0
+		}
+	],
+	"result": {
+		"item": "minecraft:iron_ingot",
+		"count": 6
+	}
+}
