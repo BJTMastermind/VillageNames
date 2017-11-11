@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=south": { "model": "VillageNames:glazed_terracotta_light_blue" },
+        "facing=west": { "model": "VillageNames:glazed_terracotta_light_blue", "y": 90 },
+        "facing=north": { "model": "VillageNames:glazed_terracotta_light_blue", "y": 180 },
+        "facing=east": { "model": "VillageNames:glazed_terracotta_light_blue", "y": 270 }
+    }
+}
