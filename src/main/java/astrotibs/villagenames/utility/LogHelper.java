@@ -2,7 +2,6 @@ package astrotibs.villagenames.utility;
 
 import org.apache.logging.log4j.Level;
 
-import astrotibs.villagenames.reference.Reference;
 import net.minecraftforge.fml.common.FMLLog;
 
 public class LogHelper {

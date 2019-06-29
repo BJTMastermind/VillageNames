@@ -1,6 +1,5 @@
 package astrotibs.villagenames.block.color;
 
-import astrotibs.villagenames.reference.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -23,13 +22,34 @@ public class BlockGlazedTerracotta extends Block {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public EnumDyeColor dyeColor = EnumDyeColor.WHITE;
 	
+    // These are used to reference unlocalized names
+    public static String[] subBlockUnloc = {
+    		"White", //0
+    		"Orange", //1
+    		"Magenta", //2
+    		"LightBlue", //3
+    		"Yellow", //4
+    		"Lime", //5
+    		"Pink", //6
+    		"Gray", //7
+    		"Silver", //8
+    		"Cyan", //9
+    		"Purple", //10
+    		"Blue", //11
+    		"Brown", //12
+    		"Green", //13
+    		"Red", //14
+    		"Black" //15
+    		};
+	
     public BlockGlazedTerracotta(EnumDyeColor color) {
     	super(Material.ROCK);
-    	String s = color.getName();
-    	if (s.length() > 1)
-        {
-    		this.setUnlocalizedName( Reference.MOD_ID.toLowerCase() + ":glazed_terracotta_" + s);
-        }
+    	//String s = color.getName();
+    	//if (s.length() > 1)
+        //{
+    		//this.setUnlocalizedName( Reference.MOD_ID.toLowerCase() + ":glazed_terracotta_" + s);
+    		this.setUnlocalizedName( "glazedTerracotta" + subBlockUnloc[color.getMetadata()]);
+        //}
         this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
         this.setHardness(1.4F);
         this.setHarvestLevel("pickaxe", 0);
@@ -54,7 +74,6 @@ public class BlockGlazedTerracotta extends Block {
     }
     
     // End orientation block
-    
     
     // returns a BlockState which contains every property the block has
     @Override

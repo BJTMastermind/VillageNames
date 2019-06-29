@@ -1,6 +1,5 @@
 package astrotibs.villagenames.block.color;
 
-import astrotibs.villagenames.reference.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -25,6 +24,7 @@ public class ItemBlockMetaColor extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return "tile." + Reference.MOD_ID.toLowerCase() + ":" + super.getUnlocalizedName(stack).substring(5) + "." + ((IMetaBlockName)this.block).getSpecialName(stack);
+        //return "tile." + Reference.MOD_ID.toLowerCase() + ":" + super.getUnlocalizedName(stack).substring(5) + "." + ((IMetaBlockName)this.block).getSpecialName(stack);
+    	return "tile." + super.getUnlocalizedName(stack).substring(5) + "." + ((IMetaBlockName)this.block).getSpecialName(stack);
     }
 }
