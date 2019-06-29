@@ -1,0 +1,20 @@
+{
+    "display": {
+        "icon": {
+            "item": "villagenames:codex"
+        },
+        "title": {
+            "translate": "advancements.archaeologist.title"
+        },
+        "description": {
+            "translate": "advancements.archaeologist.description"
+        },
+        "frame": "challenge"
+    },
+	"parent": "villagenames:maxrep",
+    "criteria": {
+        "archaeologist": {
+            "trigger": "archaeologist"
+        }
+    }
+}

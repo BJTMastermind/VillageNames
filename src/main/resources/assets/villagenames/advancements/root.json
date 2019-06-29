@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "item": "villagenames:villagebook"
+        },
+        "title": {
+            "translate": "Village Names",
+			"color": "gold"
+        },
+        "description": {
+            "translate": "advancements.villagenames.description",
+			"italic":true
+        },
+        "background": "minecraft:textures/blocks/planks_oak.png",
+        "show_toast": false,
+        "announce_to_chat": false
+    },
+    "criteria": {
+        "impossible": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

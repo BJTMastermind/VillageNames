@@ -1,0 +1,20 @@
+{
+    "display": {
+        "icon": {
+            "item": "villagenames:villagebook"
+        },
+		"title": {
+            "translate": "advancements.ghosttown.title"
+        },
+        "description": {
+            "translate": "advancements.ghosttown.description"
+        },
+        "frame": "task"
+    },
+	"parent": "villagenames:minrep",
+    "criteria": {
+        "ghosttown": {
+            "trigger": "ghosttown"
+        }
+    }
+}

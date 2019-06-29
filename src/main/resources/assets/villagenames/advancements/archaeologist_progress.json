@@ -1,0 +1,74 @@
+{
+    "display": {
+        "icon": {
+            "item": "villagenames:villagebook"
+        },
+        "title": {
+            "text": "Archaeologist Progress"
+        },
+		        "description": {
+            "text": "Placeholder to track the progress of the Archaeologist advancement. This Advancement should never be visible to the player."
+        },
+        "frame": "task",
+		"hidden": true,
+		"background": "villagenames:textures/blocks/lunaringoldbrick.png",
+        "show_toast": false,
+        "announce_to_chat": false
+    },
+    "criteria": {
+        "village": {
+            "trigger": "codex_village"
+        },
+        "jungletemple": {
+            "trigger": "codex_jungletemple"
+        },
+        "desertpyramid": {
+            "trigger": "codex_desertpyramid"
+        },
+        "swamphut": {
+            "trigger": "codex_swamphut"
+        },
+        "igloo": {
+            "trigger": "codex_igloo"
+        },
+        "temple": {
+            "trigger": "codex_temple"
+        },
+        "mansion": {
+            "trigger": "codex_mansion"
+        },
+        "monument": {
+            "trigger": "codex_monument"
+        },
+        "stronghold": {
+            "trigger": "codex_stronghold"
+        },
+        "mineshaft": {
+            "trigger": "codex_mineshaft"
+        },
+        "fortress": {
+            "trigger": "codex_fortress"
+        },
+        "endcity": {
+            "trigger": "codex_endcity"
+        },
+        "moonvillage": {
+            "trigger": "codex_moonvillage"
+        },
+        "koentusvillage": {
+            "trigger": "codex_koentusvillage"
+        },
+        "fronosvillage": {
+            "trigger": "codex_fronosvillage"
+        },
+        "nibiruvillage": {
+            "trigger": "codex_nibiruvillage"
+        },
+        "abandonedbase": {
+            "trigger": "codex_abandonedbase"
+        },
+		"impossible": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

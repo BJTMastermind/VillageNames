@@ -1,16 +1,38 @@
 package astrotibs.villagenames;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.World;
+import java.io.File;
+
+import astrotibs.villagenames.advancements.ModTriggers;
+import astrotibs.villagenames.block.ModBlocksVN;
+import astrotibs.villagenames.client.renderer.entity.RenderVillagerModern;
+import astrotibs.villagenames.client.renderer.entity.RenderZombieVillagerModern;
+import astrotibs.villagenames.command.CommandName;
+import astrotibs.villagenames.config.ConfigInit;
+import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.handler.DevVersionWarning;
+import astrotibs.villagenames.handler.EntityMonitorHandler;
+import astrotibs.villagenames.handler.ReputationHandler;
+import astrotibs.villagenames.handler.ServerCleanExpired;
+import astrotibs.villagenames.handler.ServerTrackerStarter;
+import astrotibs.villagenames.handler.VersionChecker;
+import astrotibs.villagenames.handler.VillagerTradeHandler;
+import astrotibs.villagenames.init.InventoryRender;
+import astrotibs.villagenames.integration.ModChecker;
+import astrotibs.villagenames.item.ModItems;
+import astrotibs.villagenames.nbt.NBTUpdater;
+import astrotibs.villagenames.network.MessageModernVillagerSkin;
+import astrotibs.villagenames.network.MessageVillageGuard;
+import astrotibs.villagenames.network.MessageZombieVillagerProfession;
+import astrotibs.villagenames.network.NetworkHelper;
+import astrotibs.villagenames.proxy.CommonProxy;
+import astrotibs.villagenames.utility.LogHelper;
+import astrotibs.villagenames.utility.Reference;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.monster.EntityZombieVillager;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -19,89 +41,239 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.relauncher.Side;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
-import astrotibs.villagenames.block.ModBlocksVN;
-import astrotibs.villagenames.command.CommandName;
-import astrotibs.villagenames.config.GeneralConfigHandler;
-import astrotibs.villagenames.handler.ItemEventHandler;
-import astrotibs.villagenames.init.InventoryRender;
-import astrotibs.villagenames.init.ModConfiguration;
-import astrotibs.villagenames.integration.ModChecker;
-import astrotibs.villagenames.item.ModItems;
-import astrotibs.villagenames.name.NameGenerator;
-import astrotibs.villagenames.name.NamePieces;
-import astrotibs.villagenames.nbt.VNWorldDataVillage;
-import astrotibs.villagenames.proxy.CommonProxy;
-import astrotibs.villagenames.reference.Reference;
-import astrotibs.villagenames.utility.LogHelper;
+/*
+ * Testing sword:
+ * give @p golden_sword 1 0 {display:{Name:"Un-Instantiator"}, ench:[{id:16,lvl:1000},{id:34,lvl:99}]}
+ * Loot level 3: {id:21,lvl:3}
+ */
 
-
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
+@Mod(	
+		modid = Reference.MOD_ID,
+		name = Reference.MOD_NAME,
+		version = Reference.VERSION,
+		guiFactory = Reference.GUI_FACTORY
+		)
 public final class VillageNames {
 	
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
 	public static CommonProxy PROXY;
-	
-	public static final Block FLAG_ID = Blocks.PLANKS;
-	
-	Random random = new Random();
-	public static final HashSet<Integer> globalDimensionBlacklist = new HashSet<Integer>();
+
+	public static SimpleNetworkWrapper VNNetworkWrapper; //Added from Dragon Artifacts
 	
 	public static File configDirectory;
 	
 	@Instance(Reference.MOD_ID)
 	public static VillageNames instance;
-	public static ModChecker modChecker;
+
+	public static String currentConfigFolder = "VillageNames3";
+	public static String oldConfigFolder = "VillageNames";
+	public static String obsoleteConfigFolder = "VillageNamesOLD";
+	
+    // instantiate achievements
+	/*
+	public static Achievement maxrep;
+	public static Achievement minrep;
+	public static Achievement ghosttown;
+	public static Achievement archaeologist;
+	public static Achievement laputa;
+	*/
+	
+	// Version checking instance
+	public static VersionChecker versionChecker = new VersionChecker();
+	public static boolean haveWarnedVersionOutOfDate = false;
+	public static boolean devVersionWarned = false;
+
+	/*
+	 * The number of structures you need to use the Codex on to trigger the achievement.
+	 * If the player does not use any mods that add valid searchable structures,
+	 * AND they're using the 1.7 version of Village Names,
+	 * AND they're not using its optional Monument or Igloo generation,
+	 * then there are seven structures they can identify, so they have to identify them all.
+	 * The structures are:
+	 * 
+	 * Village
+	 * Desert Pyramid
+	 * Jungle Pyramid
+	 * Swamp Hut
+	 * Mineshaft
+	 * Stronghold
+	 * Nether Fortress
+	 */
+	public static int numberStructuresArchaeologist = 7;
+	
 	
 	// PRE-INIT
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		// item and block initialization and registering
-		modChecker = new ModChecker();
-		ModChecker.printSuccessMessage();
-		//items
-				
-		// load configurations
-		configDirectory = new File(event.getModConfigurationDirectory(), "VillageNames");
-		ModConfiguration.init(configDirectory);
+
+		ModChecker.printDetectedMods();
 		
-		//BoP examples here
-		ModBlocksVN.init();
+		configDirectory = new File(event.getModConfigurationDirectory(), currentConfigFolder);
+		ConfigInit.init(configDirectory);
+
+		
+		// ------------------------------------------- //		
+		// Relocate old config files and make new ones //
+		// ------------------------------------------- //
+		
+		// Log a warning to the user if the old config folder is detected
+		File oldConfigDirectory = new File(event.getModConfigurationDirectory(), oldConfigFolder);
+		if ( new File(event.getModConfigurationDirectory(), oldConfigFolder).exists() ) {
+			LogHelper.warn(
+					"ATTENTION! The old configuration folder " + oldConfigFolder + " exists. It will NOT BE USED in this version of Village Names! A new " 
+							+ currentConfigFolder + " folder has been created.");
+			if ( new File(event.getModConfigurationDirectory(), obsoleteConfigFolder).exists() ) {
+				// A folder with the name I'm trying to rename to already exists
+				LogHelper.error("For some reason, you have both a " + oldConfigFolder + " and " + obsoleteConfigFolder + " folder. Note that NEITHER FOLDER IS USED!");
+			}
+			else {
+				// No folder with the renaming name exists, so (try to) rename the old folder
+				try {
+					oldConfigDirectory.renameTo( new File(event.getModConfigurationDirectory(), obsoleteConfigFolder) );
+					LogHelper.warn("The previous config folder has been renamed to "+obsoleteConfigFolder+". It will NOT BE USED anymore.");
+				}
+				catch (Exception e) {
+					LogHelper.error("Failed to rename " + oldConfigFolder + " folder to "+obsoleteConfigFolder);
+				}
+			}
+		}
+		else if ( new File(event.getModConfigurationDirectory(), obsoleteConfigFolder).exists() ) {
+			LogHelper.info("Old config files are located in config/"+obsoleteConfigFolder+". They will NOT BE USED anymore.");
+		}
+
+		
+		
+		// Moved down here to make sure config fires first!?
 		ModItems.init();
+		ModBlocksVN.init();
+
+		// Listener that will fire on world loading, to generate the new nbt files from your old ones.
+		MinecraftForge.EVENT_BUS.register(new NBTUpdater());
 		
-		// set up network handling
+		// Event Handlers
+        MinecraftForge.EVENT_BUS.register(new ServerTrackerStarter());
+        MinecraftForge.EVENT_BUS.register(new EntityMonitorHandler());
+        MinecraftForge.EVENT_BUS.register(new ServerCleanExpired());
+        MinecraftForge.EVENT_BUS.register(new ReputationHandler());
+        
+        // Version check monitor
+        if (GeneralConfig.versionChecker) {MinecraftForge.EVENT_BUS.register(versionChecker);}
+        if ((Reference.VERSION).contains("DEV")) {MinecraftForge.EVENT_BUS.register(new DevVersionWarning());}
+
+        //PROXY.preInit(event);
+
+
+		// Reworked in v3.1: new network channel stuff
+		
+		// Establish the channel
+        VNNetworkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_CHANNEL);
+        
+        // Register different messages here
+        
+        int messageID = 0;
+		
+        VNNetworkWrapper.registerMessage(NetworkHelper.ZombieVillagerProfessionHandler.class, MessageZombieVillagerProfession.class, messageID++, Side.CLIENT);
+        VNNetworkWrapper.registerMessage(NetworkHelper.VillageGuardHandler.class, MessageVillageGuard.class, messageID++, Side.CLIENT);
+        VNNetworkWrapper.registerMessage(NetworkHelper.ModernVillagerSkinHandler.class, MessageModernVillagerSkin.class, messageID++, Side.CLIENT);
+		
 		
 		// Worldgen stuff
-		
 		// set up key bindings
 		
-		LogHelper.info("Pre-initialization complete!"); // Print a success message.
-		//Can say LogHelper.warn to print [Client thread/WARN]
+		/**
+		 * The following overrides the mcmod.info file!
+		 * Adapted from Jabelar's Magic Beans:
+		 * https://github.com/jabelar/MagicBeans-1.7.10/blob/e48456397f9c6c27efce18e6b9ad34407e6bc7c7/src/main/java/com/blogspot/jabelarminecraft/magicbeans/MagicBeans.java
+		 */
+        event.getModMetadata().autogenerated = false ; // stops it from complaining about missing mcmod.info
+        
+        event.getModMetadata().name = 			// name 
+        		TextFormatting.GOLD + 
+        		Reference.MOD_NAME;
+        
+        event.getModMetadata().version = 		// version 
+        		TextFormatting.YELLOW+
+        		Reference.VERSION;
+        
+        event.getModMetadata().credits = 		// credits 
+        		TextFormatting.AQUA +
+        		"Thanks to Pahimar, MineMaarten, and Jabelar for their tutorials; to Darian Stephens for playtesting; and to whrrgarbl for her help and support.";
+        
+        event.getModMetadata().authorList.clear();
+        event.getModMetadata().authorList.add(  // authorList - added as a list
+        		TextFormatting.BLUE +
+        		"AstroTibs");
+        
+       event.getModMetadata().url = 			// url
+    		   //TextFormatting.GRAY +
+        		Reference.URL;
+        
+       event.getModMetadata().description = 	// description
+	       		TextFormatting.GREEN +
+	       		"Generates random names for villages, villagers, and other structures and entities.";
+       
+       event.getModMetadata().logoFile = "assets/villagenames/vn_banner.png";
+       
+       
+       // --- New Villager Profession/Career stuff --- //
+       
+       if (GeneralConfig.treasureTrades) {
+    	   
+    	   // summon minecraft:villager ~ ~ ~ {Profession:1}
+    	   
+    	   VillagerRegistry.VillagerProfession professionLibrarian = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:librarian"));
+    	   
+    	   VillagerRegistry.VillagerCareer careerLibrarian = professionLibrarian.getCareer(0);    // 1.11 changed this to 0: it's the index, not the career value
+    	   VillagerRegistry.VillagerCareer careerCartographer = professionLibrarian.getCareer(1); // 1.11 changed this to 1: it's the index, not the career value
+    	   
+    	   // Re-worked in v3.1trades
+    	   // Add new VN Treasure trades -- limit per librarian/cartographer
+    	   if (GeneralConfig.treasureTrades && !GeneralConfig.modernVillagerTrades) {
+    		   for (int i=0; i<3; i++) {
+    			   careerLibrarian.addTrade(i+7, (new VillagerTradeHandler()).new LibrarianVN() );
+    			   careerCartographer.addTrade(i+4, (new VillagerTradeHandler()).new CartographerVN() );
+        	   }
+    	   }
+       }
+       
+       // Added in v3.1trades
+       if (GeneralConfig.modernVillagerTrades) {
+    	   
+    	   // summon minecraft:villager ~ ~ ~ {Profession:3}
+    	   
+    	   VillagerRegistry.VillagerProfession profBlacksmith = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:smith"));
+    	   VillagerRegistry.VillagerCareer carMason = new VillagerCareer(profBlacksmith, "mason");
+    	   
+    	   // Add new VN Mason trades
+		   carMason.addTrade(1, (new VillagerTradeHandler()).new MasonNovice() );
+    	   carMason.addTrade(2, (new VillagerTradeHandler()).new MasonApprentice() );
+    	   carMason.addTrade(3, (new VillagerTradeHandler()).new MasonJourneyman() );
+    	   carMason.addTrade(4, (new VillagerTradeHandler()).new MasonExpert() );
+    	   carMason.addTrade(5, (new VillagerTradeHandler()).new MasonMaster() );
+       }
+       
 	}
         
     
-    /**
-     * Add village to biome
-     * Register event listeners, village handler, new torch component
-     */
-	// NEED THIS to do Well work
+	
+	
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(this);//For the populating event
 		// set up GUI handler
 		// set up TileEntity and entity
 		// register crafting recipes
-		
+
+		// register crafting recipes
+		//Recipes.init();
+
 		//If this code runs on the server, you will get a crash.
 		if (event.getSide()== Side.CLIENT) {
 			InventoryRender.init();
@@ -109,13 +281,41 @@ public final class VillageNames {
 		// rendering
 		// package registering
 		// general event handlers
-		
+		/*
 		MinecraftForge.EVENT_BUS.register(new ItemEventHandler()); // Relocated because of 1.12
+		MinecraftForge.EVENT_BUS.register(new WellDecorateEvent()); // Relocated because of 1.12
+		MinecraftForge.EVENT_BUS.register(new ConfigReloader()); // Relocated because of 1.12
+		if (GeneralConfigHandler.chestLoot) new ChestLootHandler(); // Relocated because of 1.12
+		*/
 		
-		// key handling below:
+		// Register the Advancements listeners
+		ModTriggers.registerTriggers();
 		
-        LogHelper.info("Registering replacer for village generation");
-        
+		PROXY.init(event);
+		
+		// key handling
+		
+		// Re-added in v3.1
+        if (event.getSide() == Side.CLIENT) {
+            //Minecraft.getMinecraft().getRenderManager().entityRenderMap.remove(EntityZombie.class);
+            //Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityZombie.class, new VNRenderZombie(Minecraft.getMinecraft().getRenderManager()));
+    		
+        	// Changed in v3.1
+            if (GeneralConfig.modernVillagerSkins)
+            {
+            	//RenderingRegistry.registerEntityRenderingHandler(EntityVillager.class, new RenderVillagerModern()); // Modern modular villagers
+            	Minecraft.getMinecraft().getRenderManager().entityRenderMap.remove(EntityVillager.class);
+                Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityVillager.class, new RenderVillagerModern(Minecraft.getMinecraft().getRenderManager()));
+        		
+            	//RenderingRegistry.registerEntityRenderingHandler(EntityZombie.class, new RenderZombieVillagerModern());  // Modern modular zombie villagers
+                Minecraft.getMinecraft().getRenderManager().entityRenderMap.remove(EntityZombieVillager.class);
+                Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityZombieVillager.class,
+                		//new RenderZombieVillagerModern(Minecraft.getMinecraft().getRenderManager())
+                		new RenderZombieVillagerModern(Minecraft.getMinecraft().getRenderManager())
+                		);
+            }
+        }
+		
 	}
 	
 	// POST-INIT
@@ -132,423 +332,8 @@ public final class VillageNames {
 		event.registerServerCommand(new CommandName());
 	}
 	
-    /**
-     * Listen to the populating event.
-     * Decorates stuff in villages
-     *
-     * @param event The populating event
-     */
-	@SubscribeEvent
-	public void onPopulating(PopulateChunkEvent.Post event) {
-		
-		// Here I break down the dimension blacklist
-		final HashSet<Integer> globalDimensionBlacklist = new HashSet<Integer>();
-	    String[] blackList = GeneralConfigHandler.blackList;
-	    boolean wellSlabs = GeneralConfigHandler.wellSlabs;
-	    boolean nameSign = GeneralConfigHandler.nameSign;
-	    boolean concreteWell = GeneralConfigHandler.concreteWell;
-
-	    
-	    for (String text : blackList) {
-	        if (text != null && !text.isEmpty()) {
-	            boolean done = false;
-	            if (text.contains("[") && text.contains("]")) {
-	                String[] results = text.substring(text.indexOf("[") + 1, text.indexOf("]")).split(";");
-	                if (results.length == 2) {
-	                    try {
-	                        int a = Integer.parseInt(results[0]);
-	                        int b = Integer.parseInt(results[1]);
-	                        boolean remove = text.startsWith("-");
-	                        for (int x = a; x <= b; x++) {
-	                            if (remove)
-	                                globalDimensionBlacklist.remove(x);
-	                            else
-	                                globalDimensionBlacklist.add(x);
-	                        }
-	                        done = true;
-	                    } catch (NumberFormatException ignored) {
-
-	                    }
-	                }
-	            }
-	            if (!done) {
-	                try {
-	                    globalDimensionBlacklist.add(Integer.parseInt(text.trim()));
-	                } catch (NumberFormatException ignored) {
-	                }
-	            }
-	        }
-	    }
-		
-	    // Here I apply the dimension blacklist
-		if (event.isHasVillageGenerated() && !globalDimensionBlacklist.contains(event.getWorld().provider.getDimension())) {
-			
-			int i = (event.getChunkX() << 4) + 8;//Villages are offset
-			int k = (event.getChunkZ() << 4) + 8;
-			int y;
-			Block id;
-			Block id2;
-			Block id3;
-			int[] field;
-			int[] field2;
-			int[] field3;
-			//List<int[]> list;
-			List<int[]> listOpaque;
-			List<int[]> listWater;
-			List<int[]> listWater2;
-			List<int[]> listWater3;
-			//Changed to Biome from BiomeGenBase
-			
-            int signCornerAndFacing = random.nextInt(8);
-            int signOrientation = signCornerAndFacing/2*4; // Sets the facing orientation for the sign. // N=8, E=12, S=0, W=4
-            int signLocation = ((signCornerAndFacing+1)/2)%4; // One of the four corners // 0=NW, 1=NE, 2=SE, 3=SW
-            int signXOffset = (1-Math.abs((signLocation+1)/2-1)*2)*2;
-            int signZOffset = ((signLocation/2)*2-1)*2;
-            int signHeightOffGround = 2;
-            
-            int isWellCorner = 0;
-			for (int x = i; x < i + 16; x++) {
-				for (int z = k; z < k + 16; z++) {//Search within chunk
-					y = event.getWorld().getHeight(new BlockPos(x, 64, z)).getY();//block on top of a "solid" block
-					if (y > 1) {
-						y--;
-						id = event.getWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
-						while ( id.isAir( id.getBlockState().getBaseState(), event.getWorld(), new BlockPos(x, y, z)) || id.isLeaves( id.getBlockState().getBaseState(), event.getWorld(), new BlockPos(x, y, z)) ) {// (id.isAir(event.getWorld(), new BlockPos(x, y, z)) || id.isLeaves(event.getWorld(), new BlockPos(x, y, z))) {
-							y--;
-							id = event.getWorld().getBlockState(new BlockPos(x, y, z)).getBlock();
-						}
-						World world = event.getWorld();
-						BlockPos blockpos1 = new BlockPos(x, y - 4, z);
-						BlockPos blockpos2 = new BlockPos(x, y - 5, z);
-						BlockPos blockpos3 = new BlockPos(x, y - 6, z);
-						// This part decorates wells!
-						if (id.isNormalCube( id.getBlockState().getBaseState(), world, new BlockPos(x, y, z) ) ) {//found solid block in open air
-							
-							id = event.getWorld().getBlockState(new BlockPos(x, y - 4, z)).getBlock();
-							id2 = event.getWorld().getBlockState(new BlockPos(x, y - 5, z)).getBlock();
-							id3 = event.getWorld().getBlockState(new BlockPos(x, y - 6, z)).getBlock();
-                            if (isWaterId(world, blockpos1) && isWaterId(world, blockpos2) && isWaterId(world, blockpos3)) {//found water under solid block layer
-                                y -= 4;
-                                field = new int[]{x, y, z};
-                                field2 = new int[]{x, y-1, z};
-                                field3 = new int[]{x, y-2, z};
-                                listWater = getBorder(event.getWorld(), id, field);
-                                listWater2 = getBorder(event.getWorld(), id2, field2);
-                                listWater3 = getBorder(event.getWorld(), id3, field3);
-                                listOpaque = getOpaqueBorder(event.getWorld(), field);
-                                if (listWater.size() == 3 && listWater2.size() == 3 && listWater3.size() == 3 && listOpaque.size() == 5) {//found 3 water blocks AND 5 opaque blocks surrounding one water block on THREE levels, assuming this is a village well
-                                	
-                                	// Now I need to get tricky with the sign generation.
-                                	isWellCorner ++; //1=NW, 2=SW, 3=NE, 4=SE
-                                	
-                                	
-                                	
-                                	if (1-Math.abs(isWellCorner/2-1)+((isWellCorner-1)%2)*2 == signLocation) {
-                                		
-                                		// Call the name generator here
-                                		String[] newVillageName = NameGenerator.newVillageName();
-                                		String headerTags = newVillageName[0];
-                                		String namePrefix = newVillageName[1];
-                                		String nameRoot = newVillageName[2];
-                                		String nameSuffix = newVillageName[3];
-                                		
-                                		//This ensures that a sign won't generate in a well post
-                                		Block blockSignPlaceholder = event.getWorld().getBlockState( new BlockPos(x+signXOffset, y+2, z+signZOffset) ).getBlock();
-                                		if ( blockSignPlaceholder.isAir( blockSignPlaceholder.getBlockState().getBaseState(), event.getWorld(), new BlockPos(x+signXOffset, y+2, z+signZOffset)) ||
-                                			 blockSignPlaceholder.isLeaves( blockSignPlaceholder.getBlockState().getBaseState(), event.getWorld(), new BlockPos(x+signXOffset, y+2, z+signZOffset))) {
-                                			// Set the sign now!
-                                    		
-                                			// Step 0: Set the color for the name sign, and for the clay base.
-                                			int[] codeColor_a = NamePieces.codeColors_default;
-                                			int townColorMeta = codeColor_a[random.nextInt(codeColor_a.length)];
-                                			// Allow a chance for uncommon colors to be used
-                                			if (townColorMeta==-1) {
-                                				int[] codeColors_remaining_a = NamePieces.codeColors_remaining;
-                                				townColorMeta = codeColors_remaining_a[random.nextInt(codeColors_remaining_a.length)];
-                                			}
-                                			//I use headerColor="\u00a78" to gray out the "welcome line" so to emphasize the full town name.
-                                			//\u00a77 is illegible.
-
-                                			//Sign pedestal is stained clay
-                                			                                			
-                                    		// Step 0.5: assign the top line of the sign at random, because radius can't be determined.
-                                    		// I did want these thresholds:
-                                    		// radius > 52: City
-                                    		// radius > 40: Village
-                                    		// radius > 32: Town
-                                    		// radius > 0: Hamlet
-                                    		String[] towntype = new String[]{"Welcome to", "Hamlet of", "Village of", "Town of"};
-                                    		String topLine = towntype[random.nextInt(towntype.length)];
-                                    		topLine = topLine.replaceAll("\\^", " ");
-                                    		
-                                    		int signX = (x+signXOffset);
-                                    		int signY = y+2;
-                                    		int signZ = (z+signZOffset);
-                                    		VNWorldDataVillage data = VNWorldDataVillage.forWorld(event.getWorld());
-                                    		                                    		
-                                    		/*
-                                    		 * Added in 1.1
-                                    		 * This checks to see if the village has already been named
-                                    		 */
-
-                                    		// .getTagList() will return all the entries under the specific village name.
-                                    		NBTTagCompound tagCompound = data.getData();
-                                    		Set tagmapKeyset = tagCompound.getKeySet(); //Gets the town key list: "coordinates"
-
-
-                                    		Iterator itr = tagmapKeyset.iterator();
-                                    		String townSignEntry;
-
-                                    		//Placeholders for villagenames.dat tags
-                                    		boolean signLocated = false; //Use this to record whether or not a sign was found
-
-
-                                    		while(itr.hasNext()) {
-                                    			Object element = itr.next();
-                                    			
-                                    			townSignEntry = element.toString(); //Text name of village header (e.g. "x535y80z39")
-                                    			//The only index that has data is 0:
-                                    			NBTTagCompound tagList = tagCompound.getTagList(townSignEntry, tagCompound.getId()).getCompoundTagAt(0);
-                                    			
-                                    			int townX = tagList.getInteger("signX");
-                                    			int townY = tagList.getInteger("signY");
-                                    			int townZ = tagList.getInteger("signZ");
-                                    			
-                                    			int radiussearch = 32;
-                                    			if ( (signX-townX)*(signX-townX) + (signY-townY)*(signY-townY) + (signZ-townZ)*(signZ-townZ) <= radiussearch*radiussearch ) {
-                                    				// This village already has a name.
-                                    				townColorMeta = tagList.getInteger("townColor");
-                                    				namePrefix = tagList.getString("namePrefix");
-                                    				nameRoot = tagList.getString("nameRoot");
-                                    				nameSuffix = tagList.getString("nameSuffix");
-                                    				break;
-                                    			}
-                                    			
-                                    		}
-                                    		
-                                    		
-                                    		if (nameSign) {
-                                        		// Cobblestone wall pole and sign proper
-                                    			event.getWorld().setBlockState(new BlockPos(x+signXOffset, y+1, z+signZOffset), Blocks.COBBLESTONE_WALL.getDefaultState() );
-                                    			/**
-                                    			final IProperty FACING = PropertyDirection.create("facing");
-                                    			event.getWorld().setBlockState(new BlockPos(x+signXOffset, y+2, z+signZOffset), Blocks.standing_sign.getDefaultState().withProperty(FACING, signOrientation) );
-                                    			**/
-                                    			event.getWorld().setBlockState(new BlockPos(x+signXOffset, y+2, z+signZOffset), Blocks.STANDING_SIGN.getStateFromMeta(signOrientation) ); //.getStateFromMeta(signOrientation)
-                                        		
-                                        		// Clay base
-                                    			
-                                    			// Clay base OR concrete
-                                    			Block concreteBlock = Blocks.CONCRETE;
-
-                                    			// Block used for the well roof
-                                    			Block roofGlazedBlock = Blocks.WHITE_GLAZED_TERRACOTTA;
-                                    			switch (townColorMeta) {
-                                    				// Case 0 is handled by default
-                                    				case 1: roofGlazedBlock=Blocks.ORANGE_GLAZED_TERRACOTTA; break;
-                                    				case 2: roofGlazedBlock=Blocks.MAGENTA_GLAZED_TERRACOTTA; break;
-                                    				case 3: roofGlazedBlock=Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA; break;
-                                    				case 4: roofGlazedBlock=Blocks.YELLOW_GLAZED_TERRACOTTA; break;
-                                    				case 5: roofGlazedBlock=Blocks.LIME_GLAZED_TERRACOTTA; break;
-                                    				case 6: roofGlazedBlock=Blocks.PINK_GLAZED_TERRACOTTA; break;
-                                    				case 7: roofGlazedBlock=Blocks.GRAY_GLAZED_TERRACOTTA; break;
-                                    				case 8: roofGlazedBlock=Blocks.SILVER_GLAZED_TERRACOTTA; break;
-                                    				case 9: roofGlazedBlock=Blocks.CYAN_GLAZED_TERRACOTTA; break;
-                                    				case 10: roofGlazedBlock=Blocks.PURPLE_GLAZED_TERRACOTTA; break;
-                                    				case 11: roofGlazedBlock=Blocks.BLUE_GLAZED_TERRACOTTA; break;
-                                    				case 12: roofGlazedBlock=Blocks.BROWN_GLAZED_TERRACOTTA; break;
-                                    				case 13: roofGlazedBlock=Blocks.GREEN_GLAZED_TERRACOTTA; break;
-                                    				case 14: roofGlazedBlock=Blocks.RED_GLAZED_TERRACOTTA; break;
-                                    				case 15: roofGlazedBlock=Blocks.BLACK_GLAZED_TERRACOTTA; break;
-                                    			}
-
-                                    			if (concreteWell) {
-                                    				// Generate new-style concrete
-                                    				for (int pedY = y-3; pedY <= y; pedY++) {
-                                    					for (int rimi = 2; rimi > -3; rimi--) {
-                                    						// This builds the rim around the well
-                                    						event.getWorld().setBlockState(new BlockPos(x+(signXOffset/2*rimi), pedY, z+signZOffset), concreteBlock.getStateFromMeta(townColorMeta) );
-                                    						event.getWorld().setBlockState(new BlockPos(x+signXOffset, pedY, z+(-signZOffset/2*(1+rimi))), concreteBlock.getStateFromMeta(townColorMeta) );
-                                    						event.getWorld().setBlockState(new BlockPos(x-(signXOffset*3/2), pedY, z+(signZOffset/2*rimi)), concreteBlock.getStateFromMeta(townColorMeta) );
-                                    						event.getWorld().setBlockState(new BlockPos(x+(-signXOffset/2*(1+rimi)), pedY, z-(signZOffset*3/2)), concreteBlock.getStateFromMeta(townColorMeta) );
-                                    					}
-                                    				}
-                                    				
-                                    				// Set glazed terracotta in well roof!
-                                    				int metaSpin = random.nextInt(4)+4; // I've got to add 4 because modulo doesn't work properly with negative numbers :P
-                                    				int metaChirality = random.nextBoolean() ? 1 : -1;
-                                    				
-                                    				event.getWorld().setBlockState(new BlockPos(x, y+4, z), roofGlazedBlock.getStateFromMeta( metaSpin ) );
-                                    				event.getWorld().setBlockState(new BlockPos(x, y+4, z-(signZOffset/2)), roofGlazedBlock.getStateFromMeta( (metaSpin + metaChirality)%4 ) );
-                                    				event.getWorld().setBlockState(new BlockPos(x-(signXOffset/2), y+4, z-(signZOffset/2)), roofGlazedBlock.getStateFromMeta( (metaSpin + metaChirality*2)%4) );
-                                    				event.getWorld().setBlockState(new BlockPos(x-(signXOffset/2), y+4, z), roofGlazedBlock.getStateFromMeta( (metaSpin + metaChirality*3)%4 ) );
-                                    				
-                                    			}
-                                    			else {
-                                    				// Generate old-style clay base
-                                    				for (int pedY = y-3; pedY <= y; pedY++) {
-                                    					event.getWorld().setBlockState(new BlockPos(x+signXOffset,pedY,z+signZOffset), Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(townColorMeta) );
-                                    				}
-                                    			}
-                                        		
-                                    		}
-                                    		
-                                    		// Okay now that the three components have been generated
-                                    		// I need to find a way to fit them onto a sign.
-                                    		TileEntitySign signContents = new TileEntitySign();
-                                    		//Changing TextComponentString to TextComponentString
-                                    		if ( (namePrefix.length() + 1 + nameRoot.length()) > 15 ) {
-                                    			// Prefix+Root is too long, so move prefix to line 1
-                                    			signContents.signText[0] = new TextComponentString(headerTags+ topLine.trim());
-                                    			signContents.signText[1] = new TextComponentString(namePrefix.trim());
-                                    			if ( (nameRoot.length() + 1 + nameSuffix.length()) > 15 ) {
-                                    				// Root+Suffix is too long, so move suffix to line 3
-                                    				signContents.signText[2] = new TextComponentString(nameRoot.trim());
-                                    				signContents.signText[3] = new TextComponentString(nameSuffix.trim());
-                                    			}
-                                    			else {
-                                    				// Fit Root+Suffix onto line 2
-                                    				signContents.signText[2] = new TextComponentString((nameRoot+" "+nameSuffix).trim());
-                                    			}
-                                    		}
-                                    		else if ( (namePrefix.length() + 1 + nameRoot.length() + 1 + nameSuffix.length()) <= 15 ) {
-                                    			// Whole name fits on one line! Put it all on line 2.
-                                    			signContents.signText[1] = new TextComponentString(headerTags+ topLine);
-                                    			signContents.signText[2] = new TextComponentString((namePrefix+" "+nameRoot+" "+nameSuffix).trim());
-                                    		}
-                                    		else {
-                                    			// Only Prefix and Root can fit together on line 2.
-                                    			signContents.signText[1] = new TextComponentString(headerTags+ topLine.trim());
-                                    			signContents.signText[2] = new TextComponentString((namePrefix+" "+nameRoot).trim());
-                                    			signContents.signText[3] = new TextComponentString(nameSuffix.trim());
-                                    		}
-                                    		
-                                    		
-                                    		// The following was going to say "Village" or "Hamlet" etc based on village size
-                                    		// But it's kind of a PITA calculating village radius during sign creation.
-                                    		// Maybe another time.
-                                    		
-                                    		// Put the stuff on the sign.
-                                    		event.getWorld().setTileEntity(new BlockPos(x+signXOffset, y+2, z+signZOffset), signContents);
-                                    		
-                                    		
-                                    		// Make the data bundle to save to NBT
-                                    		NBTTagList nbttaglist = new NBTTagList();
-                                    		
-                                    		NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                                            nbttagcompound1.setInteger("signX", signX);
-                                            nbttagcompound1.setInteger("signY", signY);
-                                            nbttagcompound1.setInteger("signZ", signZ);
-                                            nbttagcompound1.setInteger("townColor", townColorMeta); //In case we want to make clay, carpet, wool, glass, etc
-                                            nbttagcompound1.setString("namePrefix", namePrefix);
-                                            nbttagcompound1.setString("nameRoot", nameRoot);
-                                            nbttagcompound1.setString("nameSuffix", nameSuffix);
-                                            nbttagcompound1.setString("sign0", signContents.signText[0].getFormattedText());
-                                            nbttagcompound1.setString("sign1", signContents.signText[1].getFormattedText());
-                                            nbttagcompound1.setString("sign2", signContents.signText[2].getFormattedText());
-                                            nbttagcompound1.setString("sign3", signContents.signText[3].getFormattedText());
-                                            nbttaglist.appendTag(nbttagcompound1);
-                                            // Save the data under a "Villages" entry with unique name based on sign coords
-                                            data.getData().setTag("x"+signX+"y"+signY+"z"+signZ, nbttaglist);
-                                            //data.getData().setTag( (namePrefix+nameRoot+nameSuffix).trim(), nbttaglist);                                            
-                                    		data.markDirty();
-                                		}
-                                		else {
-                                			/*
-                                			The stupid thing is generating a sign inside the well structure for some reason.
-                                			So here I'm going to record that to the console, as well as saving NBT data for the attempt.
-                                			 */
-                                			NBTTagList nbttaglist = new NBTTagList();
-                                			NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                                			nbttaglist.appendTag(nbttagcompound1);
-                                			int signX = (x+signXOffset);
-                                    		int signY = y+2;
-                                    		int signZ = (z+signZOffset);
-                                    		VNWorldDataVillage data = VNWorldDataVillage.forWorld(event.getWorld());
-                                    		LogHelper.info("Tried to generate a sign inside a well's post at x="+signX+" y="+signY+" z="+signZ);
-                                			
-                                		}
-                                		
-                                	}
-                                	
-                                	if (wellSlabs) {
-                                		field = listOpaque.remove(1);
-                                    	event.getWorld().setBlockState(new BlockPos(field[0], field[1] + 1, field[2]), Blocks.STONE_SLAB.getDefaultState() );
-                                    	field = listOpaque.remove(2);
-                                        event.getWorld().setBlockState(new BlockPos(field[0], field[1] + 1, field[2]), Blocks.STONE_SLAB.getDefaultState() );
-                                	}
-                                    
-                                    while (event.getWorld().getBlockState(new BlockPos(x, y, z)).getBlock() == id) {
-                                        y--;
-                                    }
-                                    field = new int[]{x, y, z};
-                                    listOpaque = getOpaqueBorder(event.getWorld(), field);
-                                    
-                                }
-                            }
-                            continue;
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	/**
-	*
-	* @param world The world containing the blocks
-	* @param id The block searched
-	* @param field The coordinates of the center to search around
-	* @return A list of coordinates that contain opaque cubes, around the center, at the same height
-	*/
-	private static List<int[]> getOpaqueBorder(World world, int[] field) {
-		List<int[]> list = new ArrayList<int[]>();
-		for (int x = field[0] - 1; x < field[0] + 2; x++) {
-			for (int z = field[2] - 1; z < field[2] + 2; z++) {
-				Block borderBlock = world.getBlockState( new BlockPos(x, field[1], z)).getBlock();
-				if ((x != field[0] || z != field[2]) && borderBlock.isNormalCube(borderBlock.getBlockState().getBaseState(), world, new BlockPos(x, field[1], z)) )
-					list.add(new int[] { x, field[1], z });
-			}
-		}
-		return list;
-	}
-	
-    /**
-     *
-     * @param world The world containing the blocks
-     * @param id The block searched
-     * @param field The coordinates of the center to search around
-     * @return A list of coordinates that contain the same block, around the center, at the same height
-     */
-	private static List<int[]> getBorder(World world, Block id, int[] field) {
-		List<int[]> list = new ArrayList<int[]>();
-		for (int x = field[0] - 1; x < field[0] + 2; x++) {
-			for (int z = field[2] - 1; z < field[2] + 2; z++) {
-				if ((x != field[0] || z != field[2]) && world.getBlockState(new BlockPos(x, field[1], z)).getBlock() == id)
-					list.add(new int[] { x, field[1], z });
-			}
-		}
-		return list;
-	}
-	
-    /**
-     * Wrapper method to identify water type blocks.
-     *
-     * @param id The block to compare
-     * @return true if the block material is water
-     */
-	private static boolean isWaterId(World worldIn, BlockPos blockpos) {
-		return worldIn.getBlockState(blockpos).getMaterial() == Material.WATER;
-	}
-	
-	public File getConfigDirectory()
-    {
-        return configDirectory;
-    }
-	
 	/*
-	 * Way to convert from color meta int into string formatting (for e.g. signs)
-	 */
+	// Way to convert from color meta int into string formatting (for e.g. signs)
 	public static String mapColorMetaToStringFormat(int colorMeta) {
 		HashMap<Integer, String> signColorToFormat = new HashMap<Integer, String>();//new HashMap();
 		// This hashmap translates the town's name color on the sign to a color meta value.
@@ -574,5 +359,5 @@ public final class VillageNames {
 		// Return a "town color" string
 		return signColorToFormat.get(colorMeta);
 	}
-	
+	*/
 }

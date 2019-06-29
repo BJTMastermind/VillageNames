@@ -1,6 +1,6 @@
 package astrotibs.villagenames.proxy;
 
-import astrotibs.villagenames.reference.Reference;
+import astrotibs.villagenames.utility.Reference;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -33,26 +33,3 @@ public class ClientProxy extends CommonProxy {
 	
 	
 }
-
-/*
-public class ClientProxy extends CommonProxy {
-	
-	@Override
-	public void preInit(FMLPreInitializationEvent e) {
-		super.preInit(e);
-	}
-	
-	@Override
-	public void init(FMLInitializationEvent e) {
-		super.init(e);
-		//ModItems.registerRenders();
-		ModBlocks.registerRenders();
-	}
-	
-	@Override
-	public void postInit(FMLPostInitializationEvent e) {
-		super.postInit(e);
-	}
-
-}
-*/

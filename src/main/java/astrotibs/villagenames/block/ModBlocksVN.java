@@ -1,7 +1,7 @@
 package astrotibs.villagenames.block;
 
 import astrotibs.villagenames.VillageNames;
-import astrotibs.villagenames.reference.Reference;
+import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -11,13 +11,13 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class ModBlocksVN {
 	//I think the below are just internal registry names
-	public static Block lunarinGoldBrick = new BlockLunarinGold("lunaringoldbrick");
-	public static Block lunarinIronBrick = new BlockLunarinIron("lunarinironbrick");
+	public static final Block LUNARIN_GOLD_BRICK = new BlockLunarinGold("lunaringoldbrick");
+	public static final Block LUNARIN_IRON_BRICK = new BlockLunarinIron("lunarinironbrick");
 	
 	public static void init() {
 		
-		registerBlock(lunarinGoldBrick, "lunaringoldbrick", CreativeTabs.BUILDING_BLOCKS, true);
-        registerBlock(lunarinIronBrick, "lunarinironbrick", CreativeTabs.BUILDING_BLOCKS, true);
+		registerBlock(LUNARIN_GOLD_BRICK, "lunaringoldbrick", CreativeTabs.BUILDING_BLOCKS, true);
+        registerBlock(LUNARIN_IRON_BRICK, "lunarinironbrick", CreativeTabs.BUILDING_BLOCKS, true);
 		
     }
 	

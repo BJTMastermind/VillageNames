@@ -1,0 +1,20 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:red_flower"
+        },
+		"title": {
+            "translate": "advancements.laputa.title"
+        },
+        "description": {
+            "translate": "advancements.laputa.description"
+        },
+        "frame": "goal"
+    },
+	"parent": "villagenames:minrep",
+    "criteria": {
+        "laputa": {
+            "trigger": "laputa"
+        }
+    }
+}

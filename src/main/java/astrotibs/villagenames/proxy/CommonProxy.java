@@ -1,7 +1,20 @@
 package astrotibs.villagenames.proxy;
 
+import astrotibs.villagenames.capabilities.CapabilityAttach;
+import astrotibs.villagenames.capabilities.IModularSkin;
+import astrotibs.villagenames.capabilities.ModularSkin;
+import astrotibs.villagenames.capabilities.ModularSkinStorage;
+import astrotibs.villagenames.config.ConfigReloader;
+import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.handler.ChestLootHandler;
+import astrotibs.villagenames.handler.EntityInteractHandler;
+import astrotibs.villagenames.handler.SpawnNamingHandler;
+import astrotibs.villagenames.handler.WellDecorateEvent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 
 public class CommonProxy
@@ -14,23 +27,25 @@ public class CommonProxy
     //public void registerFluidBlockRendering(Block block, String name) {}
     //public void spawnParticle(BOPParticleTypes type, double x, double y, double z, Object... info) {}
     //public void replaceBOPBucketTexture() {}
-}
+    
+    
 
-
-/*
-public class CommonProxy {
-	
-	public void preInit(FMLPreInitializationEvent e) {
-		
-    }
-	
 	public void init(FMLInitializationEvent e) {
-		MinecraftForge.EVENT_BUS.register(new ItemEventHandler());
-	}
-	
-	public void postInit(FMLPostInitializationEvent e)  {
+		MinecraftForge.EVENT_BUS.register( new EntityInteractHandler() );
+		MinecraftForge.EVENT_BUS.register( new WellDecorateEvent() );
+		MinecraftForge.EVENT_BUS.register( new ConfigReloader() );
+		MinecraftForge.EVENT_BUS.register( new SpawnNamingHandler() );
+		MinecraftForge.EVENT_BUS.register( new CapabilityAttach() ); //Added in v3.1
+		if (GeneralConfig.codexChestLoot) MinecraftForge.EVENT_BUS.register(new ChestLootHandler());
 		
+		// Capabilities - added in v3.1
+		registerCapabilities();
+	}
+
+	// Added in v3.1
+	protected void registerCapabilities()
+	{
+		CapabilityManager.INSTANCE.register(IModularSkin.class, new ModularSkinStorage(), ModularSkin::new);
 	}
 	
 }
-*/

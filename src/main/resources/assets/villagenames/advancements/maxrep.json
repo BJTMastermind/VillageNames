@@ -1,0 +1,20 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:emerald"
+        },
+		"title": {
+            "translate": "advancements.maxrep.title"
+        },
+        "description": {
+            "translate": "advancements.maxrep.description"
+        },
+        "frame": "task"
+    },
+	"parent": "villagenames:root",
+    "criteria": {
+        "maxrep": {
+            "trigger": "maxrep"
+        }
+    }
+}
