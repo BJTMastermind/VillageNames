@@ -24,7 +24,6 @@ public class BlockConcrete extends Block implements IMetaBlockName {
 	
     public BlockConcrete(String unlocalizedName) {
     	super(Material.ROCK);
-    	
     	this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
         this.setHardness(1.8F);

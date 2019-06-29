@@ -1,6 +1,6 @@
 package astrotibs.villagenames.item;
 
-import astrotibs.villagenames.reference.Reference;
+import astrotibs.villagenames.utility.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,9 +18,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 // Example copied from Pam's Harvestcraft
 public class ItemVillageBook extends ItemWrittenBook {
 	
-	public ItemVillageBook() {
+	public ItemVillageBook(String unlocalizedName) {
 		super();
-		this.setUnlocalizedName("villagebook");
+		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(CreativeTabs.MISC);
 		this.setMaxStackSize(1);
 	}
@@ -55,7 +55,7 @@ public class ItemVillageBook extends ItemWrittenBook {
         playerIn.addStat(StatList.getObjectUseStats(this));
         //.FAIL does not let the book do anything.
         //.PASS only works on the FIRST attempt to open a fresh book.
-        //.SUCCESS works anytime.
+        //.SUCCESS works any time.
         return new ActionResult(EnumActionResult.SUCCESS, itemstack);
     }
 	

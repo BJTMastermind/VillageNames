@@ -1,0 +1,33 @@
+{
+  
+    "entity.endereye.dead": {
+	"category": "master",
+    "sounds": [
+       "entity/endereye/dead1",
+       "entity/endereye/dead2"
+    ]
+  },
+    "entity.endereye.endereye_launch": {
+	"category": "master",
+    "sounds": [
+      "entity/endereye/endereye_launch1",
+      "entity/endereye/endereye_launch2"
+    ],
+	"subtitle": "subtitles.entity.endereye.launch"
+  },
+    "block.end_portal.endportal": {
+	"category": "hostile",
+    "sounds": [
+      "block/end_portal/endportal"
+    ]
+  },
+    "block.end_portal.eyeplace": {
+	"category": "block",
+    "sounds": [
+      "block/end_portal/eyeplace1",
+      "block/end_portal/eyeplace2",
+      "block/end_portal/eyeplace3"
+    ]
+  }
+  
+}

@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=south": { "model": "villagenames:glazed_terracotta_black" },
-        "facing=west": { "model": "villagenames:glazed_terracotta_black", "y": 90 },
-        "facing=north": { "model": "villagenames:glazed_terracotta_black", "y": 180 },
-        "facing=east": { "model": "villagenames:glazed_terracotta_black", "y": 270 }
+        "facing=south": { "model": "minecraft:glazed_terracotta_black" },
+        "facing=west": { "model": "minecraft:glazed_terracotta_black", "y": 90 },
+        "facing=north": { "model": "minecraft:glazed_terracotta_black", "y": 180 },
+        "facing=east": { "model": "minecraft:glazed_terracotta_black", "y": 270 }
     }
 }

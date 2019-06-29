@@ -1,11 +1,12 @@
 package astrotibs.villagenames.block.color;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Lists;
 
 import astrotibs.villagenames.block.ModBlocksVN;
-
-import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockFalling;
@@ -153,7 +154,7 @@ public class EntityFallingBlockCP extends EntityFallingBlock
                 double d0 = this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ;
                 if (d0 > 0.0D)
                 {
-                	Block concreteOut = ModBlocksVN.blockConcrete;
+                	Block concreteOut = ModBlocksVN.CONCRETE;
                     for (int jOff=0; jOff <=Math.max(0, motionY<-1.0 ? 1 : 0 ); jOff++) { // If it's moving downward faster than a threshold speed: 1 in this case
                     	if(this.world.getBlockState( new BlockPos( blockpos1.getX(), blockpos1.getY()-jOff, blockpos1.getZ() ) ).getBlock().getMaterial(null) == Material.WATER )
                     	{
