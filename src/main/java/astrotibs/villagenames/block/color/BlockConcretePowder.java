@@ -171,7 +171,7 @@ public class BlockConcretePowder extends BlockFalling implements IMetaBlockName 
         if (flag)
         {
         	int meta = worldIn.getBlockState(pos).getBlock().getMetaFromState( worldIn.getBlockState(pos) );
-        	worldIn.setBlockState(pos, ModBlocksVN.blockConcrete.getStateFromMeta( meta ), 2);
+        	worldIn.setBlockState(pos, ModBlocksVN.CONCRETE.getStateFromMeta( meta ), 2);
         }
 
         return flag;

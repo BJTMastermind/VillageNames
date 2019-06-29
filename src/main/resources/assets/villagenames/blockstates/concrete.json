@@ -1,20 +1,20 @@
 {
     "variants": {
-        "color=white": { "model":"VillageNames:concrete_white" },
-        "color=orange": { "model":"VillageNames:concrete_orange" },
-        "color=magenta": { "model":"VillageNames:concrete_magenta" },
-        "color=light_blue": { "model":"VillageNames:concrete_light_blue" },
-        "color=yellow": { "model":"VillageNames:concrete_yellow" },
-        "color=lime": { "model":"VillageNames:concrete_lime" },
-        "color=pink": { "model":"VillageNames:concrete_pink" },
-        "color=gray": { "model":"VillageNames:concrete_gray" },
-        "color=silver": { "model":"VillageNames:concrete_silver" },
-        "color=cyan": { "model":"VillageNames:concrete_cyan" },
-        "color=purple": { "model":"VillageNames:concrete_purple" },
-        "color=blue": { "model":"VillageNames:concrete_blue" },
-        "color=brown": { "model":"VillageNames:concrete_brown" },
-        "color=green": { "model":"VillageNames:concrete_green" },
-        "color=red": { "model":"VillageNames:concrete_red" },
-        "color=black": { "model":"VillageNames:concrete_black" }
+        "color=white": { "model":"minecraft:concrete_white" },
+        "color=orange": { "model":"minecraft:concrete_orange" },
+        "color=magenta": { "model":"minecraft:concrete_magenta" },
+        "color=light_blue": { "model":"minecraft:concrete_light_blue" },
+        "color=yellow": { "model":"minecraft:concrete_yellow" },
+        "color=lime": { "model":"minecraft:concrete_lime" },
+        "color=pink": { "model":"minecraft:concrete_pink" },
+        "color=gray": { "model":"minecraft:concrete_gray" },
+        "color=silver": { "model":"minecraft:concrete_silver" },
+        "color=cyan": { "model":"minecraft:concrete_cyan" },
+        "color=purple": { "model":"minecraft:concrete_purple" },
+        "color=blue": { "model":"minecraft:concrete_blue" },
+        "color=brown": { "model":"minecraft:concrete_brown" },
+        "color=green": { "model":"minecraft:concrete_green" },
+        "color=red": { "model":"minecraft:concrete_red" },
+        "color=black": { "model":"minecraft:concrete_black" }
     }
 }

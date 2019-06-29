@@ -1,6 +1,6 @@
 package astrotibs.villagenames.item;
 
-import astrotibs.villagenames.reference.Reference;
+import astrotibs.villagenames.utility.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,9 +18,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 // Example copied from Pam's Harvestcraft
 public class ItemVillageBook extends ItemWrittenBook {
 	
-	public ItemVillageBook() {
+	public ItemVillageBook(String unlocalizedName) { // As of version 3, you can just register all the book variations through this class.
 		super();
-		this.setUnlocalizedName("villagebook");
+		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(CreativeTabs.MISC);
 		this.setMaxStackSize(1);
 	}

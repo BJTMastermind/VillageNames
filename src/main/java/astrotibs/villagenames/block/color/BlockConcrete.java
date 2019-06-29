@@ -78,8 +78,6 @@ public class BlockConcrete extends Block implements IMetaBlockName {
         return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(world.getBlockState(pos)));
     }
     
-    
-    
     /**
      * Get the MapColor for this Block and the given BlockState
      */
