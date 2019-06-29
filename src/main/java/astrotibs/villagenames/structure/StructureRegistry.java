@@ -1,15 +1,17 @@
 package astrotibs.villagenames.structure;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+
+import astrotibs.villagenames.utility.LogHelper;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -18,10 +20,8 @@ import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.ChunkProviderHell;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.gen.structure.MapGenStructure;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToAccessFieldException;
-import astrotibs.villagenames.utility.LogHelper;
 
 public class StructureRegistry {
 
@@ -101,9 +101,10 @@ public class StructureRegistry {
 
 	private static IChunkProvider getWrappedChunkProvider(ChunkProviderServer provider) {
 		try {
-			return ObfuscationReflectionHelper.getPrivateValue(ChunkProviderServer.class, provider, "currentChunkProvider", "field_73246_d");
+			//return ObfuscationReflectionHelper.getPrivateValue(ChunkProviderServer.class, provider, "currentChunkProvider", "field_73246_d");
+			return provider.serverChunkGenerator; // This is public in 1.8.9
 		} catch (UnableToAccessFieldException e) {
-			LogHelper.warn("Can't access chunk provider data. No structures will be detected");
+			LogHelper.error("Can't access chunk provider data. No structures will be detected");
 			return null;
 		}
 	}

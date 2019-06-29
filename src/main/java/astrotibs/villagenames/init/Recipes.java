@@ -1,7 +1,7 @@
 package astrotibs.villagenames.init;
 
 import astrotibs.villagenames.block.ModBlocksVN;
-import astrotibs.villagenames.config.GeneralConfigHandler;
+import astrotibs.villagenames.config.GeneralConfig;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -10,7 +10,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class Recipes {
 	
-	public static boolean addConcrete = GeneralConfigHandler.addConcrete;
 	static String[] oreDyeNames = new String[]{
 			"dyeWhite",
 			"dyeOrange",
@@ -45,10 +44,7 @@ public class Recipes {
 		// Turn Lunarin block back to ingots
 		GameRegistry.addRecipe(new ShapelessOreRecipe( new ItemStack(Items.iron_ingot, 6),	new ItemStack(ModBlocksVN.lunarinIronBrick) ));
 		
-		
-		
-		
-		if (addConcrete) {
+		if (GeneralConfig.addConcrete) {
 			
 			// Add recipes for Concrete Powder
 			for (int i = 0 ; i < 16; i++) {

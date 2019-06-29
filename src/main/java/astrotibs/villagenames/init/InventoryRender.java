@@ -2,7 +2,7 @@ package astrotibs.villagenames.init;
 
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.item.ModItems;
-import astrotibs.villagenames.reference.Reference;
+import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -23,11 +23,19 @@ public class InventoryRender {
 		InventoryItemRender(ModItems.strongholdbook, "strongholdbook");
 		InventoryItemRender(ModItems.templebook, "templebook");
 		InventoryItemRender(ModItems.villagebook, "villagebook");
+		
+		// V3 books
+		InventoryItemRender(ModItems.jungletemplebook, "jungletemplebook");
+		InventoryItemRender(ModItems.desertpyramidbook, "desertpyramidbook");
+		InventoryItemRender(ModItems.swamphutbook, "swamphutbook");
+		InventoryItemRender(ModItems.igloobook, "igloobook");
+		
 		InventoryItemRender(ModItems.moonvillagebook, "moonvillagebook");
 		InventoryItemRender(ModItems.koentusvillagebook, "koentusvillagebook");
 		InventoryItemRender(ModItems.fronosvillagebook, "fronosvillagebook");
 		InventoryItemRender(ModItems.nibiruvillagebook, "nibiruvillagebook");
 		InventoryItemRender(ModItems.abandonedbasebook, "abandonedbasebook");
+		
 		
 	}
 

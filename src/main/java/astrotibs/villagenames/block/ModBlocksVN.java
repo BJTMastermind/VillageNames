@@ -4,7 +4,8 @@ import astrotibs.villagenames.block.color.BlockConcrete;
 import astrotibs.villagenames.block.color.BlockConcretePowder;
 import astrotibs.villagenames.block.color.BlockGlazedTerracotta;
 import astrotibs.villagenames.block.color.ItemBlockMetaColor;
-import astrotibs.villagenames.reference.Reference;
+import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -38,24 +39,26 @@ public class ModBlocksVN {
 		
 		GameRegistry.registerBlock(lunarinGoldBrick, "lunarinGoldBrick");
 		GameRegistry.registerBlock(lunarinIronBrick, "lunarinIronBrick");
-		GameRegistry.registerBlock(blockConcrete, ItemBlockMetaColor.class, "concrete");
-		GameRegistry.registerBlock(blockConcretePowder, ItemBlockMetaColor.class, "concrete_powder");
-		GameRegistry.registerBlock(blockGlazedTerracottaWhite, "glazed_terracotta_white");
-		GameRegistry.registerBlock(blockGlazedTerracottaOrange, "glazed_terracotta_orange");
-		GameRegistry.registerBlock(blockGlazedTerracottaMagenta, "glazed_terracotta_magenta");
-		GameRegistry.registerBlock(blockGlazedTerracottaLightBlue, "glazed_terracotta_light_blue");
-		GameRegistry.registerBlock(blockGlazedTerracottaYellow, "glazed_terracotta_yellow");
-		GameRegistry.registerBlock(blockGlazedTerracottaLime, "glazed_terracotta_lime");
-		GameRegistry.registerBlock(blockGlazedTerracottaPink, "glazed_terracotta_pink");
-		GameRegistry.registerBlock(blockGlazedTerracottaGray, "glazed_terracotta_gray");
-		GameRegistry.registerBlock(blockGlazedTerracottaSilver, "glazed_terracotta_silver");
-		GameRegistry.registerBlock(blockGlazedTerracottaCyan, "glazed_terracotta_cyan");
-		GameRegistry.registerBlock(blockGlazedTerracottaPurple, "glazed_terracotta_purple");
-		GameRegistry.registerBlock(blockGlazedTerracottaBlue, "glazed_terracotta_blue");
-		GameRegistry.registerBlock(blockGlazedTerracottaBrown, "glazed_terracotta_brown");
-		GameRegistry.registerBlock(blockGlazedTerracottaGreen, "glazed_terracotta_green");
-		GameRegistry.registerBlock(blockGlazedTerracottaRed, "glazed_terracotta_red");
-		GameRegistry.registerBlock(blockGlazedTerracottaBlack, "glazed_terracotta_black");
-				
+		
+		if (GeneralConfig.addConcrete) {
+			GameRegistry.registerBlock(blockConcrete, ItemBlockMetaColor.class, "concrete");
+			GameRegistry.registerBlock(blockConcretePowder, ItemBlockMetaColor.class, "concrete_powder");
+			GameRegistry.registerBlock(blockGlazedTerracottaWhite, "glazed_terracotta_white");
+			GameRegistry.registerBlock(blockGlazedTerracottaOrange, "glazed_terracotta_orange");
+			GameRegistry.registerBlock(blockGlazedTerracottaMagenta, "glazed_terracotta_magenta");
+			GameRegistry.registerBlock(blockGlazedTerracottaLightBlue, "glazed_terracotta_light_blue");
+			GameRegistry.registerBlock(blockGlazedTerracottaYellow, "glazed_terracotta_yellow");
+			GameRegistry.registerBlock(blockGlazedTerracottaLime, "glazed_terracotta_lime");
+			GameRegistry.registerBlock(blockGlazedTerracottaPink, "glazed_terracotta_pink");
+			GameRegistry.registerBlock(blockGlazedTerracottaGray, "glazed_terracotta_gray");
+			GameRegistry.registerBlock(blockGlazedTerracottaSilver, "glazed_terracotta_silver");
+			GameRegistry.registerBlock(blockGlazedTerracottaCyan, "glazed_terracotta_cyan");
+			GameRegistry.registerBlock(blockGlazedTerracottaPurple, "glazed_terracotta_purple");
+			GameRegistry.registerBlock(blockGlazedTerracottaBlue, "glazed_terracotta_blue");
+			GameRegistry.registerBlock(blockGlazedTerracottaBrown, "glazed_terracotta_brown");
+			GameRegistry.registerBlock(blockGlazedTerracottaGreen, "glazed_terracotta_green");
+			GameRegistry.registerBlock(blockGlazedTerracottaRed, "glazed_terracotta_red");
+			GameRegistry.registerBlock(blockGlazedTerracottaBlack, "glazed_terracotta_black");
+		}
 	}
 }

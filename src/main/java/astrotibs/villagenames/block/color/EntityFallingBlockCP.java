@@ -1,9 +1,10 @@
 package astrotibs.villagenames.block.color;
 
+import java.util.List;
+
 import com.google.common.collect.Lists;
 
 import astrotibs.villagenames.block.ModBlocksVN;
-import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockFalling;

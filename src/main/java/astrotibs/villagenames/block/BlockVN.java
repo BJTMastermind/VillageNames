@@ -1,6 +1,6 @@
 package astrotibs.villagenames.block;
 
-import astrotibs.villagenames.reference.Reference;
+import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
@@ -13,6 +13,7 @@ public class BlockVN extends Block {
 	
 	@Override
 	public String getUnlocalizedName() {
+		// Only used for Lunarin blocks
 		return String.format("tile.%s%s", Reference.MOD_ID.toLowerCase() + ":", getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
 	}
 	
