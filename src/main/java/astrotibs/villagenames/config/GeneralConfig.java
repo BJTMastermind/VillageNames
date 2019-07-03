@@ -57,7 +57,9 @@ public class GeneralConfig {
 	
 	public static String[] modStructureNames;
 		
-	public static boolean modernVillagerSkins;
+	public static boolean modernVillagerSkins; // Changed in v3.1
+	
+	public static boolean moddedVillagerHeadwear; // Added in v3.1.1
 	
 	//public static boolean villagerLegacyTrades;
 	//public static boolean enableCartographer;
@@ -126,6 +128,10 @@ public class GeneralConfig {
 	    //enableNitwit = config.getBoolean("Nitwit Villager", "villager professions", true, "Enable 1.11 NitWit Villagers"); 
 	    //villagerLegacyTrades = config.getBoolean("Villager Legacy Trades", "villager professions", true, "When using Villager Careers: some trades that were removed in 1.8 can still be unlocked.");
 
+	    // Added in v3.1.1
+	    moddedVillagerHeadwear = config.getBoolean("Modded Villager Headwear", "villager professions", false, "If modern skins are enabled: renders the headwear layer for non-vanilla villager professions, if one exists.");
+	    
+	    
 	    zombieCureCatalysts = config.getStringList("Zombie Cure Catalysts", "villager professions", new String[]{
  				"vanilla|net.minecraft.block.BlockBed|tile.bed|-1",
  				"vanilla|net.minecraft.block.BlockPane|tile.fenceIron|-1"
