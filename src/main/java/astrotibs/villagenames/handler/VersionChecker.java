@@ -11,6 +11,7 @@ import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -23,26 +24,31 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 public class VersionChecker implements Runnable {
 	
 	private static boolean isLatestVersion = false;
+	private static boolean warnaboutfailure = false; // Added in v3.1.1
     private static String latestVersion = "";
     
 	@Override
 	public void run() {
+		
         InputStream in = null;
+        
         try {
             in = new URL(Reference.VERSION_CHECKER_URL).openStream();
         } 
         catch 
-        // Exception generalized for v 3.0.3
-        (Exception e)  {
-            e.printStackTrace();
-        } 
+        (Exception e)  {} // Blanked in v3.1.1
         
         try {
             latestVersion = IOUtils.readLines(in).get(0);
         }
-        // Exception generalized for v 3.0.3
         catch (Exception e)  {
-            e.printStackTrace();
+        	
+        	if (!warnaboutfailure) {
+        		// Added in v3.1.1
+        		LogHelper.error("Could not connect with server to compare " + Reference.MOD_NAME + " version");
+        		LogHelper.error("You can check for new versions at "+Reference.URL);
+        		warnaboutfailure=true;
+        	}
         }
         finally {
             IOUtils.closeQuietly(in);
@@ -103,8 +109,8 @@ public class VersionChecker implements Runnable {
                 				" is available! Get it at:"
                 		 ));
                 event.player.addChatComponentMessage(
-                		new TextComponentString(
-                				TextFormatting.GRAY + Reference.URL + TextFormatting.RESET
+                		ForgeHooks.newChatWithLinks(Reference.URL // Made clickable in v3.1.1
+                				//EnumChatFormatting.GRAY + Reference.URL + EnumChatFormatting.RESET
                 		 ));
                 // V3.0.1: Moved inside the "if" condition so that it will only stop version checking when it's confirmed
                 VillageNames.haveWarnedVersionOutOfDate = true;
