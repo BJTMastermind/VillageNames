@@ -9,7 +9,6 @@ import java.util.Set;
 
 import astrotibs.villagenames.VillageNames;
 import astrotibs.villagenames.banner.BannerGenerator;
-import astrotibs.villagenames.capabilities.IModularSkin;
 import astrotibs.villagenames.capabilities.ModularSkinProvider;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.integration.ModObjects;
@@ -88,29 +87,32 @@ public class EntityInteractHandler {
 	public void onEntityInteract(EntityInteract event) {
 		
 		// Added in v3.1
-		// Test messaging to see if server/client syncing of properties is working properly
+		// This was used to verify server-client syncing of Careers
+		/*
 		if (GeneralConfig.debugMessages)
 		{
 			if (event.getTarget() instanceof EntityVillager)
 			{
 				EntityVillager villager = (EntityVillager)event.getTarget();
-				IModularSkin villagerModularSkin = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
-				
-				int profession = villagerModularSkin.getProfession();
-				int career = villagerModularSkin.getCareer();
-				int biomeType = villagerModularSkin.getBiomeType();
-				int professionLevel = villagerModularSkin.getProfessionLevel();
-				//int profession = villager.getProfession();
-				//int career = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
-				//int biomeType = 
-				//int profLevel = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"});
-				
-				// Modified in v3.1trades
-				LogHelper.info("SYNC CHECKING Profession: " + profession +
-						", Career: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}) + ", CareerVN: " + career +
-						", BiomeType: " + biomeType +
-						", careerLevel: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}) + ", ProfessionLevelVN: " + professionLevel);
-				
+				IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
+				// v3.1.1 - Placed into null check to prevent crash
+				if (ims != null)
+				{
+					int profession = ims.getProfession();
+					int career = ims.getCareer();
+					int biomeType = ims.getBiomeType();
+					int professionLevel = ims.getProfessionLevel();
+					//int profession = villager.getProfession();
+					//int career = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
+					//int biomeType = 
+					//int profLevel = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"});
+					
+					// Modified in v3.1trades
+					LogHelper.info("SYNC CHECKING Profession: " + profession +
+							", Career: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}) + ", CareerVN: " + career +
+							", BiomeType: " + biomeType +
+							", careerLevel: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}) + ", ProfessionLevelVN: " + professionLevel);
+				}
 			}
 			
 			if (event.getTarget() instanceof EntityZombie)
@@ -118,14 +120,18 @@ public class EntityInteractHandler {
 				EntityZombie zombie = (EntityZombie)event.getTarget();
 				
 				IModularSkin ims = zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
-				int profession = ims.getProfession();
-				int career = ims.getCareer();
-				int biomeType = ims.getBiomeType();
-				int professionLevel = ims.getProfessionLevel();
-				LogHelper.info("SYNC CHECKING Profession: " + profession + ", Career: " + career + ", BiomeType: " + biomeType + ", ProfessionLevel: " + professionLevel);
-				
+				// v3.1.1 - Placed into null check to prevent crash
+				if (ims != null)
+				{
+					int profession = ims.getProfession();
+					int career = ims.getCareer();
+					int biomeType = ims.getBiomeType();
+					int professionLevel = ims.getProfessionLevel();
+					LogHelper.info("SYNC CHECKING Profession: " + profession + ", Career: " + career + ", BiomeType: " + biomeType + ", ProfessionLevel: " + professionLevel);
+				}
 			}
 		}
+		*/
 		
 		// summon Zombie ~ ~ ~ {IsVillager:1}
 		
