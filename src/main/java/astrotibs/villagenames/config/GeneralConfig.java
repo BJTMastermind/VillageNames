@@ -51,6 +51,8 @@ public class GeneralConfig {
 	public static String[] modStructureNames;
 
 	public static boolean modernVillagerSkins; // Added in v3.1
+
+	public static boolean moddedVillagerHeadwear; // Added in v3.1.1
 	
 	public static boolean modernVillagerTrades;
 	//public static boolean villagerLegacyTrades;
@@ -102,6 +104,10 @@ public class GeneralConfig {
 	    // Added in v3.1
 	    modernVillagerTrades = config.getBoolean("Modern Villager Trades", "villager professions", true, "Use JE 1.14 / BE 1.12 trade offerings and add the Mason villager");
 
+	    // Added in v3.1.1
+	    moddedVillagerHeadwear = config.getBoolean("Modded Villager Headwear", "villager professions", false, "If modern skins are enabled: renders the headwear layer for non-vanilla villager professions, if one exists.");
+	    
+	    
 	    zombieCureCatalysts = config.getStringList("Zombie Cure Catalysts", "villager professions", new String[]{
  				"vanilla|net.minecraft.block.BlockBed|tile.bed|-1",
  				"vanilla|net.minecraft.block.BlockPane|tile.fenceIron|-1"
