@@ -5,6 +5,7 @@ import java.io.File;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.client.renderer.entity.RenderVillagerModern;
 import astrotibs.villagenames.client.renderer.entity.RenderZombieVillagerModern;
+import astrotibs.villagenames.command.CommandBanner;
 import astrotibs.villagenames.command.CommandName;
 import astrotibs.villagenames.config.ConfigInit;
 import astrotibs.villagenames.config.GeneralConfig;
@@ -332,7 +333,8 @@ public final class VillageNames {
 	{
 	    // register server commands
 		event.registerServerCommand(new CommandName());
-	}
+		event.registerServerCommand(new CommandBanner()); // Added in v3.1.1
+}
 	
 	/*
 	// Way to convert from color meta int into string formatting (for e.g. signs)
