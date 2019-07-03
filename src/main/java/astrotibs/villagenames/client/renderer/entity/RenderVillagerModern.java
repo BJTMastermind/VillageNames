@@ -4,6 +4,7 @@ import astrotibs.villagenames.client.model.ModelVillagerModern;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.ieep.ExtendedVillager;
 import astrotibs.villagenames.utility.Reference;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -123,27 +124,6 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 		    }
 		}
 	}
-	
-
-    /**
-     * Queries whether should render the specified pass or not.
-     */
-	/*
-    @Override
-    protected int shouldRenderPass(EntityLivingBase entity, int passNumber, float progress)
-    {
-    	if (entity instanceof EntityVillager)
-    	{
-    		return this.shouldRenderPass((EntityVillager)entity, passNumber, progress);
-    	}
-    	else
-    	{
-    		return super.shouldRenderPass(entity, passNumber, progress);
-    	}
-    }
-    */
-	
-	
 	
 	@SideOnly(Side.CLIENT)
 	public class LayerVillagerBiomeType implements LayerRenderer<EntityVillager>
@@ -354,5 +334,28 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 		}
 	}
 	
+	// v3.1.1 - Added in to allow villagers to render as babies and not man-babies
+	// summon Villager ~ ~ ~ {Age:-24000}
+    /**
+     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
+     * entityLiving, partialTickTime
+     */
+	@Override
+    protected void preRenderCallback(EntityVillager entitylivingbaseIn, float partialTickTime)
+    {
+        float f = 0.9375F;
+
+        if (entitylivingbaseIn.getGrowingAge() < 0)
+        {
+            f = (float)((double)f * 0.5D);
+            this.shadowSize = 0.25F;
+        }
+        else
+        {
+            this.shadowSize = 0.5F;
+        }
+
+        GlStateManager.scale(f, f, f);
+    }
 }
 

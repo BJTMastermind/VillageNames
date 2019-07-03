@@ -93,23 +93,30 @@ public class ExtendedZombieVillager implements IExtendedEntityProperties
             
 				switch(p) {
 				
+	            // Added break conditions in v3.1.1 to actually properly select sub-professions for zombie villagers 
 				case 0: // FARMER
 					c = 1 + this.myWorld.rand.nextInt(4);
-				
+					break;
+					
 				case 1: // LIBRARIAN
 					c = 1 + (GeneralConfig.modernVillagerTrades ? this.myWorld.rand.nextInt(2) : 0); // Added in v3.1trades - Cartographer
-				
+					break;
+					
 				case 2: // PRIEST
 					c = 1;// + this.myWorld.rand.nextInt(1);
-				
+					break;
+					
 				case 3: // BLACKSMITH
 					c = 1 + this.myWorld.rand.nextInt(GeneralConfig.modernVillagerTrades ? 4 : 3); // Added in v3.1trades - Mason
-				
+					break;
+					
 				case 4: // BUTCHER
 					c = 1 + this.myWorld.rand.nextInt(2);
-				
+					break;
+					
 				case 5: // NITWIT
 					c = 1;// + this.myWorld.rand.nextInt(1);
+					break;
 			}
 				
 	    	this.setProfession(p);

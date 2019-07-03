@@ -51,8 +51,7 @@ public class MessageModernVillagerSkin implements IMessage
     public int getProfessionLevelVN() {return this.professionLevelVN;} // Added in v3.1trades
     public int getCareerVN() {return this.careerVN;} // Added in v3.1trades
     
-
-
+    
     // Reads the packet
     @Override
     public void fromBytes(ByteBuf buf)

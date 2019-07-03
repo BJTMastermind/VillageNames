@@ -110,31 +110,42 @@ public class EntityInteractHandler {
 	@SubscribeEvent(receiveCanceled=true)
 	public void onEntityInteract(EntityInteractEvent event) {
 		
-		
+		// This was used to verify server-client syncing of Careers
+		/*
 		if (GeneralConfig.debugMessages)
 		{
 			if (event.target instanceof EntityVillager)
 			{
-				 EntityVillager villager = (EntityVillager)event.target;
-				 int career = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
-				 int profLevel = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"});
-				 LogHelper.info("SYNC CHECKING Profession: " + villager.getProfession()
-				 + ", Career: " + career + ", BiomeType: " + (ExtendedVillager.get(villager)).getBiomeType() + ", ProfessionLevel: " + profLevel
-				 + ", CareerVN: " + ExtendedVillager.get(villager).getCareerVN() + ", ProfessionLevelVN: " + ExtendedVillager.get(villager).getProfessionLevelVN()
-				 );
-				 
+				// v3.1.1 - Placed into null check to prevent crash
+				EntityVillager villager = (EntityVillager)event.target;
+				ExtendedVillager ev = ExtendedVillager.get(villager);
+				
+				if (ev != null)
+				{
+					 int career = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
+					 int profLevel = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"});
+					 LogHelper.info("SYNC CHECKING Profession: " + villager.getProfession()
+						 + ", Career: " + career + ", BiomeType: " + (ExtendedVillager.get(villager)).getBiomeType() + ", ProfessionLevel: " + profLevel
+						 + ", CareerVN: " + ExtendedVillager.get(villager).getCareerVN() + ", ProfessionLevelVN: " + ExtendedVillager.get(villager).getProfessionLevelVN()
+						 );
+				}
 			}
 			
 			if (event.target instanceof EntityZombie)
 			{
 				EntityZombie zombie = (EntityZombie)event.target;
 				ExtendedZombieVillager ezv = ExtendedZombieVillager.get(zombie);
-				int career = ezv.getCareer();
-				int profLevel = ezv.getProfessionLevel();
-				LogHelper.info("SYNC CHECKING Profession: " + ezv.getProfession() + ", Career: " + career + ", BiomeType: " + ezv.getBiomeType() + ", ProfessionLevel: " + profLevel);
+				
+				// v3.1.1 - Placed into null check to prevent crash
+				if (ezv != null)
+				{
+					int career = ezv.getCareer();
+					int profLevel = ezv.getProfessionLevel();
+					LogHelper.info("SYNC CHECKING Profession: " + ezv.getProfession() + ", Career: " + career + ", BiomeType: " + ezv.getBiomeType() + ", ProfessionLevel: " + profLevel);
+				}
 			}
 		}
-		
+		*/
 		
 		// summon Zombie ~ ~ ~ {IsVillager:1}
 		

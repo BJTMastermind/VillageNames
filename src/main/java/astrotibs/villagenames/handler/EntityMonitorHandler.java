@@ -294,7 +294,7 @@ public class EntityMonitorHandler
 
     @SubscribeEvent
     public void onLivingUpdateEvent(LivingUpdateEvent event) {
-
+    	
         // Check if a zombie is about to convert to villager
         if (FunctionsVN.isVanillaZombie(event.entity)) {
             final EntityZombie zombie = (EntityZombie) event.entity;
