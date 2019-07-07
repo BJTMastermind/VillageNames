@@ -189,7 +189,7 @@ public class EntityMonitorHandler
                     ims.setProfession(profession);
                     ims.setCareer(FunctionsVN.pickRandomCareerForProfession(profession, zombievillager.worldObj.rand));
                 }
-
+                
                 if (GeneralConfig.debugMessages) {
                     LogHelper.info("EntityMonitorHandler > Custom name [" + zombievillager.getCustomNameTag() + "]");
                     LogHelper.info("EntityMonitorHandler > Profession [" + ims.getProfession() + "]");
@@ -662,8 +662,12 @@ public class EntityMonitorHandler
 			if (ims.getBiomeType()==-1) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
 			
 			// Added in v3.1
-			if ((villager.ticksExisted + villager.getEntityId())%5 == 0) // Ticks intermittently, modulated so villagers don't deliberately sync.
+			if (
+					(villager.ticksExisted + villager.getEntityId())%5 == 0 // Ticks intermittently, modulated so villagers don't deliberately sync.
+					&& ims.getProfession() >= 0 && (ims.getProfession() <=5 || GeneralConfig.professionID_a.indexOf(ims.getProfession())>-1) // This villager ID is specified in the configs
+					)
 					{
+				
 				//(ExtendedVillager.get( villager )).setProfessionLevel(ExtendedVillager.get( villager ).getProfessionLevel());
 				// Sends a ping to everyone within 80 blocks
 				NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(villager.dimension, villager.lastTickPosX, villager.lastTickPosY, villager.lastTickPosZ, 16*5);

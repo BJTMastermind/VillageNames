@@ -1,9 +1,14 @@
 package astrotibs.villagenames.client.model;
 
+import astrotibs.villagenames.capabilities.IModularSkin;
+import astrotibs.villagenames.capabilities.ModularSkinProvider;
+import astrotibs.villagenames.config.GeneralConfig;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -99,14 +104,28 @@ public class ModelZombieVillagerModern extends ModelBiped
     	
         this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, scale, entityIn);
         GlStateManager.pushMatrix();
-
+        
+        // Added in v3.2
+        final IModularSkin ims = entityIn.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
+		int prof = ims.getProfession();
+		String profForge = ((EntityZombie)entityIn).getVillagerTypeForge().getRegistryName().toString();
+		
         if (this.isChild)
         {
             float f = 2.0F;
             GlStateManager.scale(1.5F / f, 1.5F / f, 1.5F / f);
             GlStateManager.translate(0.0F, 16.0F * scale, 0.0F);
             this.bipedHead.render(scale);
-            this.bipedHeadwear.render(scale);
+            
+            // Added in v3.2
+            if (
+            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(profForge)
+            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(profForge) || !GeneralConfig.moddedVillagerHeadwear))
+            		)
+            {
+            	this.bipedHeadwear.render(scale);
+            }
+            
             GlStateManager.popMatrix();
             GlStateManager.pushMatrix();
             GlStateManager.scale(1.0F / f, 1.0F / f, 1.0F / f);
@@ -130,7 +149,16 @@ public class ModelZombieVillagerModern extends ModelBiped
             this.bipedLeftArm.render(scale);
             this.bipedRightLeg.render(scale);
             this.bipedLeftLeg.render(scale);
-            this.bipedHeadwear.render(scale);
+            
+            // Added in v3.2
+			if (
+            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(profForge)
+            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(profForge) || !GeneralConfig.moddedVillagerHeadwear))
+            		)
+            {
+            	this.bipedHeadwear.render(scale);
+            }
+            
         }
 
         GlStateManager.popMatrix();

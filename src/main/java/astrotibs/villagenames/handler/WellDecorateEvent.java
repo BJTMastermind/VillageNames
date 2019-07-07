@@ -50,14 +50,9 @@ public class WellDecorateEvent {
 				) {
 			
 			Random random = event.getWorld().rand;
+
+			// v3.1.2 - Removed config pre-load values to be more human readable 
 			
-			boolean wellSlabs = GeneralConfig.wellSlabs;
-		    boolean nameSign = GeneralConfig.nameSign;
-		    boolean wellBoundary = GeneralConfig.wellBoundary;
-		    boolean wellKillSwitch = GeneralConfig.wellDecorations;
-		    boolean addConcrete = GeneralConfig.addConcrete;
-		    boolean concreteWell = GeneralConfig.concreteWell;
-		    
 			int i = (event.getChunkX() << 4) + 8;//Villages are offset
 			int k = (event.getChunkZ() << 4) + 8;
 			int y;
@@ -371,14 +366,14 @@ public class WellDecorateEvent {
                                     			
                                     		}
                                     		                                    		
-                                    		if (wellKillSwitch && nameSign) {
+                                    		if (GeneralConfig.wellDecorations && GeneralConfig.nameSign) {
                                         		// Cobblestone wall pole and sign proper
                                     			event.getWorld().setBlockState(new BlockPos(x+signXOffset, y+1, z+signZOffset), Blocks.COBBLESTONE_WALL.getDefaultState() );
                                     			event.getWorld().setBlockState(new BlockPos(x+signXOffset, y+2, z+signZOffset), Blocks.STANDING_SIGN.getStateFromMeta(signOrientation) );
                                     		}
 
                                     		// Added in v3.1banner
-                                    		if (wellKillSwitch && GeneralConfig.villageBanners && signLocation!=bannerLocation) {
+                                    		if (GeneralConfig.wellDecorations && GeneralConfig.villageBanners && signLocation!=bannerLocation) {
                                     			
                                     			BlockPos bannerBasePos = new BlockPos(x+bannerXOffset, y+1, z+bannerZOffset);
                                     			
@@ -390,32 +385,35 @@ public class WellDecorateEvent {
                                         		event.getWorld().setTileEntity(bannerBasePos.up(), tilebanner);
                                     		}
                                     		
-            		    			        if (wellKillSwitch && wellBoundary) {
+            		    			        if (GeneralConfig.wellDecorations && GeneralConfig.wellBoundary) {
+            		    			        	
                                     			// Clay base OR concrete
-                                    			Block concreteBlock = ModBlocksVN.CONCRETE;
-                                    			
-                                    			// Block used for the well roof
-                                    			Block roofGlazedBlock = ModBlocksVN.WHITE_GLAZED_TERRACOTTA;
-                                    			switch (townColorMeta) {
-	                                    			// Case 0 is handled by default
-	                                    			case 1: roofGlazedBlock=ModBlocksVN.ORANGE_GLAZED_TERRACOTTA; break;
-	                                    			case 2: roofGlazedBlock=ModBlocksVN.MAGENTA_GLAZED_TERRACOTTA; break;
-	                                    			case 3: roofGlazedBlock=ModBlocksVN.LIGHT_BLUE_GLAZED_TERRACOTTA; break;
-	                                    			case 4: roofGlazedBlock=ModBlocksVN.YELLOW_GLAZED_TERRACOTTA; break;
-	                                    			case 5: roofGlazedBlock=ModBlocksVN.LIME_GLAZED_TERRACOTTA; break;
-	                                    			case 6: roofGlazedBlock=ModBlocksVN.PINK_GLAZED_TERRACOTTA; break;
-	                                    			case 7: roofGlazedBlock=ModBlocksVN.GRAY_GLAZED_TERRACOTTA; break;
-	                                    			case 8: roofGlazedBlock=ModBlocksVN.SILVER_GLAZED_TERRACOTTA; break;
-	                                    			case 9: roofGlazedBlock=ModBlocksVN.CYAN_GLAZED_TERRACOTTA; break;
-	                                    			case 10: roofGlazedBlock=ModBlocksVN.PURPLE_GLAZED_TERRACOTTA; break;
-	                                    			case 11: roofGlazedBlock=ModBlocksVN.BLUE_GLAZED_TERRACOTTA; break;
-	                                    			case 12: roofGlazedBlock=ModBlocksVN.BROWN_GLAZED_TERRACOTTA; break;
-	                                    			case 13: roofGlazedBlock=ModBlocksVN.GREEN_GLAZED_TERRACOTTA; break;
-	                                    			case 14: roofGlazedBlock=ModBlocksVN.RED_GLAZED_TERRACOTTA; break;
-	                                    			case 15: roofGlazedBlock=ModBlocksVN.BLACK_GLAZED_TERRACOTTA; break;
-                                    			}
-                                    			
-                                    			if (addConcrete && concreteWell) {
+                                    			if (GeneralConfig.addConcrete && GeneralConfig.concreteWell) {
+                                    				
+                                    				// v3.1.2 - Moved inside this if condition to pre-empt crashes
+                                    				Block concreteBlock = ModBlocksVN.CONCRETE;
+                                        			
+                                        			// Block used for the well roof
+                                        			Block roofGlazedBlock = ModBlocksVN.WHITE_GLAZED_TERRACOTTA;
+                                        			switch (townColorMeta) {
+    	                                    			// Case 0 is handled by default
+    	                                    			case 1: roofGlazedBlock=ModBlocksVN.ORANGE_GLAZED_TERRACOTTA; break;
+    	                                    			case 2: roofGlazedBlock=ModBlocksVN.MAGENTA_GLAZED_TERRACOTTA; break;
+    	                                    			case 3: roofGlazedBlock=ModBlocksVN.LIGHT_BLUE_GLAZED_TERRACOTTA; break;
+    	                                    			case 4: roofGlazedBlock=ModBlocksVN.YELLOW_GLAZED_TERRACOTTA; break;
+    	                                    			case 5: roofGlazedBlock=ModBlocksVN.LIME_GLAZED_TERRACOTTA; break;
+    	                                    			case 6: roofGlazedBlock=ModBlocksVN.PINK_GLAZED_TERRACOTTA; break;
+    	                                    			case 7: roofGlazedBlock=ModBlocksVN.GRAY_GLAZED_TERRACOTTA; break;
+    	                                    			case 8: roofGlazedBlock=ModBlocksVN.SILVER_GLAZED_TERRACOTTA; break;
+    	                                    			case 9: roofGlazedBlock=ModBlocksVN.CYAN_GLAZED_TERRACOTTA; break;
+    	                                    			case 10: roofGlazedBlock=ModBlocksVN.PURPLE_GLAZED_TERRACOTTA; break;
+    	                                    			case 11: roofGlazedBlock=ModBlocksVN.BLUE_GLAZED_TERRACOTTA; break;
+    	                                    			case 12: roofGlazedBlock=ModBlocksVN.BROWN_GLAZED_TERRACOTTA; break;
+    	                                    			case 13: roofGlazedBlock=ModBlocksVN.GREEN_GLAZED_TERRACOTTA; break;
+    	                                    			case 14: roofGlazedBlock=ModBlocksVN.RED_GLAZED_TERRACOTTA; break;
+    	                                    			case 15: roofGlazedBlock=ModBlocksVN.BLACK_GLAZED_TERRACOTTA; break;
+                                        			}
+                                        			
                                     				// Generate new-style concrete
                                     				for (int pedY = y-3; pedY <= y; pedY++) {
                                     					for (int rimi = 2; rimi > -3; rimi--) {
@@ -431,7 +429,7 @@ public class WellDecorateEvent {
                                     				int metaSpin = random.nextInt(4)+4; // I've got to add 4 because modulo doesn't work properly with negative numbers :P
                                     				int metaChirality = random.nextBoolean() ? 1 : -1;
                                     				
-                                    				event.getWorld().setBlockState(new BlockPos(x, y+4, z), roofGlazedBlock.getStateFromMeta( metaSpin ) );
+                                    				event.getWorld().setBlockState(new BlockPos(x, y+4, z), roofGlazedBlock.getStateFromMeta( (metaSpin)%4 ) ); // v3.1.2 - added modulo4 so that this matches the other three corners
                                     				event.getWorld().setBlockState(new BlockPos(x, y+4, z-(signZOffset/2)), roofGlazedBlock.getStateFromMeta( (metaSpin + metaChirality)%4 ) );
                                     				event.getWorld().setBlockState(new BlockPos(x-(signXOffset/2), y+4, z-(signZOffset/2)), roofGlazedBlock.getStateFromMeta( (metaSpin + metaChirality*2)%4) );
                                     				event.getWorld().setBlockState(new BlockPos(x-(signXOffset/2), y+4, z), roofGlazedBlock.getStateFromMeta( (metaSpin + metaChirality*3)%4 ) );
@@ -484,7 +482,7 @@ public class WellDecorateEvent {
                                     		}
                                     		
                                     		// Put the stuff on the sign.
-                                    		if (wellKillSwitch && nameSign) event.getWorld().setTileEntity(new BlockPos(x+signXOffset, y+2, z+signZOffset), signContents);
+                                    		if (GeneralConfig.wellDecorations && GeneralConfig.nameSign) event.getWorld().setTileEntity(new BlockPos(x+signXOffset, y+2, z+signZOffset), signContents);
                                     		                                    		
                                     		// Make the data bundle to save to NBT
                                     		NBTTagList nbttaglist = new NBTTagList();
@@ -521,7 +519,7 @@ public class WellDecorateEvent {
                                 		
                                 	}
                                 	
-                                	if (wellKillSwitch && wellSlabs) {
+                                	if (GeneralConfig.wellDecorations && GeneralConfig.wellSlabs) {
                                 		field = listOpaque.remove(1);
                                     	event.getWorld().setBlockState(new BlockPos(field[0], field[1] + 1, field[2]), Blocks.STONE_SLAB.getDefaultState() );
                                     	field = listOpaque.remove(2);

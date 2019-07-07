@@ -51,6 +51,18 @@ public class GeneralConfig {
 	public static boolean modernVillagerSkins; // Changed in v3.1
 	
 	public static boolean moddedVillagerHeadwear; // Added in v3.1.1
+
+	// Added in v3.2
+	public static String[] moddedVillagerHeadwearGraylist;
+	public static ArrayList<String> moddedVillagerHeadwearWhitelist = new ArrayList<String>();
+	public static ArrayList<String> moddedVillagerHeadwearBlacklist = new ArrayList<String>();
+
+	// Added in v3.2
+	public static String[] moddedVillagerModularSkins;
+	public static Map<String, ArrayList> moddedVillagerCareerSkins;
+	public static ArrayList<String> careerAsset_a;
+	public static ArrayList<String> zombieCareerAsset_a;
+	public static ArrayList<String> professionID_a;
 	
 	//public static boolean villagerLegacyTrades;
 	public static boolean enableCartographer;
@@ -109,6 +121,50 @@ public class GeneralConfig {
 
 	    // Added in v3.1.1
 	    moddedVillagerHeadwear = config.getBoolean("Modded Villager Headwear", "villager professions", false, "If modern skins are enabled: renders the headwear layer for non-vanilla villager professions, if one exists.");
+
+	    // Added in v3.2
+	    moddedVillagerHeadwearGraylist = config.getStringList("Modded Villager Headwear Graylist", "villager professions", new String[]{
+				"forestry:apiarist", // Forestry Apiarist
+				"-openblocks:radio", // Open Blocks Music Merchant
+	    		},
+	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers. A normal value will be whitelisted: it will display that villager's headwear layer even if Modded Villager Headwear is false. "
+	    		+ "Adding a negative sign in front of the ID int will blacklist the profession so that its headwear layer never renders.");
+	    
+	    // Extract the values and populate the white and black lists
+	    for (String prof_s : moddedVillagerHeadwearGraylist)
+	    {
+	    	if (prof_s.trim().indexOf("-")==0)
+	    	{
+	    		// There is a hyphen out front, so this is a negative value. Pass it with the hyphen intact.
+	    		moddedVillagerHeadwearWhitelist.add(prof_s.trim());
+	    	}
+	    	else
+	    	{
+	    		// There is no hyphen out front, so this is a positive value.
+	    		moddedVillagerHeadwearBlacklist.add(prof_s.trim());
+	    	}
+	    }
+
+	    // Added in v3.2
+	    moddedVillagerModularSkins = config.getStringList("Modded Villager Modular Skins", "villager professions", new String[]{
+				"for_apiarist|for_apiarist|forestry:apiarist", // Forestry
+				"for_arborist|for_arborist|forestry:arborist", // Forestry
+				"fa_archaeologist||fossil:archeologist", // Fossils and Archaeology
+				"rc_engineer|rc_engineer|railcraft:trackman", // Railcraft
+				"ob_musicmerchant||openblocks:radio", // Open Blocks
+				"myc_archivist||mystcraft:archivist", // Mystcraft
+	    		},
+	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers to render in the modular skin style. Format is: careerAsset|zombieCareerAsset|professionID\n"+
+	    		"careerAsset: career skin png to be overlaid onto the villager, located in assets\\"+Reference.MOD_ID.toLowerCase()+"\\textures\\entity\\villager\\profession\n"+
+	    				"The default values are all available in "+Reference.MOD_NAME+". You can access custom values with a resourcepack.\n"
+	    						+ "zombieCareerAsset: a zombie career png, located in the corresponding zombie_villager directory. You may leave this value blank, in which case it will use the non-zombie career overlay.\n"
+	    						+ "professionID: the ID associated with the mod profession.");
+	    
+	    // Assign the map now and immediately extract it into arrays for faster lookup
+	    moddedVillagerCareerSkins = GeneralConfig.unpackModVillagerSkins(GeneralConfig.moddedVillagerModularSkins);
+	    careerAsset_a = (ArrayList<String>)moddedVillagerCareerSkins.get("careerAsset");
+	    zombieCareerAsset_a = (ArrayList<String>)moddedVillagerCareerSkins.get("zombieCareerAsset");
+	    professionID_a = (ArrayList<String>)moddedVillagerCareerSkins.get("professionID");
 	    
 	    
 	    zombieCureCatalysts = config.getStringList("Zombie Cure Catalysts", "villager professions", new String[]{
@@ -316,8 +372,8 @@ public class GeneralConfig {
 		
 		// New mod profession mapping
 		modProfessionMapping = config.getStringList("Mod Professions", "Mod Integration", new String[]{
-				"Brewer|10|0", // Growthcraft Community Edition
-				"Apiarist|14|4", // Growthcraft Community Edition
+				"Brewer|10|0", // Growthcraft
+				"Apiarist|14|4", // Growthcraft
 				"Swordsmith|66|5", // More Swords mod version 2
 				"Wizard|190|2", // Thaumcraft
 				"Banker|191|0", // Thaumcraft
@@ -325,6 +381,8 @@ public class GeneralConfig {
 				"Engineer|456|3", // Railcraft
 				"Apothecary|2435|2", // Witchery
 				"Music Merchant|6156|5", // Open Blocks
+				"Brewer|6677|0", // Growthcraft Community Edition
+				"Apiarist|7766|4", // Growthcraft Community Edition
 				"Tinkerer|78943|5", // Tinkers Construct
 				"Enchanter|935153|2", 
 				"Stablehand|19940402|0", // ChocoCraft Plus
@@ -381,7 +439,7 @@ public class GeneralConfig {
 	 */
 	public static Map<String, ArrayList> unpackMappedProfessions(String[] inputList) {
 		ArrayList<String>  otherModProfessions = new ArrayList<String>();
-		ArrayList<Integer> otherModIDs = new ArrayList<Integer>();
+		ArrayList<String> otherModIDs = new ArrayList<String>(); // v3.2 - profession ints are deprecated
 		ArrayList<Integer> vanillaProfMaps = new ArrayList<Integer>();
 		
 		for (String entry : inputList) {
@@ -393,15 +451,15 @@ public class GeneralConfig {
 			
 			// Initialize temp fields
 			String otherModProfession="";
-			int otherModID=-1;
+			String otherModID=""; // v3.2 - profession ints are deprecated
 			int vanillaProfMap=-1;
 			
 			// Place entries into variables
 			try {otherModProfession = splitEntry[0].trim();}               catch (Exception e) {otherModProfession="";}
-			try {otherModID = Integer.parseInt(splitEntry[1].trim());}     catch (Exception e) {otherModID=-1;}
+			try {otherModID = splitEntry[1].trim();}                       catch (Exception e) {otherModID="";} // v3.2 - profession ints are deprecated
 			try {vanillaProfMap = Integer.parseInt(splitEntry[2].trim());} catch (Exception e) {vanillaProfMap=-1;}
 			
-			if( !otherModProfession.equals("") && otherModID!=-1 ) { // Something was actually assigned in the try block
+			if( !otherModProfession.equals("") && !otherModID.equals("") ) { // v3.2 - profession ints are deprecated
 				otherModProfessions.add(otherModProfession);
 				otherModIDs.add(otherModID);
 				vanillaProfMaps.add(vanillaProfMap);
@@ -610,6 +668,48 @@ public class GeneralConfig {
 		map.put("Groups",zombieCureGroupGroups);
 		map.put("Speedups",zombieCureGroupSpeedups);
 		map.put("Limits",zombieCureGroupLimits);
+		
+		return map;
+	}
+
+	// Added in v3.2
+	/**
+	 * Loads the (careerAsset|zombieCareerAsset|professionID) string lists and assigns them to this instance's variables.
+	 */
+	public static Map<String, ArrayList> unpackModVillagerSkins(String[] inputList) {
+		ArrayList<String>  careerAsset_a = new ArrayList<String>();
+		ArrayList<String> zombieCareerAsset_a = new ArrayList<String>();
+		ArrayList<String> professionID_a = new ArrayList<String>();
+		
+		for (String entry : inputList) {
+			// Remove slashes and double dots to prevent address abuse
+			entry.replaceAll("/", ""); // Forward slashses don't need to be escaped
+			entry.replaceAll("\\\\", ""); // \ is BOTH String and regex; needs to be double-escaped. See https://stackoverflow.com/questions/1701839/string-replaceall-single-backslashes-with-double-backslashes
+			entry.replaceAll("..", "");
+			// Split by pipe
+			String[] splitEntry = entry.split("\\|");
+			
+			// Initialize temp fields
+			String careerAsset="";
+			String zombieCareerAsset="";
+			String professionID="";
+			
+			// Place entries into variables
+			try {careerAsset = splitEntry[0].trim();}       catch (Exception e) {}
+			try {zombieCareerAsset = splitEntry[1].trim();} catch (Exception e) {}
+			try {professionID = splitEntry[2].trim();}     	catch (Exception e) {}
+			
+			if(!careerAsset.equals("")) { // Something was actually assigned in the try block
+				careerAsset_a.add(careerAsset);
+				zombieCareerAsset_a.add(zombieCareerAsset);
+				professionID_a.add(professionID);
+			}
+		}
+		
+		Map<String,ArrayList> map = new HashMap();
+		map.put("careerAsset",careerAsset_a);
+		map.put("zombieCareerAsset",zombieCareerAsset_a);
+		map.put("professionID",professionID_a);
 		
 		return map;
 	}
