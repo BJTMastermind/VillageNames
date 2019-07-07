@@ -310,7 +310,9 @@ public class WriteBookHandler {
     	int[] nearestVillageXYZ = new int[3];
     	int[] nearestMonumentXYZ = nearestStructureLoc("Monument", event);
     	int[] nearestMansionXYZ = nearestStructureLoc("Mansion", event);
-    	
+
+    	// v3.2
+		final String profForge = event.getTarget() instanceof EntityVillager ? ((EntityVillager)event.getTarget()).getProfessionForge().getRegistryName().toString() : "" ;
     	
     	List vlist = event.getEntityPlayer().world.getVillageCollection().getVillageList();
 
@@ -425,13 +427,13 @@ public class WriteBookHandler {
     	try {
     		villagerMappedProfession =  
     				(Integer) ((villagerProfession >= 0 && villagerProfession <= 5)
-    				? villagerProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(villagerProfession) )));
+    				? villagerProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(profForge) ))); // Changed in v3.2
     		}
     	catch (Exception e) {
     		if(!event.getEntityLiving().world.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");
     		}
-    	// Special nitwit handler
-    	if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) {villagerMappedProfession = 5;}
+    	
+    	// Special Nitwit handler removed in v3.2 because a modded one is not needed.
     	
     	// Primitive Mobs hard coding for career detection
     	if (targetClassPath.equals( ModObjects.PMTravelingMerchantClass ) )

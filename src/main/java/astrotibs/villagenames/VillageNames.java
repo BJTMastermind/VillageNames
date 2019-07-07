@@ -18,7 +18,6 @@ import astrotibs.villagenames.handler.ServerTrackerStarter;
 import astrotibs.villagenames.handler.VersionChecker;
 import astrotibs.villagenames.handler.VillagerTradeHandler;
 import astrotibs.villagenames.init.InventoryRender;
-import astrotibs.villagenames.integration.ModChecker;
 import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.nbt.NBTUpdater;
 import astrotibs.villagenames.network.MessageModernVillagerSkin;
@@ -113,8 +112,8 @@ public final class VillageNames {
 	// PRE-INIT
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-
-		ModChecker.printDetectedMods();
+		
+		// v3.2 - Removed ModChecker
 		
 		configDirectory = new File(event.getModConfigurationDirectory(), currentConfigFolder);
 		ConfigInit.init(configDirectory);
