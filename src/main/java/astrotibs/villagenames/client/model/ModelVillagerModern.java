@@ -78,19 +78,22 @@ public class ModelVillagerModern extends ModelVillager
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		
-		if (
-				entity instanceof EntityVillager
-				// Below conditions specify only vanilla villagers
-				&& ((EntityVillager)entity).getProfession() >= 0
-				&& ( // Added condition on 3.1.1 to allow villager cowls
-						((EntityVillager)entity).getProfession() <= 5
-						|| GeneralConfig.moddedVillagerHeadwear
-					)
-			)
+		// Changed in v3.2 to accommodate config-specifiable professions
+		int prof = ((EntityVillager)entity).getProfession();
+		String profForge = ((EntityVillager)entity).getProfessionForge().getRegistryName().toString();
+		
+		if (entity instanceof EntityVillager)
 		{
+			if (prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(profForge)) // This is a non-vanilla villager profession and is not whitelisted
+			{
+				// Is in the blacklist, or headwear is turned off at large
+				if (GeneralConfig.moddedVillagerHeadwearBlacklist.contains("-"+profForge) || !GeneralConfig.moddedVillagerHeadwear) {return;}
+			}
+			
 			this.villagerHeadwear.render(f5);
 			this.villagerHatRimHigh.render(f5);
 			this.villagerHatRimLow.render(f5);
 		}
 	}
+	
 }

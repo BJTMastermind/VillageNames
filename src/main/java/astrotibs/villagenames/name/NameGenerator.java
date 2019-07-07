@@ -667,14 +667,16 @@ public class NameGenerator {
 	}
 	
 
+	// Updated in v3.2: numerical professions are deprecated
 	/**
 	 * Generate a profession tag to append to their name
 	 * @param villagerProfession: integer to represent profession (0 to 5)
+	 * @param villageProfessionForge: ResourceLocation string of the Forge profession
 	 * @param villagerCareer: integer to represent career (0 before 1.8; 1+ otherwise)
-	 * @param nitwitProfession: name to assign to a nitwit (profession 5)
+	 * @param targetPName: specific prof name to assign
 	 * @return
 	 */
-	public static String getCareerTag(String entityClasspath, int villagerProfession, int villagerCareer, String targetPName) {
+	public static String getCareerTag(String entityClasspath, int villagerProfession, String villagerProfessionForge, int villagerCareer, String targetPName) {
 		
 		// keys: "NameTypes", "Professions", "ClassPaths", "AddOrRemove"
 		Map<String, ArrayList> mappedNamesAutomatic = GeneralConfig.unpackMappedNames(GeneralConfig.modNameMappingAutomatic);
@@ -710,7 +712,9 @@ public class NameGenerator {
 				break;
 			}
 		}
-		
+
+		// Removed in v3.2 because there is an official Nitwit
+		/*
 		// VN Nitwit
 		else if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) {
 			String nitwitCareer = (
@@ -719,7 +723,7 @@ public class NameGenerator {
 					) ? "" :  GeneralConfig.nitwitProfession;
 				careerTag += nitwitCareer;
 			}
-		
+		*/
 		
 		// Unfortunately, the I18n is client-side only, and this method is only called server-side.
 		// I have to plug in the English versions for BOTH sides.
@@ -835,26 +839,29 @@ public class NameGenerator {
 					break;
 				}
 				break;
-				/*
-			case 5: // Nitwit profession
-				String nitwitCareer = (
-						(GeneralConfigHandler.nitwitProfession.trim()).equals("")
-						|| (GeneralConfigHandler.nitwitProfession.toLowerCase().trim()).equals("null")
-						) ? "" :  GeneralConfigHandler.nitwitProfession;
-				switch(villagerCareer) {
-				case 1:
-					careerTag += nitwitCareer;
+				
+				// Re-enabled in v3.2 because there is a vanilla Nitwit
+				case 5: // Nitwit profession
+					String nitwitCareer = (
+							(GeneralConfig.nitwitProfession.trim()).equals("")
+							|| (GeneralConfig.nitwitProfession.toLowerCase().trim()).equals("null")
+							) ? "" :  GeneralConfig.nitwitProfession;
+					switch(villagerCareer) {
+					case 1:
+						careerTag += nitwitCareer;
+						break;
+					default:
+						careerTag += nitwitCareer;
+						break;
+					}
 					break;
-				default:
-					careerTag += nitwitCareer;
-					break;
-				}
-				break;
-				*/
+					
 			}
-			if (!(villagerProfession >= 0 && villagerProfession <= 5)) { // This is a modded profession.
+
+			// Changed in v3.2 to utilize ProfessionForge
+			if (villagerProfession > 5) {
 				try {
-					String otherModProfString = (String) ((mappedProfessions.get("Professions")).get( mappedProfessions.get("IDs").indexOf(villagerProfession) ));
+					String otherModProfString = (String) ((mappedProfessions.get("Professions")).get( mappedProfessions.get("IDs").indexOf(villagerProfessionForge) ));
 					otherModProfString = otherModProfString.replaceAll("\\(", "");
 					otherModProfString = otherModProfString.replaceAll("\\)", "");
 					otherModProfString = otherModProfString.trim();
@@ -862,8 +869,9 @@ public class NameGenerator {
 					
 					careerTag += otherModProfString;
 					}
-				catch (Exception e){
+				catch (Exception e) {
 					//If something went wrong in the profession mapping, return empty parentheses
+					if (GeneralConfig.debugMessages) {LogHelper.info("Error evaluating mod profession ID. Check your formatting!");}
 					}
 			}
 		}

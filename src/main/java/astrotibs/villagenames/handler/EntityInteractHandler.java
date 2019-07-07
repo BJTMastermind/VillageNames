@@ -267,6 +267,7 @@ public class EntityInteractHandler {
 						EntityVillager villager = (EntityVillager)target;
 						
 						LogHelper.info("Profession: " + targetProfession 
+								+ ", ProfessionForge: " + villager.getProfessionForge().getRegistryName().toString() // Changed in v3.2 - profession IDs are deprecated
 								+ ", Career: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getCareer()
 								+ (GeneralConfig.modernVillagerSkins ? ", BiomeType: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getBiomeType() // Added in v3.1
 										: "")
@@ -285,6 +286,7 @@ public class EntityInteractHandler {
 					LogHelper.info(
 							  (GeneralConfig.modernVillagerSkins ? "Zombie Profession: " + (zombievillager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getProfession()
 									: "") 
+							+ ", ProfessionForge: " + zombievillager.getForgeProfession().getRegistryName().toString() // Changed in v3.2 - profession IDs are deprecated
 							+ ", Career: " + (zombievillager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getCareer()
 							+ (GeneralConfig.modernVillagerSkins ? ", BiomeType: " + (zombievillager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getBiomeType()
 									: "")
@@ -1161,7 +1163,9 @@ public class EntityInteractHandler {
 
 			// If you're holding anything else (or nothing), check to see if the target is a Villager, Village Golem, or entry from the config list.
 			else if (!world.isRemote) {
-				
+
+				// Added v3.2
+				String profForge = target instanceof EntityVillager ? ((EntityVillager)target).getProfessionForge().getRegistryName().toString() : "" ;
 				
 				// Entity is a custom clickable config entry.
 				if ( mappedNamesClickable.get("ClassPaths").contains(targetClassPath) ) {
@@ -1220,7 +1224,8 @@ public class EntityInteractHandler {
 								GeneralConfig.addJobToName
 								&& ( !(target instanceof EntityVillager) || targetAge>=0 )
 								) {
-							newCustomName += " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, targetCareer, targetPName);
+							// Fixed in v3.2 to use profession registry
+							newCustomName += " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, profForge, targetCareer, targetPName);
 						}
 						// Apply the name
 						target.setCustomNameTag( newCustomName.trim() );
@@ -1231,7 +1236,7 @@ public class EntityInteractHandler {
 							customName.indexOf("(")==-1 && GeneralConfig.addJobToName
 							&& ( !(target instanceof EntityVillager) || targetAge>=0 )
 							) { // Target is named but does not have job tag: add one!
-						String newCustomName = customName + " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, targetCareer, targetPName);
+						String newCustomName = customName + " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, profForge, targetCareer, targetPName);
 						// Apply the name
 						target.setCustomNameTag( newCustomName.trim() );
 					}
@@ -1265,7 +1270,7 @@ public class EntityInteractHandler {
 								GeneralConfig.addJobToName
 								&& ( !(target instanceof EntityVillager) || targetAge>=0 )
 								) {
-							newCustomName += " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, targetCareer, targetPName);
+							newCustomName += " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, profForge, targetCareer, targetPName);
 						}
 						// Apply the name
 						target.setCustomNameTag( newCustomName.trim() );
@@ -1275,7 +1280,7 @@ public class EntityInteractHandler {
 							customName.indexOf("(")==-1 && GeneralConfig.addJobToName
 							&& ( !(target instanceof EntityVillager) || targetAge>=0 )
 							) { // Target is named but does not have job tag: add one!
-						String newCustomName = customName + " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, targetCareer, targetPName);
+						String newCustomName = customName + " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, profForge, targetCareer, targetPName);
 						// Apply the name
 						target.setCustomNameTag( newCustomName.trim() );
 					}
@@ -1298,7 +1303,7 @@ public class EntityInteractHandler {
 									GeneralConfig.addJobToName
 									&& ( targetAge>=0 )
 									) {
-								newCustomName += " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, targetCareer, targetPName);
+								newCustomName += " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, profForge, targetCareer, targetPName);
 							}
 							// Apply the name
 							target.setCustomNameTag( newCustomName.trim() );
@@ -1308,7 +1313,7 @@ public class EntityInteractHandler {
 								customName.indexOf("(")==-1 && GeneralConfig.addJobToName
 								&& ( targetAge>=0 )
 								) { // Villager is named but does not have job tag: add one!
-							String newCustomName = customName + " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, targetCareer, targetPName);
+							String newCustomName = customName + " " + NameGenerator.getCareerTag(targetClassPath, targetProfession, profForge, targetCareer, targetPName);
 							// Apply the name
 							target.setCustomNameTag( newCustomName.trim() );
 						}

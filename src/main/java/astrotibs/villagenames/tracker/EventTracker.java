@@ -96,11 +96,21 @@ public class EventTracker
         		villager.getCustomNameTag(),
         		// Object revised in v3.1
         		new Object[] {
+        				
         				villager.getProfession(),
+
+        				// Changed in v3.2 to actually use ims
+        				ims.getCareer(),
+        				villager.isChild(),
+        				(GeneralConfig.modernVillagerSkins) ? ims.getBiomeType() : -1, // Added in v3.1
+                		(GeneralConfig.modernVillagerSkins) ? ims.getProfessionLevel() : -1 // Added in v3.1
+        				
+        				/*
         				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}),
         				villager.isChild(),
         				(GeneralConfig.modernVillagerSkins) ? (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getBiomeType() : -1, // Added in v3.1
         				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}), // Added in v3.1
+        				*/
         				}
         		);
     }
@@ -257,7 +267,7 @@ public class EventTracker
         					&& ( !(guard instanceof EntityVillager) || targetAge>=0 )
         					)
         			) { // Target is named but does not have job tag: add one!
-        		customName = customName + " " + NameGenerator.getCareerTag(guard.getClass().toString().substring(6), 0, 0, "witcheryGuard");
+        		customName = customName + " " + NameGenerator.getCareerTag(guard.getClass().toString().substring(6), 0, "", 0, "witcheryGuard"); // v3.2: added black ProfessionForge string
         		customName = customName.trim();
 			}
         	
