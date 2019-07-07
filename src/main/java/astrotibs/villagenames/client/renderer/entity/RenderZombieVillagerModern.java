@@ -137,13 +137,29 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
     @Override
     protected ResourceLocation getEntityTexture(EntityZombie zombie)
     {
-        //return entity.isVillager() ? zombieVillagerTextures : zombieTextures;
     	if (zombie instanceof EntityPigZombie) { // Is a zombie pigman
     		return zombiePigmanTextures;
     	}
     	else if ( zombie.isVillager() ) // Is a zombie villager
     	{
-    		if (GeneralConfig.modernVillagerSkins)
+    		// v3.2 - allow for modular mod villager skins
+    		ExtendedZombieVillager ezv = ExtendedZombieVillager.get(zombie);
+    		int indexofmodprof = GeneralConfig.professionID_a.indexOf(ezv.getProfession());
+    		
+    		if (
+    				GeneralConfig.modernVillagerSkins
+    				&& ezv != null
+    				&& (
+    						ezv.getProfession() <= 4
+    						|| (
+    								indexofmodprof > -1
+    								&& (
+    										!((String) GeneralConfig.careerAsset_a.get(indexofmodprof)).equals("")
+    										|| !((String) GeneralConfig.zombieCareerAsset_a.get(indexofmodprof)).equals("")
+    										)
+    									)
+    						)
+    				)
     		{
     			return zombieVillagerBaseSkin;
     		}
@@ -205,7 +221,12 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 	    {
 	    	final ExtendedZombieVillager ezv = ExtendedZombieVillager.get(zombie);
 	    	
-			if (ezv.getProfession() >= 0 && ezv.getProfession() <= 5 && !zombie.isInvisible())
+			if (
+					ezv.getProfession() >= 0
+					// v3.2: Is vanilla OR is a modular type
+					&& (ezv.getProfession() <= 4 || GeneralConfig.professionID_a.indexOf(ezv.getProfession())!=-1)
+					&& !zombie.isInvisible()
+					)
 			{
 				// Biome type skins
 				if (GeneralConfig.modernVillagerSkins)
@@ -271,86 +292,114 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 	    @Override
 	    public void doRenderLayer(EntityZombie zombie, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
-	    	final ExtendedZombieVillager ezv = ExtendedZombieVillager.get(zombie);
+	    	final ExtendedZombieVillager ieep = ExtendedZombieVillager.get(zombie);
 	    	
-			if (ezv.getProfession() >= 0 && ezv.getProfession() <= 5 && !zombie.isInvisible())
+	    	// Changed in v3.2 to allow for modded skins
+			if (ieep.getProfession() >= 0 && !zombie.isInvisible())
 			{
-				// Biome type skins
-				if (GeneralConfig.modernVillagerSkins)
+				if (ieep.getProfession() <= 4) // Changed in v3.2: there is no official Profession 5!
 				{
-					/**/
-		        	int career = ezv.getCareer();
-					
-				    switch (ezv.getProfession())
-				    {
-			        case 0: // Farmer type
-			        	switch (career)
-			        	{
-			        	default:
-			        	case 1:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionFarmer); break;
-			        	case 2:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionFisherman); break;
-			        	case 3:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionShepherd); break;
-			        	case 4:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionFletcher); break;
-			        	}
-			        	break;
-			        case 1: // Librarian type
-			        	switch (career)
-			        	{
-			        	default:
-			        	case 1:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionLibrarian); break;
-			        	case 2:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionCartographer); break;
-			        	}
-			        	break;
-			        case 2: // Priest type
-			        	switch (career)
-			        	{
-			        	default:
-			        	case 1:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionCleric); break;
-			        	}
-			        	break;
-			        case 3: // Smith type
-			        	switch (career)
-			        	{
-			        	case 1:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionArmorer); break;
-			        	case 2:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionWeaponsmith); break;
-			        	default:
-			        	case 3:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionToolsmith); break;
-			        	case 4:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionMason); break;
-			        	}
-			        	break;
-			        case 4: // Butcher type
-			        	switch (career)
-			        	{
-			        	default:
-			        	case 1:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionButcher); break;
-			        	case 2:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionLeatherworker); break;
-			        	}
-			        	break;
-			        case 5: // Nitwit
-			        	switch (career)
-			        	{
-			        	default:
-			        	case 1:
-			        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionNitwit); break;
-			        	}
-			        	break;
-			        default: // No profession skin
-				    }
-				    /**/
+					// Career skins
+					if (GeneralConfig.modernVillagerSkins)
+					{
+						/**/
+			        	int career = ieep.getCareer();
+						
+					    switch (ieep.getProfession())
+					    {
+				        case 0: // Farmer type
+				        	switch (career)
+				        	{
+				        	default:
+				        	case 1:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionFarmer); break;
+				        	case 2:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionFisherman); break;
+				        	case 3:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionShepherd); break;
+				        	case 4:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionFletcher); break;
+				        	}
+				        	break;
+				        case 1: // Librarian type
+				        	switch (career)
+				        	{
+				        	default:
+				        	case 1:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionLibrarian); break;
+				        	case 2:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionCartographer); break;
+				        	}
+				        	break;
+				        case 2: // Priest type
+				        	switch (career)
+				        	{
+				        	default:
+				        	case 1:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionCleric); break;
+				        	}
+				        	break;
+				        case 3: // Smith type
+				        	switch (career)
+				        	{
+				        	case 1:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionArmorer); break;
+				        	case 2:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionWeaponsmith); break;
+				        	default:
+				        	case 3:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionToolsmith); break;
+				        	case 4:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionMason); break;
+				        	}
+				        	break;
+				        case 4: // Butcher type
+				        	switch (career)
+				        	{
+				        	default:
+				        	case 1:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionButcher); break;
+				        	case 2:
+				        		this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionLeatherworker); break;
+				        	}
+				        	break;
+				        // Fixed in v3.2: there is no vanilla Nitwit at this stage.
+				        default: // Nitwit
+				        	this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionNitwit); break;
+					    }
+					}
 				}
+				else
+				{
+					// Mod profession skins
+					int indexofmodprof = GeneralConfig.professionID_a.indexOf(ieep.getProfession());
+					if (indexofmodprof > -1) // Has a skin asset mapping
+					{
+						final String zombieCareerProfRootname = (String) GeneralConfig.zombieCareerAsset_a.get(indexofmodprof);
+						final String careerProfRootname = (String) GeneralConfig.careerAsset_a.get(indexofmodprof);
+						
+						if (!(zombieCareerProfRootname).equals("")) // The zombie version mapping isn't blank
+						{
+				        	final ResourceLocation modCareerSkin = new ResourceLocation((Reference.MOD_ID).toLowerCase(), "textures/entity/villager/profession/"+zombieCareerProfRootname+".png");
+				        	this.zombieVillagerLayerRenderer.bindTexture(modCareerSkin);
+						}
+						else if (!(careerProfRootname).equals("")) // The non-zombie version mapping isn't blank
+						{
+				        	final ResourceLocation modCareerSkin = new ResourceLocation((Reference.MOD_ID).toLowerCase(), "textures/entity/villager/profession/"+careerProfRootname+".png");
+				        	this.zombieVillagerLayerRenderer.bindTexture(modCareerSkin);
+						}
+						else
+						{
+							this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionNitwit);
+						}
+					}
+					else
+					{
+						// If all else fails, bind the nitwit.
+						this.zombieVillagerLayerRenderer.bindTexture(zombieVillagerProfessionNitwit);
+					}
+				}
+				
 	            this.zombieVillagerLayerModel.setModelAttributes(this.zombieVillagerLayerRenderer.getMainModel());
 	            this.zombieVillagerLayerModel.render(zombie, p_177141_2_, p_177141_3_, p_177141_5_, p_177141_6_, p_177141_7_, scale);
 			}
@@ -380,7 +429,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 	    {
 	    	final ExtendedZombieVillager ezv = ExtendedZombieVillager.get(zombie);
 	    	
-			if (ezv.getProfession() >= 0 && ezv.getProfession() <= 5 && !zombie.isInvisible())
+			if (ezv.getProfession() >= 0 && seeBiomeTypeForThis && !zombie.isInvisible())
 			{
 				// Biome type skins
 				if (GeneralConfig.modernVillagerSkins)

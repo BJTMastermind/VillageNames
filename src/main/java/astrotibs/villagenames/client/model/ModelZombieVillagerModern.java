@@ -1,9 +1,12 @@
 package astrotibs.villagenames.client.model;
 
+import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.ieep.ExtendedZombieVillager;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -99,7 +102,18 @@ public class ModelZombieVillagerModern extends ModelBiped
             GlStateManager.scale(1.5F / f, 1.5F / f, 1.5F / f);
             GlStateManager.translate(0.0F, 16.0F * scale, 0.0F);
             this.bipedHead.render(scale);
-            this.bipedHeadwear.render(scale);
+            
+            // Added in v3.2
+            final ExtendedZombieVillager ezv = ExtendedZombieVillager.get(((EntityZombie)entityIn));
+			int prof = ezv.getProfession();
+            if (
+            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(prof)
+            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(prof) || !GeneralConfig.moddedVillagerHeadwear))
+            		)
+            {
+            	this.bipedHeadwear.render(scale);
+            }
+            
             GlStateManager.popMatrix();
             GlStateManager.pushMatrix();
             GlStateManager.scale(1.0F / f, 1.0F / f, 1.0F / f);
@@ -123,7 +137,18 @@ public class ModelZombieVillagerModern extends ModelBiped
             this.bipedLeftArm.render(scale);
             this.bipedRightLeg.render(scale);
             this.bipedLeftLeg.render(scale);
-            this.bipedHeadwear.render(scale);
+            
+            // Added in v3.2
+            final ExtendedZombieVillager ezv = ExtendedZombieVillager.get(((EntityZombie)entityIn));
+			int prof = ezv.getProfession();
+			if (
+            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(prof)
+            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(prof) || !GeneralConfig.moddedVillagerHeadwear))
+            		)
+            {
+            	this.bipedHeadwear.render(scale);
+            }
+            
         }
 
         GlStateManager.popMatrix();

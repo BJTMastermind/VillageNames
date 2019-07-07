@@ -275,7 +275,7 @@ public class EntityInteractHandler {
 				
 				if (target instanceof EntityVillager) {
 					try {
-						LogHelper.info("Profession: " + targetProfession 
+						LogHelper.info("Profession: " + targetProfession
 								+ ", Career: " + (ExtendedVillager.get((EntityVillager) target)).getCareer()
 								+ (GeneralConfig.modernVillagerSkins ? ", BiomeType: " + (ExtendedVillager.get((EntityVillager) target)).getBiomeType() // Added in v3.1
 										: "")

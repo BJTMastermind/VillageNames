@@ -120,12 +120,22 @@ public class EventTracker
         		villager.getCustomNameTag(),
         		// Object revised in v3.1trades
         		new Object[] {
+        				
         				villager.getProfession(),
+        				
+        				// Changed in v3.2 to actually use ieep
+        				ieep.getCareer(),
+						villager.isChild(),
+        				(GeneralConfig.modernVillagerSkins) ? ieep.getBiomeType() : -1, // Added in v3.1
+        				(GeneralConfig.modernVillagerSkins) ? ieep.getProfessionLevel() : -1 // Added in v3.1
+        				
+        				/*
         				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}),
         				villager.isChild(),
         				(GeneralConfig.modernVillagerSkins) ? (ExtendedVillager.get(villager)).getBiomeType() : -1, // Added in v3.1
         				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}), // Added in v3.1
         				(GeneralConfig.modernVillagerSkins) ? (ExtendedVillager.get(villager)).getCareerVN() : 0, // Added in v3.1trades
+        				*/
         				}
         		);
     }
