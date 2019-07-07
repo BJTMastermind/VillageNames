@@ -95,12 +95,16 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	@Override
 	protected ResourceLocation getEntityTexture(EntityVillager villager)
 	{
+		int indexofmodprof = GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString());
+		
 		if (
 				GeneralConfig.modernVillagerSkins
 				&& villager.getProfession() >= 0
-				&& villager.getProfession() <= 5
+				// Changed in v3.2 to allow modular mod villager skins; also, no official Prof 5
+				&& (villager.getProfession() <= 4 || (indexofmodprof > -1 && !((String) GeneralConfig.careerAsset_a.get(indexofmodprof)).equals("") ) )
 				)
 		{
+			// TODO - new skin types
 			return villagerBaseSkin;
 		}
 		else
@@ -137,7 +141,12 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	    
 	    public void doRenderLayer(EntityVillager villager, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
-			if (villager.getProfession() >= 0 && villager.getProfession() <= 5 && !villager.isInvisible())
+			if (
+					villager.getProfession() >= 0
+					// v3.2: Is vanilla OR is a modular type
+					&& (villager.getProfession() <= 4 || GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString())!=-1)
+					&& !villager.isInvisible()
+					)
 			{
 				// Biome type skins
 				if (GeneralConfig.modernVillagerSkins)
@@ -202,85 +211,102 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	    
 	    public void doRenderLayer(EntityVillager villager, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
-			if (villager.getProfession() >= 0 && villager.getProfession() <= 5 && !villager.isInvisible())
+	    	// Changed in v3.2 to allow for modded skins
+			if (villager.getProfession() >= 0 && !villager.isInvisible())
 			{
-				// Biome type skins
-				if (GeneralConfig.modernVillagerSkins)
+				if (villager.getProfession() <= 4) // Changed in v3.2: there is no official Profession 5!
 				{
-					
-					/**/
-		        	int career = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getCareer();
-					
-				    switch (villager.getProfession())
-				    {
-			        case 0: // Farmer type
-			        	switch (career)
-			        	{
-			        	default:
-			        	case 1:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionFarmer); break;
-			        	case 2:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionFisherman); break;
-			        	case 3:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionShepherd); break;
-			        	case 4:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionFletcher); break;
-			        	}
-			        	break;
-			        case 1: // Librarian type
-			        	switch (career)
-			        	{
-			        	default:
-			        	case 1:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionLibrarian); break;
-			        	case 2:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionCartographer); break;
-			        	}
-			        	break;
-			        case 2: // Priest type
-			        	switch (career)
-			        	{
-			        	default:
-			        	case 1:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionCleric); break;
-			        	}
-			        	break;
-			        case 3: // Smith type
-			        	switch (career)
-			        	{
-			        	case 1:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionArmorer); break;
-			        	case 2:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionWeaponsmith); break;
-			        	default:
-			        	case 3:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionToolsmith); break;
-			        	case 4:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionMason); break;
-			        	}
-			        	break;
-			        case 4: // Butcher type
-			        	switch (career)
-			        	{
-			        	default:
-			        	case 1:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionButcher); break;
-			        	case 2:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionLeatherworker); break;
-			        	}
-			        	break;
-			        case 5: // Nitwit
-			        	switch (career)
-			        	{
-			        	default:
-			        	case 1:
-			        		this.villagerLayerRenderer.bindTexture(villagerProfessionNitwit); break;
-			        	}
-			        	break;
-			        default: // No profession skin
-				    }
-				    /**/
+					// Profession skins
+					if (GeneralConfig.modernVillagerSkins)
+					{
+						
+						/**/
+			        	int career = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getCareer();
+						
+					    switch (villager.getProfession())
+					    {
+				        case 0: // Farmer type
+				        	switch (career)
+				        	{
+				        	default:
+				        	case 1:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionFarmer); break;
+				        	case 2:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionFisherman); break;
+				        	case 3:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionShepherd); break;
+				        	case 4:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionFletcher); break;
+				        	}
+				        	break;
+				        case 1: // Librarian type
+				        	switch (career)
+				        	{
+				        	default:
+				        	case 1:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionLibrarian); break;
+				        	case 2:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionCartographer); break;
+				        	}
+				        	break;
+				        case 2: // Priest type
+				        	switch (career)
+				        	{
+				        	default:
+				        	case 1:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionCleric); break;
+				        	}
+				        	break;
+				        case 3: // Smith type
+				        	switch (career)
+				        	{
+				        	case 1:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionArmorer); break;
+				        	case 2:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionWeaponsmith); break;
+				        	default:
+				        	case 3:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionToolsmith); break;
+				        	case 4:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionMason); break;
+				        	}
+				        	break;
+				        case 4: // Butcher type
+				        	switch (career)
+				        	{
+				        	default:
+				        	case 1:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionButcher); break;
+				        	case 2:
+				        		this.villagerLayerRenderer.bindTexture(villagerProfessionLeatherworker); break;
+				        	}
+				        	break;
+				        // Fixed in v3.2: there is no vanilla Nitwit at this stage.
+				        default: // Nitwit
+				        	this.villagerLayerRenderer.bindTexture(villagerProfessionNitwit); break;
+					    }
+					}
 				}
+				else
+				{
+					// Mod profession skins
+					int indexofmodprof = GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString());
+					if (
+							indexofmodprof > -1 // Has a skin asset mapping
+			        		&& !((String) GeneralConfig.careerAsset_a.get(indexofmodprof)).equals("") // That mapping isn't blank
+						)
+					{
+			        	final String profRootName = (String) (GeneralConfig.careerAsset_a.get(indexofmodprof));
+			        	final ResourceLocation modCareerSkin = new ResourceLocation((Reference.MOD_ID).toLowerCase(), "textures/entity/villager/profession/"+profRootName+".png");
+			        	this.villagerLayerRenderer.bindTexture(modCareerSkin);
+					}
+					else
+					{
+						// If all else fails, bind the nitwit.
+						this.villagerLayerRenderer.bindTexture(villagerProfessionNitwit);
+					}
+				}
+				
 	            this.villagerLayerRenderer.getMainModel().render(villager, p_177141_2_, p_177141_3_, p_177141_5_, p_177141_6_, p_177141_7_, scale);
 	            this.villagerLayerModel.render(villager, p_177141_2_, p_177141_3_, p_177141_5_, p_177141_6_, p_177141_7_, scale);
 			}
@@ -307,7 +333,12 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	    
 	    public void doRenderLayer(EntityVillager villager, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
-			if (villager.getProfession() >= 0 && villager.getProfession() <= 5 && !villager.isInvisible())
+			if (
+					villager.getProfession() >= 0
+					// v3.2: Is vanilla OR is a modular type
+					&& (villager.getProfession() <= 4 || GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString())!=-1)
+					&& !villager.isInvisible()
+					)
 			{
 				// Profession levels
 				if (GeneralConfig.modernVillagerSkins)

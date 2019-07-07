@@ -301,6 +301,8 @@ public class WriteBookHandler {
     	int[] nearestMonumentXYZ = nearestStructureLoc("Monument", event);
     	int[] nearestMansionXYZ = nearestStructureLoc("Mansion", event);
     	
+    	// v3.2
+		final String profForge = event.getTarget() instanceof EntityVillager ? ((EntityVillager)event.getTarget()).getProfessionForge().getRegistryName().toString() : "" ;
     	
     	List vlist = event.getEntityPlayer().worldObj.villageCollectionObj.getVillageList();
     	
@@ -414,8 +416,9 @@ public class WriteBookHandler {
     	
     	try {
     		villagerMappedProfession =  
-    				(Integer) ((villagerProfession >= 0 && villagerProfession <= 5)
-    				? villagerProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(villagerProfession) )));
+    				// Changed in v3.2
+    				(Integer) ((villagerProfession >= 0 && villagerProfession <= 4)
+    				? villagerProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(profForge) )));
     		}
     	catch (Exception e) {
     		if(!event.getEntityLiving().worldObj.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");
