@@ -47,7 +47,8 @@ public class NetworkHelper
             		ims.getProfession(),
             		ims.getCareer(),
             		ims.getBiomeType(), // Updated in v3.1
-            		ims.getProfessionLevel() // Updated in v3.1
+            		ims.getProfessionLevel(), // Updated in v3.1
+            		ims.getSkinTone()
             		);
             
             // Sends a message to the player, with the zombie extra info
@@ -105,7 +106,8 @@ public class NetworkHelper
             		ims.getProfession(),
             		ims.getCareer(),
             		ims.getBiomeType(), // Updated in v3.1
-            		ims.getProfessionLevel() // Updated in v3.1
+            		ims.getProfessionLevel(), // Updated in v3.1
+            		ims.getSkinTone() // v3.2
             		);
             if (GeneralConfig.debugMessages) { // Debug
             	//LogHelper.info("** Sending Message: Zombie Profession **");

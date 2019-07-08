@@ -856,7 +856,7 @@ public class NameGenerator {
 			}
 
 			// Changed in v3.2 to utilize ProfessionForge
-			if (villagerProfession > 5) {
+			if (villagerProfession > 4) {
 				try {
 					String otherModProfString = (String) ((mappedProfessions.get("Professions")).get( mappedProfessions.get("IDs").indexOf(villagerProfessionForge) ));
 					otherModProfString = otherModProfString.replaceAll("\\(", "");

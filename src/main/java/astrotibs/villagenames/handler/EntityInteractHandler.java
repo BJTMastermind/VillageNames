@@ -113,7 +113,9 @@ public class EntityInteractHandler {
 					LogHelper.info("SYNC CHECKING Profession: " + profession +
 							", Career: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}) + ", CareerVN: " + career +
 							", BiomeType: " + biomeType +
-							", careerLevel: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}) + ", ProfessionLevelVN: " + professionLevel);
+							", careerLevel: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}) + ", ProfessionLevelVN: " + professionLevel
+													+ ", SkinTone: " + (ExtendedVillager.get(villager)).getSkinTone()
+							);
 				}
 			}
 			
@@ -130,7 +132,9 @@ public class EntityInteractHandler {
 					int career = ims.getCareer();
 					int biomeType = ims.getBiomeType();
 					int professionLevel = ims.getProfessionLevel();
-					LogHelper.info("SYNC CHECKING Profession: " + profession + ", Career: " + career + ", BiomeType: " + biomeType + ", ProfessionLevel: " + professionLevel);
+					LogHelper.info("SYNC CHECKING Profession: " + profession + ", Career: " + career + ", BiomeType: " + biomeType + ", ProfessionLevel: " + professionLevel
+											+ ", SkinTone: " + skinTone //v3.2
+					);
 					
 				}
 			}
@@ -240,7 +244,7 @@ public class EntityInteractHandler {
 			customName = target.getCustomNameTag();//compound.getString("CustomName");
 			targetAge = compound.getInteger("Age");
 			targetPlayerCreated = compound.getBoolean("PlayerCreated");
-			tradeSize = (target instanceof EntityVillager && (!targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit") && targetCareer!=5 )) ?
+			tradeSize = (target instanceof EntityVillager && (!targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit") )) ? // v3.2 Fixed Nitwit condition
 					( ((EntityVillager)target).getRecipes(player) ).size() : 0;
 			
 			// Convert a non-vanilla profession into a vanilla one for the purposes of generating a hint page
@@ -249,8 +253,9 @@ public class EntityInteractHandler {
 	    	
 	    	try {
 	    		villagerMappedProfession =  
-	    				(Integer) ((targetProfession >= 0 && targetProfession <= 5)
-	    				? targetProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(targetProfession) )));
+	    				// Changed in v3.2
+	    				(Integer) ((targetProfession >= 0 && targetProfession <= 4)
+	    				? targetProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(targetPName) )));
 	    		}
 	    	catch (Exception e) {
 	    		if(!event.getEntityLiving().worldObj.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");
@@ -285,7 +290,10 @@ public class EntityInteractHandler {
 										: "")
 								+ (GeneralConfig.modernVillagerSkins ? ", Profession Level: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getProfessionLevel() // Added in v3.1
 										: "")
-								+ ", Mapped profession: " + villagerMappedProfession);
+								+ ", Mapped profession: " + villagerMappedProfession
+								+ (GeneralConfig.villagerSkinTones ? ", Skin Tone: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getSkinTone() // Added in v3.2
+										: "")
+								);
 					}
 					catch (Exception e) {}
 					
@@ -303,6 +311,8 @@ public class EntityInteractHandler {
 							+ (GeneralConfig.modernVillagerSkins ? ", BiomeType: " + (zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getBiomeType()
 									: "")
 							+ (GeneralConfig.modernVillagerSkins ? ", Profession Level: " + (zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getProfessionLevel()
+									: "")
+							+ (GeneralConfig.villagerSkinTones ? ", Skin Tone: " + (zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getSkinTone() // Added in v3.2
 									: "")
 							);
 					}
@@ -326,7 +336,7 @@ public class EntityInteractHandler {
 			if (
 					//GeneralConfigHandler.enableNitwit &&
 					target instanceof EntityVillager
-					&& (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit") || targetProfession==5)
+					&& (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) // v3.2: removed profession condition to avoid false positives with mod villagers
 					) {
 				// summon Villager ~ ~ ~ {Profession:5}
 				if (!target.worldObj.isRemote) {

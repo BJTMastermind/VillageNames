@@ -1,7 +1,6 @@
 package astrotibs.villagenames.tracker;
 
 import astrotibs.villagenames.capabilities.IModularSkin;
-import astrotibs.villagenames.capabilities.ModularSkinProvider;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.tracker.ServerInfoTracker.EventType;
@@ -15,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 
 /**
@@ -101,8 +99,8 @@ public class EventTracker
         				ims.getCareer(),
         				villager.isChild(),
         				(GeneralConfig.modernVillagerSkins) ? ims.getBiomeType() : -1, // Added in v3.1
-                		(GeneralConfig.modernVillagerSkins) ? ims.getProfessionLevel() : -1 // Added in v3.1
-        				
+                		(GeneralConfig.modernVillagerSkins) ? ims.getProfessionLevel() : -1, // Added in v3.1
+						(GeneralConfig.modernVillagerSkins && GeneralConfig.villagerSkinTones) ? ims.getSkinTone() : -99 // Added in v3.2
         				/*
         				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}),
         				villager.isChild(),
@@ -135,7 +133,8 @@ public class EventTracker
 	   					ims.getCareer(),
 	       				zombie.isChild(),
 	       				(GeneralConfig.modernVillagerSkins) ? ims.getBiomeType() : -1,
-	       				(GeneralConfig.modernVillagerSkins) ? ims.getProfessionLevel() : -1
+	       				(GeneralConfig.modernVillagerSkins) ? ims.getProfessionLevel() : -1,
+        				(GeneralConfig.villagerSkinTones) ? ims.getSkinTone() : -99, // Added in v3.2
 	       				}
     			);
     }
@@ -216,6 +215,14 @@ public class EventTracker
         {
         	ims.setBiomeType(biomeType);
         }
+
+
+        // Added in v3.2
+        // SkinTone
+        if (ims.getSkinTone() == -99) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombie));}
+        else {ims.setSkinTone(biomeType);}
+        
+        
         // ProfessionLevel
         ims.setProfessionLevel(professionLevel);
         
@@ -357,6 +364,11 @@ public class EventTracker
         {
         	ims.setBiomeType(biomeType);
         }
+
+        // Added in v3.2
+        // SkinTone
+        if (ims.getSkinTone() == -99) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));}
+        else {ims.setSkinTone(biomeType);}
         
     }
     
