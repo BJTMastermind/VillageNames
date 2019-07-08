@@ -847,7 +847,7 @@ public class NameGenerator {
 				break;
 				*/
 			}
-			if (!(villagerProfession >= 0 && villagerProfession <= 5)) { // This is a modded profession.
+			if (villagerProfession > 4) { // v 3.2: Changed to 4 - This is a modded profession.
 				try {
 					String otherModProfString = (String) ((mappedProfessions.get("Professions")).get( mappedProfessions.get("IDs").indexOf(villagerProfession) ));
 					otherModProfString = otherModProfString.replaceAll("\\(", "");

@@ -15,7 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3i;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 /**
  * Adapted from Villager Tweaks by sidben:
@@ -127,8 +126,8 @@ public class EventTracker
         				ieep.getCareer(),
 						villager.isChild(),
         				(GeneralConfig.modernVillagerSkins) ? ieep.getBiomeType() : -1, // Added in v3.1
-        				(GeneralConfig.modernVillagerSkins) ? ieep.getProfessionLevel() : -1 // Added in v3.1
-        				
+        				(GeneralConfig.modernVillagerSkins) ? ieep.getProfessionLevel() : -1, // Added in v3.1
+						(GeneralConfig.modernVillagerSkins && GeneralConfig.villagerSkinTones) ? ieep.getSkinTone() : -99 // Added in v3.2
         				/*
         				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}),
         				villager.isChild(),
@@ -162,7 +161,8 @@ public class EventTracker
 	   					(ieep).getCareer(),
 	       				zombie.isChild(),
 	       				(GeneralConfig.modernVillagerSkins) ? ieep.getBiomeType() : -1,
-	       				(GeneralConfig.modernVillagerSkins) ? ieep.getProfessionLevel() : -1
+	       				(GeneralConfig.modernVillagerSkins) ? ieep.getProfessionLevel() : -1,
+        				(GeneralConfig.villagerSkinTones) ? ieep.getSkinTone() : -99, // Added in v3.2
 	       				}
    			);
     }
@@ -244,6 +244,13 @@ public class EventTracker
         {
         	ieep.setBiomeType(biomeType);
         }
+        
+        // Added in v3.2
+        // SkinTone
+        if (ieep.getSkinTone() == -99) {ieep.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombie));}
+        else {ieep.setSkinTone(biomeType);}
+        
+        
         // ProfessionLevel
         ieep.setProfessionLevel(professionLevel);
         
@@ -391,6 +398,11 @@ public class EventTracker
         {
         	ieep.setBiomeType(biomeType);
         }
+
+        // Added in v3.2
+        // SkinTone
+        if (ieep.getSkinTone() == -99) {ieep.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));}
+        else {ieep.setSkinTone(biomeType);}
         
     }
     

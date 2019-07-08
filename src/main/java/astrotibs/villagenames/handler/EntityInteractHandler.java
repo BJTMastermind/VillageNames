@@ -127,6 +127,7 @@ public class EntityInteractHandler {
 					 LogHelper.info("SYNC CHECKING Profession: " + villager.getProfession()
 						 + ", Career: " + career + ", BiomeType: " + (ExtendedVillager.get(villager)).getBiomeType() + ", ProfessionLevel: " + profLevel
 						 + ", CareerVN: " + ExtendedVillager.get(villager).getCareerVN() + ", ProfessionLevelVN: " + ExtendedVillager.get(villager).getProfessionLevelVN()
+						 						+ ", SkinTone: " + (ExtendedVillager.get(villager)).getSkinTone()
 						 );
 				}
 			}
@@ -141,7 +142,9 @@ public class EntityInteractHandler {
 				{
 					int career = ezv.getCareer();
 					int profLevel = ezv.getProfessionLevel();
-					LogHelper.info("SYNC CHECKING Profession: " + ezv.getProfession() + ", Career: " + career + ", BiomeType: " + ezv.getBiomeType() + ", ProfessionLevel: " + profLevel);
+					LogHelper.info("SYNC CHECKING Profession: " + ezv.getProfession() + ", Career: " + career + ", BiomeType: " + ezv.getBiomeType() + ", ProfessionLevel: " + profLevel
+											+ ", SkinTone: " + ezv.getSkinTone() //v3.2
+					);
 				}
 			}
 		}
@@ -281,7 +284,10 @@ public class EntityInteractHandler {
 										: "")
 								+ (GeneralConfig.modernVillagerSkins ? ", Profession Level: " + (ExtendedVillager.get((EntityVillager) target)).getProfessionLevel() // Added in v3.1
 										: "")
-								+ ", Mapped profession: " + villagerMappedProfession);
+								+ ", Mapped profession: " + villagerMappedProfession
+								+ (GeneralConfig.villagerSkinTones ? ", Skin Tone: " + (ExtendedVillager.get((EntityVillager) target)).getSkinTone() // Added in v3.2
+										: "")
+								);
 					}
 					catch (Exception e) {}
 					
@@ -295,6 +301,8 @@ public class EntityInteractHandler {
 							+ (GeneralConfig.modernVillagerSkins ? ", BiomeType: " + (ExtendedZombieVillager.get((EntityZombie) target)).getBiomeType() // Added in v3.1
 									: "")
 							+ (GeneralConfig.modernVillagerSkins ? ", Profession Level: " + (ExtendedZombieVillager.get((EntityZombie) target)).getProfessionLevel() // Added in v3.1
+									: "")
+							+ (GeneralConfig.villagerSkinTones ? ", Skin Tone: " + (ExtendedZombieVillager.get((EntityZombie) target)).getSkinTone() // Added in v3.2
 									: "")
 							);
 					}

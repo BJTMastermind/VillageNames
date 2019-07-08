@@ -22,6 +22,7 @@ public class MessageModernVillagerSkin implements IMessage
 	public MessageModernVillagerSkin() {}
     public MessageModernVillagerSkin(int entityID, int profession, int career, int biomeType, int professionLevel,
     		int professionLevelVN, int careerVN // Added in v3.1trades
+    		, int skinTone // Added in v3.2
     		) {
         this.entityID = entityID;
         this.profession = profession;
@@ -30,6 +31,7 @@ public class MessageModernVillagerSkin implements IMessage
         this.professionLevel = professionLevel;
         this.professionLevelVN = professionLevelVN; // Added in v3.1trades
         this.careerVN = careerVN; // Added in v3.1trades
+        this.skinTone = skinTone; // v3.2
     }
 
     // Fields to be used by this message
@@ -40,7 +42,8 @@ public class MessageModernVillagerSkin implements IMessage
     private int professionLevel;
     private int professionLevelVN; // Added in v3.1trades
     private int careerVN; // Added in v3.1trades
-    
+    private int skinTone; // V3.2
+
 
     // Getters
     public int getProfession() {return this.profession;}
@@ -50,7 +53,8 @@ public class MessageModernVillagerSkin implements IMessage
     public int getProfessionLevel() {return this.professionLevel;}
     public int getProfessionLevelVN() {return this.professionLevelVN;} // Added in v3.1trades
     public int getCareerVN() {return this.careerVN;} // Added in v3.1trades
-    
+    public int getSkinTone() {return this.skinTone;} // v3.2
+
     
     // Reads the packet
     @Override
@@ -63,6 +67,8 @@ public class MessageModernVillagerSkin implements IMessage
         this.professionLevel = buf.readInt();
         this.professionLevelVN = buf.readInt(); // Added in v3.1trades
         this.careerVN = buf.readInt(); // Added in v3.1trades
+        this.skinTone = buf.readInt(); // v3.2
+
         // note - maybe use ByteBufUtils
     }
 
@@ -78,6 +84,8 @@ public class MessageModernVillagerSkin implements IMessage
         buf.writeInt(this.professionLevel);
         buf.writeInt(this.professionLevelVN); // Added in v3.1trades
         buf.writeInt(this.careerVN); // Added in v3.1trades
+        buf.writeInt(this.skinTone); // v3.2
+
     }
 
 
@@ -101,6 +109,9 @@ public class MessageModernVillagerSkin implements IMessage
         r.append(this.getProfessionLevelVN()); // Added in v3.1trades
         r.append(", Career VN = "); // Added in v3.1trades
         r.append(this.getCareerVN()); // Added in v3.1trades
+        // v3.2
+        r.append(", Skin Tone = ");
+        r.append(this.getSkinTone());
         
         return r.toString();
     }

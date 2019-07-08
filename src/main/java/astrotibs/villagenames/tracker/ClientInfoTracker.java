@@ -111,11 +111,12 @@ public class ClientInfoTracker
         
         // If a message was found, update the local zombie with that info
         if (msg != null) {
-            ExtendedZombieVillager properties = ExtendedZombieVillager.get(zombie);
-            properties.setProfession(msg.getProfession());
-            properties.setCareer(msg.getCareer());
-            properties.setBiomeType(msg.getBiomeType()); // Added in v3.1
-            properties.setProfessionLevel(msg.getProfessionLevel()); // Added in v3.1
+            ExtendedZombieVillager ezv = ExtendedZombieVillager.get(zombie);
+            ezv.setProfession(msg.getProfession());
+            ezv.setCareer(msg.getCareer());
+            ezv.setBiomeType(msg.getBiomeType()); // Added in v3.1
+            ezv.setProfessionLevel(msg.getProfessionLevel()); // Added in v3.1
+            ezv.setSkinTone(msg.getSkinTone()); // Added in v3.2
         } 
     }
 
@@ -227,6 +228,7 @@ public class ClientInfoTracker
             properties.setProfessionLevel(msg.getProfessionLevel());
             properties.setProfessionLevelVN(msg.getProfessionLevelVN()); // Added in v3.1trades
             properties.setCareerVN(msg.getCareerVN()); // Added in v3.1trades
+            properties.setSkinTone(msg.getSkinTone()); // v3.2
         } 
     }
     
