@@ -20,7 +20,8 @@ public class ModularSkinStorage implements IStorage<IModularSkin>
 	public final static String KEY_CAREER = "Career";
 	public final static String KEY_BIOMETYPE = "BiomeType";
 	public final static String KEY_PROFESSIONLEVEL = "ProfessionLevel";
-	
+	public final static String KEY_SKINTONE = "SkinTone"; // Added in v3.2
+
 	
 	@Override
 	public NBTBase writeNBT(Capability<IModularSkin> capability, IModularSkin instance, EnumFacing side) {
@@ -32,7 +33,8 @@ public class ModularSkinStorage implements IStorage<IModularSkin>
         nbttagcompound1.setInteger(KEY_CAREER, instance.getCareer());
         nbttagcompound1.setInteger(KEY_BIOMETYPE, instance.getBiomeType());
         nbttagcompound1.setInteger(KEY_PROFESSIONLEVEL, instance.getProfessionLevel());
-        
+        nbttagcompound1.setInteger(KEY_SKINTONE, instance.getSkinTone()); // Added in v3.2
+
         compound.setTag(Reference.MOD_ID.toLowerCase(), nbttagcompound1); 
         
 		return compound;
@@ -49,6 +51,8 @@ public class ModularSkinStorage implements IStorage<IModularSkin>
 		instance.setCareer(nbttagcompound1.getInteger(KEY_CAREER));
 		instance.setBiomeType(nbttagcompound1.getInteger(KEY_BIOMETYPE));
 		instance.setProfessionLevel(nbttagcompound1.getInteger(KEY_PROFESSIONLEVEL));
+		instance.setProfessionLevel(nbttagcompound1.getInteger(KEY_SKINTONE)); // Added in v3.2
+
 	}
 
 }

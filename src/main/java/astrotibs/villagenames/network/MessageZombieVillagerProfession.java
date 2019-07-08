@@ -19,12 +19,16 @@ public class MessageZombieVillagerProfession implements IMessage
 	
     public MessageZombieVillagerProfession() {}
 
-    public MessageZombieVillagerProfession(int entityID, int profession, int career, int biomeType, int professionLevel) { // Changed in v3.1
+    public MessageZombieVillagerProfession(int entityID, int profession, int career, int biomeType, int professionLevel
+    		, int skinTone // v3.2
+    		) { // Changed in v3.1
         this.entityID = entityID;
         this.profession = profession;
         this.career = career;
         this.biomeType = biomeType; // Added in v3.1
         this.professionLevel = biomeType; // Added in v3.1
+        this.skinTone = skinTone; // v3.2
+
     }
 
     
@@ -34,7 +38,8 @@ public class MessageZombieVillagerProfession implements IMessage
     private int career;
     private int biomeType; // Added in v3.1
     private int professionLevel; // Added in v3.1
-    
+    private int skinTone; // Added in v3.2
+
     
 
     // Getters
@@ -43,7 +48,8 @@ public class MessageZombieVillagerProfession implements IMessage
     public int getEntityID() {return this.entityID;}
     public int getBiomeType() {return this.biomeType;} // Added in v3.1
     public int getProfessionLevel() {return this.professionLevel;} // Added in v3.1
-    
+    public int getSkinTone() {return this.skinTone;} // Added in v3.2
+
     
 
     // Reads the packet
@@ -55,6 +61,8 @@ public class MessageZombieVillagerProfession implements IMessage
         this.career = buf.readInt();
         this.biomeType = buf.readInt(); // Added in v3.1
         this.professionLevel = buf.readInt(); // Added in v3.1
+        this.skinTone = buf.readInt(); // Added in v3.2
+
         // note - maybe use ByteBufUtils
     }
 
@@ -68,6 +76,8 @@ public class MessageZombieVillagerProfession implements IMessage
         buf.writeInt(this.career);
         buf.writeInt(this.biomeType); // Added in v3.1
         buf.writeInt(this.professionLevel); // Added in v3.1
+        buf.writeInt(this.skinTone); // Added in v3.2
+
     }
 
     
@@ -87,6 +97,9 @@ public class MessageZombieVillagerProfession implements IMessage
         r.append(this.getBiomeType());
         r.append(", Profession Level = ");
         r.append(this.getProfessionLevel());
+        // v3.2
+        r.append(", Skin Tone = ");
+        r.append(this.getSkinTone());
         
         return r.toString();
     }

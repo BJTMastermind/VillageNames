@@ -65,7 +65,10 @@ public class GeneralConfig {
 	public static ArrayList<String> careerAsset_a;
 	public static ArrayList<String> zombieCareerAsset_a;
 	public static ArrayList<String> professionID_a;
-	
+    public static boolean villagerSkinTones;
+    public static float villagerSkinToneVarianceAnnealing;
+    public static float villagerSkinToneVarianceScale;
+    
 	public static boolean modernVillagerTrades;
 	//public static boolean villagerLegacyTrades;
 	public static boolean treasureTrades;
@@ -123,6 +126,7 @@ public class GeneralConfig {
 	    moddedVillagerHeadwearGraylist = config.getStringList("Modded Villager Headwear Graylist", "villager professions", new String[]{
 				"forestry:apiarist", // Forestry Apiarist
 				"-openblocks:radio", // Open Blocks Music Merchant
+				"bewitchment:alchemist", // Bewitchment Alchemist... not sure if this is the ID because I can't get the thing to load
 	    		},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers. A normal value will be whitelisted: it will display that villager's headwear layer even if Modded Villager Headwear is false. "
 	    		+ "Adding a negative sign in front of the ID int will blacklist the profession so that its headwear layer never renders.");
@@ -133,12 +137,12 @@ public class GeneralConfig {
 	    	if (prof_s.trim().indexOf("-")==0)
 	    	{
 	    		// There is a hyphen out front, so this is a negative value. Pass it with the hyphen intact.
-	    		moddedVillagerHeadwearWhitelist.add(prof_s.trim());
+	    		moddedVillagerHeadwearBlacklist.add(prof_s.trim());
 	    	}
 	    	else
 	    	{
 	    		// There is no hyphen out front, so this is a positive value.
-	    		moddedVillagerHeadwearBlacklist.add(prof_s.trim());
+	    		moddedVillagerHeadwearWhitelist.add(prof_s.trim());
 	    	}
 	    }
 
@@ -162,7 +166,17 @@ public class GeneralConfig {
 	    careerAsset_a = (ArrayList<String>)moddedVillagerCareerSkins.get("careerAsset");
 	    zombieCareerAsset_a = (ArrayList<String>)moddedVillagerCareerSkins.get("zombieCareerAsset");
 	    professionID_a = (ArrayList<String>)moddedVillagerCareerSkins.get("professionID");
-	    
+
+
+	    villagerSkinTones = config.getBoolean("Display Skin Tones", "villager skin tones", true, "Display Gaussian-distributed random skin tones assigned to villagers");
+	    villagerSkinToneVarianceAnnealing = config.getFloat("Skin Tone Variance Annealing", "villager skin tones", 8F/3, 0, Float.MAX_VALUE,
+	    		"Statistical variance in skin tone for a population decreases as the number of skin-tone-affecting biome tags increases.\n"
+	    		+ "Setting this value to zero eliminates that effect, making skin tone vary equally everywhere (aside from culling to the darkest/lightest tones).\n"
+	    		+ "Increasing this value makes skin tone variation less likely in qualifying biomes.");
+	    villagerSkinToneVarianceScale = config.getFloat("Skin Tone Variance Scale", "villager skin tones", 1F, 0, Float.MAX_VALUE,
+	    		"Proportionality constant for variance everywhere, irrespective of biome. Set this to zero for absolutely no variation for a given biome.\n"
+	    		+ "Skin tones are culled to the darkest and lightest values, so setting this arbitrarily high will result in ONLY the darkest or lightest villagers.\n"
+	    		+ "I estimate that the distribution is flattest, and thus population variance is maximized, around a value of about 2.6.");
 	    
 	    zombieCureCatalysts = config.getStringList("Zombie Cure Catalysts", "villager professions", new String[]{
  				"vanilla|net.minecraft.block.BlockBed|tile.bed|-1",
