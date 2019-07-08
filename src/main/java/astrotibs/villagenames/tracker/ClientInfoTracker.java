@@ -119,6 +119,7 @@ public class ClientInfoTracker
         	ims.setCareer(msg.getCareer());
         	ims.setBiomeType(msg.getBiomeType()); // Added in v3.1
         	ims.setProfessionLevel(msg.getProfessionLevel()); // Added in v3.1
+            ims.setSkinTone(msg.getSkinTone()); // Added in v3.2
         } 
     }
     
@@ -226,6 +227,7 @@ public class ClientInfoTracker
         	ims.setCareer(msg.getCareer());
         	ims.setBiomeType(msg.getBiomeType()); // Added in v3.1
         	ims.setProfessionLevel(msg.getProfessionLevel()); // Added in v3.1
+        	ims.setSkinTone(msg.getSkinTone()); // Added in v3.2
         } 
     }
     

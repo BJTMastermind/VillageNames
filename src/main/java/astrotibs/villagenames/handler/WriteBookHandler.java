@@ -16,7 +16,6 @@ import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldData;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
 import astrotibs.villagenames.utility.LogHelper;
-import astrotibs.villagenames.utility.Reference;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityVillager;

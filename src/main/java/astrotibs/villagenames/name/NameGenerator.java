@@ -27,7 +27,6 @@ import astrotibs.villagenames.config.VillageConfigHandler;
 import astrotibs.villagenames.config.VillagerConfigHandler;
 import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.LogHelper;
-import astrotibs.villagenames.utility.Reference;
 
 //The whole point of this thing is to be a separate class that generates the names.
 

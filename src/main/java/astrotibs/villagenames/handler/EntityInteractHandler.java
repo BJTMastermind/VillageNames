@@ -18,7 +18,6 @@ import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
 import astrotibs.villagenames.tracker.ServerInfoTracker;
 import astrotibs.villagenames.utility.LogHelper;
-import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -110,7 +109,9 @@ public class EntityInteractHandler {
 					LogHelper.info("SYNC CHECKING Profession: " + profession +
 							", Career: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}) + ", CareerVN: " + career +
 							", BiomeType: " + biomeType +
-							", careerLevel: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}) + ", ProfessionLevelVN: " + professionLevel);
+							", careerLevel: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}) + ", ProfessionLevelVN: " + professionLevel
+													+ ", SkinTone: " + (ExtendedVillager.get(villager)).getSkinTone()
+							);
 				}
 			}
 			
@@ -127,7 +128,9 @@ public class EntityInteractHandler {
 					int career = ims.getCareer();
 					int biomeType = ims.getBiomeType();
 					int professionLevel = ims.getProfessionLevel();
-					LogHelper.info("SYNC CHECKING Profession: " + profession + ", Career: " + career + ", BiomeType: " + biomeType + ", ProfessionLevel: " + professionLevel);
+					LogHelper.info("SYNC CHECKING Profession: " + profession + ", Career: " + career + ", BiomeType: " + biomeType + ", ProfessionLevel: " + professionLevel
+											+ ", SkinTone: " + skinTone //v3.2
+					);
 				}
 			}
 		}
@@ -228,7 +231,7 @@ public class EntityInteractHandler {
 			customName = target.getCustomNameTag();//compound.getString("CustomName");
 			targetAge = compound.getInteger("Age");
 			targetPlayerCreated = compound.getBoolean("PlayerCreated");
-			tradeSize = (target instanceof EntityVillager && (!targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit") && targetCareer!=5 )) ?
+			tradeSize = (target instanceof EntityVillager && targetProfession!=5 ) ? // v3.2 Fixed Nitwit condition
 					( ((EntityVillager)target).getRecipes(player) ).size() : 0;
 			
 			// Convert a non-vanilla profession into a vanilla one for the purposes of generating a hint page
@@ -237,8 +240,9 @@ public class EntityInteractHandler {
 	    	
 	    	try {
 	    		villagerMappedProfession =  
+	    				// Changed in v3.2
 	    				(Integer) ((targetProfession >= 0 && targetProfession <= 5)
-	    				? targetProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(targetProfession) )));
+	    				? targetProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(targetPName) )));
 	    		}
 	    	catch (Exception e) {
 	    		if(!event.getEntityLiving().world.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");
@@ -273,7 +277,10 @@ public class EntityInteractHandler {
 										: "")
 								+ (GeneralConfig.modernVillagerSkins ? ", Profession Level: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getProfessionLevel() // Added in v3.1
 										: "")
-								+ ", Mapped profession: " + villagerMappedProfession);
+								+ ", Mapped profession: " + villagerMappedProfession
+								+ (GeneralConfig.villagerSkinTones ? ", Skin Tone: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getSkinTone() // Added in v3.2
+										: "")
+								);
 					}
 					catch (Exception e) {}
 					
@@ -291,6 +298,8 @@ public class EntityInteractHandler {
 							+ (GeneralConfig.modernVillagerSkins ? ", BiomeType: " + (zombievillager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getBiomeType()
 									: "")
 							+ (GeneralConfig.modernVillagerSkins ? ", Profession Level: " + (zombievillager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getProfessionLevel()
+									: "")
+							+ (GeneralConfig.villagerSkinTones ? ", Skin Tone: " + (zombievillager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getSkinTone() // Added in v3.2
 									: "")
 							);
 					}
