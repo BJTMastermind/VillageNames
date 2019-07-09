@@ -84,11 +84,11 @@ public class EntityInteractHandler {
 	
 	
 	@SubscribeEvent(receiveCanceled=true)
-	public void onEntityInteract(EntityInteract event) {
-		
+	public void onEntityInteract(EntityInteract event) { 
+		/*
 		// Added in v3.1
 		// This was used to verify server-client syncing of Careers
-		/*
+		
 		if (GeneralConfig.debugMessages)
 		{
 			if (event.getTarget() instanceof EntityVillager)
@@ -112,7 +112,7 @@ public class EntityInteractHandler {
 							", Career: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}) + ", CareerVN: " + career +
 							", BiomeType: " + biomeType +
 							", careerLevel: " + ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}) + ", ProfessionLevelVN: " + professionLevel
-													+ ", SkinTone: " + (ExtendedVillager.get(villager)).getSkinTone()
+													+ ", SkinTone: " + villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getSkinTone()
 							);
 				}
 			}
@@ -130,7 +130,7 @@ public class EntityInteractHandler {
 					int biomeType = ims.getBiomeType();
 					int professionLevel = ims.getProfessionLevel();
 					LogHelper.info("SYNC CHECKING Profession: " + profession + ", Career: " + career + ", BiomeType: " + biomeType + ", ProfessionLevel: " + professionLevel
-											+ ", SkinTone: " + skinTone //v3.2
+											+ ", SkinTone: " + zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null) //v3.2
 					);
 				}
 			}
