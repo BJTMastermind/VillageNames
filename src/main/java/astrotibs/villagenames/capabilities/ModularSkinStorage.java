@@ -49,9 +49,9 @@ public class ModularSkinStorage implements IStorage<IModularSkin>
 		
 		instance.setProfession(nbttagcompound1.getInteger(KEY_PROFESSION));
 		instance.setCareer(nbttagcompound1.getInteger(KEY_CAREER));
-		instance.setBiomeType(nbttagcompound1.getInteger(KEY_BIOMETYPE));
+		instance.setBiomeType(nbttagcompound1.hasKey(KEY_BIOMETYPE) ? nbttagcompound1.getInteger(KEY_BIOMETYPE) : -1);
 		instance.setProfessionLevel(nbttagcompound1.getInteger(KEY_PROFESSIONLEVEL));
-		instance.setProfessionLevel(nbttagcompound1.getInteger(KEY_SKINTONE)); // Added in v3.2
+		instance.setSkinTone(nbttagcompound1.hasKey(KEY_SKINTONE) ? nbttagcompound1.getInteger(KEY_SKINTONE) : -99); // Added in v3.2
 
 	}
 
