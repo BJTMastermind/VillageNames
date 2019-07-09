@@ -1,6 +1,8 @@
 This is a mod for Minecraft Forge that allows the user to generate random names for Villagers and villages.
 
 Additionally, villagers have adopted the modular JE 1.14 skins and offer trades similar to JE 1.14 and BE 1.12.
+These modular skins include custom garb for various generic biome types (Forest, Highlands), and villager skin/hair/eye
+colors will be based on properties of their spawning biome.
 
 This mod is not compatible with Villager Mantle Fix, because Village Names villagers have mantles.
 Villager trades will include some backported items from other mods.
@@ -17,4 +19,4 @@ Mod versions 1.7.10 through 1.11.2 have backported Concrete, Concrete Powder, an
 
 Mod versions 1.7.10 and 1.8.9 have Igloos.
 
-Version 1.7.10 has backported Prismarine, absorbent Sponges, and Ocean Monuments, and Guardians.
+Version 1.7.10 has backported Prismarine, absorbent Sponges, Ocean Monuments, and Guardians.
