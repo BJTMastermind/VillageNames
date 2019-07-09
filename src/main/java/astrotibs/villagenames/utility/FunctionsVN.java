@@ -3182,11 +3182,29 @@ public class FunctionsVN {
 			// Cold, snowy, high-latitude values lighten skin:
 			if (type==BiomeDictionary.Type.COLD)
 			{
-				skin_mu += 2;
+				skin_mu += 1;
+				skin_tags++;
+				continue;
+			}
+			if (type==BiomeDictionary.Type.WET)
+			{
+				skin_mu += 1;
 				skin_tags++;
 				continue;
 			}
 			if (type==BiomeDictionary.Type.CONIFEROUS)
+			{
+				skin_mu += 2;
+				skin_tags++;
+				continue;
+			}
+			if (type==BiomeDictionary.Type.NETHER)
+			{
+				skin_mu += 2;
+				skin_tags++;
+				continue;
+			}
+			if (type==BiomeDictionary.Type.END)
 			{
 				skin_mu += 2;
 				skin_tags++;
@@ -3208,13 +3226,19 @@ public class FunctionsVN {
 			// Hot, dry, low-latitude values darken skin:
 			if (type==BiomeDictionary.Type.HOT)
 			{
-				skin_mu -= 2;
+				skin_mu -= 1;
+				skin_tags++;
+				continue;
+			}
+			if (type==BiomeDictionary.Type.DRY)
+			{
+				skin_mu -= 1;
 				skin_tags++;
 				continue;
 			}
 			if (type==BiomeDictionary.Type.SAVANNA)
 			{
-				skin_mu -= 3;
+				skin_mu -= 2;
 				skin_tags++;
 				continue;
 			}
@@ -3225,12 +3249,6 @@ public class FunctionsVN {
 				continue;
 			}
 			if (type==BiomeDictionary.Type.MESA)
-			{
-				skin_mu -= 1;
-				skin_tags++;
-				continue;
-			}
-			if (type==BiomeDictionary.Type.SANDY)
 			{
 				skin_mu -= 1;
 				skin_tags++;

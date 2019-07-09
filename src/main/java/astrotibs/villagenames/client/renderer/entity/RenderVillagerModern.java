@@ -123,7 +123,7 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 			// Added in v3.2
 			if (GeneralConfig.villagerSkinTones)
 			{
-				switch ((ExtendedVillager.get(villager)).getBiomeType())
+				switch ((ExtendedVillager.get(villager)).getSkinTone())
 				{
 					case 3: return villageSkinToneLight3;
 					case 2: return villageSkinToneLight2;

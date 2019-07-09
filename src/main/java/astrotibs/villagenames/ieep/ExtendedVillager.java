@@ -149,10 +149,10 @@ public class ExtendedVillager implements IExtendedEntityProperties {
             skinTone = -99; // Added in v3.2
         } 
         else {
-            this.biomeType = properties.getInteger(biomeKey); // Added in v3.1
+            this.biomeType = properties.hasKey(biomeKey) ? properties.getInteger(biomeKey) : -1; // Added in v3.1
             this.professionLevelVN = properties.getInteger(professionLevelVNKey); // Added in v3.1trades
             this.careerVN = properties.getInteger(careerVNKey); // Added in v3.1trades
-            this.skinTone = properties.getInteger(skinToneKey); // Added in v3.2
+            this.skinTone = properties.hasKey(skinToneKey) ? properties.getInteger(skinToneKey) : -99; // Added in v3.2
             this.hasValidData = properties.getBoolean(InitializedKey);
         }
 	}

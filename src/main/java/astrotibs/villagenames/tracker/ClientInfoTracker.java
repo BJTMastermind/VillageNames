@@ -216,19 +216,19 @@ public class ClientInfoTracker
     @SideOnly(Side.CLIENT)
     public static void syncModernVillagerMessage(EntityVillager villager) {
         
-        // Try to locate messages sent by the server, containing special zombie info
+        // Try to locate messages sent by the server, containing special villager info
         MessageModernVillagerSkin msg = ClientInfoTracker.getModernVillagerMessage(villager.getEntityId());
         
-        // If a message was found, update the local zombie with that info
+        // If a message was found, update the local villager with that info
         if (msg != null) {
-            ExtendedVillager properties = ExtendedVillager.get(villager);
+            ExtendedVillager ev = ExtendedVillager.get(villager);
             villager.setProfession(msg.getProfession());
-            properties.setCareer(msg.getCareer());
-            properties.setBiomeType(msg.getBiomeType());
-            properties.setProfessionLevel(msg.getProfessionLevel());
-            properties.setProfessionLevelVN(msg.getProfessionLevelVN()); // Added in v3.1trades
-            properties.setCareerVN(msg.getCareerVN()); // Added in v3.1trades
-            properties.setSkinTone(msg.getSkinTone()); // v3.2
+            ev.setCareer(msg.getCareer());
+            ev.setBiomeType(msg.getBiomeType());
+            ev.setProfessionLevel(msg.getProfessionLevel());
+            ev.setProfessionLevelVN(msg.getProfessionLevelVN()); // Added in v3.1trades
+            ev.setCareerVN(msg.getCareerVN()); // Added in v3.1trades
+            ev.setSkinTone(msg.getSkinTone()); // v3.2
         } 
     }
     
