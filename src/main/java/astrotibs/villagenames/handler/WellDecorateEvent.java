@@ -39,7 +39,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class WellDecorateEvent {
 	
-	//Random random = new Random();
+	Random random = new Random(); // Enabled in v3.2.1 - To ensure simultaneous villages don't get the same name
 	
 	@SubscribeEvent
 	public void onPopulating(PopulateChunkEvent.Post event) {
@@ -49,8 +49,6 @@ public class WellDecorateEvent {
 				&& !event.getWorld().isRemote
 				) {
 			
-			Random random = event.getWorld().rand;
-
 			// v3.1.2 - Removed config pre-load values to be more human readable 
 			
 			int i = (event.getChunkX() << 4) + 8;//Villages are offset
@@ -255,60 +253,82 @@ public class WellDecorateEvent {
                                     		int signY = y+2;
                                     		int signZ = (z+signZOffset);
                                     		int villageArea = -1; // If a village area value is not ascertained, this will remain as -1.
-                                    		
-                                    		// Try via NBT access
-                                    		MapGenStructureData structureData = (MapGenStructureData)event.getWorld().getPerWorldStorage().getOrLoadData(MapGenStructureData.class, "Village");
-                            				NBTTagCompound nbttagcompound = structureData.getTagCompound();
-                            				
-                            				Iterator itr0 = nbttagcompound.getKeySet().iterator();
-                            				
-                            				while (itr0.hasNext()) { // Go through every village in the Village.nbt list
-                            					Object element0 = itr0.next();
-                            					
-                            					NBTBase nbtbase = nbttagcompound.getTag(element0.toString());
-                            					
-                            					if (nbtbase.getId() == 10) {
-                            						
-                            						try {
-                            							NBTTagCompound nbttagcompound2 = (NBTTagCompound)nbtbase;
-                                						
-                            							int[] boundingBox = nbttagcompound2.getIntArray("BB");
-                            							// Check to see if the well is inside the village
-                            							if (
-                        									   signX >= boundingBox[0]
-                        									&& signY >= boundingBox[1]
-                        									&& signZ >= boundingBox[2]
-                        									&& signX <= boundingBox[3]
-                        									&& signY <= boundingBox[4]
-                        									&& signZ <= boundingBox[5]
-                            								) {
-                            								
-                            								// Player is inside bounding box.
-                            								int ChunkX = nbttagcompound2.getInteger("ChunkX");
-                            								int ChunkZ = nbttagcompound2.getInteger("ChunkZ");
-                            								villageArea = (boundingBox[3]-boundingBox[0])*(boundingBox[3]-boundingBox[0]);
-                            								
-                            								if (GeneralConfig.debugMessages) {
-                            									LogHelper.info("Village located at ChunkX: " + ChunkX + ", ChunkZ: " + ChunkZ 
-                            										+ " with area " + villageArea
-                            										);
-                            									}
 
-                            								// Update sign coordinates so it's central to the BB
-                            								signX = (boundingBox[0] + boundingBox[3])/2;
-                            								signY = (boundingBox[1] + boundingBox[4])/2;
-                            								signZ = (boundingBox[2] + boundingBox[5])/2;
-                            								
-                            								}
-	                            						}
-	                            						catch (Exception e) {
-	                            							if (GeneralConfig.debugMessages) {
-	                        									LogHelper.warn("Village bounding box could not be determined.");
-	                            						}
-	                            					}
-                            					}
-                            				}
-                            				
+                                    		// Updated in v3.2.1 to allow for Open Terrain Generation compatibility
+                                    		
+                                    		MapGenStructureData structureData;
+                                    		NBTTagCompound nbttagcompound = null;
+
+                                    		try
+                                    		{
+                                    			structureData = (MapGenStructureData)event.getWorld().getPerWorldStorage().getOrLoadData(MapGenStructureData.class, "Village");
+                                    			nbttagcompound = structureData.getTagCompound();
+                                    		}
+                                    		catch (Exception e) // Village.dat does not exist
+                                    		{
+                                    			try
+                                        		{
+                                        			structureData = (MapGenStructureData)event.getWorld().getPerWorldStorage().getOrLoadData(MapGenStructureData.class, "OTGVillage");
+                                        			nbttagcompound = structureData.getTagCompound();
+                                        		}
+                                        		catch (Exception e1) {} // OTGVillage.dat does not exist
+                                    		}
+
+                                    		// v3.2.1 - At this point, you may or may not have data to work with.
+
+                                    		try
+                                    		{
+                                    			Iterator itr0 = nbttagcompound.getKeySet().iterator();
+                                				
+                                				while (itr0.hasNext()) { // Go through every village in the Village.nbt list
+                                					Object element0 = itr0.next();
+                                					
+                                					NBTBase nbtbase = nbttagcompound.getTag(element0.toString());
+                                					
+                                					if (nbtbase.getId() == 10) {
+                                						
+                                						try {
+                                							NBTTagCompound nbttagcompound2 = (NBTTagCompound)nbtbase;
+                                    						
+                                							int[] boundingBox = nbttagcompound2.getIntArray("BB");
+                                							// Check to see if the well is inside the village
+                                							if (
+                            									   signX >= boundingBox[0]
+                            									&& signY >= boundingBox[1]
+                            									&& signZ >= boundingBox[2]
+                            									&& signX <= boundingBox[3]
+                            									&& signY <= boundingBox[4]
+                            									&& signZ <= boundingBox[5]
+                                								) {
+                                								
+                                								// Player is inside bounding box.
+                                								int ChunkX = nbttagcompound2.getInteger("ChunkX");
+                                								int ChunkZ = nbttagcompound2.getInteger("ChunkZ");
+                                								villageArea = (boundingBox[3]-boundingBox[0])*(boundingBox[3]-boundingBox[0]);
+                                								
+                                								if (GeneralConfig.debugMessages) {
+                                									LogHelper.info("Village located at ChunkX: " + ChunkX + ", ChunkZ: " + ChunkZ 
+                                										+ " with area " + villageArea
+                                										);
+                                									}
+
+                                								// Update sign coordinates so it's central to the BB
+                                								signX = (boundingBox[0] + boundingBox[3])/2;
+                                								signY = (boundingBox[1] + boundingBox[4])/2;
+                                								signZ = (boundingBox[2] + boundingBox[5])/2;
+                                								
+                                								}
+    	                            						}
+    	                            						catch (Exception e) {
+    	                            							if (GeneralConfig.debugMessages) {
+    	                        									LogHelper.warn("Village bounding box could not be determined.");
+    	                            						}
+    	                            					}
+                                					}
+                                				}
+                                    		}
+                                    		catch (Exception e) {} // Failed to evaluate the bounding box
+
                                     		// Added in 3.0
                                     		// Assign the top line of the sign based on the area of the Village, determined by bounding box
                                     		
@@ -652,14 +672,30 @@ public class WellDecorateEvent {
 	 */
 	public void searchHutAndReplacePot(PopulateChunkEvent.Post event, int buffer)
     {
-		MapGenStructureData structureData;
+		MapGenStructureData structureData = null; // Made null in v3.2.1
 		if (
 				event.getWorld().provider.getDimension()==0
 				&& !event.getWorld().isRemote
 				) { // Player is in the Overworld
 			try {
-				structureData = (MapGenStructureData)event.getWorld().getPerWorldStorage().getOrLoadData(MapGenStructureData.class, "Temple");
-				NBTTagCompound nbttagcompound = structureData.getTagCompound();
+
+				// Updated in v3.2.1 to allow for Open Terrain Generation compatibility
+        		NBTTagCompound nbttagcompound = null;
+
+        		try
+        		{
+        			structureData = (MapGenStructureData)event.getWorld().getPerWorldStorage().getOrLoadData(MapGenStructureData.class, "Temple");
+        			nbttagcompound = structureData.getTagCompound();
+        		}
+        		catch (Exception e)
+        		{
+        			try
+            		{
+            			structureData = (MapGenStructureData)event.getWorld().getPerWorldStorage().getOrLoadData(MapGenStructureData.class, "OTGTemple");
+            			nbttagcompound = structureData.getTagCompound();
+            		}
+            		catch (Exception e1) {}
+        		}
 				
 				Iterator itr = nbttagcompound.getKeySet().iterator();
 				while (itr.hasNext()) {

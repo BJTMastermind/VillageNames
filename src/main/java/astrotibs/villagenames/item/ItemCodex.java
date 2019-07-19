@@ -33,6 +33,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenStructureData;
+import net.minecraftforge.fml.common.Loader;
 
 public class ItemCodex extends Item {
 	
@@ -70,8 +71,8 @@ public class ItemCodex extends Item {
     	if (!world.isRemote) {
     		
     		if (player.inventory.hasItemStack(new ItemStack(Items.BOOK))) {
-    			
-    			MapGenStructureData structureData;
+
+    			MapGenStructureData structureData=null; //v3.2.1
     			World worldIn = player.worldObj;
     			int[ ] BB = new int[6];
     			boolean playerIsInVillage = false; // Set to true if you're in a village; used for Ghost Town achievement.
@@ -162,13 +163,22 @@ public class ItemCodex extends Item {
     			int signX = -1;
     			int signY = -1;
     			int signZ = -1;
+
+    			// v3.2.1
+    			final boolean usingOTG = Loader.isModLoaded("openterraingenerator");
     			
     			structureLoop:
     			for (int i=0; i < structureTypes.size(); i++) {
     				
     				try {
-    					// Load in the vanilla structure file
-        				structureData = (MapGenStructureData)worldIn.getPerWorldStorage().getOrLoadData(MapGenStructureData.class, structureTypes.get(i));
+
+    					// v3.2.1
+    					for (String s : usingOTG ? new String[]{"OTG",""} : new String[]{""} )
+    					{
+    						structureData = (MapGenStructureData)worldIn.getPerWorldStorage().getOrLoadData(MapGenStructureData.class, s+structureTypes.get(i));
+    						if (!(structureData==null)) {break;}
+    					}
+    					
         				NBTTagCompound nbttagcompound = structureData.getTagCompound();
         				
         				// Iterate through the entries
@@ -184,208 +194,211 @@ public class ItemCodex extends Item {
         						
         						try {
         							
-            						if ( !(structureTypes.get(i)).equals("Village")
-            								|| nbttagcompound2.getBoolean("Valid") // Either this is a village with a "valid" tag, or it's not a village.
-            								) {
-            							int[] boundingBox = nbttagcompound2.getIntArray("BB");
-            							// Now check to see if the player is inside the feature
-            							if (
-        									   player.posX >= boundingBox[0]
-        									&& player.posY >= boundingBox[1]
-        									&& player.posZ >= boundingBox[2]
-        									&& player.posX <= boundingBox[3]
-        									&& player.posY <= boundingBox[4]
-        									&& player.posZ <= boundingBox[5]
-            								) { // Player is inside bounding box.
-            								
-            								// Specifically check if this is a Village.
-            								// If so, you can pass this for checking the Ghost Town achievement.
-            								if (structureTypes.get(i).equals("Village")) {
-            										playerIsInVillage = true;
-            									}
-            								
-            								String structureName;
-            								String[] structureInfoArray = WriteBookHandler.tryGetStructureInfo(structureTypes.get(i), boundingBox, worldIn);
-            								
-            								namePrefix = structureInfoArray[0];
-            								nameRoot = structureInfoArray[1];
-            								nameSuffix = structureInfoArray[2];
-            								
-            								// If none is found, these strings are "null" which parseInt does not like very much
-            								try {signX = Integer.parseInt(structureInfoArray[3]);} catch (Exception e) {}
-            								try {signY = Integer.parseInt(structureInfoArray[4]);} catch (Exception e) {}
-            								try {signZ = Integer.parseInt(structureInfoArray[5]);} catch (Exception e) {}
-            								
-            								// If a name was NOT returned, then we need to generate a new one, as is done below:
-            								
-            								int[] structureCoords = new int[] {
-    												(boundingBox[0]+boundingBox[3])/2,
-    												(boundingBox[1]+boundingBox[4])/2,
-    												(boundingBox[2]+boundingBox[5])/2,
-    												};
-            								
-            								
-            								// Set a bunch of variables to be used to make the book
-            								bookType = bookTypes.get(i);
-            								structureTitle = structureTitles.get(i);
-            								dimensionName = dimensionNames.get(i);
-            								String structureType = structureTypes.get(i);
-            								
-            								// If you're in a Temple, figure out which kind specifically
-            								
-            								try {
-                					            if (structureType.equals("Temple")) {
-                					            	
-                					            	Biome biomeYoureIn = world.getBiomeGenForCoords(new BlockPos(MathHelper.floor_double(player.posX), 0, MathHelper.floor_double(player.posZ)));
-                					            	
-                					            	if (
-                					            			biomeYoureIn == Biomes.JUNGLE || 
-                					            			biomeYoureIn == Biomes.JUNGLE_HILLS ||
-                					            			biomeYoureIn == Biomes.JUNGLE_EDGE ||
-                					            			biomeYoureIn == Biomes.MUTATED_JUNGLE ||
-                					            			biomeYoureIn == Biomes.MUTATED_JUNGLE_EDGE
-                					            			) {
-                					            		structureType = "JungleTemple";
-                					            		structureTitle = "Jungle Temple";
-                					            		bookType = "jungletemple";
-                					            	}
-                					            	else if (
-                					            			biomeYoureIn == Biomes.DESERT ||
-                					            			biomeYoureIn == Biomes.DESERT_HILLS ||
-                					            			biomeYoureIn == Biomes.MUTATED_DESERT
-                					            			) {
-                					            		structureType = "DesertPyramid";
-                					            		structureTitle = "Desert Pyramid";
-                					            		bookType = "desertpyramid";
-                					            	}
-                					            	else if (
-                					            			biomeYoureIn == Biomes.SWAMPLAND ||
-                					            			biomeYoureIn == Biomes.MUTATED_SWAMPLAND
-                					            			) {
-                					            		structureType = "SwampHut";
-                					            		structureTitle = "Swamp Hut";
-                					            		bookType = "swamphut";
-                					            	}
-                					            	else if (
-                					            			biomeYoureIn == Biomes.ICE_PLAINS ||
-                					            			biomeYoureIn == Biomes.COLD_TAIGA ||
-                					            			biomeYoureIn == Biomes.ICE_MOUNTAINS ||
-                					            			biomeYoureIn == Biomes.MUTATED_ICE_FLATS ||
-                					            			biomeYoureIn == Biomes.COLD_BEACH ||
-                					            			biomeYoureIn == Biomes.COLD_TAIGA_HILLS ||
-                					            			biomeYoureIn == Biomes.MUTATED_TAIGA_COLD
-                					            			) {
-                					            		structureType = "Igloo";
-                					            		structureTitle = "Igloo";
-                					            		bookType = "igloo";
-                					            	}
-                					            }
-                					            
-            								}
-            								catch (Exception e) {} // Something went wrong, so it'll just use the default "temple" stuff.
-    										
-            								
-            								
-            								if (structureInfoArray[0]==null && structureInfoArray[1]==null && structureInfoArray[2]==null) {
-            									//Structure has no name. Generate it here.
-            									
-            									//forWorld(World world, String key, String toptagIn)
-            									VNWorldDataStructure data = VNWorldDataStructure.forWorld(world, "villagenames3_" + structureTypes.get(i), "NamedStructures");
-            									
-        										structureInfoArray = NameGenerator.newRandomName(nameTypes.get(i));
-        										
-        										
-        										// Changed color block in v3.1banner
-        	                        			// Generate banner info, regardless of if we make a banner.
-        	                            		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(random, -1);
-        	                    				ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
-        	                    				ArrayList<Integer> colorArray = (ArrayList<Integer>) newRandomBanner[1];
-        	                    				ItemStack villageBanner = BannerGenerator.makeBanner(patternArray, colorArray);
-        	                            		int townColorMeta = 15-colorArray.get(0);
-        	                            		
-        										
-        										headerTags = structureInfoArray[0];
-        										namePrefix = structureInfoArray[1];
-        										nameRoot = structureInfoArray[2];
-        										nameSuffix = structureInfoArray[3];
-        										
-        										// Make the data bundle to save to NBT
-        										NBTTagList nbttaglist = new NBTTagList();
-        										
-        										NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-        										signX = structureCoords[0];
-        										signY = structureCoords[1];
-        										signZ = structureCoords[2];
-        										nbttagcompound1.setInteger("signX", signX);
-        										nbttagcompound1.setInteger("signY", signY);
-        										nbttagcompound1.setInteger("signZ", signZ);
-        										nbttagcompound1.setInteger("townColor", townColorMeta); //In case we want to make clay, carpet, wool, glass, etc
-        										nbttagcompound1.setString("namePrefix", namePrefix);
-        										nbttagcompound1.setString("nameRoot", nameRoot);
-        										nbttagcompound1.setString("nameSuffix", nameSuffix);
-        										nbttagcompound1.setBoolean("fromCodex", true);
-        										if (!structureType.equals(structureTypes.get(i)) ) nbttagcompound1.setString("templeType", bookType);
-
-        										// Added in v3.1banner
-                                                // Form and append banner info
-                                                nbttagcompound1.setTag("BlockEntityTag", BannerGenerator.getNBTFromBanner(villageBanner));
-        										
-        										nbttaglist.appendTag(nbttagcompound1);
-        										
-        										// .getTagList() will return all the entries under the specific village name.
-        										//NBTTagCompound tagCompound = data.getData();
-        										
-        										data.getData().setTag((namePrefix + " " + nameRoot + " " + nameSuffix).trim() + ", x" + signX + " y" + signY + " z" + signZ, nbttaglist);
-        										data.markDirty();
-            									
-            									structureName = structureInfoArray[1]+" "+structureInfoArray[2]+" "+structureInfoArray[3];
-            									structureName = structureName.trim();
-            								}
-            								else {
-            									//Structure has a name. Unpack it here.
-            									structureName = structureInfoArray[0]+" "+structureInfoArray[1]+" "+structureInfoArray[2];
-            									structureName = structureName.trim();
-            								}
-            								
-            								
-            								
-            								// --- Archaeologist Achievement --- //
-            								
-            								try { // I'm enclosing this whole thing in a try/catch just in case casting to EntityPlayerMP fails
-            									EntityPlayerMP playerMP = (EntityPlayerMP)player;
-                								
-            									// Get list of structures that the player used a Codex in
-                					            JsonSerializableSet jsonserializableset = (JsonSerializableSet)playerMP.getStatFile().getProgress(VillageNames.archaeologist);
-
-                					            if (jsonserializableset == null) {
-                					            	// Load in the player statistics file and make a new JsonSerializableList
-                					                jsonserializableset = (JsonSerializableSet)playerMP.getStatFile().setProgress(VillageNames.archaeologist, new JsonSerializableSet());
-                					            }
-                					            
-                					            // Add the structure type you searched into the list if it's not there already
-                					            jsonserializableset.add(structureType);
-                					            
-                					            // Now check the size of that thar list!
-                					            if (jsonserializableset.size() >= VillageNames.numberStructuresArchaeologist) {
-                					            	
-                					            	// Give the player the achievement if they do not have it already
-                					            	if ( !playerMP.getStatFile().hasAchievementUnlocked(VillageNames.archaeologist) ) {
-                					            		//player.triggerAchievement(VillageNames.archaeologist);
-                					            		player.addStat(VillageNames.archaeologist);
-                					            		AchievementReward.allFiveAchievements(playerMP);
-                					            	}
-                					            }
-                					            
-            								}
-            								catch (Exception e) {} // Any of the above was illegal; probably the casting?
-            								
+        							// v3.2.1 - Removed "Village or Valid" condition.
+    							
+        							int[] boundingBox = nbttagcompound2.getIntArray("BB");
+        							// Now check to see if the player is inside the feature
+        							if (
+    									   player.posX >= boundingBox[0]
+    									&& player.posY >= boundingBox[1]
+    									&& player.posZ >= boundingBox[2]
+    									&& player.posX <= boundingBox[3]
+    									&& player.posY <= boundingBox[4]
+    									&& player.posZ <= boundingBox[5]
+        								) { // Player is inside bounding box.
+        								
+        								// Specifically check if this is a Village.
+        								// If so, you can pass this for checking the Ghost Town achievement.
+        								if (structureTypes.get(i).equals("Village") && structureTypes.get(i).equals("OTGVillage")) // v3.2.1
+        								{
+        									playerIsInVillage = true;
+        								}
+        								
+        								String structureName;
+        								String[] structureInfoArray = WriteBookHandler.tryGetStructureInfo(structureTypes.get(i), boundingBox, worldIn);
+        								
+        								namePrefix = structureInfoArray[0];
+        								nameRoot = structureInfoArray[1];
+        								nameSuffix = structureInfoArray[2];
+        								
+        								// If none is found, these strings are "null" which parseInt does not like very much
+        								try {signX = Integer.parseInt(structureInfoArray[3]);} catch (Exception e) {}
+        								try {signY = Integer.parseInt(structureInfoArray[4]);} catch (Exception e) {}
+        								try {signZ = Integer.parseInt(structureInfoArray[5]);} catch (Exception e) {}
+        								
+        								// If a name was NOT returned, then we need to generate a new one, as is done below:
+        								
+        								int[] structureCoords = new int[] {
+												(boundingBox[0]+boundingBox[3])/2,
+												(boundingBox[1]+boundingBox[4])/2,
+												(boundingBox[2]+boundingBox[5])/2,
+												};
+        								
+        								
+        								// Set a bunch of variables to be used to make the book
+        								bookType = bookTypes.get(i);
+        								structureTitle = structureTitles.get(i);
+        								dimensionName = dimensionNames.get(i);
+        								String structureType = structureTypes.get(i);
+        								
+        								// If you're in a Temple, figure out which kind specifically
+        								
+        								try {
+            					            if (structureType.equals("Temple")) {
+            					            	
+            					            	Biome biomeYoureIn = world.getBiomeGenForCoords(new BlockPos(MathHelper.floor_double(player.posX), 0, MathHelper.floor_double(player.posZ)));
+            					            	String structure_id = nbttagcompound2.getString("id"); // v3.2.1 to discriminate between Temple types
+            					            	
+            					            	if (
+            					            			structure_id.equals("TeJP") || // v3.2.1
+            					            			biomeYoureIn == Biomes.JUNGLE || 
+            					            			biomeYoureIn == Biomes.JUNGLE_HILLS ||
+            					            			biomeYoureIn == Biomes.JUNGLE_EDGE ||
+            					            			biomeYoureIn == Biomes.MUTATED_JUNGLE ||
+            					            			biomeYoureIn == Biomes.MUTATED_JUNGLE_EDGE
+            					            			) {
+            					            		structureType = "JungleTemple";
+            					            		structureTitle = "Jungle Temple";
+            					            		bookType = "jungletemple";
+            					            	}
+            					            	else if (
+            					            			structure_id.equals("TeDP") || // v3.2.1
+            					            			biomeYoureIn == Biomes.DESERT ||
+            					            			biomeYoureIn == Biomes.DESERT_HILLS ||
+            					            			biomeYoureIn == Biomes.MUTATED_DESERT
+            					            			) {
+            					            		structureType = "DesertPyramid";
+            					            		structureTitle = "Desert Pyramid";
+            					            		bookType = "desertpyramid";
+            					            	}
+            					            	else if (
+            					            			structure_id.equals("TeSH") || // v3.2.1
+            					            			biomeYoureIn == Biomes.SWAMPLAND ||
+            					            			biomeYoureIn == Biomes.MUTATED_SWAMPLAND
+            					            			) {
+            					            		structureType = "SwampHut";
+            					            		structureTitle = "Swamp Hut";
+            					            		bookType = "swamphut";
+            					            	}
+            					            	else if (
+            					            			structure_id.equals("Iglu") || // v3.2.1
+            					            			biomeYoureIn == Biomes.ICE_PLAINS ||
+            					            			biomeYoureIn == Biomes.COLD_TAIGA ||
+            					            			biomeYoureIn == Biomes.ICE_MOUNTAINS ||
+            					            			biomeYoureIn == Biomes.MUTATED_ICE_FLATS ||
+            					            			biomeYoureIn == Biomes.COLD_BEACH ||
+            					            			biomeYoureIn == Biomes.COLD_TAIGA_HILLS ||
+            					            			biomeYoureIn == Biomes.MUTATED_TAIGA_COLD
+            					            			) {
+            					            		structureType = "Igloo";
+            					            		structureTitle = "Igloo";
+            					            		bookType = "igloo";
+            					            	}
+            					            }
             					            
-            								// Since a valid structure was found, you can terminate the search here.
-            								break structureLoop;
-            							}
-            						}
-        							
-        							
+        								}
+        								catch (Exception e) {} // Something went wrong, so it'll just use the default "temple" stuff.
+										
+        								
+        								
+        								if (structureInfoArray[0]==null && structureInfoArray[1]==null && structureInfoArray[2]==null) {
+        									//Structure has no name. Generate it here.
+        									
+        									//forWorld(World world, String key, String toptagIn)
+        									VNWorldDataStructure data = VNWorldDataStructure.forWorld(world, "villagenames3_" + structureTypes.get(i), "NamedStructures");
+        									
+    										structureInfoArray = NameGenerator.newRandomName(nameTypes.get(i));
+    										
+    										
+    										// Changed color block in v3.1banner
+    	                        			// Generate banner info, regardless of if we make a banner.
+    	                            		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(random, -1);
+    	                    				ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
+    	                    				ArrayList<Integer> colorArray = (ArrayList<Integer>) newRandomBanner[1];
+    	                    				ItemStack villageBanner = BannerGenerator.makeBanner(patternArray, colorArray);
+    	                            		int townColorMeta = 15-colorArray.get(0);
+    	                            		
+    										
+    										headerTags = structureInfoArray[0];
+    										namePrefix = structureInfoArray[1];
+    										nameRoot = structureInfoArray[2];
+    										nameSuffix = structureInfoArray[3];
+    										
+    										// Make the data bundle to save to NBT
+    										NBTTagList nbttaglist = new NBTTagList();
+    										
+    										NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+    										signX = structureCoords[0];
+    										signY = structureCoords[1];
+    										signZ = structureCoords[2];
+    										nbttagcompound1.setInteger("signX", signX);
+    										nbttagcompound1.setInteger("signY", signY);
+    										nbttagcompound1.setInteger("signZ", signZ);
+    										nbttagcompound1.setInteger("townColor", townColorMeta); //In case we want to make clay, carpet, wool, glass, etc
+    										nbttagcompound1.setString("namePrefix", namePrefix);
+    										nbttagcompound1.setString("nameRoot", nameRoot);
+    										nbttagcompound1.setString("nameSuffix", nameSuffix);
+    										nbttagcompound1.setBoolean("fromCodex", true);
+    										if (!structureType.equals(structureTypes.get(i)) ) nbttagcompound1.setString("templeType", bookType);
+
+    										// Added in v3.1banner
+                                            // Form and append banner info
+                                            nbttagcompound1.setTag("BlockEntityTag", BannerGenerator.getNBTFromBanner(villageBanner));
+    										
+    										nbttaglist.appendTag(nbttagcompound1);
+    										
+    										// .getTagList() will return all the entries under the specific village name.
+    										//NBTTagCompound tagCompound = data.getData();
+    										
+    										data.getData().setTag((namePrefix + " " + nameRoot + " " + nameSuffix).trim() + ", x" + signX + " y" + signY + " z" + signZ, nbttaglist);
+    										data.markDirty();
+        									
+        									structureName = structureInfoArray[1]+" "+structureInfoArray[2]+" "+structureInfoArray[3];
+        									structureName = structureName.trim();
+        								}
+        								else {
+        									//Structure has a name. Unpack it here.
+        									structureName = structureInfoArray[0]+" "+structureInfoArray[1]+" "+structureInfoArray[2];
+        									structureName = structureName.trim();
+        								}
+        								
+        								
+        								
+        								// --- Archaeologist Achievement --- //
+        								
+        								try { // I'm enclosing this whole thing in a try/catch just in case casting to EntityPlayerMP fails
+        									EntityPlayerMP playerMP = (EntityPlayerMP)player;
+            								
+        									// Get list of structures that the player used a Codex in
+            					            JsonSerializableSet jsonserializableset = (JsonSerializableSet)playerMP.getStatFile().getProgress(VillageNames.archaeologist);
+
+            					            if (jsonserializableset == null) {
+            					            	// Load in the player statistics file and make a new JsonSerializableList
+            					                jsonserializableset = (JsonSerializableSet)playerMP.getStatFile().setProgress(VillageNames.archaeologist, new JsonSerializableSet());
+            					            }
+            					            
+            					            // Add the structure type you searched into the list if it's not there already
+            					            jsonserializableset.add(structureType);
+            					            
+            					            // Now check the size of that thar list!
+            					            if (jsonserializableset.size() >= VillageNames.numberStructuresArchaeologist) {
+            					            	
+            					            	// Give the player the achievement if they do not have it already
+            					            	if ( !playerMP.getStatFile().hasAchievementUnlocked(VillageNames.archaeologist) ) {
+            					            		//player.triggerAchievement(VillageNames.archaeologist);
+            					            		player.addStat(VillageNames.archaeologist);
+            					            		AchievementReward.allFiveAchievements(playerMP);
+            					            	}
+            					            }
+            					            
+        								}
+        								catch (Exception e) {} // Any of the above was illegal; probably the casting?
+        								
+        					            
+        								// Since a valid structure was found, you can terminate the search here.
+        								break structureLoop;
+        							}
+        						
         						}
         						catch (Exception e) {
         							// There's a tag like [23,-3] (chunk location) but there's no bounding box tag.

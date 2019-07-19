@@ -464,7 +464,7 @@ public class BannerGenerator {
 		{
 			if (forceBannerColor>=0 && bannerColors.size()==0) {bannerColors.add(forceBannerColor);} // In case you're backporting a banner for a previously created village
 			
-			int newpotentialcolor = (Integer) FunctionsVN.weightedRandom(colorMeta, colorWeights, random);
+			int newpotentialcolor = (Integer) FunctionsVN.weightedRandom(colorMeta, colorWeights, new Random());
 			// Search through the already-collected numbers and see if this new one is unique
 			boolean flag = true;
 			if (bannerColors.size() > 0)
