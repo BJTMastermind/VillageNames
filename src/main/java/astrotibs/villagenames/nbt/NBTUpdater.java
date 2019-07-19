@@ -237,10 +237,26 @@ public class NBTUpdater {
 					&& world.provider.getDimensionId()==0
 					) { // Player is in the Overworld
 				
-				MapGenStructureData structureData;
+				MapGenStructureData structureData = null; // v3.2.1
 				try {
-					structureData = (MapGenStructureData)event.world.getPerWorldStorage().loadData(MapGenStructureData.class, "Temple");
-					NBTTagCompound nbttagcompound = structureData.getTagCompound();
+					
+					// Updated in v3.2.1 to allow for Open Terrain Generation compatibility
+	        		NBTTagCompound nbttagcompound = null;
+	        		
+	        		try
+	        		{
+	        			structureData = (MapGenStructureData)event.world.getPerWorldStorage().loadData(MapGenStructureData.class, "Temple");
+	        			nbttagcompound = structureData.getTagCompound();
+	        		}
+	        		catch (Exception e)
+	        		{
+	        			try
+	            		{
+	            			structureData = (MapGenStructureData)event.world.getPerWorldStorage().loadData(MapGenStructureData.class, "OTGTemple");
+	            			nbttagcompound = structureData.getTagCompound();
+	            		}
+	            		catch (Exception e1) {}
+	        		}
 					
 					Iterator itr = nbttagcompound.getKeySet().iterator();
 					
