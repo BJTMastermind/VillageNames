@@ -258,7 +258,8 @@ public class FunctionsVN {
      */
     public static void modernizeVillagerTrades(EntityVillager villager)
     {
-    	Random random = villager.worldObj.rand;
+    	Random random = new Random(); // v3.2.1 - deactivated seed random
+    	
     	IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
     	int careerLevel = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"});
     	MerchantRecipeList buyingList = ReflectionHelper.getPrivateValue( EntityVillager.class, villager, new String[]{"buyingList", "field_70963_i"} );

@@ -3,6 +3,7 @@ package astrotibs.villagenames.handler;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import astrotibs.villagenames.VillageNames;
@@ -189,7 +190,7 @@ public class EntityMonitorHandler
                     // If not, assign a random profession
                     int profession = zombievillager.worldObj.rand.nextInt(6);
                     ims.setProfession(profession);
-                    ims.setCareer(FunctionsVN.pickRandomCareerForProfession(profession, zombievillager.worldObj.rand));
+                    ims.setCareer(FunctionsVN.pickRandomCareerForProfession(profession, new Random()));
                 }
 
                 if (GeneralConfig.debugMessages) {
