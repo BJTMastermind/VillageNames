@@ -403,10 +403,27 @@ public class EntityInteractHandler {
 				boolean playerIsInVillage = false;
 				
 				try{
-					// Load in the vanilla structure file
-					MapGenStructureData structureData = (MapGenStructureData)world.getPerWorldStorage().getOrLoadData(MapGenStructureData.class, "Village");
-    				NBTTagCompound nbttagcompound = structureData.getTagCompound();
-    				
+
+					// Updated in v3.2.1 to allow for Open Terrain Generation compatibility
+
+					MapGenStructureData structureData;
+		    		NBTTagCompound nbttagcompound = null;
+		    		
+		    		try
+		    		{
+		    			structureData = (MapGenStructureData)world.getPerWorldStorage().getOrLoadData(MapGenStructureData.class, "Village");
+		    			nbttagcompound = structureData.getTagCompound();
+		    		}
+		    		catch (Exception e) // Village.dat does not exist
+		    		{
+		    			try
+		        		{
+		        			structureData = (MapGenStructureData)world.getPerWorldStorage().getOrLoadData(MapGenStructureData.class, "OTGVillage");
+		        			nbttagcompound = structureData.getTagCompound();
+		        		}
+		        		catch (Exception e1) {} // OTGVillage.dat does not exist
+		    		}
+					
     				// Iterate through the entries
     				Iterator itr = nbttagcompound.getKeySet().iterator();
     				
