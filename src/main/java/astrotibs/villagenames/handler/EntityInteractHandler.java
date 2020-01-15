@@ -221,6 +221,12 @@ public class EntityInteractHandler {
 			
 			// Nearest village to the target entity
 			Village villageNearTarget = world.villageCollectionObj.getNearestVillage(new BlockPos(targetX, targetY, targetZ), villageRadiusBuffer);
+
+			
+			// Player rep evaluated near the start - v3.2.2
+			int playerRep = 0;
+			try{playerRep = ReputationHandler.getVNReputationForPlayer((EntityPlayerMP) player, ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP) player), villageNearTarget);}
+			catch (Exception e) {}
 			
 			
 			// keys: "NameTypes", "Professions", "ClassPaths"
@@ -314,7 +320,7 @@ public class EntityInteractHandler {
 				
 				try {
 					LogHelper.info(player.getDisplayName() + " reputation in this village: "
-							+ ReputationHandler.getVNReputationForPlayer((EntityPlayerMP) player, ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP) player), villageNearTarget)
+							+ playerRep // v3.2.2
 							);
 				}
 				catch (Exception e) {}
@@ -388,7 +394,7 @@ public class EntityInteractHandler {
 					) {
 				
 				int population = -1;
-				int reputation = ReputationHandler.getVNReputationForPlayer((EntityPlayerMP) player, ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP) player), villageNearTarget);
+				// reputationRemoved in v3.2.2
 				
 				try {
 					population = villageNearTarget.getNumVillagers();
@@ -459,7 +465,7 @@ public class EntityInteractHandler {
 				
 				if (   
 						(population == 0 || (playerIsInVillage && population == -1)) // No Villagers in the village
-						&& reputation >= -15 // This may be redundant in the event of an empty village
+						&& playerRep >= -15 // This may be redundant in the event of an empty village. Changed to playerRep in v3.2.2
 						&& !( (EntityPlayerMP)player ).getStatFile().hasAchievementUnlocked(VillageNames.laputa)
 						) {
 					EntityIronGolem ironGolemTarget = (EntityIronGolem) target;
@@ -517,8 +523,8 @@ public class EntityInteractHandler {
 					// Finds the nearest village to this target, but only if the villager's coordinates are within its bounding radius plus the buffer
 					
 					if (villageNearTarget != null) { // The Villager is inside/near a village
-						
-						int playerRep = ReputationHandler.getVNReputationForPlayer((EntityPlayerMP) player, ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP) player), villageNearTarget);
+
+						// Removed playerRep because it's calculated up top - v3.2.2
 						
 						if (playerRep < 0) { // Your reputation is too low.
 							if (!world.isRemote) {player.addChatComponentMessage(new ChatComponentText( "The villager does not trust you." ) );}
@@ -634,11 +640,12 @@ public class EntityInteractHandler {
 					event.setCanceled(true);
 					EntityVillager villager = (EntityVillager)target;
 					if ( targetAge >= 0 ) { // Villager is an adult.
-						if ( villageNearTarget == null || player.dimension != 0 ) { // There is no town.
+						if ( villageNearTarget == null) { // Remove dimension limitation - v3.2.2
 							if (!world.isRemote) {villagerConfused(player);}
 						}
 						else { // There is a town.
-							int playerRep = ReputationHandler.getVNReputationForPlayer((EntityPlayerMP) player, ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP) player), villageNearTarget);
+
+							// Removed player rep assertion - v3.2.2
 							
 							if (playerRep < 0) { // Your reputation is too low.
 								if (!world.isRemote) {player.addChatComponentMessage(new ChatComponentText( "The villager does not trust you." ) );}
@@ -677,6 +684,11 @@ public class EntityInteractHandler {
 		    			            String nameSuffix = tagList.getString("nameSuffix");
 		    			            // Now find the nearest Village to that sign's coordinate, within villageRadiusBuffer blocks outside the radius.
 		    			            Village villageNearSign = world.villageCollectionObj.getNearestVillage(new BlockPos(townX, townY, townZ), villageRadiusBuffer);
+
+		    			            // Player rep evaluated here before writing book - v3.2.2
+		    						int playerRepInVillageNearSign = 0;
+		    						try{playerRepInVillageNearSign = ReputationHandler.getVNReputationForPlayer((EntityPlayerMP) player, ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP) player), villageNearSign);}
+		    						catch (Exception e) {}
 		    			            
 		    			            isColony = tagList.getBoolean("isColony");
 		    			            
@@ -687,12 +699,14 @@ public class EntityInteractHandler {
 		    			            		WriteBookHandler.targetWriteNewVillageBook(
 		    			            				"village", target.getCustomNameTag(),
 		    			            				townX, townY, townZ,
-		    			            				isColony ? "Colony" : "Village", "",
+		    			            				isColony ? "Colony" : "Village",
+				            						// Explicit book dimension below - v3.2.2
+		    			            				player.dimension==0 ? "" : player.dimension==-1 ? "The Nether" : player.dimension==1 ? "The End": "Dimension "+player.dimension,
 		    			            				namePrefix, nameRoot, nameSuffix,
 		    			            				true, villageNearSign, event,
 		    			            				targetProfession, targetCareer, targetPName,
 		    			            				( villager.getRecipes(player) ).size(), //villageNearSign.getReputationForPlayer(player.getDisplayName()),
-		    			            				ReputationHandler.getVNReputationForPlayer((EntityPlayerMP) player, ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP) player), villageNearSign),
+		    			            				playerRepInVillageNearSign, // v3.2.2
 		    			            				player, target
 		    			            				);
 		    			            		}
@@ -702,7 +716,8 @@ public class EntityInteractHandler {
 		    			        if (!signLocated) {
 		    			        	// No well sign was found that matched the villager's village.
 		    			        	// We can assume this is a village WITHOUT a sign. So let's at least give it a name!
-		    			        	String[] newVillageName = NameGenerator.newRandomName("Village");
+		    			        	// Name type based on dimension - v3.2.2
+		    			        	String[] newVillageName = NameGenerator.newRandomName(player.dimension==-1 ? "Village-Fortress" : player.dimension==1 ? "Village-EndCity" : "Village");
 		    			        	String headerTags = newVillageName[0];
 	                        		String namePrefix = newVillageName[1];
 	                        		String nameRoot = newVillageName[2];
@@ -729,7 +744,10 @@ public class EntityInteractHandler {
 	                                nbttagcompound1.setString("nameSuffix", nameSuffix);
 	                                nbttagcompound1.setBoolean("fromEntity", true); // Record whether this name was generated from interaction with an entity
 	                                
-	                                if (!ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP)player).equals("none")) {
+	                                if (
+	                                		player.dimension == 0 && // Added to avoid a crash by loading a null list of villages - v3.2.2
+	                                		!ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP)player).equals("none")
+	                                		) {
 		                                nbttagcompound1.setBoolean("preVN", true); // No Village Names entry was discovered, so presumably this village was generated before including VN
                                 	}
 	                                else {
@@ -757,12 +775,14 @@ public class EntityInteractHandler {
 	                                	WriteBookHandler.targetWriteNewVillageBook(
 	    			            				"village", target.getCustomNameTag(),
 	    			            				centerX, centerY, centerZ,
-	    			            				isColony ? "Colony" : "Village", "",
+	    			            				isColony ? "Colony" : "Village",
+			            						// Explicit book dimension below - v3.2.2
+	    			            				player.dimension==0 ? "" : player.dimension==-1 ? "The Nether" : player.dimension==1 ? "The End": "Dimension "+player.dimension,
 	    			            				namePrefix, nameRoot, nameSuffix,
 	    			            				true, villageNearTarget, event,
 	    			            				targetProfession, targetCareer, targetPName,
 	    			            				( villager.getRecipes(player) ).size(), //villageNearTarget.getReputationForPlayer(player.getDisplayName()),
-	    			            				ReputationHandler.getVNReputationForPlayer((EntityPlayerMP) player, ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP) player), villageNearTarget),
+	    			            				playerRep, // v3.2.2
 	    			            				player, target
 	    			            				);
 	                                	}
@@ -1004,13 +1024,19 @@ public class EntityInteractHandler {
 					&& !world.isRemote
 					) {
 				event.setCanceled(true);
-				if (villageNearTarget != null) { // Villager is in a town, so get the rep message
-					int playerRep = ReputationHandler.getVNReputationForPlayer((EntityPlayerMP) player, ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP) player), villageNearTarget);
-					player.addChatComponentMessage(new ChatComponentText( villagerAssessReputation(playerRep) ) );
+
+				// Revised village-book-reputation to only work in dimension 0 - v3.2.2
+				if (villageNearTarget != null && player.dimension==0) // Villager is in a town, so get the rep message
+				{
+					try
+					{
+						player.addChatComponentMessage(new ChatComponentText( villagerAssessReputation(playerRep) ) );
+						return;
+					}
+					catch (Exception e) {} // Could not assess reputation -- this might not be a valid village world.
 				}
-				else { // Villager is not in a town, so return a confusion message.
-					villagerConfused(player);
-				}
+				villagerConfused(player);
+				
 			}
 			
 			//------------------------------//
