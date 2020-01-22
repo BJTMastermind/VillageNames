@@ -258,17 +258,19 @@ public class EntityInteractHandler {
 			// Convert a non-vanilla profession into a vanilla one for the purposes of generating a hint page
 			Map<String, ArrayList> mappedProfessions = GeneralConfig.unpackMappedProfessions(GeneralConfig.modProfessionMapping);
 	    	 // If the below fails, do none
-	    	
-	    	try {
-	    		villagerMappedProfession =  
-	    				(Integer) ((targetProfession >= 0 && targetProfession <= 5)
-	    				? targetProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(targetProfession) )));
-	    		}
-	    	catch (Exception e) {
-	    		if(!event.entityLiving.worldObj.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");
-	    		}
-	    	if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) {villagerMappedProfession = 5;}
-	    	
+
+			if (target instanceof EntityVillager) { // Put this into if block -v3.2.3
+		    	try {
+		    		villagerMappedProfession =  
+		    				(Integer) ((targetProfession >= 0 && targetProfession <= 5)
+		    				? targetProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(targetProfession) )));
+		    		}
+		    	catch (Exception e) {
+		    		if(!event.entityLiving.worldObj.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");
+		    		}
+		    	if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) {villagerMappedProfession = 5;}
+			} // v3.2.3
+			
 	    	// Primitive Mobs hard coding for career detection
 	    	if (targetClassPath.equals( ModObjects.PMTravelingMerchantClass ) )
 					{villagerMappedProfession = GeneralConfig.PMMerchantProfessionMap;}

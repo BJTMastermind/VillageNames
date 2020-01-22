@@ -61,7 +61,7 @@ public class ItemCodex extends Item {
      */
     @Override
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-
+    	
     	Random random = world.rand;
     	
     	if (!world.isRemote) {

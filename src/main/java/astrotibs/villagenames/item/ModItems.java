@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class ModItems {
 	
 	public static final ItemCodex codex = new ItemCodex();
-
+	
 	public static final ItemVillageBook villagebook = new ItemVillageBook("villagebook");
 	public static final ItemVillageBook mineshaftbook = new ItemVillageBook("mineshaftbook");
 
