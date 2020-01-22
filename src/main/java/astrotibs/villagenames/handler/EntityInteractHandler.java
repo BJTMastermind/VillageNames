@@ -244,22 +244,24 @@ public class EntityInteractHandler {
 			tradeSize = (target instanceof EntityVillager && targetProfession!=5 ) ? // v3.2 Fixed Nitwit condition
 					( ((EntityVillager)target).getRecipes(player) ).size() : 0;
 			
-					
 			// Convert a non-vanilla profession into a vanilla one for the purposes of generating a hint page
 			Map<String, ArrayList> mappedProfessions = GeneralConfig.unpackMappedProfessions(GeneralConfig.modProfessionMapping);
-	    	 // If the below fails, do none
-
-	    	try {
-	    		villagerMappedProfession =  
-	    				// Changed in v3.2
-	    				(Integer) ((targetProfession >= 0 && targetProfession <= 5)
-	    				? targetProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(targetPName) )));
-	    		}
-	    	catch (Exception e) {
-	    		if(!event.getEntityLiving().world.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");
-	    		}
-	    	//if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) {villagerMappedProfession = 5;}
-	    	
+	    	// If the below fails, do none
+			
+			if (target instanceof EntityVillager) { // Put this into if block -v3.2.3
+				try { // Moved profession mapping block to here -v3.2.3
+		    		villagerMappedProfession =  
+		    				// Changed in v3.2
+		    				(Integer) ((targetProfession >= 0 && targetProfession <= 5)
+		    				? targetProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(
+		    						((EntityVillager)target).getProfessionForge().getRegistryName().toString() // v3.2.3
+		    						) )));
+		    		}
+		    	catch (Exception e) {
+		    		if(!event.getEntityLiving().world.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");
+		    		}
+			} // v3.2.3
+			
 	    	// Primitive Mobs hard coding for career detection
 	    	if (targetClassPath.equals( ModObjects.PMTravelingMerchantClass ) )
 					{villagerMappedProfession = GeneralConfig.PMMerchantProfessionMap;}
@@ -275,7 +277,6 @@ public class EntityInteractHandler {
 	    	if (GeneralConfig.debugMessages && event.getHand() == EnumHand.MAIN_HAND) {
 				player.sendMessage(new TextComponentString("Class path of this entity: " + targetClassPath));
 				player.sendMessage(new TextComponentString(""));
-				
 				
 				if (target instanceof EntityVillager) {
 					try {
