@@ -154,6 +154,9 @@ public class GeneralConfig {
 				"rc_engineer|rc_engineer|railcraft:trackman", // Railcraft
 				"ob_musicmerchant||openblocks:radio", // Open Blocks
 				"myc_archivist||mystcraft:archivist", // Mystcraft
+				"hac_researcher|hac_researcher|dcs_climate:agri_researcher", // HeatAndClimateMod -v3.2.3
+				"hac_researcher|hac_researcher|dcs_climate:engineer", // HeatAndClimateMod -v3.2.3
+				"hac_trader|hac_trader|dcs_climate:trader", // HeatAndClimateMod -v3.2.3
 	    		},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers to render in the modular skin style. Format is: careerAsset|zombieCareerAsset|professionID\n"+
 	    		"careerAsset: career skin png to be overlaid onto the villager, located in assets\\"+Reference.MOD_ID.toLowerCase()+"\\textures\\entity\\villager\\profession\n"+
