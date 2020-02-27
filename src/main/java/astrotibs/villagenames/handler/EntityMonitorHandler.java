@@ -526,8 +526,8 @@ public class EntityMonitorHandler {
         // --- Monitoring villager trades --- //
         
         else if (
-        		event.getEntity() instanceof EntityVillager
-        		&& !event.getEntity().world.isRemote
+        		event.entity.getClass().toString().substring(6).equals(Reference.villagerClass) // Explicit vanilla villager class - v3.2.4
+				&& !event.getEntity().world.isRemote
         		) {
 
         	final EntityVillager villager = (EntityVillager) event.getEntity(); // Added final tag in v3.1

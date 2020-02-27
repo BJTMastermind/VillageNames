@@ -13,5 +13,6 @@ public class Reference {
 	public static final String COMMON_PROXY = "astrotibs.villagenames.proxy.CommonProxy";
 	public static final String GUI_FACTORY = "astrotibs.villagenames.gui.VNGuiFactory";
     public static final String CONFIG_PATH = "config/VillageNames/";
+    public static final String villagerClass = "net.minecraft.entity.passive.EntityVillager"; // v3.2.4
 
 }
