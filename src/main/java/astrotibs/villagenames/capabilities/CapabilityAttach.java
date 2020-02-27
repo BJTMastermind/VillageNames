@@ -18,7 +18,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class CapabilityAttach
 {
 	public static final ResourceLocation MODULAR_SKIN = new ResourceLocation(Reference.MOD_ID, "modularskin");
-	public static final ResourceLocation DRAGON_NAME = new ResourceLocation(Reference.MOD_ID, "dragonname");
 	
 	@SubscribeEvent
 	public void attachCapability(AttachCapabilitiesEvent event)
