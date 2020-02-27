@@ -20,6 +20,7 @@ import astrotibs.villagenames.tracker.ServerInfoTracker;
 import astrotibs.villagenames.tracker.ServerInfoTracker.EventType;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
+import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -538,9 +539,8 @@ public class EntityMonitorHandler
         // --- Monitoring villager trades --- //
         
         else if (
-        		event.getEntity() instanceof EntityVillager
-        		//&& GeneralConfigHandler.enableCartographer
-        		&& !event.getEntity().worldObj.isRemote
+        		event.getEntity().getClass().toString().substring(6).equals(Reference.villagerClass) // Explicit vanilla villager class - v3.2.4
+				&& !event.getEntity().worldObj.isRemote
         		) {
         	
         	final EntityVillager villager = (EntityVillager) event.getEntity(); // Added final tag in v3.1
