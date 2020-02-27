@@ -526,7 +526,7 @@ public class EntityMonitorHandler {
         // --- Monitoring villager trades --- //
         
         else if (
-        		event.entity.getClass().toString().substring(6).equals(Reference.villagerClass) // Explicit vanilla villager class - v3.2.4
+        		event.getEntity().getClass().toString().substring(6).equals(Reference.villagerClass) // Explicit vanilla villager class - v3.2.4
 				&& !event.getEntity().world.isRemote
         		) {
 
