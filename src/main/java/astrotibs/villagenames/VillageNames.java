@@ -25,7 +25,6 @@ import astrotibs.villagenames.network.MessageVillageGuard;
 import astrotibs.villagenames.network.MessageZombieVillagerProfession;
 import astrotibs.villagenames.network.NetworkHelper;
 import astrotibs.villagenames.proxy.CommonProxy;
-import astrotibs.villagenames.sounds.EventSounds;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
@@ -64,8 +63,8 @@ import net.minecraftforge.fml.relauncher.Side;
 		version = Reference.VERSION,
 		guiFactory = Reference.GUI_FACTORY
 		)
-public final class VillageNames {
-	
+public final class VillageNames
+{
 	
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
 	public static CommonProxy PROXY;
@@ -78,11 +77,10 @@ public final class VillageNames {
 	
 	@Instance(Reference.MOD_ID)
 	public static VillageNames instance;
-	
-	public static String currentConfigFolder = "VillageNames3";
-	public static String oldConfigFolder = "VillageNames";
-	public static String obsoleteConfigFolder = "VillageNamesOLD";
 
+	public static String currentConfigFolder = "VillageNames4";
+	public static String[] oldConfigFolders = new String[]{"VillageNames3", "VillageNames"};
+	
     // instantiate achievements
 	public static Achievement maxrep;
 	public static Achievement minrep;
@@ -116,41 +114,23 @@ public final class VillageNames {
 	
 	// PRE-INIT
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
-		
-		// v3.2 - Removed ModChecker
-		
+	public void preInit(FMLPreInitializationEvent event)
+	{
+
 		configDirectory = new File(event.getModConfigurationDirectory(), currentConfigFolder);
 		ConfigInit.init(configDirectory);
 		
-		
-		// ------------------------------------------- //		
-		// Relocate old config files and make new ones //
-		// ------------------------------------------- //
-		
-		// Log a warning to the user if the old config folder is detected
-		File oldConfigDirectory = new File(event.getModConfigurationDirectory(), oldConfigFolder);
-		if ( new File(event.getModConfigurationDirectory(), oldConfigFolder).exists() ) {
-			LogHelper.warn(
-					"ATTENTION! The old configuration folder " + oldConfigFolder + " exists. It will NOT BE USED in this version of Village Names! A new " 
-							+ currentConfigFolder + " folder has been created.");
-			if ( new File(event.getModConfigurationDirectory(), obsoleteConfigFolder).exists() ) {
-				// A folder with the name I'm trying to rename to already exists
-				LogHelper.error("For some reason, you have both a " + oldConfigFolder + " and " + obsoleteConfigFolder + " folder. Note that NEITHER FOLDER IS USED!");
+		// Log a warning to the user if an old config folder is detected
+		for (String oldConfigFolder : oldConfigFolders)
+		{
+			if (new File(event.getModConfigurationDirectory(), oldConfigFolder).exists())
+			{
+				LogHelper.warn(
+						"ATTENTION! The old configuration folder " + oldConfigFolder + " will NOT BE USED in this version of "+Reference.MOD_NAME+"! "
+								+ "A new " + currentConfigFolder + " folder has been created. Old config values HAVE NOT BEEN COPIED OVER.");
+				LogHelper.warn("Remove the "+ oldConfigFolder + " folder (save a backup!) to prevent this message in the future.");
+				break;
 			}
-			else {
-				// No folder with the renaming name exists, so (try to) rename the old folder
-				try {
-					oldConfigDirectory.renameTo( new File(event.getModConfigurationDirectory(), obsoleteConfigFolder) );
-					LogHelper.warn("The previous config folder has been renamed to "+obsoleteConfigFolder+". It will NOT BE USED anymore.");
-				}
-				catch (Exception e) {
-					LogHelper.error("Failed to rename " + oldConfigFolder + " folder to "+obsoleteConfigFolder);
-				}
-			}
-		}
-		else if ( new File(event.getModConfigurationDirectory(), obsoleteConfigFolder).exists() ) {
-			LogHelper.info("Old config files are located in config/"+obsoleteConfigFolder+". They will NOT BE USED anymore.");
 		}
 		
 		
@@ -159,9 +139,6 @@ public final class VillageNames {
 		ModItems.init();
 		ModBlocksVN.init();
 		
-		// --- Sounds --- //
-		MinecraftForge.EVENT_BUS.register(new EventSounds());
-		//MinecraftForge.EVENT_BUS.register(new PersistentMonitorSounds());
 		
 		// Listener that will fire on world loading, to generate the new nbt files from your old ones.
 		MinecraftForge.EVENT_BUS.register(new NBTUpdater());
@@ -176,8 +153,6 @@ public final class VillageNames {
         if (GeneralConfig.versionChecker) {MinecraftForge.EVENT_BUS.register(versionChecker);}
         if ((Reference.VERSION).contains("DEV")) {MinecraftForge.EVENT_BUS.register(new DevVersionWarning());}
 		
-        // Register sound events
-        EventSounds.registerSounds();
         
 		PROXY.preInit(event);
 

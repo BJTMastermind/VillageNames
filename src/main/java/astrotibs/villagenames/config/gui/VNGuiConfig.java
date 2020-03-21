@@ -1,4 +1,4 @@
-package astrotibs.villagenames.gui;
+package astrotibs.villagenames.config.gui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,25 +6,25 @@ import java.util.List;
 import javax.security.auth.login.Configuration;
 
 import astrotibs.villagenames.VillageNames;
-import astrotibs.villagenames.config.AlienConfigHandler;
-import astrotibs.villagenames.config.AlienVillageConfigHandler;
-import astrotibs.villagenames.config.AngelConfigHandler;
 import astrotibs.villagenames.config.ConfigReloader;
-import astrotibs.villagenames.config.CustomConfigHandler;
-import astrotibs.villagenames.config.DemonConfigHandler;
-import astrotibs.villagenames.config.DragonConfigHandler;
-import astrotibs.villagenames.config.EndCityConfigHandler;
-import astrotibs.villagenames.config.FortressConfigHandler;
 import astrotibs.villagenames.config.GeneralConfig;
-import astrotibs.villagenames.config.GoblinConfigHandler;
-import astrotibs.villagenames.config.GolemConfigHandler;
-import astrotibs.villagenames.config.MansionConfigHandler;
-import astrotibs.villagenames.config.MineshaftConfigHandler;
-import astrotibs.villagenames.config.MonumentConfigHandler;
-import astrotibs.villagenames.config.StrongholdConfigHandler;
-import astrotibs.villagenames.config.TempleConfigHandler;
-import astrotibs.villagenames.config.VillageConfigHandler;
-import astrotibs.villagenames.config.VillagerConfigHandler;
+import astrotibs.villagenames.config.pieces.AlienConfigHandler;
+import astrotibs.villagenames.config.pieces.AlienVillageConfigHandler;
+import astrotibs.villagenames.config.pieces.AngelConfigHandler;
+import astrotibs.villagenames.config.pieces.CustomConfigHandler;
+import astrotibs.villagenames.config.pieces.DemonConfigHandler;
+import astrotibs.villagenames.config.pieces.DragonConfigHandler;
+import astrotibs.villagenames.config.pieces.EndCityConfigHandler;
+import astrotibs.villagenames.config.pieces.FortressConfigHandler;
+import astrotibs.villagenames.config.pieces.GoblinConfigHandler;
+import astrotibs.villagenames.config.pieces.GolemConfigHandler;
+import astrotibs.villagenames.config.pieces.MansionConfigHandler;
+import astrotibs.villagenames.config.pieces.MineshaftConfigHandler;
+import astrotibs.villagenames.config.pieces.MonumentConfigHandler;
+import astrotibs.villagenames.config.pieces.StrongholdConfigHandler;
+import astrotibs.villagenames.config.pieces.TempleConfigHandler;
+import astrotibs.villagenames.config.pieces.VillageConfigHandler;
+import astrotibs.villagenames.config.pieces.VillagerConfigHandler;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -95,7 +95,7 @@ public class VNGuiConfig extends GuiConfig {
 		cc.setComment("Disable well decorations outright"); 
 		subCats.add( new ConfigElement(cc) );
 		
-		cc = GeneralConfig.config.getCategory("entity names");
+		cc = GeneralConfig.config.getCategory("naming");
 		cc.setComment("Name generation for vanilla and modded entities");
 		subCats.add( new ConfigElement(cc) );
 		

@@ -1,4 +1,4 @@
-package astrotibs.villagenames.gui;
+package astrotibs.villagenames.config.gui;
 
 import java.util.Set;
 
