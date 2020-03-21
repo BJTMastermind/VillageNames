@@ -3,9 +3,11 @@ package astrotibs.villagenames.utility;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import astrotibs.villagenames.VillageNames;
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
@@ -13,6 +15,7 @@ import astrotibs.villagenames.ieep.ExtendedVillager;
 import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.name.NameGenerator;
+import astrotibs.villagenames.network.MessageModernVillagerSkin;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -35,6 +38,7 @@ import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 // Added in v3.1
@@ -207,6 +211,30 @@ public class FunctionsVN {
 		// This will cause the 
 		return -1;
 	}
+
+
+    /**
+     * Produces a shuffled array of integers from value a to value b.
+     * Primarily used to randomize the colored wool variations granted to shepherds.
+     */
+    public static int[] shuffledIntArray(int a, int b, Random rgen)
+    {
+		int size = b-a+1;
+		int[] array = new int[size];
+ 
+		for(int i=0; i< size; i++) {array[i] = a+i;}
+ 
+		for (int i=0; i<array.length; i++)
+		{
+		    int randomPosition = rgen.nextInt(array.length);
+		    int temp = array[i];
+		    array[i] = array[randomPosition];
+		    array[randomPosition] = temp;
+		}
+		
+		return array;
+	}
+    
 	
     /**
      * Check if the given entity is a original Zombie (normal, baby or villager), 
@@ -543,7 +571,7 @@ public class FunctionsVN {
 	    						// TODO - multiple boat types
 								merchantRecipeArray = new ArrayList<MerchantRecipe>();
 								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.fish, 6, 2 ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 5) );
-								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.boat, 1 ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 5) );
+								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( FunctionsVN.returnRandomBoatTypeForVillager(villager), 1 ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 5) );
 								buyingList.add(merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
 								
 								break;
@@ -2336,9 +2364,9 @@ public class FunctionsVN {
 		    					
 		    					// INSTEAD, for levels 4 and 5, add a trade that was not previously added--and do so at an increased value to the player:
 		    			    	ArrayList<MerchantRecipe> possibleHighButcherTrades = new ArrayList<MerchantRecipe>();
-		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.chicken, Math.max(14 - ev.getProfessionLevelVN() + 1, 1) ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 5) );
-		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.rabbit, Math.max(4 - ev.getProfessionLevelVN() + 1, 1) ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 5) );
-		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.porkchop, Math.max(7 - ev.getProfessionLevelVN() + 1, 1) ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 5) );
+		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.chicken, Math.max(14 - ev.getProfessionLevelVN() + 1, 1) ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 6) );
+		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.rabbit, Math.max(4 - ev.getProfessionLevelVN() + 1, 1) ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 6) );
+		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.porkchop, Math.max(7 - ev.getProfessionLevelVN() + 1, 1) ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 6) );
 		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.emerald, 1 ), (ItemStack)null, new ItemStack( Items.cooked_rabbit, Math.min(5 + ev.getProfessionLevelVN() - 2, 64) ), 0, 5) ); // BE price
 		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.emerald, 1 ), (ItemStack)null, new ItemStack( Items.cooked_chicken, Math.min(8 + ev.getProfessionLevelVN() - 2, 64) ), 0, 5) ); // JE price
 		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.emerald, 1 ), (ItemStack)null, new ItemStack( Items.cooked_porkchop, Math.min(5 + ev.getProfessionLevelVN() - 2, 64) ), 0, 5) ); // JE price
@@ -2518,7 +2546,7 @@ public class FunctionsVN {
 		    				case 4: // Expert
 		    					
 		    					// TODO - Scute
-		    					// TOTO - Leather Horse Armor
+		    					// TODO - Leather Horse Armor
 		    					
 		    					
 		    					// INSTEAD, for levels 4 and 5, add a trade that was not previously added--and do so at an increased value to the player:
@@ -3265,5 +3293,486 @@ public class FunctionsVN {
 		// Return this value clamped to the darkest and lightest values
 		return MathHelper.clamp_int((int) Math.round(skin_r), -4, 3);
 	}
-    
+
+	
+	/**
+	 * Use this to adjust the villagers' trade when you talk to them.
+	 * It essentially scans for and removes all vanilla trades that aren't allowed by the new trade system.
+	 */
+	public static void monitorVillagerTrades(EntityVillager villager)
+	{
+    	ExtendedVillager ev = ExtendedVillager.get(villager);
+    	Random random = villager.worldObj.rand;
+    	NBTTagCompound compound = new NBTTagCompound();
+    	villager.writeEntityToNBT(compound);
+		int profession = compound.getInteger("Profession");
+		int career = compound.getInteger("Career");
+		//int careerLevel = compound.getInteger("CareerLevel");
+		int careerLevel = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"});
+		//career = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
+		MerchantRecipeList buyingList = ReflectionHelper.getPrivateValue( EntityVillager.class, villager, new String[]{"buyingList", "field_70963_i"} );
+		
+		
+    	// Try modifying trades
+        // Modified in v3.1trades
+        // Check trading list against modern trades
+        if (GeneralConfig.modernVillagerTrades // Added condition in v3.1trades
+        		//&& villager.ticksExisted%4==0 // Check only ever four ticks
+        		&& (buyingList!=null && buyingList.size()>0) )
+        {
+        	// Update the villager's VN career -- used mostly to create the Cartographer or Mason.
+        	if (ev.getCareerVN() == 0 )
+        	{
+    			ev.setCareerVN(
+    					(villager.getProfession() == 1 && random.nextBoolean()) ? 2 : // 50% chance a Prof1 will be a Cartographer
+    					(villager.getProfession() == 3 && random.nextInt(4)==0) ? 4 : // 25% chance a Prof3 will be a Mason
+    					ev.getCareer()
+    					);
+    		}
+        	
+        	// Then, modernize the trades
+        	if (ev.getProfessionLevelVN() < ev.getProfessionLevel())
+        	{
+        		FunctionsVN.modernizeVillagerTrades(villager);
+        	}
+        	
+        }
+        
+		
+		// If you're talking to a vanilla Villager, check the trades list
+		if (profession == 1) {
+			
+			// summon Villager ~ ~ ~ {Profession:1}
+			
+			if (
+					career == 1 && careerLevel >= 3
+					&& GeneralConfig.writtenBookTrade
+					) { // Fix the Librarian's written book trade
+				
+				try {
+					
+					// Get the current buying list
+					
+					for (int i=5; i < buyingList.size(); i++) { // The written book trade is at least at index 5
+						
+						MerchantRecipe extractedRecipe = buyingList.get(i);
+						ItemStack itemToBuy1 = extractedRecipe.getItemToBuy();
+						ItemStack itemToBuy2 = extractedRecipe.getSecondItemToBuy();
+						ItemStack itemToSell = extractedRecipe.getItemToSell();
+						
+						if (
+								itemToBuy1.getItem() == Items.written_book && itemToBuy1.stackSize == 2
+								&& itemToBuy2 == null
+								&& itemToSell.getItem() == Items.emerald
+								) { // This is the malformed trade. Fix it below.
+							buyingList.set(i, new MerchantRecipe( new ItemStack(Items.written_book, 1), null, new ItemStack(Items.emerald, 1) ));
+							if (GeneralConfig.debugMessages) {LogHelper.info("Replacing malformed written book trade for Librarian with ID " + villager.getEntityId());}
+							break;
+						}
+					}
+				}
+				catch (Exception e) {}
+			}
+			
+			// How many high levels are devoted to treasure trades. This limits you from being able to extract every trade from a single Librarian.
+			int treasureTradeCount = 3; 
+			if ( !GeneralConfig.modernVillagerTrades &&
+					(
+						   (career == 1 && careerLevel > 6 && careerLevel <= 6 + treasureTradeCount)
+						|| (career == 2 && careerLevel > 3 && careerLevel <= 3 + treasureTradeCount)
+							)
+					&& GeneralConfig.treasureTrades
+					) { // Villager is a Cartographer. Weed out the higher-level trades
+				
+				try {
+					
+					// Get the current buying list
+					buyingList = ReflectionHelper.getPrivateValue( EntityVillager.class, villager, new String[]{"buyingList", "field_70963_i"} );
+					
+					// If the librarian's career level is greater than a certain trade threshold, add new trades.
+					if ( buyingList.size() < careerLevel + (career==2 ? 0 : 5) ) {
+						//if (GeneralConfigHandler.debugMessages) {LogHelper.info("Librarian careerLevel is " + careerLevel + " and list length is " + buyingList.size() + ". Adding VN trades.");}
+						
+						
+						
+						// Librarian treasure trades
+						
+						int enchantLevel = 1; //used for level-based enchant books 
+						
+						// --- MINESHAFT --- //
+						enchantLevel = 4 + villager.worldObj.rand.nextInt(2);
+				        MerchantRecipe mineshaftForEnchantBook = new MerchantRecipe(
+		        				new ItemStack(ModItems.mineshaftbook, 1),
+		        				new ItemStack(Items.emerald, Math.min( (villager.worldObj.rand.nextInt(1 + enchantLevel * 9) + 3 * enchantLevel), 64) ),
+		        				Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.efficiency, enchantLevel))
+				        		);
+						buyingList.add( mineshaftForEnchantBook );
+				        
+				        enchantLevel = 3;//2 + villager.worldObj.rand.nextInt(2);
+				        MerchantRecipe mineshaftForFortuneBook = new MerchantRecipe(
+		        				new ItemStack(ModItems.mineshaftbook, 1),
+		        				new ItemStack(Items.emerald, Math.min( (villager.worldObj.rand.nextInt(1 + enchantLevel * 9) + 3 * enchantLevel), 64) ),
+		        				Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.fortune, enchantLevel))
+				        		);
+						buyingList.add( mineshaftForFortuneBook );
+				        
+				        
+				        // --- STRONGHOLD --- //
+						enchantLevel = 1;
+				        MerchantRecipe strongholdForInfinity = new MerchantRecipe(
+		        				new ItemStack(ModItems.strongholdbook, 1),
+		        				new ItemStack(Items.emerald, Math.min( (villager.worldObj.rand.nextInt(1 + enchantLevel * 9) + 3 * enchantLevel), 64) ),
+		        				Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.infinity, enchantLevel))
+				        		);
+						buyingList.add( strongholdForInfinity );
+				        
+				        
+				        // --- FORTRESS --- //
+						enchantLevel = 3 + villager.worldObj.rand.nextInt(2);
+				        MerchantRecipe fortressForFeatherBook = new MerchantRecipe(
+		        				new ItemStack(ModItems.fortressbook, 1),
+		        				new ItemStack(Items.emerald, Math.min( (villager.worldObj.rand.nextInt(1 + enchantLevel * 9) + 3 * enchantLevel), 64) ),
+		        				Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.featherFalling, enchantLevel))
+				        		);
+						buyingList.add( fortressForFeatherBook );
+				        
+				        
+				        // --- MONUMENT --- //
+						enchantLevel = 1;
+				        MerchantRecipe monumentForAquaBook = new MerchantRecipe(
+		        				new ItemStack(ModItems.monumentbook, 1),
+		        				new ItemStack(Items.emerald, Math.min( (villager.worldObj.rand.nextInt(1 + enchantLevel * 9) + 3 * enchantLevel), 64) ),
+		        				Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.aquaAffinity, enchantLevel))
+				        		);
+						buyingList.add( monumentForAquaBook );
+				        
+						
+				        // --- JUNGLE TEMPLE --- //
+						enchantLevel = 4 + villager.worldObj.rand.nextInt(2);
+				        MerchantRecipe jungleTempleForBaneBook = new MerchantRecipe(
+		        				new ItemStack(ModItems.jungletemplebook, 1),
+		        				new ItemStack(Items.emerald, Math.min( (villager.worldObj.rand.nextInt(1 + enchantLevel * 9) + 3 * enchantLevel), 64) ),
+		        				Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.baneOfArthropods, enchantLevel))
+				        		);
+						buyingList.add( jungleTempleForBaneBook );
+						
+				        
+				        // --- DESERT PYRAMID --- //
+				        enchantLevel = 3 + villager.worldObj.rand.nextInt(2);
+				        MerchantRecipe desertPyramidForBlastProtectionBook = new MerchantRecipe(
+		        				new ItemStack(ModItems.desertpyramidbook, 1),
+		        				new ItemStack(Items.emerald, Math.min( (villager.worldObj.rand.nextInt(1 + enchantLevel * 9) + 3 * enchantLevel), 64) ),
+		        				Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.blastProtection, enchantLevel))
+				        		);
+						buyingList.add( desertPyramidForBlastProtectionBook );
+						
+				        enchantLevel = 4 + villager.worldObj.rand.nextInt(2);
+				        MerchantRecipe desertPyramidForSmiteBook = new MerchantRecipe(
+		        				new ItemStack(ModItems.desertpyramidbook, 1),
+		        				new ItemStack(Items.emerald, Math.min( (villager.worldObj.rand.nextInt(1 + enchantLevel * 9) + 3 * enchantLevel), 64) ),
+		        				Items.enchanted_book.getEnchantedItemStack(new EnchantmentData(Enchantment.smite, enchantLevel))
+				        		);
+						buyingList.add( desertPyramidForSmiteBook );
+						
+						
+						// --- VILLAGE -- //
+						
+						// Book author
+						String bookAuthor = villager.getCustomNameTag();
+						
+						// Book title
+						String bookTitle = "Custom Structure Name";
+						switch ( random.nextInt(16) ) {
+						case 0:
+							// limit:   "--------------------------------"
+							bookTitle = "Your Own Unique Location Name";
+							//bookTitle = "Your Very Own Unique Location Name"; // Too long
+							break;
+						case 1:
+							// limit:   "--------------------------------"
+							bookTitle = "A Random Gobbledygook Name";
+							//bookTitle = "A Random Nonsense Gobbledygook Name"; // Too long
+							break;
+						case 2:
+							// limit:   "--------------------------------"
+							bookTitle = "Name Things And Influence People";
+							//bookTitle = "How To Name Things And Influence People"; // Too long
+							break;
+						case 3:
+							// limit:   "--------------------------------"
+							bookTitle = "Deed To A Non-Existent Place";
+							//bookTitle = "Deed To A Place That Doesn't Exist"; // Too long
+							break;
+						case 4:
+							bookTitle = "A Brand-New Structure Name";
+							break;
+						case 5:
+							bookTitle = "A New Structure Name For You!";
+							break;
+						case 6:
+							bookTitle = "Naming Things For Dummies";
+							break;
+						case 7:
+							bookTitle = "Naming Things And You";
+							break;
+						case 8:
+							bookTitle = "Live, Laugh, Name, Love";
+							break;
+						case 9:
+							bookTitle = "Markovian Name Generation";
+							break;
+						case 10:
+							bookTitle = "A Tale Of One City Name";
+							break;
+						case 11:
+							bookTitle = "The Case of the Un-Named Thing";
+							break;
+						case 12:
+							bookTitle = "The Unnamed";
+							bookAuthor = "H.P. Lovenames";
+							break;
+						case 13:
+							bookTitle = "Custom Structure Name";
+							break;
+						case 14:
+							bookTitle = "Name Inspiration";
+							break;
+						case 15:
+							bookTitle = "A One-Of-A-Kind Title";
+							break;
+						}
+						
+						// Book contents
+						String bookContents = ""; // Start on line 2
+						switch (random.nextInt(8)) {
+						case 0:
+							bookContents = "If you've gone and built something grand, but don't know what name to give it--why not use this name:";
+							break;
+						case 1:
+							bookContents = "Here's a custom-generated name for you to use, if you wish:";
+							break;
+						case 2:
+							bookContents = "Coming up with names can be difficult. If you're drawing a blank, why not use this name:";
+							break;
+						case 3:
+							bookContents = "Here's a unique name you can give to something if you need some inspiration:";
+							break;
+						case 4:
+							bookContents = Reference.MOD_NAME+" uses a Markov chain to generate names for entities and structures."
+									+ " If you've built something and you want to use VN to generate a new name for it, you can use this one:";
+							bookAuthor = "AstroTibs";
+							break;
+						case 5:
+							bookContents = "Feeling uninspired? Have writer's block? Feel free to use this customized location name:";
+							break;
+						case 6:
+							bookContents = "Maybe you've just built or discovered something, and you're not sure what to name it. Why not name it this:";
+							break;
+						case 7:
+							bookContents = "Coming up with a good, authentic location name can be hard. Well, this name might be neither good nor authentic, but maybe you'll use it anyway:";
+							break;
+						}
+						
+						// Generated name
+						String[] locationName = NameGenerator.newRandomName("village-mineshaft-stronghold-temple-fortress-monument-endcity-mansion-alienvillage");
+						bookContents += "\n\n" + (locationName[1]+" "+locationName[2]+" "+locationName[3]).trim();
+						
+						// Put it all together
+						ItemStack bookWithName = new ItemStack(Items.written_book);
+						if (bookWithName.getTagCompound() == null) {bookWithName.setTagCompound(new NBTTagCompound());} // Priming the book to receive information
+						
+						bookWithName.getTagCompound().setString("title", bookTitle ); // Set the title
+						
+						if (bookAuthor!=null && !bookAuthor.equals("")) { // Set the author
+							try { bookWithName.getTagCompound().setString("author", bookAuthor.indexOf("(")!=-1 ? bookAuthor.substring(0, bookAuthor.indexOf("(")).trim() : bookAuthor ); }
+							// If the target's name starts with a parenthesis for some reason, this will crash with an index OOB exception. In that case, add no author name.
+							catch (Exception e) {}
+						}
+						else {bookWithName.getTagCompound().setString("author", "");}
+						
+						NBTTagList pagesTag = new NBTTagList();
+						pagesTag.appendTag(new NBTTagString(bookContents));
+						bookWithName.getTagCompound().setTag("pages", pagesTag);
+						
+						// Add the trade
+				        buyingList.add( new MerchantRecipe(
+								new ItemStack(ModItems.villagebook, 1),
+								bookWithName) );
+						
+						
+						
+						// Cartographer treasure trades
+						
+						// Potion IDs taken from https://www.minecraftinfo.com/IDList.htm
+						
+						// --- STRONGHOLD --- //
+				        MerchantRecipe strongholdForEnderEye = new MerchantRecipe(new ItemStack(ModItems.strongholdbook, 1), new ItemStack(Items.ender_eye, 2));
+				        buyingList.add( strongholdForEnderEye ); // Ender Eye
+						
+				        // --- FORTRESS --- //
+				        MerchantRecipe fortressForFireResistance = new MerchantRecipe( new ItemStack(ModItems.fortressbook, 1), new ItemStack(Items.potionitem, 1, 8259));
+						buyingList.add( fortressForFireResistance ); // Fire Resistance (8:00)
+						
+						// --- SWAMP HUT --- //
+						MerchantRecipe swampHutForHarmingPotion = new MerchantRecipe(new ItemStack(ModItems.swamphutbook, 1), new ItemStack(Items.potionitem, 1, 16428) );
+						buyingList.add( swampHutForHarmingPotion ); // Splash Harming II
+						
+						MerchantRecipe swampHutForHealingPotion = new MerchantRecipe(new ItemStack(ModItems.swamphutbook, 1), new ItemStack(Items.potionitem, 1, 8229) );
+						buyingList.add( swampHutForHealingPotion ); // Healing II
+						
+						// --- MONUMENT --- //
+						MerchantRecipe monumentForWaterBreathing = new MerchantRecipe(new ItemStack(ModItems.monumentbook, 1), new ItemStack(Items.potionitem, 1, 8269));
+						buyingList.add( monumentForWaterBreathing ); // Water Breathing (8:00)
+						
+						// --- JUNGLE TEMPLE --- //
+						MerchantRecipe jungleTempleForStrength = new MerchantRecipe(new ItemStack(ModItems.jungletemplebook, 1), new ItemStack(Items.potionitem, 1, 8233));
+						buyingList.add( jungleTempleForStrength ); // Strength II (1:30)
+						
+						// --- IGLOO --- //
+						if (GeneralConfig.addIgloos) {
+							MerchantRecipe iglooForGoldenApple = new MerchantRecipe(new ItemStack(ModItems.igloobook, 1), new ItemStack(Items.golden_apple, 1));
+							//iglooForGoldenApple.func_82783_a(-6);
+							buyingList.add( iglooForGoldenApple );
+							
+							MerchantRecipe iglooForSplashWeakness = new MerchantRecipe(new ItemStack(ModItems.igloobook, 1), new ItemStack(Items.potionitem, 1, 16456));
+							//iglooForSplashWeakness.func_82783_a(-6);
+							buyingList.add( iglooForSplashWeakness ); // Splash Weakness (3:00)
+						}
+						
+						// --- VILLAGE -- //
+						String[] entityName = NameGenerator.newRandomName("villager-alien-angel-demon-dragon-goblin-golem");
+				        ItemStack tagWithName = new ItemStack(Items.name_tag, 1).setStackDisplayName( (entityName[1]+" "+entityName[2]+" "+entityName[3]).trim() );
+						tagWithName.setRepairCost(99);
+						buyingList.add( new MerchantRecipe(
+								new ItemStack(ModItems.villagebook, 1),
+								tagWithName) );
+				        
+					}
+					
+					if ( buyingList.size() > careerLevel + (career==2 ? 0 : 5) )
+					{
+						// First, do a scan and remove duplicates.
+						
+						for (int i=(career==2 ? 3 : 11); i < buyingList.size(); i++)
+						{
+							ItemStack stackBuyToCompare  = buyingList.get(i).getItemToBuy();  // Villager BUYS item from you
+							ItemStack stackSellToCompare = buyingList.get(i).getItemToSell(); // Villager SELLS item to you
+							
+							for (int j=buyingList.size()-1; j>i; j--)
+							{
+								ItemStack stackBuyToEvaluate  = buyingList.get(j).getItemToBuy();
+								ItemStack stackSellToEvaluate = buyingList.get(j).getItemToSell();
+								
+								Set enchantmentCompare  = EnchantmentHelper.getEnchantments(stackSellToCompare).keySet();
+								Set enchantmentEvaluate  = EnchantmentHelper.getEnchantments(stackSellToEvaluate).keySet();
+								
+								if (
+										   stackBuyToCompare.getItem()  == stackBuyToEvaluate.getItem()
+										&& stackSellToCompare.getItem() == stackSellToEvaluate.getItem()
+										&& stackSellToCompare.getMetadata() == stackSellToEvaluate.getMetadata()
+										&& enchantmentCompare.equals(enchantmentEvaluate) // Compares the enchantments of the trades. Both are -1 and so returns "true" if not both are enchanted books.
+										)
+								{
+									// This is a duplicate trade. Remove it.
+									//if (GeneralConfigHandler.debugMessages) {LogHelper.info("Buying list length " + buyingList.size() + ". Duplicate trade detected at index " + j);}
+									buyingList.remove(j);
+								}
+							}
+						}
+						
+						// Then, randomly remove entries from the end until the trading list is the right length.
+						int loopKiller = 0;
+						
+						while ( buyingList.size() > careerLevel + (career==2 ? 0 : 5) ) {
+							
+							int indexToRemove = (careerLevel-1 + (career==2 ? 0 : 5)) + villager.worldObj.rand.nextInt( buyingList.size() - (careerLevel-1 + (career==2 ? 0 : 5)) );
+							//if (GeneralConfigHandler.debugMessages) {LogHelper.info("Buying list length " + buyingList.size() + ". Removing excess trade at index " + indexToRemove);}
+							buyingList.remove( indexToRemove );
+							
+							loopKiller++;
+							if (loopKiller >=100) {
+								if (GeneralConfig.debugMessages) {
+									LogHelper.warn("Infinite loop suspected while pruning librarian trade list.");
+								}
+								break;
+							}
+						}
+					}
+					
+					// Finally, cram the adjusted buying list back into the cartographer.
+					ReflectionHelper.setPrivateValue(EntityVillager.class, villager, buyingList, new String[]{"buyingList", "field_70963_i"});
+					
+				}
+				catch (Exception e) {}//Something went wrong.
+
+			}
+		}
+    	
+		
+	}
+	
+	
+	/**
+	 * Inputs a villager (ideally, a fisherman) and returns a RANDOM boat type to buy.
+	 */
+	public static Item returnRandomBoatTypeForVillager(EntityVillager villager)
+	{
+		Item[] boats = new Item[]{
+				null,
+				null,
+				null,
+				null,
+				Items.boat,
+				null
+		};
+		
+		int[] randomOrder = shuffledIntArray(0, 5, villager.getRNG());
+		for (int i=0; i<6 ; i++) {if (boats[randomOrder[i]]!=null) {return boats[randomOrder[i]];}}
+		
+		// Failsafe, return ordinary boat.
+		return Items.boat;
+	}
+
+
+	/**
+	 * Inputs an entity and returns a wood type for that entity based on its location.
+	 * This is just in case we need to base type on where that entity is. Useful for
+	 * if a villager wants to sell an item made of a particular kind of wood.
+	 * 
+	 * If you are in a biome with certain specific tags or words in the name, it will
+	 * return a specific wood. Otherwise, if you are in a biome with the "forest" tag
+	 * it will return "oak." Failing all of that, it returns a random wood type.
+	 */
+	public static String chooseRandomWoodTypeFromLocation(EntityLiving entity)
+	{
+		BiomeGenBase biome = entity.worldObj.getBiomeGenForCoords(entity.getPosition());
+		
+		BiomeDictionary.Type[] typeTags = BiomeDictionary.getTypesForBiome(biome);
+		
+		ArrayList<String> boatTypes = new ArrayList<String>();
+		
+		// Add wood types to pool based on name
+		if (biome.biomeName.toLowerCase().contains("birch")) {boatTypes.add("birch");}
+		if (biome.biomeName.toLowerCase().contains("roofed")) {boatTypes.add("darkoak");}
+		
+		boolean isForest = false;
+		
+		// Add wood types to pool based on biome tags
+		for (BiomeDictionary.Type type : typeTags)
+		{
+			if (type==BiomeDictionary.Type.CONIFEROUS) {boatTypes.add("spruce"); continue;}
+			if (type==BiomeDictionary.Type.JUNGLE) {boatTypes.add("jungle"); continue;}
+			if (type==BiomeDictionary.Type.SAVANNA) {boatTypes.add("acacia"); continue;}
+			if (type==BiomeDictionary.Type.FOREST) {isForest=true; continue;}
+		}
+		
+		// Now, pick a boat type from the tags available
+		if (boatTypes.size() > 0) {return boatTypes.get(entity.getRNG().nextInt(boatTypes.size()));}
+		
+		// If none of the above applied, and the "isForest" tag is true, return oak.
+		if (isForest) {return "oak";}
+		
+		return (new String[]{"acacia", "birch", "darkoak", "jungle", "oak", "spruce"})[entity.getRNG().nextInt(6)];
+	}
+	
 }

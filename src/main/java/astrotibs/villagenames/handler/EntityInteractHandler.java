@@ -64,7 +64,8 @@ public class EntityInteractHandler {
 	// This will only be used for getting the class path to a block
 	@SubscribeEvent
 	//@SideOnly(Side.CLIENT)
-	public void onPlayerInteractEvent(PlayerInteractEvent event) {
+	public void onPlayerInteractEvent(PlayerInteractEvent event)
+	{
 		if ( 
 				GeneralConfig.debugMessages
 				&& !event.world.isRemote
@@ -108,8 +109,8 @@ public class EntityInteractHandler {
 	
 	
 	@SubscribeEvent(receiveCanceled=true)
-	public void onEntityInteract(EntityInteractEvent event) {
-		
+	public void onEntityInteract(EntityInteractEvent event)
+	{
 		// This was used to verify server-client syncing of Careers
 		/*
 		if (GeneralConfig.debugMessages)
@@ -1046,7 +1047,10 @@ public class EntityInteractHandler {
 			//------------------------------//
 			
 			// If you're holding anything else (or nothing), check to see if the target is a Villager, Village Golem, or entry from the config list.
-			else if (!world.isRemote) {
+			else if (!world.isRemote)
+			{
+				// Update villager trades on interaction
+				if (event.target instanceof EntityVillager) {FunctionsVN.monitorVillagerTrades((EntityVillager) event.target);}
 				
 				// Entity is a custom clickable config entry.
 				if ( mappedNamesClickable.get("ClassPaths").contains(targetClassPath) ) {

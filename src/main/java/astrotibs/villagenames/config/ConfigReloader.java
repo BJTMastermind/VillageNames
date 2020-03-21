@@ -1,5 +1,22 @@
 package astrotibs.villagenames.config;
 
+import astrotibs.villagenames.config.pieces.AlienConfigHandler;
+import astrotibs.villagenames.config.pieces.AlienVillageConfigHandler;
+import astrotibs.villagenames.config.pieces.AngelConfigHandler;
+import astrotibs.villagenames.config.pieces.CustomConfigHandler;
+import astrotibs.villagenames.config.pieces.DemonConfigHandler;
+import astrotibs.villagenames.config.pieces.DragonConfigHandler;
+import astrotibs.villagenames.config.pieces.EndCityConfigHandler;
+import astrotibs.villagenames.config.pieces.FortressConfigHandler;
+import astrotibs.villagenames.config.pieces.GoblinConfigHandler;
+import astrotibs.villagenames.config.pieces.GolemConfigHandler;
+import astrotibs.villagenames.config.pieces.MansionConfigHandler;
+import astrotibs.villagenames.config.pieces.MineshaftConfigHandler;
+import astrotibs.villagenames.config.pieces.MonumentConfigHandler;
+import astrotibs.villagenames.config.pieces.StrongholdConfigHandler;
+import astrotibs.villagenames.config.pieces.TempleConfigHandler;
+import astrotibs.villagenames.config.pieces.VillageConfigHandler;
+import astrotibs.villagenames.config.pieces.VillagerConfigHandler;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -15,8 +32,8 @@ public class ConfigReloader {
 		}
 	}
 		
-	public static void reloadConfigs() {
-		
+	public static void reloadConfigs()
+	{
 		GeneralConfig.loadConfiguration();
 		
 		EndCityConfigHandler.loadConfiguration();
@@ -39,7 +56,6 @@ public class ConfigReloader {
 		GoblinConfigHandler.loadConfiguration();
 		
 		CustomConfigHandler.loadConfiguration();
-		
 	}
 	
 }
