@@ -15,6 +15,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 /**
@@ -64,12 +65,12 @@ public class VersionChecker implements Runnable {
 	
     public boolean isLatestVersion()
     {
-     return isLatestVersion;
+    	return isLatestVersion;
     }
     
     public String getLatestVersion()
     {
-     return latestVersion;
+    	return latestVersion;
     }
 	
     /**
@@ -81,15 +82,18 @@ public class VersionChecker implements Runnable {
     public void onPlayerTickEvent(PlayerTickEvent event) {
     	
         if (
-        		event.player.world.isRemote 
-                
-        		) {
+        		event.player.world.isRemote
+        		&& event.phase == Phase.END // Stops doubling the checks unnecessarily -- v3.2.4
+       			&& event.player.ticksExisted<=50
+    			&& event.player.ticksExisted%10==0
+        		)
+        {
         	// V3.0.1: Used to repeat the version check
         	if (
-        			event.player.ticksExisted<=50
-        			&& event.player.ticksExisted%10==0
-        			&& latestVersion.equals("")
-        			) {
+        			(latestVersion.equals(null) || latestVersion.equals(""))
+        			&& !warnaboutfailure // Skip the "run" if a failure was detected
+        			)
+        	{
         		run();
         	}
         	// Ordinary version checker
@@ -97,10 +101,9 @@ public class VersionChecker implements Runnable {
         			!VillageNames.haveWarnedVersionOutOfDate
             		&& GeneralConfig.versionChecker
             		&& !VillageNames.versionChecker.isLatestVersion()
-            		&& !latestVersion.equals("")
             		&& !latestVersion.equals(null)
+            		&& !latestVersion.equals("")
             		&& !(Reference.VERSION).contains("DEV")
-            		&& event.player.ticksExisted<=50 // Version 3.0.1: to make sure this goes through
         			) {
         		
                 event.player.sendMessage(
@@ -117,7 +120,7 @@ public class VersionChecker implements Runnable {
                 VillageNames.haveWarnedVersionOutOfDate = true;
         	}
         	
-          }
+        }
     	
     }
     

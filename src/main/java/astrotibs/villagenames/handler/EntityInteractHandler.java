@@ -17,6 +17,7 @@ import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
 import astrotibs.villagenames.tracker.ServerInfoTracker;
+import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
@@ -63,7 +64,8 @@ public class EntityInteractHandler {
 	// This will only be used for getting the class path to a block
 	@SubscribeEvent
 	//@SideOnly(Side.CLIENT)
-	public void onPlayerInteractEvent(PlayerInteractEvent.RightClickBlock event) {
+	public void onPlayerInteractEvent(PlayerInteractEvent.RightClickBlock event)
+	{
 		if ( 
 				GeneralConfig.debugMessages
 				//&& (
@@ -85,8 +87,8 @@ public class EntityInteractHandler {
 	
 	
 	@SubscribeEvent(receiveCanceled=true)
-	public void onEntityInteract(EntityInteract event) {
-
+	public void onEntityInteract(EntityInteract event)
+	{
 		// Added in v3.1
 		// This was used to verify server-client syncing of Careers
 		/*
@@ -718,7 +720,11 @@ public class EntityInteractHandler {
 					!world.isRemote
 					&& event.getHand() == EnumHand.MAIN_HAND
 					) {
-
+				
+				// Update villager trades on interaction
+				if (event.getTarget() instanceof EntityVillager) {FunctionsVN.monitorVillagerTrades((EntityVillager) event.getTarget());}
+				
+				
 				// Added v3.2
 				String profForge = target instanceof EntityVillager ? ((EntityVillager)target).getProfessionForge().getRegistryName().toString() : "" ;
 				

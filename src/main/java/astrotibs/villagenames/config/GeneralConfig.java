@@ -25,11 +25,9 @@ public class GeneralConfig {
 	// Added in v3.1banner
 	public static boolean villageBanners;
 	public static int signYaw;
-		
-	//public static boolean addConcrete;
+	
 	public static boolean concreteWell;
 	
-	//public static boolean enderSounds;
 	
 	public static boolean codexChestLoot;
 	public static boolean versionChecker;
@@ -78,8 +76,10 @@ public class GeneralConfig {
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
 
-	public static void init(File configFile) {
-		if (config == null) {
+	public static void init(File configFile)
+	{
+		if (config == null)
+		{
 			config = new Configuration(configFile);
 			loadConfiguration();
 		}
@@ -101,13 +101,8 @@ public class GeneralConfig {
 	    
 	    wellDecorations = config.getBoolean("Allow well decorations", "Well Kill Switch", true, "Set this to false to disable all well decoration: sign, slabs, terracotta, concrete.");
 	    
-	    //addConcrete = config.getBoolean("1.12 Blocks", "World of Color", true, "Whether to add 1.12 style Concrete, Concrete Powder, and Glazed Terracotta");
 	    concreteWell = config.getBoolean("Concrete Well", Configuration.CATEGORY_GENERAL, true, "Whether to decorate wells with Concrete and Glazed Terracotta instead of stained clay");
 	    
-	    
-	    
-	    //--------------Sounds category--------------//
-	    //enderSounds = config.getBoolean("Ender Eye", "Sounds", true, "Play the 1.12+ Ender Eye sound effects (This flag is handled SERVER-side only)");
 	    
 	    
 	    // --------------Professions-----------------//
@@ -217,17 +212,17 @@ public class GeneralConfig {
 	    
 	    
 	    
-	    //--------------Entity Names-----------------//
+	    //--------------Names-----------------//
 	    
-	    nameEntities = config.getBoolean("Entity names", "Entity Names", true, "Entities reveal their names when you right-click them, or automatically if so assigned.");
-	    addJobToName = config.getBoolean("Entity professions", "Entity Names", false, "An entity's name also includes its profession/title. You may need to right-click the entity to update its name plate.");
-	    nameGolems = config.getBoolean("Golem names", "Entity Names", true, "Right-click village Golems to learn their name.");
+	    nameEntities = config.getBoolean("Entity names", "Naming", true, "Entities reveal their names when you right-click them, or automatically if so assigned.");
+	    addJobToName = config.getBoolean("Entity professions", "Naming", false, "An entity's name also includes its profession/title. You may need to right-click the entity to update its name plate.");
+	    nameGolems = config.getBoolean("Golem names", "Naming", true, "Right-click village Golems to learn their name.");
 	    
-	    nitwitProfession = config.getString("Nitwit Profession", "Entity Names", "", "The career displayed for a Nitwit"); // Per-profession registry and spawning is broken in 1.8
+	    nitwitProfession = config.getString("Nitwit Profession", "Naming", "", "The career displayed for a Nitwit"); // Per-profession registry and spawning is broken in 1.8
 	    
 		// Automatic Names
 		
-		modNameMappingAutomatic = config.getStringList("Automatic Names", "Entity Names", new String[]{
+		modNameMappingAutomatic = config.getStringList("Automatic Names", "Naming", new String[]{
 				
 				// Minecraft
 				//"demon||net.minecraft.entity.boss.EntityWither|add",
@@ -308,7 +303,7 @@ public class GeneralConfig {
 
 		// Clickable Names
 	    
-		modNameMappingClickable = config.getStringList("Clickable Names", "Entity Names", new String[]{
+		modNameMappingClickable = config.getStringList("Clickable Names", "Naming", new String[]{
 				
 				// Galacticraft
 				"alien||micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager",

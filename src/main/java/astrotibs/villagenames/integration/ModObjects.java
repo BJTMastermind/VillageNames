@@ -53,13 +53,23 @@ public class ModObjects {
 	// --- Blocks and items reference for trades --- //
 	// --------------------------------------------- //
 
-	// Blocks
+	// --- Blocks --- //
 	
-	// Items
+	// --- Items --- //
+	
+	// Campfire
+	public static final String campfireFMC = "minecraftfuture:campfire";
+	
+	// Dye
 	public static final String dyeBlueBOP = "biomesoplenty:blue_dye";
 	public static final String dyeBrownBOP = "biomesoplenty:brown_dye";
 	public static final String dyeGreenBOP = "biomesoplenty:green_dye";
 	public static final String dyeWhiteBOP = "biomesoplenty:white_dye";
 	public static final String dyeBlackBOP = "biomesoplenty:black_dye";
 	
+	// Lantern
+	public static final String lanternFMC = "minecraftfuture:lantern";
+	
+	// Sweet Berries
+	public static final String sweetBerriesFMC = "minecraftfuture:sweetberry";
 }

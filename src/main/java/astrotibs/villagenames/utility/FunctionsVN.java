@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import astrotibs.villagenames.VillageNames;
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.capabilities.IModularSkin;
 import astrotibs.villagenames.capabilities.ModularSkinProvider;
@@ -15,6 +16,7 @@ import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.name.NameGenerator;
+import astrotibs.villagenames.network.MessageModernVillagerSkin;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -44,6 +46,7 @@ import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 //Added in v3.1
@@ -216,7 +219,30 @@ public class FunctionsVN {
 		// This will cause the 
 		return -1;
 	}
-	
+
+
+    /**
+     * Produces a shuffled array of integers from value a to value b.
+     * Primarily used to randomize the colored wool variations granted to shepherds.
+     */
+    public static int[] shuffledIntArray(int a, int b, Random rgen)
+    {
+		int size = b-a+1;
+		int[] array = new int[size];
+ 
+		for(int i=0; i< size; i++) {array[i] = a+i;}
+ 
+		for (int i=0; i<array.length; i++)
+		{
+		    int randomPosition = rgen.nextInt(array.length);
+		    int temp = array[i];
+		    array[i] = array[randomPosition];
+		    array[randomPosition] = temp;
+		}
+		
+		return array;
+	}
+    
 	
     public static int pickRandomCareerForProfession(int profession, Random random)
     {
@@ -499,12 +525,30 @@ public class FunctionsVN {
 	    										));
 	    								
 	    								// Slot 4
-	    								// TODO - Campfire (Added 1.14)
-	    								merchantRecipeArray = new ArrayList<MerchantRecipe>();
-	    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Items.FISH, 6, 1 ), new ItemStack( Items.COOKED_FISH, 6, 1 ), 0, 5) );
-	    								buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
+	    								// Campfire (Added 1.14)
+    		    						while (true)
+    			    					{
+    										moditem = FunctionsVN.getItemFromName(ModObjects.campfireFMC);
+    										
+    										if (moditem != null)
+    										{
+    											buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)),
+    													new MerchantRecipe(
+    												new ItemStack( Items.EMERALD, 5 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 4
+    												));
+    											break;
+    										}
+    										else // User does not have campfires from any mods
+    										{
+    											merchantRecipeArray = new ArrayList<MerchantRecipe>();
+    		    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Items.FISH, 6, 1 ), new ItemStack( Items.COOKED_FISH, 6, 1 ), 0, 5) );
+    		    								buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
+    		    								
+    		    								break;
+    										}
+    									}
 	    								
-	    								// Erase the old block...
+    		    						// Erase the old block...
 	    								eraseTrades(buyingList, addToSlot, cbs);
 	    								
 	    								// We don't need to keep searching.
@@ -563,9 +607,7 @@ public class FunctionsVN {
 	    						// Slot 7
 								merchantRecipeArray = new ArrayList<MerchantRecipe>();
 								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.FISH, 6, 2 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5) );
-								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( new Item[]{
-										Items.BOAT, Items.ACACIA_BOAT, Items.BIRCH_BOAT, Items.DARK_OAK_BOAT, Items.JUNGLE_BOAT, Items.SPRUCE_BOAT
-										}[random.nextInt(6)], 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5) );
+								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( FunctionsVN.returnRandomBoatTypeForVillager(villager), 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5) );
 								buyingList.add(merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
 								
 								break;
@@ -1100,10 +1142,27 @@ public class FunctionsVN {
         										));
         								
         								// Slot 4
-        								merchantRecipeArray = new ArrayList<MerchantRecipe>();
-        								//TODO - Lantern (Added in 1.14)
-        								merchantRecipeArray.add(modernEnchantedBookTrade(random, 2));
-        								buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
+        								// Lantern (Added in 1.14)
+    		    						while (true)
+    			    					{
+    										moditem = FunctionsVN.getItemFromName(ModObjects.lanternFMC);
+    										
+    										if (moditem != null)
+    										{
+    											buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)),
+    													new MerchantRecipe(
+    												new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 5
+    												));
+    											break;
+    										}
+    										else // User does not have lanterns from any mods
+    										{
+    											merchantRecipeArray = new ArrayList<MerchantRecipe>();
+    	        								merchantRecipeArray.add(modernEnchantedBookTrade(random, 2));
+    	        								buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
+    	        								break;
+    										}
+    									}
         								
         								
         								// Erase the old block...
@@ -2339,15 +2398,36 @@ public class FunctionsVN {
 								break;
 								
 		    				case 4: // Expert
-		    					// TODO - Dried Kelp
-		    				case 5: // Master
-		    					// TODO - Sweet Berries (Added in 1.14)
 		    					
-		    					// INSTEAD, for levels 4 and 5, add a trade that was not previously added--and do so at an increased value to the player:
+		    					// TODO - Dried Kelp
+		    					
+		    				case 5: // Master
+		    					
+		    					// Sweet Berries (Added in 1.14)
+		    					if (ims.getProfessionLevel()==5)
+		    					{
+		    						while (true)
+			    					{
+										moditem = FunctionsVN.getItemFromName(ModObjects.sweetBerriesFMC);
+										
+										if (moditem != null)
+										{
+											buyingList.add(new MerchantRecipe(
+												new ItemStack( moditem, 10 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
+												));
+											return;
+										}
+										break;
+									}
+		    					}
+		    					
+		    					// If you reached this point, you're either a level 4 butcher, or a level 5 butcher but don't have sweet berries from a mod.
+		    					
+		    					// So INSTEAD, add a trade that was not previously added--and do so at an increased value to the player:
 		    			    	ArrayList<MerchantRecipe> possibleHighButcherTrades = new ArrayList<MerchantRecipe>();
-		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.CHICKEN, Math.max(14 - ims.getProfessionLevel() + 1, 1) ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5) );
-		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.RABBIT, Math.max(4 - ims.getProfessionLevel() + 1, 1) ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5) );
-		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.PORKCHOP, Math.max(7 - ims.getProfessionLevel() + 1, 1) ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5) );
+		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.CHICKEN, Math.max(14 - ims.getProfessionLevel() + 1, 1) ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 6) );
+		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.RABBIT, Math.max(4 - ims.getProfessionLevel() + 1, 1) ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 6) );
+		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.PORKCHOP, Math.max(7 - ims.getProfessionLevel() + 1, 1) ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 6) );
 		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.COOKED_RABBIT, Math.min(5 + ims.getProfessionLevel() - 2, 64) ), 0, 5) ); // BE price
 		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.COOKED_CHICKEN, Math.min(8 + ims.getProfessionLevel() - 2, 64) ), 0, 5) ); // JE price
 		    			    	possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.COOKED_PORKCHOP, Math.min(5 + ims.getProfessionLevel() - 2, 64) ), 0, 5) ); // JE price
@@ -2527,7 +2607,7 @@ public class FunctionsVN {
 		    				case 4: // Expert
 		    					
 		    					// TODO - Scute (Added in 1.13)
-		    					// TOTO - Leather Horse Armor (Added in 1.14)
+		    					// TODO - Leather Horse Armor (Added in 1.14)
 		    					
 		    					
 		    					// INSTEAD, for levels 4 and 5, add a trade that was not previously added--and do so at an increased value to the player:
@@ -3313,5 +3393,204 @@ public class FunctionsVN {
 		// Return this value clamped to the darkest and lightest values
 		return MathHelper.clamp((int) Math.round(skin_r), -4, 3);
 	}
-    
+	
+	
+	/**
+	 * Use this to adjust the villagers' trade when you talk to them.
+	 * It essentially scans for and removes all vanilla trades that aren't allowed by the new trade system.
+	 */
+	public static void monitorVillagerTrades(EntityVillager villager)
+	{
+    	NBTTagCompound compound = new NBTTagCompound();
+    	villager.writeEntityToNBT(compound);
+		int profession = compound.getInteger("Profession");
+		int career = compound.getInteger("Career");
+		int careerLevel = compound.getInteger("CareerLevel");
+		//career = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
+		
+    	// Try modifying trades
+		// Modified in v3.1trades
+        // Check trading list against modern trades
+		IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
+		
+		// Get the current buying list
+		MerchantRecipeList buyingList = ReflectionHelper.getPrivateValue( EntityVillager.class, villager, new String[]{"buyingList", "field_70963_i"} );
+		if (GeneralConfig.modernVillagerTrades // Added condition in v3.1trades
+        		//&& villager.ticksExisted%4==0 // Check only ever four ticks
+        		&& (buyingList!=null && buyingList.size()>0)
+        		&& ims.getProfessionLevel() < careerLevel)
+        {
+        	// Modernize the trades
+			FunctionsVN.modernizeVillagerTrades(villager);
+        }
+		
+		// If you're talking to a vanilla Villager, check the trades list
+		if (profession == 1) {
+			
+			// summon minecraft:villager ~ ~ ~ {Profession:1}
+			if (
+					career == 1 && careerLevel >= 3
+					&& GeneralConfig.writtenBookTrade
+					) { // Fix the Librarian's written book trade
+				//if (GeneralConfigHandler.debugMessages) {LogHelper.info("This is a villager with profession " + profession + ", career " + career + ", careerLevel " + careerLevel);}
+				try {
+					
+					//if (GeneralConfigHandler.debugMessages) {LogHelper.info( "buyingList " + buyingList + " with size " + buyingList.size() );}
+					for (int i=5; i < buyingList.size(); i++) { // The written book trade is at least at index 5
+						
+						MerchantRecipe extractedRecipe = buyingList.get(i);
+						ItemStack itemToBuy1 = extractedRecipe.getItemToBuy();
+						ItemStack itemToBuy2 = extractedRecipe.getSecondItemToBuy();
+						ItemStack itemToSell = extractedRecipe.getItemToSell();
+						//if (GeneralConfigHandler.debugMessages) {LogHelper.info("itemToBuy1 " + itemToBuy1 + ", itemToBuy2 " + itemToBuy2 + ", itemToSell " + itemToSell );}
+						if (
+								itemToBuy1.getItem() == Items.WRITTEN_BOOK && itemToBuy1.getCount() == 2
+								&& itemToBuy2.getCount() == 0
+								&& itemToSell.getItem() == Items.EMERALD && itemToSell.getCount() == 1
+								) { // This is the malformed trade. Fix it below.
+							//if (GeneralConfigHandler.debugMessages) {LogHelper.info("naughty trade detected" );}
+							buyingList.set(i, new MerchantRecipe( new ItemStack(Items.WRITTEN_BOOK, 1), new ItemStack(Items.EMERALD, 1) ));
+							if (GeneralConfig.debugMessages) {LogHelper.info("Replacing malformed written book trade for Librarian with ID " + villager.getEntityId());}
+							break;
+						}
+					}
+				}
+				catch (Exception e) {}
+			}
+
+			if (
+					(
+						   (career == 1 && careerLevel > 6) // Librarian
+						|| (career == 2 && careerLevel > 4) // Cartographer
+							)
+					&& GeneralConfig.treasureTrades
+					&& !GeneralConfig.modernVillagerTrades // Added in v3.1trades
+					) { // Villager is a Cartographer. Weed out the higher-level trades
+
+				try {
+
+					if ( buyingList.size() > careerLevel + (career==2 ? 1 : 5) ) {
+
+						// First, do a scan and remove duplicates.
+						
+						for (int i=(career==2 ? 5 : 11); i < buyingList.size(); i++) {
+							
+							ItemStack stackBuyToCompare  = buyingList.get(i).getItemToBuy();  // Villager BUYS item from you
+							ItemStack stackSellToCompare = buyingList.get(i).getItemToSell(); // Villager SELLS item to you
+							
+							for (int j=buyingList.size()-1; j>i; j--) {
+								
+								ItemStack stackBuyToEvaluate  = buyingList.get(j).getItemToBuy();
+								ItemStack stackSellToEvaluate = buyingList.get(j).getItemToSell();
+								
+								Set enchantmentCompare  = EnchantmentHelper.getEnchantments(stackSellToCompare).keySet();
+								Set enchantmentEvaluate  = EnchantmentHelper.getEnchantments(stackSellToEvaluate).keySet();
+								
+								if (
+										stackBuyToCompare.getItem()  == stackBuyToEvaluate.getItem()
+										&& stackSellToCompare.getItem() == stackSellToEvaluate.getItem()
+										&& enchantmentCompare.equals(enchantmentEvaluate) // Compares the enchantments of the trades. Both are -1 and so returns "true" if not both are enchanted books.
+										) {
+									// This is a duplicate trade. Remove it.
+									//if (GeneralConfigHandler.debugMessages) {LogHelper.info("Buying list length " + buyingList.size() + ". Duplicate trade detected at index " + j);}
+									buyingList.remove(j);
+								}
+							}
+						}
+						
+						// Then, randomly remove entries from the end until the trading list is the right length.
+						int loopKiller = 0;
+						
+						while ( buyingList.size() > careerLevel + (career==2 ? 1 : 5) ) {
+							
+							int indexToRemove = (careerLevel-1 + (career==2 ? 1 : 5)) + villager.world.rand.nextInt( buyingList.size() - (careerLevel-1 + (career==2 ? 1 : 5)) );
+							
+							//if (GeneralConfigHandler.debugMessages) {LogHelper.info("Buying list length " + buyingList.size() + ". Removing excess trade at index " + indexToRemove);}
+							buyingList.remove( indexToRemove );
+							
+							loopKiller++;
+							if (loopKiller >=100) {
+								if (GeneralConfig.debugMessages) {
+									LogHelper.warn("Infinite loop suspected while pruning librarian trade list.");
+								}
+								break;
+							}
+						}
+					}
+					
+					
+				}
+				catch (Exception e) {//Something went wrong.
+					
+				}
+				
+			}
+		}
+    	
+	}
+	
+	
+	/**
+	 * Inputs a villager (ideally, a fisherman) and returns a RANDOM boat type to buy.
+	 */
+	public static Item returnRandomBoatTypeForVillager(EntityVillager villager)
+	{
+		Item[] boats = new Item[]{
+				Items.ACACIA_BOAT,
+				Items.BIRCH_BOAT,
+				Items.DARK_OAK_BOAT,
+				Items.JUNGLE_BOAT,
+				Items.BOAT,
+				Items.SPRUCE_BOAT
+		};
+		
+		int[] randomOrder = shuffledIntArray(0, 5, villager.getRNG());
+		for (int i=0; i<6 ; i++) {if (boats[randomOrder[i]]!=null) {return boats[randomOrder[i]];}}
+		
+		// Failsafe, return ordinary boat.
+		return Items.BOAT;
+	}
+
+	
+	/**
+	 * Inputs an entity and returns a wood type for that entity based on its location.
+	 * This is just in case we need to base type on where that entity is. Useful for
+	 * if a villager wants to sell an item made of a particular kind of wood.
+	 * 
+	 * If you are in a biome with certain specific tags or words in the name, it will
+	 * return a specific wood. Otherwise, if you are in a biome with the "forest" tag
+	 * it will return "oak." Failing all of that, it returns a random wood type.
+	 */
+	public static String chooseRandomWoodTypeFromLocation(EntityLiving entity)
+	{
+		Biome biome = entity.getEntityWorld().getBiome(entity.getPosition());
+		
+		Set<Type> typeTags = BiomeDictionary.getTypes(biome);
+		
+		ArrayList<String> boatTypes = new ArrayList<String>();
+		
+		// Add wood types to pool based on name
+		if (biome.getBiomeName().toLowerCase().contains("birch")) {boatTypes.add("birch");}
+		if (biome.getBiomeName().toLowerCase().contains("roofed")) {boatTypes.add("darkoak");}
+		
+		boolean isForest = false;
+		
+		// Add wood types to pool based on biome tags
+		for (BiomeDictionary.Type type : typeTags)
+		{
+			if (type==BiomeDictionary.Type.CONIFEROUS) {boatTypes.add("spruce"); continue;}
+			if (type==BiomeDictionary.Type.JUNGLE) {boatTypes.add("jungle"); continue;}
+			if (type==BiomeDictionary.Type.SAVANNA) {boatTypes.add("acacia"); continue;}
+			if (type==BiomeDictionary.Type.FOREST) {isForest=true; continue;}
+		}
+		
+		// Now, pick a boat type from the tags available
+		if (boatTypes.size() > 0) {return boatTypes.get(entity.getRNG().nextInt(boatTypes.size()));}
+		
+		// If none of the above applied, and the "isForest" tag is true, return oak.
+		if (isForest) {return "oak";}
+		
+		return (new String[]{"acacia", "birch", "darkoak", "jungle", "oak", "spruce"})[entity.getRNG().nextInt(6)];
+	}
+
 }
