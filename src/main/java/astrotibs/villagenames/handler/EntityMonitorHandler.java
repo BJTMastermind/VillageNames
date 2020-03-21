@@ -199,7 +199,9 @@ public class EntityMonitorHandler {
         // New entity is a villager. Check to see if it came into being via a cured villager-zombie.
         else if (event.getEntity() instanceof EntityVillager) {
         	
-            final EntityVillager villager = (EntityVillager) event.getEntity();
+        	EntityVillager villager = (EntityVillager) event.getEntity();
+            
+            FunctionsVN.modernizeVillagerTrades(villager);
             
         	// Added in v3.1
     		IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
@@ -522,161 +524,39 @@ public class EntityMonitorHandler {
 
         
         
-        
-        
-        // --- Monitoring villager trades --- //
+        // --- Initialize villager trades and sync skin with client --- //
         
         else if (
         		event.getEntity().getClass().toString().substring(6).equals(Reference.villagerClass) // Explicit vanilla villager class - v3.2.4
 				&& !event.getEntity().world.isRemote
-        		) {
-
-        	final EntityVillager villager = (EntityVillager) event.getEntity(); // Added final tag in v3.1
-        	NBTTagCompound compound = new NBTTagCompound();
-        	villager.writeEntityToNBT(compound);
-			int profession = compound.getInteger("Profession");
-			int career = compound.getInteger("Career");
-			int careerLevel = compound.getInteger("CareerLevel");
-			//career = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
-
-        	// Try modifying trades
-			// Modified in v3.1trades
-            // Check trading list against modern trades
+        		)
+        {
+        	EntityVillager villager = (EntityVillager)event.getEntity();
     		IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
-			
-    		// Get the current buying list
-			MerchantRecipeList buyingList = ReflectionHelper.getPrivateValue( EntityVillager.class, villager, new String[]{"buyingList", "field_70963_i"} );
-			if (GeneralConfig.modernVillagerTrades // Added condition in v3.1trades
-            		//&& villager.ticksExisted%4==0 // Check only ever four ticks
-            		&& (buyingList!=null && buyingList.size()>0)
-            		&& ims.getProfessionLevel() < careerLevel)
-            {
-            	// Modernize the trades
-				FunctionsVN.modernizeVillagerTrades(villager);
-            }
-			
-			// If you're talking to a vanilla Villager, check the trades list
-			if (profession == 1) {
-				
-				// summon minecraft:villager ~ ~ ~ {Profession:1}
-				if (
-						career == 1 && careerLevel >= 3
-						&& GeneralConfig.writtenBookTrade
-						) { // Fix the Librarian's written book trade
-					//if (GeneralConfigHandler.debugMessages) {LogHelper.info("This is a villager with profession " + profession + ", career " + career + ", careerLevel " + careerLevel);}
-					try {
-						
-						//if (GeneralConfigHandler.debugMessages) {LogHelper.info( "buyingList " + buyingList + " with size " + buyingList.size() );}
-						for (int i=5; i < buyingList.size(); i++) { // The written book trade is at least at index 5
-							
-							MerchantRecipe extractedRecipe = buyingList.get(i);
-							ItemStack itemToBuy1 = extractedRecipe.getItemToBuy();
-							ItemStack itemToBuy2 = extractedRecipe.getSecondItemToBuy();
-							ItemStack itemToSell = extractedRecipe.getItemToSell();
-							//if (GeneralConfigHandler.debugMessages) {LogHelper.info("itemToBuy1 " + itemToBuy1 + ", itemToBuy2 " + itemToBuy2 + ", itemToSell " + itemToSell );}
-							if (
-									itemToBuy1.getItem() == Items.WRITTEN_BOOK && itemToBuy1.getCount() == 2
-									&& itemToBuy2.getCount() == 0
-									&& itemToSell.getItem() == Items.EMERALD && itemToSell.getCount() == 1
-									) { // This is the malformed trade. Fix it below.
-								//if (GeneralConfigHandler.debugMessages) {LogHelper.info("naughty trade detected" );}
-								buyingList.set(i, new MerchantRecipe( new ItemStack(Items.WRITTEN_BOOK, 1), new ItemStack(Items.EMERALD, 1) ));
-								if (GeneralConfig.debugMessages) {LogHelper.info("Replacing malformed written book trade for Librarian with ID " + villager.getEntityId());}
-								break;
-							}
-						}
-					}
-					catch (Exception e) {}
-				}
+        	
+    		NBTTagCompound compound = new NBTTagCompound();
+        	villager.writeEntityToNBT(compound);
+    		int profession = compound.getInteger("Profession");
+    		int career = compound.getInteger("Career");
+    		int careerLevel = compound.getInteger("CareerLevel");
+    		
+    		if (ims.getBiomeType()==-1) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
+    		if (ims.getSkinTone()==-99) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));} // v3.2
 
-				if (
-						(
-							   (career == 1 && careerLevel > 6) // Librarian
-							|| (career == 2 && careerLevel > 4) // Cartographer
-								)
-						&& GeneralConfig.treasureTrades
-						&& !GeneralConfig.modernVillagerTrades // Added in v3.1trades
-						) { // Villager is a Cartographer. Weed out the higher-level trades
-
-					try {
-						
-						if ( buyingList.size() > careerLevel + (career==2 ? 1 : 5) ) {
-
-							// First, do a scan and remove duplicates.
-							
-							for (int i=(career==2 ? 5 : 11); i < buyingList.size(); i++) {
-								
-								ItemStack stackBuyToCompare  = buyingList.get(i).getItemToBuy();  // Villager BUYS item from you
-								ItemStack stackSellToCompare = buyingList.get(i).getItemToSell(); // Villager SELLS item to you
-								
-								for (int j=buyingList.size()-1; j>i; j--) {
-									
-									ItemStack stackBuyToEvaluate  = buyingList.get(j).getItemToBuy();
-									ItemStack stackSellToEvaluate = buyingList.get(j).getItemToSell();
-									
-									Set enchantmentCompare  = EnchantmentHelper.getEnchantments(stackSellToCompare).keySet();
-									Set enchantmentEvaluate  = EnchantmentHelper.getEnchantments(stackSellToEvaluate).keySet();
-									
-									if (
-											stackBuyToCompare.getItem()  == stackBuyToEvaluate.getItem()
-											&& stackSellToCompare.getItem() == stackSellToEvaluate.getItem()
-											&& enchantmentCompare.equals(enchantmentEvaluate) // Compares the enchantments of the trades. Both are -1 and so returns "true" if not both are enchanted books.
-											) {
-										// This is a duplicate trade. Remove it.
-										//if (GeneralConfigHandler.debugMessages) {LogHelper.info("Buying list length " + buyingList.size() + ". Duplicate trade detected at index " + j);}
-										buyingList.remove(j);
-									}
-								}
-							}
-							
-							// Then, randomly remove entries from the end until the trading list is the right length.
-							int loopKiller = 0;
-							
-							while ( buyingList.size() > careerLevel + (career==2 ? 1 : 5) ) {
-								
-								int indexToRemove = (careerLevel-1 + (career==2 ? 1 : 5)) + villager.world.rand.nextInt( buyingList.size() - (careerLevel-1 + (career==2 ? 1 : 5)) );
-								
-								//if (GeneralConfigHandler.debugMessages) {LogHelper.info("Buying list length " + buyingList.size() + ". Removing excess trade at index " + indexToRemove);}
-								buyingList.remove( indexToRemove );
-								
-								loopKiller++;
-								if (loopKiller >=100) {
-									if (GeneralConfig.debugMessages) {
-										LogHelper.warn("Infinite loop suspected while pruning librarian trade list.");
-									}
-									break;
-								}
-							}
-						}
-						
-						
-					}
-					catch (Exception e) {//Something went wrong.
-						
-					}
-				}
-				
-			}
-			
-			if (ims.getBiomeType()==-1) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
-			if (ims.getSkinTone()==-99) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));} // v3.2
-
-			// Added in v3.1
-			if (
-					(villager.ticksExisted + villager.getEntityId())%5 == 0 // Ticks intermittently, modulated so villagers don't deliberately sync.
-					// v3.2: Changed profession to forge lookup
-					&& ims.getProfession() >= 0 && (ims.getProfession() <=5 || GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString()) != -1) // This villager ID is specified in the configs
-					)
-					{
-				
-				//(ExtendedVillager.get( villager )).setProfessionLevel(ExtendedVillager.get( villager ).getProfessionLevel());
-				// Sends a ping to everyone within 80 blocks
-				NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(villager.dimension, villager.lastTickPosX, villager.lastTickPosY, villager.lastTickPosZ, 16*5);
-				VillageNames.VNNetworkWrapper.sendToAllAround(
-						new MessageModernVillagerSkin(villager.getEntityId(), profession, career, ims.getBiomeType(), careerLevel, ims.getSkinTone()),
-						targetPoint);
-			}
-			
+    		// Added in v3.1
+    		if (
+    				(villager.ticksExisted + villager.getEntityId())%5 == 0 // Ticks intermittently, modulated so villagers don't deliberately sync.
+    				// v3.2: Changed profession to forge lookup
+    				&& ims.getProfession() >= 0 && (ims.getProfession() <=5 || GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString()) != -1) // This villager ID is specified in the configs
+    				)
+    		{
+    			//(ExtendedVillager.get( villager )).setProfessionLevel(ExtendedVillager.get( villager ).getProfessionLevel());
+    			// Sends a ping to everyone within 80 blocks
+    			NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(villager.dimension, villager.lastTickPosX, villager.lastTickPosY, villager.lastTickPosZ, 16*5);
+    			VillageNames.VNNetworkWrapper.sendToAllAround(
+    					new MessageModernVillagerSkin(villager.getEntityId(), profession, career, ims.getBiomeType(), careerLevel, ims.getSkinTone()),
+    					targetPoint);
+    		}			
         }
         
         // Monitor the player for purposes of the village reputations achievements
