@@ -63,7 +63,8 @@ public class EntityInteractHandler {
 	// This will only be used for getting the class path to a block
 	@SubscribeEvent
 	//@SideOnly(Side.CLIENT)
-	public void onPlayerInteractEvent(PlayerInteractEvent.RightClickBlock event) {
+	public void onPlayerInteractEvent(PlayerInteractEvent.RightClickBlock event)
+	{
 		if ( 
 				GeneralConfig.debugMessages
 				//&& (
@@ -84,7 +85,8 @@ public class EntityInteractHandler {
 	
 	
 	@SubscribeEvent(receiveCanceled=true)
-	public void onEntityInteract(EntityInteract event) { 
+	public void onEntityInteract(EntityInteract event)
+	{ 
 		/*
 		// Added in v3.1
 		// This was used to verify server-client syncing of Careers
@@ -1197,8 +1199,11 @@ public class EntityInteractHandler {
 			//------------------------------//
 			
 			// If you're holding anything else (or nothing), check to see if the target is a Villager, Village Golem, or entry from the config list.
-			else if (!world.isRemote) {
-
+			else if (!world.isRemote)
+			{
+				// Update villager trades on interaction
+				if (event.getTarget() instanceof EntityVillager) {FunctionsVN.monitorVillagerTrades((EntityVillager) event.getTarget());}
+				
 				// Added v3.2
 				String profForge = target instanceof EntityVillager ? ((EntityVillager)target).getProfessionForge().getRegistryName().toString() : "" ;
 				
