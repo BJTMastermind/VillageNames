@@ -262,6 +262,9 @@ public class FunctionsVN {
     	ExtendedVillager ev = ExtendedVillager.get(villager);
     	final int professionLevel = ev.getProfessionLevel();
     	MerchantRecipeList buyingList = ReflectionHelper.getPrivateValue( EntityVillager.class, villager, new String[]{"buyingList", "field_70963_i"} );
+
+    	if (buyingList==null) {return;} // To prevent crashes I guess?
+    	
     	MerchantRecipe merchantrecipe;
 		Item moditem; // Used as a placeholder to attempt to add modded trades to villagers
 		ArrayList<MerchantRecipe> merchantRecipeArray; // Used when a random item is needed to fill a slot
@@ -2358,7 +2361,23 @@ public class FunctionsVN {
 								break;
 								
 		    				case 4: // Expert
-		    					// TODO - Dried Kelp
+
+		    					// Dried Kelp Block to Emerald
+		    					while (true)
+		    					{
+									moditem = FunctionsVN.getItemFromName(ModObjects.kelpBOP);
+									
+									if (moditem != null)
+									{
+										buyingList.add(new MerchantRecipe(
+											new ItemStack( moditem, 64 ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 5
+											));
+										return;
+									}
+									break;
+								}
+		    					
+		    					
 		    				case 5: // Master
 		    					// TODO - Sweet Berries
 		    					
