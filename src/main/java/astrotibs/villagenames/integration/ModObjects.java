@@ -67,8 +67,14 @@ public class ModObjects {
 	public static final String dyeWhiteBOP = "biomesoplenty:white_dye";
 	public static final String dyeBlackBOP = "biomesoplenty:black_dye";
 	
+	// Kelp and Kelp Accessories
+	public static final String kelpBOP = "biomesoplenty:seaweed";
+	
 	// Lantern
 	public static final String lanternFMC = "minecraftfuture:lantern";
+	
+	// Suspicious Stew
+	public static final String suspiciousStewFMC = "minecraftfuture:suspiciousstew";
 	
 	// Sweet Berries
 	public static final String sweetBerriesFMC = "minecraftfuture:sweetberry";

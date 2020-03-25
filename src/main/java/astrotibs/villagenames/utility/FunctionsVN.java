@@ -22,6 +22,7 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IMerchant;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -283,6 +284,8 @@ public class FunctionsVN {
     	IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
     	int careerLevel = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"});
     	MerchantRecipeList buyingList = ReflectionHelper.getPrivateValue( EntityVillager.class, villager, new String[]{"buyingList", "field_70963_i"} );
+    	if (buyingList==null) {return;} // To prevent crashes I guess?
+    	
     	MerchantRecipe merchantrecipe;
 		Item moditem; // Used as a placeholder to attempt to add modded trades to villagers
 		ArrayList<MerchantRecipe> merchantRecipeArray; // Used when a random item is needed to fill a slot
@@ -430,6 +433,15 @@ public class FunctionsVN {
 	    								buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), new MerchantRecipe(
 	    										new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.CAKE, 1 ), 0, 5 // BE version; the JE version uses whole melons
 	    										));
+	    								
+	    								// Slot 8.5 - Selling only one at a time, up to five times (BE) and doing so as Expert level (JE)
+	    								moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFMC);
+	    								if (moditem != null)
+	    								{
+	    									buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), new MerchantRecipe(
+		    										new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 5
+		    										));
+	    								}
 	    								
 	    								// Erase the old block...
 	    								eraseTrades(buyingList, addToSlot, cbs);
@@ -1122,7 +1134,7 @@ public class FunctionsVN {
 	    					case 2: // Apprentice
 	    						
         						// Go forward through list and identify when you get the vanilla trades
-        						for (int i=0; i<buyingList.size(); i++)
+        						for (int i=0; i<buyingList.size(); i++) //TODO - Crashes?
         						{
             						int cbs = 0; // Cumulative Block Size. If all the below trade blocks are true, this will be equal to the size of the trade block.
         							if (
@@ -2399,7 +2411,21 @@ public class FunctionsVN {
 								
 		    				case 4: // Expert
 		    					
-		    					// TODO - Dried Kelp
+		    					// Dried Kelp Block to Emerald
+		    					while (true)
+		    					{
+									moditem = FunctionsVN.getItemFromName(ModObjects.kelpBOP);
+									
+									if (moditem != null)
+									{
+										buyingList.add(new MerchantRecipe(
+											new ItemStack( moditem, 64 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
+											));
+										return;
+									}
+									break;
+								}
+		    					
 		    					
 		    				case 5: // Master
 		    					
@@ -2636,7 +2662,7 @@ public class FunctionsVN {
 		    			        	
 		    			        	// 2: check to see if that type already exists on the list
 		    			        	boolean matched = false;
-		    			        	for (int i=0; i<buyingList.size(); i++)
+		    			        	for (int i=0; i<buyingList.size(); i++) //TODO - Crashes?
 		    			    		{
 		    			    			if (
 		    			    					hasSameItems(buyingList.get(Math.min(i, buyingList.size()-1)), chosenRecipe.getItemToBuy().getItem(),
