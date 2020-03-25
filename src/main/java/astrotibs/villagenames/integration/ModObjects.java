@@ -53,13 +53,19 @@ public class ModObjects {
 	// --- Blocks and items reference for trades --- //
 	// --------------------------------------------- //
 
-	// Blocks
+	// --- Blocks ---//
 	
-	// Items
+	
+	// --- Items --- //
+	
+	// Dye
 	public static final String dyeBlueBOP = "biomesoplenty:blue_dye";
 	public static final String dyeBrownBOP = "biomesoplenty:brown_dye";
 	public static final String dyeGreenBOP = "biomesoplenty:green_dye";
 	public static final String dyeWhiteBOP = "biomesoplenty:white_dye";
 	public static final String dyeBlackBOP = "biomesoplenty:black_dye";
+
+	// Kelp and Kelp Accessories
+	public static final String kelpBOP = "biomesoplenty:seaweed";
 	
 }
