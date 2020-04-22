@@ -1,5 +1,11 @@
 package astrotibs.villagenames.integration;
 
+import astrotibs.villagenames.block.ModBlocksVN;
+import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.utility.FunctionsVN;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+
 /**
  * A holder for string names for various mod items/blocks/etc for easy access
  */
@@ -65,5 +71,38 @@ public class ModObjects {
 
 	// Kelp and Kelp Accessories
 	public static final String kelpBOP = "biomesoplenty:seaweed";
+	
+
+	
+	
+	// --------------------------- //
+	// --- Generator Functions --- //
+	// --------------------------- //
+	
+	// Concrete
+	public static IBlockState chooseModConcrete(int color)
+	{
+		if (GeneralConfig.addConcrete)
+		{
+			return ModBlocksVN.blockConcrete.getStateFromMeta(color);
+		}
+		return null;
+	}
+	
+	// Glazed Terracotta
+	public static IBlockState chooseModGlazedTerracotta(int colorMeta, int facingMeta)
+	{
+		if (GeneralConfig.addConcrete)
+		{
+			return FunctionsVN.getGlazedTerracotaFromMetas(colorMeta, facingMeta);
+		}
+		return null;
+	}
+	
+	// Selects a modded Grass Path block if able; returns Gravel otherwise.
+	public static IBlockState chooseModPathBlock()
+	{
+		return Blocks.gravel.getDefaultState();
+	}
 	
 }

@@ -45,7 +45,7 @@ public class WellDecorateEvent {
 	public void onPopulating(PopulateChunkEvent.Post event) {
 		
 		if (
-				event.hasVillageGenerated && event.world.provider.getDimensionId() == 0
+				event.hasVillageGenerated && event.world.provider.getDimensionId() == 0 && !GeneralConfig.newVillageGenerator
 				&& !event.world.isRemote
 				) {
 			
@@ -226,7 +226,7 @@ public class WellDecorateEvent {
                                 			
                                 			// Changed color block in v3.1banner
                                 			// Generate banner info, regardless of if we make a banner.
-                                    		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(event.world.rand, -1);
+                                    		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(event.world.rand, -1, -1);
                             				ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
                             				ArrayList<Integer> colorArray = (ArrayList<Integer>) newRandomBanner[1];
                             				

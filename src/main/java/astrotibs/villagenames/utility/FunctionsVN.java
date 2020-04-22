@@ -2,12 +2,12 @@ package astrotibs.villagenames.utility;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import astrotibs.villagenames.VillageNames;
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
@@ -15,8 +15,8 @@ import astrotibs.villagenames.ieep.ExtendedVillager;
 import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.name.NameGenerator;
-import astrotibs.villagenames.network.MessageModernVillagerSkin;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -32,17 +32,105 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 // Added in v3.1
-public class FunctionsVN {
+public class FunctionsVN
+{
+	// Represents the 1.14+ village types
+	public static enum VillageType
+	{
+		PLAINS, DESERT, TAIGA, SAVANNA, SNOWY;
+		
+		/**
+		 * Determine the biometype to generate village buildings
+		 */
+		public static VillageType getVillageTypeFromBiome(World world, int posX, int posZ)
+		{
+			BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos(posX, 0, posZ));
+			return getVillageTypeFromBiome(biome);
+		}
+		public static VillageType getVillageTypeFromBiome(WorldChunkManager worldChunkManager, int posX, int posZ)
+		{
+			BiomeGenBase biome = worldChunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+			return getVillageTypeFromBiome(biome);
+		}
+		public static VillageType getVillageTypeFromBiome(BiomeGenBase biome)
+		{
+			BiomeDictionary.Type[] typeTags = BiomeDictionary.getTypesForBiome(biome);
+			
+			// Ordered by personal priority. The first of these to be fulfilled gets returned
+			if (biome.biomeName.toLowerCase().contains("taiga")) {return TAIGA;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.CONIFEROUS) {return TAIGA;}}
+			if (biome.biomeName.toLowerCase().contains("savanna")) {return SAVANNA;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SAVANNA) {return SAVANNA;}}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SNOWY) {return SNOWY;}}
+			if (biome.biomeName.toLowerCase().contains("desert")) {return DESERT;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SANDY) {return DESERT;}}
+			//for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.PLAINS) {return PLAINS;}}
+			
+			// If none apply, send back Plains
+			return PLAINS;
+		}
+		
+	}
+	
+	public static enum MaterialType
+	{
+		OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK,
+		SAND, MESA, SNOW, MUSHROOM; // Added three more for special non-wood cases
+		
+		/**
+		 * Determine the wood type to return for a given biome
+		 */
+		public static MaterialType getMaterialTemplateForBiome(World world, int posX, int posZ)
+		{
+			BiomeGenBase biome = world.getBiomeGenForCoords(new BlockPos(posX, 0, posZ));
+			return getMaterialTemplateForBiome(biome);
+		}
+		public static MaterialType getMaterialTemplateForBiome(WorldChunkManager worldChunkManager, int posX, int posZ)
+		{
+			BiomeGenBase biome = worldChunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+			return getMaterialTemplateForBiome(biome);
+		}
+		public static MaterialType getMaterialTemplateForBiome(BiomeGenBase biome)
+		{
+			if (biome.biomeName.toLowerCase().contains("birch")) {return BIRCH;}
+			if (biome.biomeName.toLowerCase().contains("roofed forest")) {return DARK_OAK;}
+			
+			BiomeDictionary.Type[] typeTags = BiomeDictionary.getTypesForBiome(biome);
+			if (biome.biomeName.toLowerCase().contains("taiga")) {return SPRUCE;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.CONIFEROUS) {return SPRUCE;}}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.JUNGLE) {return JUNGLE;}}
+			if (biome.biomeName.toLowerCase().contains("savanna")) {return ACACIA;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SAVANNA) {return ACACIA;}}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.MESA) {return MESA;}}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.MUSHROOM) {return MUSHROOM;}}
+			
+			// Special handler for snowy:
+			boolean isSnowy = false;
+			for (BiomeDictionary.Type type : typeTags)
+			{
+				if (type==BiomeDictionary.Type.SNOWY) {isSnowy=true;}
+				if (type==BiomeDictionary.Type.DENSE || type==BiomeDictionary.Type.FOREST || type==BiomeDictionary.Type.LUSH || type==BiomeDictionary.Type.SPARSE) {isSnowy=false; break;}
+			}
+			if (isSnowy) {return SNOW;}
+			
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SANDY) {return SAND;}}
+			
+			// If none apply, send back Oak
+			return OAK;
+		}
+	}
 	
 	/**
 	 * Determine the biometype of the biome the entity is currently in
@@ -1279,7 +1367,7 @@ public class FunctionsVN {
 		    						}
 		    						else // No banner was found or is available. INSTEAD, sell a new banner with a random design.
 		    						{
-		    							Object[] newRandomBanner = BannerGenerator.randomBannerArrays(villager.worldObj.rand, -1);
+		    							Object[] newRandomBanner = BannerGenerator.randomBannerArrays(villager.worldObj.rand, -1, -1);
 		    							ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
 		    							ArrayList<Integer> colorArray = (ArrayList<Integer>) newRandomBanner[1];
 		    																	
@@ -3350,7 +3438,7 @@ public class FunctionsVN {
     		}
         	
         	// Then, modernize the trades
-        	if (ev.getProfessionLevelVN() < ev.getProfessionLevel())
+        	if (ev.getProfessionLevelVN() < ev.getProfessionLevel() && GeneralConfig.modernVillagerTrades)
         	{
         		FunctionsVN.modernizeVillagerTrades(villager);
         	}
@@ -3793,5 +3881,111 @@ public class FunctionsVN {
 		
 		return (new String[]{"acacia", "birch", "darkoak", "jungle", "oak", "spruce"})[entity.getRNG().nextInt(6)];
 	}
+
+	/**
+	 * Returns the median value of an int array.
+	 * If the returned value is a halfway point, round up or down depending on if the average value is higher or lower than the median.
+	 * If it's the same, specify based on roundup parameter.
+	 */
+	public static int medianIntArray(ArrayList<Integer> array, boolean roundup)
+	{
+		if (array.size() <=0) return -1;
+		
+		Collections.sort(array);
+		
+		//if (GeneralConfig.debugMessages) {LogHelper.info("array: " + array);}
+		
+		if (array.size() % 2 == 0)
+		{
+			// Array is even-length. Find average of the middle two values.
+			int totalElements = array.size();
+			int sumOfMiddleTwo = array.get(totalElements / 2) + array.get(totalElements / 2 - 1);
+			
+			if (sumOfMiddleTwo%2==0)
+			{
+				// Average of middle two values is integer
+				//LogHelper.info("Median chosen type A: " + sumOfMiddleTwo/2);
+				return sumOfMiddleTwo/2;
+			}
+			else
+			{
+				// Average of middle two is half-integer.
+				// Round this based on whether the average is higher.
+				double median = (double)sumOfMiddleTwo/2;
+				
+				double average = 0;
+				for (int i : array) {average += i;}
+				average /= array.size();
+				
+				if (average < median)
+				{
+					//LogHelper.info("Median chosen type B: " + MathHelper.floor_double(median) );
+					return MathHelper.floor_double(median);
+				}
+				else if (average > median)
+				{
+					//LogHelper.info("Median chosen type C: " + MathHelper.ceiling_double_int(median) );
+					return MathHelper.ceiling_double_int(median);
+				}
+				else
+				{
+					//LogHelper.info("Median chosen type D: " + (roundup ? MathHelper.ceiling_double_int(median) : MathHelper.floor_double(median)));
+					return roundup ? MathHelper.ceiling_double_int(median) : MathHelper.floor_double(median);
+				}
+			}
+		}
+		else
+		{
+			// Array is odd-length. Take the middle value.
+			//LogHelper.info("Median chosen type E: " + array.get(array.size()/2));
+			return array.get(array.size()/2);
+		}
+	}
+
+	/**
+	 * This method inputs three integers and returns a unique long value based on them.
+	 * The purpose of this is to be used as Random.setSeed(unique + worldseed) to ensure that
+	 * randomized values for e.g. village names are deterministic based on their coordinates
+	 * so that they can be regenerated as necessary.
+	 */
+	public static long getUniqueLongForXYZ(int x, int y, int z)
+	{
+		// Find out which of x and/or z are negative in order to discriminate "quadrant"
+		boolean xIsNegative = x<0; boolean zIsNegative = z<0;
+		// set the inputs to non-negative
+		x = Math.abs(x); y = Math.abs(y); z = Math.abs(z);
+		
+		return ((x+y+z)*(x+y+z+1)*(x+y+z+2)/6 + (y+z)*(y+z+1)/2 + y + (zIsNegative? 1:0)) * (xIsNegative? -2:2);
+	}
 	
+	/**
+	 * Color metas are the same as dye.
+     * Facing metas are in [0, 3]. The order is S-W-N-E
+     */
+	public static IBlockState getGlazedTerracotaFromMetas(int colorMeta, int facingMeta)
+	{
+		Block block = ModBlocksVN.blockGlazedTerracottaWhite;
+		
+		switch (colorMeta)
+		{
+		// Case 0 is handled by default
+		case 1: block=ModBlocksVN.blockGlazedTerracottaOrange; break;
+		case 2: block=ModBlocksVN.blockGlazedTerracottaMagenta; break;
+		case 3: block=ModBlocksVN.blockGlazedTerracottaLightBlue; break;
+		case 4: block=ModBlocksVN.blockGlazedTerracottaYellow; break;
+		case 5: block=ModBlocksVN.blockGlazedTerracottaLime; break;
+		case 6: block=ModBlocksVN.blockGlazedTerracottaPink; break;
+		case 7: block=ModBlocksVN.blockGlazedTerracottaGray; break;
+		case 8: block=ModBlocksVN.blockGlazedTerracottaSilver; break;
+		case 9: block=ModBlocksVN.blockGlazedTerracottaCyan; break;
+		case 10: block=ModBlocksVN.blockGlazedTerracottaPurple; break;
+		case 11: block=ModBlocksVN.blockGlazedTerracottaBlue; break;
+		case 12: block=ModBlocksVN.blockGlazedTerracottaBrown; break;
+		case 13: block=ModBlocksVN.blockGlazedTerracottaGreen; break;
+		case 14: block=ModBlocksVN.blockGlazedTerracottaRed; break;
+		case 15: block=ModBlocksVN.blockGlazedTerracottaBlack; break;
+		}
+		
+		return block.getStateFromMeta(facingMeta);
+	}
 }

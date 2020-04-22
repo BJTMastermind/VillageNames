@@ -205,7 +205,7 @@ public class ItemCodex extends Item {
         								
         								// Specifically check if this is a Village.
         								// If so, you can pass this for checking the Ghost Town achievement.
-        								if (structureTypes.get(i).equals("Village") && structureTypes.get(i).equals("OTGVillage")) // v3.2.1
+        								if (structureTypes.get(i).equals("Village") || structureTypes.get(i).equals("OTGVillage")) // v3.2.1
         								{
         									playerIsInVillage = true;
         								}
@@ -301,7 +301,7 @@ public class ItemCodex extends Item {
     										
     										// Changed color block in v3.1banner
     	                        			// Generate banner info, regardless of if we make a banner.
-    	                            		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(random, -1);
+    	                            		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(random, -1, -1);
     	                    				ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
     	                    				ArrayList<Integer> colorArray = (ArrayList<Integer>) newRandomBanner[1];
     	                    				ItemStack villageBanner = BannerGenerator.makeBanner(patternArray, colorArray);

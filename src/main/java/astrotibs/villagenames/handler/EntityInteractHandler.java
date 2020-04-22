@@ -289,6 +289,7 @@ public class EntityInteractHandler {
 					try {
 						LogHelper.info("Profession: " + targetProfession
 								+ ", Career: " + (ExtendedVillager.get((EntityVillager) target)).getCareer()
+								+ ", CareerVN: " + (ExtendedVillager.get((EntityVillager) target)).getCareerVN()
 								+ (GeneralConfig.modernVillagerSkins ? ", BiomeType: " + (ExtendedVillager.get((EntityVillager) target)).getBiomeType() // Added in v3.1
 										: "")
 								+ (GeneralConfig.modernVillagerSkins ? ", Profession Level: " + (ExtendedVillager.get((EntityVillager) target)).getProfessionLevel() // Added in v3.1
@@ -728,7 +729,7 @@ public class EntityInteractHandler {
 	                        		
 	                        		// Changed color block in v3.1banner
                         			// Generate banner info, regardless of if we make a banner.
-                            		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(random, -1);
+                            		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(random, -1, -1);
                     				ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
                     				ArrayList<Integer> colorArray = (ArrayList<Integer>) newRandomBanner[1];
                     				ItemStack villageBanner = BannerGenerator.makeBanner(patternArray, colorArray);
@@ -1050,7 +1051,7 @@ public class EntityInteractHandler {
 			else if (!world.isRemote)
 			{
 				// Update villager trades on interaction
-				if (event.target instanceof EntityVillager) {FunctionsVN.monitorVillagerTrades((EntityVillager) event.target);}
+				if (event.target instanceof EntityVillager && GeneralConfig.modernVillagerTrades) {FunctionsVN.monitorVillagerTrades((EntityVillager) event.target);}
 				
 				// Entity is a custom clickable config entry.
 				if ( mappedNamesClickable.get("ClassPaths").contains(targetClassPath) ) {

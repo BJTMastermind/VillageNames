@@ -3,8 +3,6 @@ package astrotibs.villagenames.handler;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 
 import astrotibs.villagenames.VillageNames;
 import astrotibs.villagenames.config.GeneralConfig;
@@ -12,8 +10,6 @@ import astrotibs.villagenames.ieep.ExtendedVillageGuard;
 import astrotibs.villagenames.ieep.ExtendedVillager;
 import astrotibs.villagenames.ieep.ExtendedZombieVillager;
 import astrotibs.villagenames.integration.ModObjects;
-import astrotibs.villagenames.item.ModItems;
-import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.network.MessageModernVillagerSkin;
 import astrotibs.villagenames.network.MessageZombieVillagerProfession;
 import astrotibs.villagenames.network.NetworkHelper;
@@ -26,20 +22,13 @@ import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
@@ -97,7 +86,6 @@ public class EntityMonitorHandler
     	
     	if (!event.entity.worldObj.isRemote) // Encased in notremote if - v3.1
     	{
-    		
         	// Added in v3.1
         	if (event.target instanceof EntityVillager) // Removed not-remote condition - v3.1
         	{
@@ -138,10 +126,10 @@ public class EntityMonitorHandler
         
     }
     
-
+    // TODO - AUDIT THIS
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-
+    	
     	// Renovated in v3.1
     	
     	// summon Zombie ~ ~ ~ {IsVillager:1}
@@ -212,7 +200,7 @@ public class EntityMonitorHandler
         	
         	EntityVillager villager = (EntityVillager) event.entity;
             
-            FunctionsVN.modernizeVillagerTrades(villager);
+            if (GeneralConfig.modernVillagerTrades) {FunctionsVN.modernizeVillagerTrades(villager);}
             
         	// Added in v3.1
             ExtendedVillager ev = ExtendedVillager.get(villager);
@@ -282,7 +270,7 @@ public class EntityMonitorHandler
                 }
                 
             }
-            
+            /*
     		// Try to assign a biome number if this villager has none.
             if (
             		ev != null
@@ -298,10 +286,10 @@ public class EntityMonitorHandler
             		&& (ExtendedVillager.get(villager)).getSkinTone()==-99
             		)
             {
+            	// This fires for villagers spawned in directly with new village centers
             	(ExtendedVillager.get(villager)).setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));
-            }
+            }*/
         }
-
     }
     
 
@@ -555,6 +543,13 @@ public class EntityMonitorHandler
         	EntityVillager villager = (EntityVillager)event.entity;
         	ExtendedVillager ev = ExtendedVillager.get(villager);
         	
+        	if (GeneralConfig.modernVillagerSkins)
+        	{
+            	// Initialize buying list in order to provoke the villager to choose a career
+            	villager.getRecipes(null);
+            	FunctionsVN.monitorVillagerTrades(villager);
+        	}
+        	
         	NBTTagCompound compound = new NBTTagCompound();
         	villager.writeEntityToNBT(compound);
     		int profession = compound.getInteger("Profession");
@@ -572,7 +567,6 @@ public class EntityMonitorHandler
     				&& ev.getProfession() >= 0 && (ev.getProfession() <=4 || GeneralConfig.professionID_a.indexOf(ev.getProfession())>-1) // This villager ID is specified in the configs
     				)
     		{
-    			
     			//(ExtendedVillager.get( villager )).setProfessionLevel(ExtendedVillager.get( villager ).getProfessionLevel());
     			// Sends a ping to everyone within 80 blocks
     			NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(villager.dimension, villager.lastTickPosX, villager.lastTickPosY, villager.lastTickPosZ, 16*5);

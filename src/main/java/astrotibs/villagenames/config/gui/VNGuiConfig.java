@@ -83,9 +83,15 @@ public class VNGuiConfig extends GuiConfig
 		cc = GeneralConfig.config.getCategory("general");
 		cc.setComment("Change things like well decorations, name formats, and Codex/book settings");
 		subCats.add( new ConfigElement(cc) );
+
+		cc = GeneralConfig.config.getCategory("village generator");
+		cc.setComment("Village buildings and generation system");
+		cc.setRequiresWorldRestart(true); // This category can't be edited while a world is running
+		cc.setRequiresMcRestart(true); // This category needs Minecraft to be restarted to take effect
+		subCats.add( new ConfigElement(cc) );
 		
 		cc = GeneralConfig.config.getCategory("well kill switch");
-		cc.setComment("Disable well decorations outright"); 
+		cc.setComment("Disable well decorations outright");
 		subCats.add( new ConfigElement(cc) );
 		
 		cc = GeneralConfig.config.getCategory("naming");

@@ -386,7 +386,7 @@ public class EventTracker
         	ieep.setCareerVN(careerVN);
         }
         else {
-        	ieep.setCareer(0);
+        	ieep.setCareerVN(0);
         }
         
         

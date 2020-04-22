@@ -444,7 +444,7 @@ public class VNComponentIglooPieces
                     	// The nine chiseled stone bricks in the floor
                     	for (int chiseledX: new int[]{2,4,6}) {
                     		for (int chiseledZ: new int[]{5, 3, 1}) {
-                    			this.setBlockState(worldIn, Blocks.stonebrick.getStateFromMeta(3), chiseledX+xOffset,basementCeilingY-4,chiseledZ, structureBoundingBoxIn); // 9 is "cactus"
+                    			this.setBlockState(worldIn, Blocks.stonebrick.getStateFromMeta(3), chiseledX+xOffset,basementCeilingY-4,chiseledZ, structureBoundingBoxIn);
                     		}
                     	}
                     	
@@ -629,7 +629,7 @@ public class VNComponentIglooPieces
                                 
                                 
                                 // Place cactus in a pot
-
+                                
                         		TileEntity flowerPotWithCactus = (new BlockFlowerPot()).createNewTileEntity(worldIn, 9);
                         		BlockPos cactusPotPos = new BlockPos(
                             			(x + (new int[]{0, -1, 0, 1})[coordBaseMode]),
