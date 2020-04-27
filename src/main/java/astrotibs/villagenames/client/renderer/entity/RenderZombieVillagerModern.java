@@ -295,7 +295,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 	    	final ExtendedZombieVillager ieep = ExtendedZombieVillager.get(zombie);
 	    	
 	    	// Changed in v3.2 to allow for modded skins
-			if (ieep.getProfession() >= 0 && !zombie.isInvisible())
+			if (ieep.getProfession() >= 0 && !zombie.isInvisible() && !zombie.isChild())
 			{
 				if (ieep.getProfession() <= 4) // Changed in v3.2: there is no official Profession 5!
 				{
