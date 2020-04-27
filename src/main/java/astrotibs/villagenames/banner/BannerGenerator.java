@@ -19,7 +19,46 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.village.Village;
 
-public class BannerGenerator {
+public class BannerGenerator
+{
+	// Array of color metas and corresponding weights
+	public static int[] colorMeta = new int[]{
+			0, // Black
+			1, // Red
+			2, // Green
+			3, // Brown
+			4, // Blue
+			5, // Purple
+			6, // Cyan
+			7, // Light Gray
+			8, // Gray
+			9, // Pink
+			10, // Lime
+			11, // Yellow
+			12, // Light Blue
+			13, // Magenta
+			14, // Orange
+			15 // White
+			};
+	
+	public static double[] colorWeights = new double[]{
+			121D/3, // Black
+			335D/2, // Red
+			81D, // Green
+			3D, // Brown
+			953D/12, // Blue
+			1D, // Purple
+			10D, // Cyan
+			1D, // Light Gray
+			1D, // Gray
+			1D/2, // Pink
+			15D, // Lime
+			229D/3, // Yellow
+			33D, // Light Blue
+			1D/2, // Magenta
+			65/6D, // Orange
+			409D/3 // White
+	};
 	
 	/**
 	 * Generates a random banner pattern based on internal Markovian values
@@ -30,9 +69,8 @@ public class BannerGenerator {
 	 * Enter a value below 0 to ignore this and draw a random value for the banner.
 	 */
 	
-	public static Object[] randomBannerArrays(Random random, int forceBannerColor)
+	public static Object[] randomBannerArrays(Random random, int forceBannerColor, int forceBannerColor2)
 	{
-		
 		int chosencountry;
 		String[] baseTemplate;
 		int[] baseColors;
@@ -417,52 +455,12 @@ public class BannerGenerator {
 			if (color==-2) {colorcount++;}
 		}
 		
-		
-		// Array of color metas and corresponding weights
-		int[] colorMeta = new int[]{
-				0, // Black
-				1, // Red
-				2, // Green
-				3, // Brown
-				4, // Blue
-				5, // Purple
-				6, // Cyan
-				7, // Light Gray
-				8, // Gray
-				9, // Pink
-				10, // Lime
-				11, // Yellow
-				12, // Light Blue
-				13, // Magenta
-				14, // Orange
-				15 // White
-				};
-		
-		double[] colorWeights = new double[]{
-				121D/3, // Black
-				335D/2, // Red
-				81D, // Green
-				3D, // Brown
-				953D/12, // Blue
-				1D, // Purple
-				10D, // Cyan
-				1D, // Light Gray
-				1D, // Gray
-				1D/2, // Pink
-				15D, // Lime
-				229D/3, // Yellow
-				33D, // Light Blue
-				1D/2, // Magenta
-				65/6D, // Orange
-				409D/3 // White
-		};
-		
-		
 		ArrayList<Integer> bannerColors = new ArrayList<Integer>();
 		
 		while (bannerColors.size() < colorcount)
 		{
 			if (forceBannerColor>=0 && bannerColors.size()==0) {bannerColors.add(forceBannerColor);} // In case you're backporting a banner for a previously created village
+			if (forceBannerColor2>=0 && bannerColors.size()==1)  {bannerColors.add(forceBannerColor2);}
 			
 			int newpotentialcolor = (Integer) FunctionsVN.weightedRandom(colorMeta, colorWeights, new Random());
 			// Search through the already-collected numbers and see if this new one is unique
@@ -471,7 +469,14 @@ public class BannerGenerator {
 			{
 				for (int i : bannerColors)
 				{
-					if (i==newpotentialcolor) {flag = false; break;}
+					if (
+							i==newpotentialcolor // Color is already in the set, so reject it.
+							// Reject the color if it should not be paired with certain other colors
+							|| ((i==2 && newpotentialcolor==10) || (i==10 && newpotentialcolor==2)) // Lime and Green
+							|| ((i==5 && newpotentialcolor==13) || (i==13 && newpotentialcolor==5)) // Magenta and Purple
+							|| ((i==6 && newpotentialcolor==12) || (i==12 && newpotentialcolor==6)) // Light Blue and Cyan
+							)
+					{flag = false; break;}
 				}
 			}
 			if (flag) {bannerColors.add(newpotentialcolor);}
@@ -667,7 +672,7 @@ public class BannerGenerator {
 		if (!entity.worldObj.isRemote)
 		{
 			// Generate banner info, regardless of if we make a banner.
-    		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(entity.worldObj.rand, -1);
+    		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(entity.worldObj.rand, -1, -1);
 			ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
 			ArrayList<Integer> colorArray = (ArrayList<Integer>) newRandomBanner[1];
 			ItemStack villageBanner = BannerGenerator.makeBanner(patternArray, colorArray);
@@ -724,7 +729,10 @@ public class BannerGenerator {
 		            	
 		            	// Re-Generate banner info so that we can use the pre-generated village color
 			    		int previousTownColor = villagetagcompound.getInteger("townColor");
-		            	newRandomBanner = BannerGenerator.randomBannerArrays(entity.worldObj.rand, 15-previousTownColor); // Banner vs block colors are in reverse order
+			    		int previousTownColor2 = -1;
+			    		if (villagetagcompound.hasKey("townColor2")) {previousTownColor2 = villagetagcompound.getInteger("townColor2");}
+			    		Random deterministic = new Random(); deterministic.setSeed(entity.worldObj.getSeed() + FunctionsVN.getUniqueLongForXYZ(townX, townY, townZ));
+		            	newRandomBanner = BannerGenerator.randomBannerArrays(deterministic, 15-previousTownColor, 15-previousTownColor2); // Banner vs block colors are in reverse order
 						patternArray = (ArrayList<String>) newRandomBanner[0];
 						colorArray = (ArrayList<Integer>) newRandomBanner[1];
 						villageBanner = BannerGenerator.makeBanner(patternArray, colorArray);
@@ -764,7 +772,8 @@ public class BannerGenerator {
 		        	// No well sign was found that matched the villager's village.
 		        	// We can assume this is a village WITHOUT a sign. So let's at least give it a name!
 		        	
-		        	String[] newVillageName = NameGenerator.newRandomName("Village");
+		        	Random deterministic = new Random(); deterministic.setSeed(entity.worldObj.getSeed() + FunctionsVN.getUniqueLongForXYZ(centerX, centerY, centerZ));
+		        	String[] newVillageName = NameGenerator.newRandomName("Village", deterministic);
 		        	String headerTags = newVillageName[0];
 		    		String namePrefix = newVillageName[1];
 		    		String nameRoot = newVillageName[2];

@@ -258,7 +258,7 @@ public class VillagerTradeHandler
 			recipeList.add( iglooForSplashWeakness ); // Splash Weakness (3:00)
 			
 			// --- VILLAGE -- //
-			ItemStack tagWithName = new ItemStack(Items.NAME_TAG, 1).setStackDisplayName( NameGenerator.newRandomName("villager-angel-demon-dragon-goblin-golem")[2] );
+			ItemStack tagWithName = new ItemStack(Items.NAME_TAG, 1).setStackDisplayName( NameGenerator.newRandomName("villager-angel-demon-dragon-goblin-golem", new Random())[2] );
 			tagWithName.setRepairCost(99);
 			recipeList.add( new MerchantRecipe(
 					new ItemStack(ModItems.VILLAGE_BOOK, 1),
@@ -475,7 +475,7 @@ public class VillagerTradeHandler
 			}
 	        
 			// Generate the structure name
-	        String[] locationName = NameGenerator.newRandomName("village-mineshaft-stronghold-temple-fortress-monument-endcity-mansion-alienvillage");
+	        String[] locationName = NameGenerator.newRandomName("village-mineshaft-stronghold-temple-fortress-monument-endcity-mansion-alienvillage", new Random());
 	        bookContents += "\n\n" + (locationName[1]+" "+locationName[2]+" "+locationName[3]).trim();
 	        
 	        bookContents += "\"}"; // As of 1.9 I need to enclose book contents in {"text":"lorem ipsum"}

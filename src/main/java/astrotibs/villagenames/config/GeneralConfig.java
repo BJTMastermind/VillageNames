@@ -77,6 +77,27 @@ public class GeneralConfig {
 	
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
+
+    // --- Villages --- //
+	public static boolean newVillageGenerator;
+	public static int newVillageSize;
+	public static int newVillageSpacingMedian;
+	public static int newVillageSpacingSpread;
+	public static String[] spawnBiomesNames;
+	// Old Village buildings
+	public static boolean structureLegacyHut;
+	public static boolean structureLegacySmallHouse;
+	public static boolean structureLegacyLargeHouse;
+	public static boolean structureLegacyButcherShop;
+	public static boolean structureLegacyLibrary;
+	public static boolean structureLegacySmallFarm;
+	public static boolean structureLegacyLargeFarm;
+	public static boolean structureLegacySmithy;
+	public static boolean structureLegacyChurch;
+	
+	// Misc new village stuff
+	public static boolean spawnModdedVillagers;
+	public static boolean decorateVillageCenter;
 	
 	
 	public static void init(File configFile)
@@ -88,7 +109,130 @@ public class GeneralConfig {
 		}
 	}
 	
-	protected static void loadConfiguration() {
+	protected static void loadConfiguration()
+	{
+		// --- New Villages --- //
+		newVillageGenerator = config.getBoolean("Activate New Village Generator", "Village Generator", true, "Use replacement village generation system. You may need to deactivate village generation from other mods. All other settings in this section require this to be true.");
+		newVillageSize = config.getInt("Village Size", "Village Generator", 1, 1, 10, "How large villages are. Vanilla is 1.");
+		newVillageSpacingMedian = config.getInt("Village Spacing: Median", "Village Generator", 20, 1, 100, "Median distance between villages. Vanilla is 20.");
+		newVillageSpacingSpread = config.getInt("Village Spacing: Range", "Village Generator", 12, 1, 100, "Variation in distances between villages. Must be lower than Median value. Vanilla is 12.");
+		
+		// Old Village buildings
+		structureLegacyHut = config.getBoolean("Structure: Legacy Hut", "Village Generator", false, "Whether this structure can generate in villages.");
+		structureLegacySmallHouse = config.getBoolean("Structure: Legacy Small House", "Village Generator", false, "Whether this structure can generate in villages.");
+		structureLegacyLargeHouse = config.getBoolean("Structure: Legacy Large House", "Village Generator", false, "Whether this structure can generate in villages.");
+		structureLegacyButcherShop = config.getBoolean("Structure: Legacy Butcher's Shop", "Village Generator", false, "Whether this structure can generate in villages.");
+		structureLegacyLibrary = config.getBoolean("Structure: Legacy Library", "Village Generator", false, "Whether this structure can generate in villages.");
+		structureLegacySmallFarm = config.getBoolean("Structure: Legacy Small Farm", "Village Generator", false, "Whether this structure can generate in villages.");
+		structureLegacyLargeFarm = config.getBoolean("Structure: Legacy Large Farm", "Village Generator", false, "Whether this structure can generate in villages.");
+		structureLegacySmithy = config.getBoolean("Structure: Legacy Smithy", "Village Generator", false, "Whether this structure can generate in villages.");
+		structureLegacyChurch = config.getBoolean("Structure: Legacy Church", "Village Generator", false, "Whether this structure can generate in villages.");
+		
+		// Misc
+		spawnModdedVillagers = config.getBoolean("Allow mod villagers in new structures", "Village Generator", false, "When modern structures spawn random villagers on generation, set this to true to allow non-vanilla professions.");
+		decorateVillageCenter = config.getBoolean("Decorate village center", "Village Generator", true, "Whether to decorate the town center with concrete, terracotta, banners, etc. based on the village's colors");
+		
+		spawnBiomesNames = config.getStringList("Spawn Biome Names", "Village Generator",
+				new String[] {
+						// Vanilla
+						"Plains",
+						"Desert",
+						"Extreme Hills",
+						"Forest",
+						"Taiga",
+						"Swampland",
+						"Ice Plains",
+						"MushroomIsland",
+						"ForestHills",
+						"TaigaHills",
+						"Jungle",
+						"JungleHills",
+						"Birch Forest",
+						"Birch Forest Hills",
+						"Roofed Forest",
+						"Cold Taiga",
+						"Mega Taiga",
+						"Mega Taiga Hills",
+						"Savanna",
+						"Mesa",
+						"Sunflower Plains",
+						"Flower Forest",
+						"Mega Spruce Taiga",
+						"Mega Spruce Taiga Hill",
+						// Biomes o' Plenty
+						"Bamboo Forest",
+						"Bayou",
+						"Bog",
+						"Boreal Forest",
+						"Canyon",
+						"Chaparral",
+						"Cherry Blossom Grove",
+						"Coniferous Forest",
+						"Snowy Coniferous Forest",
+						"Deciduous Forest",
+						"Dense Forest",
+						"Eucalyptus Forest",
+						"Flower Field",
+						"Frost Forest",
+						"Fungi Forest",
+						"Garden",
+						"Grassland",
+						"Grove",
+						"Heathland",
+						"Highland",
+						"Lavender Fields",
+						"Lush Swamp",
+						"Maple Woods",
+						"Meadow",
+						"Mountain",
+						"Mystic Grove",
+						"Orchard",
+						"Outback",
+						"Prairie",
+						"Rainforest",
+						"Redwood Forest",
+						"Sacred Springs",
+						"Seasonal Forest",
+						"Shield",
+						"Shrubland",
+						"Steppe",
+						"Temperate Rainforest",
+						"Tropical Rainforest",
+						"Tundra",
+						"Wetland",
+						"Woodland",
+						"Xeric Shrubland",
+						"Meadow Forest",
+						"Oasis",
+						"Scrubland",
+						"Seasonal Forest Clearing",
+						"Spruce Woods",
+						// ATG
+						"Rocky Steppe",
+						// ExtrabiomeXL
+						"Autumn Woods",
+						"Forested Hills",
+						"Green Hills",
+						"Mini Jungle",
+						"Mountain Taiga",
+						"Pine Forest",
+						"Redwood Lush",
+						"Snowy Forest",
+						"Snowy Rainforest",
+						"Woodlands",
+						// Highlands
+						"Autumn Forest",
+						"Badlands",
+						"Birch Hills",
+						"Highlands",
+						"Lowlands",
+						"Outback",
+						"Pinelands",
+						"Sahel",
+						"Tall Pine Forest",
+						"Tropics",
+						},
+				"Names of biomes which can spawn villages. Only used with Village Generator, and only applies to Overworld. Note that this list is EXCLUSIVE: other mod configs won't override this. You have to paste all biome names here.");
 		
 	    nameSign = config.getBoolean("Name Sign", Configuration.CATEGORY_GENERAL, true, "Villages display their name on a sign near the well. You can still discover the name by right-clicking a book onto a villager.");
 	    recordStructureCoords = config.getBoolean("Record Structure Coords", Configuration.CATEGORY_GENERAL, true, "Books generated by villagers or the Codex record the structure's coordinates.");
@@ -209,8 +353,8 @@ public class GeneralConfig {
  		
 	    
     	//--------------Miscellaneous-----------------//
-	    // Allow or disable in-game config menu: 1.7.10 only
-	    versionChecker = config.getBoolean("Version Checker", "miscellaneous", true, "Displays a client-side chat message if there's an update available.");
+	    
+	    versionChecker = config.getBoolean("Version Checker", "miscellaneous", false, "Displays a client-side chat message on login if there's an update available. If the URL pinged by the checker happens to be down, your game will freeze for a while on login. Turn this on at your own risk.");
 	    codexChestLoot = config.getBoolean("Codex Chest Loot", "miscellaneous", true, "The Codex can appear as rare chest loot.");
 	    //allowInGameConfig = config.getBoolean("Allow in-game config access", "miscellaneous", true, "Set this to false to deacactivate the in-game config GUI, in case it conflicts with other mods.");
 	    debugMessages = config.getBoolean("Debug messages", "miscellaneous", false, "Print debug messages to the console, print the class paths of entities and blocks you right-click.");

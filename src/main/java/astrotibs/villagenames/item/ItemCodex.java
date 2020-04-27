@@ -14,6 +14,7 @@ import astrotibs.villagenames.handler.WriteBookHandler;
 import astrotibs.villagenames.integration.ToroQuestWorldDataStructure;
 import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
+import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraft.creativetab.CreativeTabs;
@@ -211,7 +212,7 @@ public class ItemCodex extends Item {
         								
         								// Specifically check if this is a Village.
         								// If so, you can pass this for checking the Ghost Town achievement.
-        								if (structureTypes.get(i).equals("Village") && structureTypes.get(i).equals("OTGVillage")) // v3.2.1
+        								if (structureTypes.get(i).equals("Village") || structureTypes.get(i).equals("OTGVillage")) // v3.2.1
         								{
         									playerIsInVillage = true;
         								}
@@ -308,13 +309,18 @@ public class ItemCodex extends Item {
         									
         									//forWorld(World world, String key, String toptagIn)
         									VNWorldDataStructure data = VNWorldDataStructure.forWorld(world, "villagenames3_" + structureTypes.get(i), "NamedStructures");
+    										
+        									signX = structureCoords[0];
+    										signY = structureCoords[1];
+    										signZ = structureCoords[2];
         									
-    										structureInfoArray = NameGenerator.newRandomName(nameTypes.get(i));
+    										Random deterministic = new Random(); deterministic.setSeed(world.getSeed() + FunctionsVN.getUniqueLongForXYZ(signX, signY, signZ));
+    										structureInfoArray = NameGenerator.newRandomName(nameTypes.get(i), deterministic);
 
     										
     										// Changed color block in v3.1banner
     	                        			// Generate banner info, regardless of if we make a banner.
-    	                            		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(random, -1);
+    	                            		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(deterministic, -1, -1);
     	                    				ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
     	                    				ArrayList<Integer> colorArray = (ArrayList<Integer>) newRandomBanner[1];
     	                    				ItemStack villageBanner = BannerGenerator.makeBanner(patternArray, colorArray);
@@ -377,7 +383,8 @@ public class ItemCodex extends Item {
     										else {
     											
     											// Either you're not using ToroQuest, or you don't want to use the TQ name.
-    											String[] newVillageName = NameGenerator.newRandomName("Village");
+    											deterministic = new Random(); deterministic.setSeed(world.getSeed() + FunctionsVN.getUniqueLongForXYZ(signX, signY, signZ));
+    											String[] newVillageName = NameGenerator.newRandomName("Village", deterministic);
     											headerTags = newVillageName[0];
     											namePrefix = newVillageName[1];
     											nameRoot = newVillageName[2];
@@ -385,11 +392,6 @@ public class ItemCodex extends Item {
     											
     										}
     										
-    										
-    										
-    										signX = structureCoords[0];
-    										signY = structureCoords[1];
-    										signZ = structureCoords[2];
     										nbttagcompound1.setInteger("signX", signX);
     										nbttagcompound1.setInteger("signY", signY);
     										nbttagcompound1.setInteger("signZ", signZ);

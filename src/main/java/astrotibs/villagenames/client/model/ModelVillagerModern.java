@@ -1,5 +1,7 @@
 package astrotibs.villagenames.client.model;
 
+import org.lwjgl.opengl.GL11;
+
 import astrotibs.villagenames.config.GeneralConfig;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.model.ModelVillager;
@@ -90,9 +92,24 @@ public class ModelVillagerModern extends ModelVillager
 				if (GeneralConfig.moddedVillagerHeadwearBlacklist.contains("-"+profForge) || !GeneralConfig.moddedVillagerHeadwear) {return;}
 			}
 			
-			this.villagerHeadwear.render(f5);
-			this.villagerHatRimHigh.render(f5);
-			this.villagerHatRimLow.render(f5);
+			if (((EntityVillager) entity).isChild())
+			{
+				//Re-upscale baby head lmao
+	            GL11.glPushMatrix();
+	            GL11.glScalef(1.5F, 1.5F, 1.5F);
+	            //GL11.glTranslatef(0.0F, 0.0F, 0.0F);
+	            this.villagerHead.render(f5);
+	            this.villagerHeadwear.render(f5);
+	    		this.villagerHatRimHigh.render(f5);
+	    		this.villagerHatRimLow.render(f5);
+	            GL11.glPopMatrix();
+			}
+			else
+			{
+				this.villagerHeadwear.render(f5);
+				this.villagerHatRimHigh.render(f5);
+				this.villagerHatRimLow.render(f5);
+			}
 		}
 	}
 	
