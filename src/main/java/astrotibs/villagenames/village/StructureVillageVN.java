@@ -268,10 +268,9 @@ public class StructureVillageVN
     	Block block = blockstate.getBlock();
     	int meta = block.getMetaFromState(blockstate);
     	
-    	// TODO - use vanilla fences and gates in 1.8
     	if (startPiece.materialType == FunctionsVN.MaterialType.SPRUCE)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta((meta/4)*4 + BlockPlanks.EnumType.SPRUCE.getMetadata());}
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata()%4);}
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata());}
         	if (block == Blocks.oak_fence)					   {return Blocks.spruce_fence.getDefaultState();}
 	        if (block == Blocks.oak_fence_gate)				   {return Blocks.spruce_fence_gate.getDefaultState();}
@@ -294,7 +293,7 @@ public class StructureVillageVN
         }
         if (startPiece.materialType == FunctionsVN.MaterialType.BIRCH)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta((meta/4)*4 + BlockPlanks.EnumType.BIRCH.getMetadata());}
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.BIRCH.getMetadata()%4);}
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.BIRCH.getMetadata());}
         	if (block == Blocks.oak_fence)					   {return Blocks.birch_fence.getDefaultState();}
         	if (block == Blocks.oak_fence_gate)				   {return Blocks.birch_fence_gate.getDefaultState();}
@@ -312,7 +311,7 @@ public class StructureVillageVN
         }
         if (startPiece.materialType == FunctionsVN.MaterialType.JUNGLE)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta((meta/4)*4 + BlockPlanks.EnumType.JUNGLE.getMetadata());}
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.JUNGLE.getMetadata()%4);}
         	if (block == Blocks.cobblestone)                   {return Blocks.mossy_cobblestone.getDefaultState();}
         	//if (block == Blocks.stone_stairs)                  {
 			//										        		block = Block.getBlockFromName(ModObjects.mossyCobblestoneStairsUTD);
@@ -337,7 +336,7 @@ public class StructureVillageVN
         }
         if (startPiece.materialType == FunctionsVN.MaterialType.ACACIA)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log2.getStateFromMeta((meta/4)*4 + BlockPlanks.EnumType.ACACIA.getMetadata());}
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log2.getStateFromMeta(BlockPlanks.EnumType.ACACIA.getMetadata()%4);}
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.ACACIA.getMetadata());}
         	if (block == Blocks.oak_fence)					   {return Blocks.acacia_fence.getDefaultState();}
         	if (block == Blocks.oak_fence_gate)				   {return Blocks.acacia_fence_gate.getDefaultState();}
@@ -355,7 +354,7 @@ public class StructureVillageVN
         }
         if (startPiece.materialType == FunctionsVN.MaterialType.DARK_OAK)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log2.getStateFromMeta((meta/4)*4 + BlockPlanks.EnumType.DARK_OAK.getMetadata());}
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log2.getStateFromMeta(BlockPlanks.EnumType.DARK_OAK.getMetadata()%4);}
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.DARK_OAK.getMetadata());}
         	if (block == Blocks.oak_fence)					   {return Blocks.dark_oak_fence.getDefaultState();}
         	if (block == Blocks.oak_fence_gate)				   {return Blocks.dark_oak_fence_gate.getDefaultState();}
@@ -424,7 +423,7 @@ public class StructureVillageVN
         }
         if (startPiece.materialType == FunctionsVN.MaterialType.SNOW)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta((meta/4)*4 + BlockPlanks.EnumType.SPRUCE.getMetadata());}
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata()%4);}
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata());}
         	if (block == Blocks.oak_fence)					   {return Blocks.spruce_fence.getDefaultState();}
         	if (block == Blocks.oak_fence_gate)				   {return Blocks.spruce_fence_gate.getDefaultState();}
@@ -529,8 +528,6 @@ public class StructureVillageVN
    					);
     }
     
-    public static int seaLevel = 63; //TODO - actually call sea level in later versions
-	
     /**
      * Sets the path-specific block into the world
      * The block will get set at the ground height or posY, whichever is higher.
@@ -547,9 +544,9 @@ public class StructureVillageVN
     	int surfaceY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(posX, 0, posZ)).down().getY();
     	
     	// Raise Y to be at least below sea level
-    	if (surfaceY < seaLevel) {surfaceY = seaLevel-1;}
+    	if (surfaceY < world.getSeaLevel()) {surfaceY = world.getSeaLevel()-1;}
     	
-    	while (surfaceY >= seaLevel-1)
+    	while (surfaceY >= world.getSeaLevel()-1)
     	{
     		Block surfaceBlock = world.getBlockState(new BlockPos(posX, surfaceY, posZ)).getBlock();
     		BlockPos pos = new BlockPos(posX, Math.max(surfaceY, posY), posZ);
@@ -730,7 +727,12 @@ public class StructureVillageVN
             		// Village does not have banner info. Make some.
             		else
             		{
-            			while (townColorMeta2==townColorMeta)
+            			while (
+            					townColorMeta2==townColorMeta // Colors are the same, requiring a new draw
+            					&& !(townColorMeta==2 && townColorMeta2==10) && !(townColorMeta==10 && townColorMeta2==2) // Lime and Green aren't in the same banner
+            					&& !(townColorMeta==5 && townColorMeta2==13) && !(townColorMeta==13 && townColorMeta2==5) // Magenta and Purple aren't in the same banner
+            					&& !(townColorMeta==6 && townColorMeta2==12) && !(townColorMeta==12 && townColorMeta2==6) // Light Blue and Cyan aren't in the same banner
+            					)
             			{
             				townColorMeta2 = (Integer) FunctionsVN.weightedRandom(BannerGenerator.colorMeta, BannerGenerator.colorWeights, randomFromXYZ);
             			}
@@ -821,10 +823,15 @@ public class StructureVillageVN
 					// Village does not have banner info. Make some.
 					else
 					{
-						while (townColorMeta2==townColorMeta)
-						{
-							townColorMeta2 = (Integer) FunctionsVN.weightedRandom(BannerGenerator.colorMeta, BannerGenerator.colorWeights, randomFromXYZ);
-						}
+            			while (
+            					townColorMeta2==townColorMeta // Colors are the same, requiring a new draw
+            					&& !(townColorMeta==2 && townColorMeta2==10) && !(townColorMeta==10 && townColorMeta2==2) // Lime and Green aren't in the same banner
+            					&& !(townColorMeta==5 && townColorMeta2==13) && !(townColorMeta==13 && townColorMeta2==5) // Magenta and Purple aren't in the same banner
+            					&& !(townColorMeta==6 && townColorMeta2==12) && !(townColorMeta==12 && townColorMeta2==6) // Light Blue and Cyan aren't in the same banner
+            					)
+            			{
+            				townColorMeta2 = (Integer) FunctionsVN.weightedRandom(BannerGenerator.colorMeta, BannerGenerator.colorWeights, randomFromXYZ);
+            			}
 					}
 					
 					villagetagcompound.setInteger("townColor2", townColorMeta2);
@@ -868,7 +875,7 @@ public class StructureVillageVN
 		int topLineRand = randomFromXYZ.nextInt(4);
 		
 		// Call the name generator here
-		String[] newVillageName = NameGenerator.newRandomName("Village");
+		String[] newVillageName = NameGenerator.newRandomName("Village", randomFromXYZ);
 		String headerTags = newVillageName[0];
 		namePrefix = newVillageName[1];
 		nameRoot = newVillageName[2];

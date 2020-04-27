@@ -6,7 +6,6 @@ import java.util.Random;
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
-import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
@@ -198,7 +197,6 @@ public class PlainsStructures
             this.setBlockState(world, Blocks.flowing_water.getDefaultState(), 4, 3, 4, structureBB);
             
             // Encircle the fountain with path
-            IBlockState pathBlock = ModObjects.chooseModPathBlock();
         	StructureVillagePieces.Start startPiece_reflected = ReflectionHelper.getPrivateValue(StructureVillagePieces.Village.class, this, new String[]{"startPiece"});
         	for (int i = 1; i <= 7; ++i)
             {
@@ -305,13 +303,13 @@ public class PlainsStructures
         		{
         			EntityVillager entityvillager = new EntityVillager(world);
         			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.11
         			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
         			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
         			
         			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
         			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
                     		random.nextFloat()*360F, 0.0F);
                     world.spawnEntityInWorld(entityvillager);
         		}
@@ -516,7 +514,6 @@ public class PlainsStructures
             
             
             // Encircle the well with path
-            IBlockState pathBlock = ModObjects.chooseModPathBlock();
         	StructureVillagePieces.Start startPiece_reflected = ReflectionHelper.getPrivateValue(StructureVillagePieces.Village.class, this, new String[]{"startPiece"});
         	for (int i = 1; i <= 8; ++i)
             {
@@ -634,13 +631,13 @@ public class PlainsStructures
         		{
         			EntityVillager entityvillager = new EntityVillager(world);
         			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.11
         			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
         			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
         			
         			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
         			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
                     		random.nextFloat()*360F, 0.0F);
                     world.spawnEntityInWorld(entityvillager);
         		}
@@ -869,8 +866,8 @@ public class PlainsStructures
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
                 
                 // Place a grass foundation
-                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeGrassState, biomeGrassState, false);
-                this.replaceAirAndLiquidDownwards(world, biomeDirtState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
+                this.setBlockState(world, biomeGrassState, bannerXBB, bannerYBB-1, bannerZBB, structureBB);
+                this.replaceAirAndLiquidDownwards(world, biomeDirtState, bannerXBB, bannerYBB-2, bannerZBB, structureBB);
                 // Clear space upward
                 this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
                 
@@ -901,13 +898,13 @@ public class PlainsStructures
         		{
         			EntityVillager entityvillager = new EntityVillager(world);
         			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.11
         			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
         			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
         			
         			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
         			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
                     		random.nextFloat()*360F, 0.0F);
                     world.spawnEntityInWorld(entityvillager);
         		}
@@ -1067,14 +1064,19 @@ public class PlainsStructures
         	
         	
         	// Tree
-        	this.setBlockState(world, biomeStoneStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3)), 4, 1, 4, structureBB);
-        	this.setBlockState(world, biomeStoneStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3)), 5, 1, 4, structureBB);
-        	this.setBlockState(world, biomeStoneStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1)), 6, 1, 4, structureBB);
-        	this.setBlockState(world, biomeStoneStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1)), 6, 1, 5, structureBB);
-        	this.setBlockState(world, biomeStoneStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2)), 6, 1, 6, structureBB);
-        	this.setBlockState(world, biomeStoneStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2)), 5, 1, 6, structureBB);
-        	this.setBlockState(world, biomeStoneStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0)), 4, 1, 6, structureBB);
-        	this.setBlockState(world, biomeStoneStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0)), 4, 1, 5, structureBB);
+        	for (int uvwm[] : new int[][]{
+        		{4, 1, 4, 3}, // Corner
+        		{5, 1, 4, 3},
+        		{6, 1, 4, 1}, // Corner
+        		{6, 1, 5, 1},
+        		{6, 1, 6, 2}, // Corner
+        		{5, 1, 6, 2},
+        		{4, 1, 6, 0}, // Corner
+        		{4, 1, 5, 0},
+        	})
+        	{
+        		this.setBlockState(world, biomeStoneStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(biomeStoneStairsState.getBlock(), uvwm[3])), uvwm[0], uvwm[1], uvwm[2], structureBB);
+        	}
         	
 
         	// Dirt block
@@ -1228,13 +1230,13 @@ public class PlainsStructures
         		{
         			EntityVillager entityvillager = new EntityVillager(world);
         			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.11
         			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
         			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
         			
         			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
         			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
                     		random.nextFloat()*360F, 0.0F);
                     world.spawnEntityInWorld(entityvillager);
         		}

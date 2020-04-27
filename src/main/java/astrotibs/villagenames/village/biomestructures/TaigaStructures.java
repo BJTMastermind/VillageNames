@@ -6,7 +6,6 @@ import java.util.Random;
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
-import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
@@ -219,8 +218,8 @@ public class TaigaStructures
 			// Banner
     		if (GeneralConfig.decorateVillageCenter)
     		{
-                int bannerXBB = 7;
-    			int bannerZBB = 8;
+                int bannerXBB = 5;
+    			int bannerZBB = 4;
     			int bannerYBB = -1;
     			if (this.bannerY==-1)
     			{
@@ -233,9 +232,9 @@ public class TaigaStructures
     			int bannerY = this.getYWithOffset(bannerYBB);
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
                 
-                // Place a cobblestone foundation
-                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeCobblestoneState, biomeCobblestoneState, false);
-                this.replaceAirAndLiquidDownwards(world, biomeDirtState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
+                // Place a grass foundation
+                this.setBlockState(world, biomeGrassState, bannerXBB, bannerYBB-1, bannerZBB, structureBB);
+                this.replaceAirAndLiquidDownwards(world, biomeDirtState, bannerXBB, bannerYBB-2, bannerZBB, structureBB);
                 // Clear space upward
                 this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
                 
@@ -265,13 +264,13 @@ public class TaigaStructures
         		{
         			EntityVillager entityvillager = new EntityVillager(world);
         			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.11
         			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
         			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
 
         			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
         			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
                     		random.nextFloat()*360F, 0.0F);
                     world.spawnEntityInWorld(entityvillager);
         		}
@@ -370,7 +369,6 @@ public class TaigaStructures
         	
         	
             // Encircle the well with path
-        	IBlockState pathBlock = ModObjects.chooseModPathBlock();
         	StructureVillagePieces.Start startPiece_reflected = ReflectionHelper.getPrivateValue(StructureVillagePieces.Village.class, this, new String[]{"startPiece"});
         	for (int i = 1; i <= 7; ++i)
             {
@@ -595,7 +593,7 @@ public class TaigaStructures
                 		}
                 		else if (biomeTestBlock==Blocks.sandstone)
                 		{
-                			// Try a sandstone wall--use a slab otherwise // TODO - use modded sandstone wall 
+                			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.11
                 			boulderTopperBlock = Blocks.sandstone;
                 		}
                 		else if (biomeTestBlock!=Blocks.cobblestone)
@@ -682,7 +680,25 @@ public class TaigaStructures
             		
             	case 6: // Torch on a cobblestone wall
             		
-            		this.setBlockState(world, biomeCobblestoneWallState, uvw[0]+0, decorHeightY+0, uvw[2]+0, structureBB);
+            		IBlockState blockObjectTest = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getDefaultState(), this); Block biomeTestBlock = blockObjectTest.getBlock();
+
+            		boulderTopperBlock=Blocks.cobblestone_wall; boulderTopperMeta=0;
+            		if (biomeTestBlock==Blocks.mossy_cobblestone)
+            		{
+            			// Try to make mossy cobblestone wall
+            			boulderTopperMeta = 1;
+            		}
+            		else if (biomeTestBlock==Blocks.sandstone)
+            		{
+            			// Try a sandstone wall--use a slab otherwise // TODO - use modded sandstone wall 
+            			boulderTopperBlock = Blocks.sandstone;
+            		}
+            		else if (biomeTestBlock!=Blocks.cobblestone)
+            		{
+            			boulderTopperBlock = biomeTestBlock;
+            		}
+            		
+            		this.setBlockState(world, boulderTopperBlock.getStateFromMeta(boulderTopperMeta), uvw[0]+0, decorHeightY+0, uvw[2]+0, structureBB);
             		world.setBlockState(new BlockPos(this.getXWithOffset(uvw[0]+0, uvw[2]+0), this.getYWithOffset(decorHeightY+1), this.getZWithOffset(uvw[0]+0, uvw[2]+0)), Blocks.torch.getStateFromMeta(0), 2);
             		
             		break;
@@ -725,10 +741,11 @@ public class TaigaStructures
         	this.fillWithBlocks(world, structureBB, 6, 5, 2, 6, 5, 6, roofLogState, roofLogState, false);
         	// Add torches
         	for (int[] uvwm : new int[][]{
-        		{2, 5, 1, 0},
-        		{2, 5, 7, 0},
-        		{6, 5, 1, 0},
-        		{6, 5, 7, 0},
+        		{2, 5, 1, new int[]{4,1,3,2}[this.coordBaseMode.getHorizontalIndex()%4]},
+        		{6, 5, 1, new int[]{4,1,3,2}[this.coordBaseMode.getHorizontalIndex()%4]},
+        		// Banner side
+        		{2, 5, 7, new int[]{3,2,4,1}[this.coordBaseMode.getHorizontalIndex()%4]},
+        		{6, 5, 7, new int[]{3,2,4,1}[this.coordBaseMode.getHorizontalIndex()%4]},
         	})
         	{
         		world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.torch.getStateFromMeta(uvwm[3]), 2);
@@ -843,13 +860,13 @@ public class TaigaStructures
         		{
         			EntityVillager entityvillager = new EntityVillager(world);
         			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.11
         			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
         			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
         			
         			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
         			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
                     		random.nextFloat()*360F, 0.0F);
                     world.spawnEntityInWorld(entityvillager);
         		}
