@@ -27,11 +27,19 @@ import astrotibs.villagenames.network.NetworkHelper;
 import astrotibs.villagenames.proxy.CommonProxy;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
+import astrotibs.villagenames.village.MapGenVillageVN;
+import astrotibs.villagenames.village.StructureVillageVN;
+import astrotibs.villagenames.village.biomestructures.DesertStructures;
+import astrotibs.villagenames.village.biomestructures.PlainsStructures;
+import astrotibs.villagenames.village.biomestructures.SavannaStructures;
+import astrotibs.villagenames.village.biomestructures.SnowyStructures;
+import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -135,7 +143,38 @@ public final class VillageNames
 		// Moved down here to make sure config fires first!?
 		ModItems.init();
 		ModBlocksVN.init();
-
+		
+		// New village generator
+		if (GeneralConfig.newVillageGenerator)
+		{
+			// New village generator
+			MapGenStructureIO.registerStructure(MapGenVillageVN.Start.class, "MapGenVillageVN");
+			
+			// Structure components
+	        MapGenStructureIO.registerStructureComponent(StructureVillageVN.PathVN.class, "VNPath"); // Path
+	        MapGenStructureIO.registerStructureComponent(PlainsStructures.PlainsFountain01.class, "VNPlF01"); // Fountain
+	        MapGenStructureIO.registerStructureComponent(PlainsStructures.PlainsMeetingPoint1.class, "VNPlMP1"); // Plains Well
+	        MapGenStructureIO.registerStructureComponent(PlainsStructures.PlainsMeetingPoint2.class, "VNPlMP2"); // Plains Market
+	        MapGenStructureIO.registerStructureComponent(PlainsStructures.PlainsMeetingPoint3.class, "VNPlMP3"); // Central Tree
+	        MapGenStructureIO.registerStructureComponent(DesertStructures.DesertMeetingPoint1.class, "VNDeMP1"); // Fountain and Building
+	        MapGenStructureIO.registerStructureComponent(DesertStructures.DesertMeetingPoint2.class, "VNDeMP2"); // Desert Well
+	        MapGenStructureIO.registerStructureComponent(DesertStructures.DesertMeetingPoint3.class, "VNDeMP3"); // Desert Market
+	        MapGenStructureIO.registerStructureComponent(TaigaStructures.TaigaMeetingPoint1.class, "VNTaMP1"); // Grass patch with two structures
+	        MapGenStructureIO.registerStructureComponent(TaigaStructures.TaigaMeetingPoint2.class, "VNTaMP2"); // Taiga Well
+	        MapGenStructureIO.registerStructureComponent(SavannaStructures.SavannaMeetingPoint1.class, "VNSaMP1"); // Savanna Market
+	        MapGenStructureIO.registerStructureComponent(SavannaStructures.SavannaMeetingPoint2.class, "VNSaMP2"); // Savanna Fountain
+	        MapGenStructureIO.registerStructureComponent(SavannaStructures.SavannaMeetingPoint3.class, "VNSaMP3"); // Savanna double well
+	        MapGenStructureIO.registerStructureComponent(SavannaStructures.SavannaMeetingPoint4.class, "VNSaMP4"); // Savanna single well
+	        MapGenStructureIO.registerStructureComponent(SnowyStructures.SnowyMeetingPoint1.class, "VNSnMP1"); // Snowy Ice Spire
+	        MapGenStructureIO.registerStructureComponent(SnowyStructures.SnowyMeetingPoint2.class, "VNSnMP2"); // Frozen Fountain
+	        MapGenStructureIO.registerStructureComponent(SnowyStructures.SnowyMeetingPoint3.class, "VNSnMP3"); // Snowy Pavilion
+	        
+	        // Listener that interrupts old village generation with the new one
+			MinecraftForge.TERRAIN_GEN_BUS.register(new MapGenVillageVN());
+			
+			LogHelper.info("Registered new Village generator");
+		}
+		
 		// Listener that will fire on world loading, to generate the new nbt files from your old ones.
 		MinecraftForge.EVENT_BUS.register(new NBTUpdater());
 		

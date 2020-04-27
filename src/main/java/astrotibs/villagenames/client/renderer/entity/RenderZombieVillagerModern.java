@@ -303,7 +303,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombieVillager
 	    {
 	    	IModularSkin ims = zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
 	    	
-			if (ims.getProfession() >= 0 && !zombie.isInvisible())
+			if (ims.getProfession() >= 0 && !zombie.isInvisible() && !zombie.isChild())
 			{
 				if (ims.getProfession() <= 5)
 				{

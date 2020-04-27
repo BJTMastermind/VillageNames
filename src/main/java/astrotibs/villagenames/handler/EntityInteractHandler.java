@@ -44,7 +44,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructureData;
@@ -723,7 +722,7 @@ public class EntityInteractHandler {
 					) {
 				
 				// Update villager trades on interaction
-				if (event.getTarget() instanceof EntityVillager) {FunctionsVN.monitorVillagerTrades((EntityVillager) event.getTarget());}
+				if (event.getTarget() instanceof EntityVillager && GeneralConfig.modernVillagerTrades) {FunctionsVN.monitorVillagerTrades((EntityVillager) event.getTarget());}
 				
 				
 				// Added v3.2
@@ -780,7 +779,7 @@ public class EntityInteractHandler {
 							if(!world.isRemote) LogHelper.error("Your othermods.cfg > Clickable Names entries returned an error. Check to make sure they're formatted properly!");
 						}
 						
-						String[] newNameList = NameGenerator.newRandomName( mappedNameType );
+						String[] newNameList = NameGenerator.newRandomName(mappedNameType, new Random());
 						String newCustomName = ( newNameList[1].trim() + " " + newNameList[2].trim() + " " + newNameList[3].trim() ).trim(); // Generate new name
 						// Generate profession tag
 						if (
@@ -828,7 +827,7 @@ public class EntityInteractHandler {
 						}
 						
 						// Generate a name type that's defined in the config entry
-						String[] newNameList = NameGenerator.newRandomName(mappedNameType);
+						String[] newNameList = NameGenerator.newRandomName(mappedNameType, new Random());
 						String newCustomName = ( newNameList[1].trim() + " " + newNameList[2].trim() + " " + newNameList[3].trim() ).trim(); // Generate new name
 						// Generate profession tag
 						if (
@@ -860,7 +859,7 @@ public class EntityInteractHandler {
 						// This is a Villager. If it does not have a custom name, add one.
 						if ( (customName.trim()).equals("") || customName.equals(null) ) {
 							// Generate root name
-							String[] newNameList = NameGenerator.newRandomName("Villager");
+							String[] newNameList = NameGenerator.newRandomName("Villager", new Random());
 							String newCustomName = ( newNameList[1].trim() + " " + newNameList[2].trim() + " " + newNameList[3].trim() ).trim(); // Generate new name
 							// Generate profession tag
 							String careerTag = "";
@@ -904,7 +903,7 @@ public class EntityInteractHandler {
 								if (villageNearGolem.getNumVillagers() > 0) {
 									// and there is at least one resident
 									//If it does not have a custom name, add one.
-									String[] newNameList = NameGenerator.newRandomName("Golem");
+									String[] newNameList = NameGenerator.newRandomName("Golem", new Random());
 									String newCustomName = ( newNameList[1].trim() + " " + newNameList[2].trim() + " " + newNameList[3].trim() ).trim(); // Generate new name
 									// Does not get a profession tag
 									// Apply the name
@@ -1561,7 +1560,8 @@ public class EntityInteractHandler {
                     		
                     		// Changed color block in v3.1banner
                 			// Generate banner info, regardless of if we make a banner.
-                    		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(-1);
+                    		Random deterministic = new Random(); deterministic.setSeed(world.getSeed() + FunctionsVN.getUniqueLongForXYZ(centerX, centerY, centerZ));
+    			        	Object[] newRandomBanner = BannerGenerator.randomBannerArrays(deterministic, -1, -1);
             				ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
             				ArrayList<Integer> colorArray = (ArrayList<Integer>) newRandomBanner[1];
             				ItemStack villageBanner = BannerGenerator.makeBanner(patternArray, colorArray);
@@ -1615,7 +1615,7 @@ public class EntityInteractHandler {
     			        		
     			        		// Either you're not using ToroQuest, or you don't want to use the TQ name.
                     			// Name type based on dimension - v3.2.2
-	    			        	String[] newVillageName = NameGenerator.newRandomName(player.dimension==-1 ? "Village-Fortress" : player.dimension==1 ? "Village-EndCity" : "Village");
+                    			String[] newVillageName = NameGenerator.newRandomName(player.dimension==-1 ? "Village-Fortress" : player.dimension==1 ? "Village-EndCity" : "Village", deterministic);
 	    			        	headerTags = newVillageName[0];
                         		namePrefix = newVillageName[1];
                         		nameRoot = newVillageName[2];
@@ -1819,8 +1819,12 @@ public class EntityInteractHandler {
 									if (structureInfoArray[0]==null && structureInfoArray[1]==null && structureInfoArray[2]==null) {
 
 										//Structure has no name. Generate it here.
+										signX = structureCoords[0];
+										signY = structureCoords[1];
+										signZ = structureCoords[2];
 										
-										structureInfoArray = NameGenerator.newRandomName(nameType); // Generates name based on table above
+										Random deterministic = new Random(); deterministic.setSeed(world.getSeed() + FunctionsVN.getUniqueLongForXYZ(signX, signY, signZ));
+										structureInfoArray = NameGenerator.newRandomName(nameType, deterministic); // Generates name based on table above
 										
 										// Gotta copy this thing to each IF condition I think
 										String headerTags = structureInfoArray[0];
@@ -1833,9 +1837,6 @@ public class EntityInteractHandler {
 										NBTTagList nbttaglist = new NBTTagList();
 										
 										NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-										signX = structureCoords[0];
-										signY = structureCoords[1];
-										signZ = structureCoords[2];
 										nbttagcompound1.setInteger("signX", signX);
 										nbttagcompound1.setInteger("signY", signY);
 										nbttagcompound1.setInteger("signZ", signZ);
