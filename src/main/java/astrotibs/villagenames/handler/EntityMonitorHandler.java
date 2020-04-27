@@ -213,7 +213,7 @@ public class EntityMonitorHandler
 
         	EntityVillager villager = (EntityVillager) event.getEntity();
             
-            FunctionsVN.modernizeVillagerTrades(villager);
+            if (GeneralConfig.modernVillagerTrades) {FunctionsVN.modernizeVillagerTrades(villager);}
             
         	// Added in v3.1
     		IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
@@ -281,14 +281,14 @@ public class EntityMonitorHandler
                 }
                 
     		}
-    		
+    		/*
     		// Try to assign a biome number if this villager has none.
     		if (ims.getProfession() == -1 ) {ims.setProfession(villager.getProfession());}
     		if (ims.getCareer() == -1 ) {ims.setCareer((Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}));}
     		if (ims.getProfessionLevel() == -1 ) {ims.setProfessionLevel(0);} // Changed in v3.1trades
     		if (ims.getBiomeType() == -1 ) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
     		if (ims.getSkinTone() == -99 ) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));} // Added in v3.2
-            
+            */
         }
 
     }
@@ -548,7 +548,14 @@ public class EntityMonitorHandler
         {
         	EntityVillager villager = (EntityVillager)event.getEntity();
     		IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
-    		
+
+        	if (GeneralConfig.modernVillagerSkins)
+        	{
+            	// Initialize buying list in order to provoke the villager to choose a career
+            	villager.getRecipes(null);
+            	FunctionsVN.monitorVillagerTrades(villager);
+        	}
+        	
     		NBTTagCompound compound = new NBTTagCompound();
         	villager.writeEntityToNBT(compound);
     		int profession = compound.getInteger("Profession");

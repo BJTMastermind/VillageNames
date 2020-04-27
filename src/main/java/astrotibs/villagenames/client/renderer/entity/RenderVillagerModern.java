@@ -175,7 +175,8 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 					villager.getProfession() >= 0
 					// v3.2: Is vanilla OR is a modular type
 					&& (villager.getProfession() <= 4 || GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString())!=-1)
-					&& !villager.isInvisible())
+					&& !villager.isInvisible()
+					)
 			{
 				// Biome type skins
 				if (GeneralConfig.modernVillagerSkins)
@@ -241,7 +242,7 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	    public void doRenderLayer(EntityVillager villager, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
 	    	// Changed in v3.2 to allow for modded skins
-			if (villager.getProfession() >= 0 && !villager.isInvisible())
+			if (villager.getProfession() >= 0 && !villager.isInvisible() && !villager.isChild())
 			{
 				if (villager.getProfession() <= 4) // Changed in v3.2: there is no official Profession 5!
 				{
@@ -312,7 +313,7 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 				        	break;
 				        // Fixed in v3.2: there is no vanilla Nitwit at this stage.
 				        default: // Nitwit
-				        	this.villagerLayerRenderer.bindTexture(villagerProfessionNitwit); break;
+				        	//this.villagerLayerRenderer.bindTexture(villagerProfessionNitwit); break;
 					    }
 					}
 				}
@@ -372,7 +373,7 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 				// Profession levels
 				if (GeneralConfig.modernVillagerSkins)
 				{
-					final int profLevel = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getProfessionLevel();
+					final int profLevel = villager.isChild() ? 0 : villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getProfessionLevel();
 					if (profLevel >= 5) {this.villagerLayerRenderer.bindTexture(villagerProfessionLevelDiamond);}
 					switch (profLevel)
 					{

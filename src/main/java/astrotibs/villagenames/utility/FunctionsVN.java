@@ -2,6 +2,7 @@ package astrotibs.villagenames.utility;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import javax.annotation.Nullable;
 
 import astrotibs.villagenames.VillageNames;
 import astrotibs.villagenames.banner.BannerGenerator;
+import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.capabilities.IModularSkin;
 import astrotibs.villagenames.capabilities.ModularSkinProvider;
 import astrotibs.villagenames.config.GeneralConfig;
@@ -16,6 +18,8 @@ import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.network.MessageModernVillagerSkin;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -35,16 +39,105 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
+import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 //Added in v3.1
-public class FunctionsVN {
+public class FunctionsVN
+{
+	// Represents the 1.14+ village types
+	public static enum VillageType
+	{
+		PLAINS, DESERT, TAIGA, SAVANNA, SNOWY;
+		
+		/**
+		 * Determine the biometype to generate village buildings
+		 */
+		public static VillageType getVillageTypeFromBiome(World world, int posX, int posZ)
+		{
+			Biome biome = world.getBiomeGenForCoords(new BlockPos(posX, 0, posZ));
+			return getVillageTypeFromBiome(biome);
+		}
+		public static VillageType getVillageTypeFromBiome(BiomeProvider worldChunkManager, int posX, int posZ)
+		{
+			Biome biome = worldChunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+			return getVillageTypeFromBiome(biome);
+		}
+		public static VillageType getVillageTypeFromBiome(Biome biome)
+		{
+			BiomeDictionary.Type[] typeTags = BiomeDictionary.getTypesForBiome(biome);
+			
+			// Ordered by personal priority. The first of these to be fulfilled gets returned
+			if (biome.getBiomeName().toLowerCase().contains("taiga")) {return TAIGA;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.CONIFEROUS) {return TAIGA;}}
+			if (biome.getBiomeName().toLowerCase().contains("savanna")) {return SAVANNA;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SAVANNA) {return SAVANNA;}}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SNOWY) {return SNOWY;}}
+			if (biome.getBiomeName().toLowerCase().contains("desert")) {return DESERT;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SANDY) {return DESERT;}}
+			//for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.PLAINS) {return PLAINS;}}
+			
+			// If none apply, send back Plains
+			return PLAINS;
+		}
+		
+	}
+	
+	public static enum MaterialType
+	{
+		OAK, SPRUCE, BIRCH, JUNGLE, ACACIA, DARK_OAK,
+		SAND, MESA, SNOW, MUSHROOM; // Added three more for special non-wood cases
+		
+		/**
+		 * Determine the wood type to return for a given biome
+		 */
+		public static MaterialType getMaterialTemplateForBiome(World world, int posX, int posZ)
+		{
+			Biome biome = world.getBiomeGenForCoords(new BlockPos(posX, 0, posZ));
+			return getMaterialTemplateForBiome(biome);
+		}
+		public static MaterialType getMaterialTemplateForBiome(BiomeProvider worldChunkManager, int posX, int posZ)
+		{
+			Biome biome = worldChunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+			return getMaterialTemplateForBiome(biome);
+		}
+		public static MaterialType getMaterialTemplateForBiome(Biome biome)
+		{
+			if (biome.getBiomeName().toLowerCase().contains("birch")) {return BIRCH;}
+			if (biome.getBiomeName().toLowerCase().contains("roofed forest")) {return DARK_OAK;}
+			
+			BiomeDictionary.Type[] typeTags = BiomeDictionary.getTypesForBiome(biome);
+			if (biome.getBiomeName().toLowerCase().contains("taiga")) {return SPRUCE;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.CONIFEROUS) {return SPRUCE;}}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.JUNGLE) {return JUNGLE;}}
+			if (biome.getBiomeName().toLowerCase().contains("savanna")) {return ACACIA;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SAVANNA) {return ACACIA;}}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.MESA) {return MESA;}}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.MUSHROOM) {return MUSHROOM;}}
+			
+			// Special handler for snowy:
+			boolean isSnowy = false;
+			for (BiomeDictionary.Type type : typeTags)
+			{
+				if (type==BiomeDictionary.Type.SNOWY) {isSnowy=true;}
+				if (type==BiomeDictionary.Type.DENSE || type==BiomeDictionary.Type.FOREST || type==BiomeDictionary.Type.LUSH || type==BiomeDictionary.Type.SPARSE) {isSnowy=false; break;}
+			}
+			if (isSnowy) {return SNOW;}
+			
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SANDY) {return SAND;}}
+			
+			// If none apply, send back Oak
+			return OAK;
+		}
+	}
 	
 	/**
 	 * Determine the biometype of the biome the entity is currently in
@@ -1350,7 +1443,7 @@ public class FunctionsVN {
 	    						}
 	    						else // No banner was found or is available. INSTEAD, sell a new banner with a random design.
 	    						{
-	    							Object[] newRandomBanner = BannerGenerator.randomBannerArrays(villager.worldObj.rand, -1);
+	    							Object[] newRandomBanner = BannerGenerator.randomBannerArrays(villager.worldObj.rand, -1, -1);
 	    							ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
 	    							ArrayList<Integer> colorArray = (ArrayList<Integer>) newRandomBanner[1];
 	    																	
@@ -2845,7 +2938,7 @@ public class FunctionsVN {
     			}
 
     			// Generated names
-    	        String[] locationName = NameGenerator.newRandomName("village-mineshaft-stronghold-temple-fortress-monument-endcity-mansion-alienvillage");
+    	        String[] locationName = NameGenerator.newRandomName("village-mineshaft-stronghold-temple-fortress-monument-endcity-mansion-alienvillage", new Random());
     	        bookContents += "\n\n" + (locationName[1]+" "+locationName[2]+" "+locationName[3]).trim();
     	        
     	        bookContents += "\"}"; // As of 1.9 I need to enclose book contents in {"text":"lorem ipsum"}
@@ -2929,7 +3022,7 @@ public class FunctionsVN {
     			merchantRecipeArray.add( iglooForSplashWeakness ); // Splash Weakness (3:00)
     			
     			// --- VILLAGE -- //
-    			ItemStack tagWithName = new ItemStack(Items.NAME_TAG, 1).setStackDisplayName( NameGenerator.newRandomName("villager-angel-demon-dragon-goblin-golem")[2] );
+    			ItemStack tagWithName = new ItemStack(Items.NAME_TAG, 1).setStackDisplayName( NameGenerator.newRandomName("villager-angel-demon-dragon-goblin-golem", new Random())[2] );
     			tagWithName.setRepairCost(99);
     			merchantRecipeArray.add( new MerchantRecipe(
     					new ItemStack(ModItems.VILLAGE_BOOK, 1), (ItemStack)null,
@@ -3411,4 +3504,110 @@ public class FunctionsVN {
 		return (new String[]{"acacia", "birch", "darkoak", "jungle", "oak", "spruce"})[entity.getRNG().nextInt(6)];
 	}
 	
+	/**
+	 * Returns the median value of an int array.
+	 * If the returned value is a halfway point, round up or down depending on if the average value is higher or lower than the median.
+	 * If it's the same, specify based on roundup parameter.
+	 */
+	public static int medianIntArray(ArrayList<Integer> array, boolean roundup)
+	{
+		if (array.size() <=0) return -1;
+		
+		Collections.sort(array);
+		
+		//if (GeneralConfig.debugMessages) {LogHelper.info("array: " + array);}
+		
+		if (array.size() % 2 == 0)
+		{
+			// Array is even-length. Find average of the middle two values.
+			int totalElements = array.size();
+			int sumOfMiddleTwo = array.get(totalElements / 2) + array.get(totalElements / 2 - 1);
+			
+			if (sumOfMiddleTwo%2==0)
+			{
+				// Average of middle two values is integer
+				//LogHelper.info("Median chosen type A: " + sumOfMiddleTwo/2);
+				return sumOfMiddleTwo/2;
+			}
+			else
+			{
+				// Average of middle two is half-integer.
+				// Round this based on whether the average is higher.
+				double median = (double)sumOfMiddleTwo/2;
+				
+				double average = 0;
+				for (int i : array) {average += i;}
+				average /= array.size();
+				
+				if (average < median)
+				{
+					//LogHelper.info("Median chosen type B: " + MathHelper.floor_double(median) );
+					return MathHelper.floor_double(median);
+				}
+				else if (average > median)
+				{
+					//LogHelper.info("Median chosen type C: " + MathHelper.ceiling_double_int(median) );
+					return MathHelper.ceiling_double_int(median);
+				}
+				else
+				{
+					//LogHelper.info("Median chosen type D: " + (roundup ? MathHelper.ceiling_double_int(median) : MathHelper.floor_double(median)));
+					return roundup ? MathHelper.ceiling_double_int(median) : MathHelper.floor_double(median);
+				}
+			}
+		}
+		else
+		{
+			// Array is odd-length. Take the middle value.
+			//LogHelper.info("Median chosen type E: " + array.get(array.size()/2));
+			return array.get(array.size()/2);
+		}
+	}
+
+	/**
+	 * This method inputs three integers and returns a unique long value based on them.
+	 * The purpose of this is to be used as Random.setSeed(unique + worldseed) to ensure that
+	 * randomized values for e.g. village names are deterministic based on their coordinates
+	 * so that they can be regenerated as necessary.
+	 */
+	public static long getUniqueLongForXYZ(int x, int y, int z)
+	{
+		// Find out which of x and/or z are negative in order to discriminate "quadrant"
+		boolean xIsNegative = x<0; boolean zIsNegative = z<0;
+		// set the inputs to non-negative
+		x = Math.abs(x); y = Math.abs(y); z = Math.abs(z);
+		
+		return ((x+y+z)*(x+y+z+1)*(x+y+z+2)/6 + (y+z)*(y+z+1)/2 + y + (zIsNegative? 1:0)) * (xIsNegative? -2:2);
+	}
+	
+	/**
+	 * Color metas are the same as dye.
+     * Facing metas are in [0, 3]. The order is S-W-N-E
+     */
+	public static IBlockState getGlazedTerracotaFromMetas(int colorMeta, int facingMeta)
+	{
+		Block block = ModBlocksVN.WHITE_GLAZED_TERRACOTTA;
+		
+		switch (colorMeta)
+		{
+		// Case 0 is handled by default
+		case 1: block=ModBlocksVN.ORANGE_GLAZED_TERRACOTTA; break;
+		case 2: block=ModBlocksVN.MAGENTA_GLAZED_TERRACOTTA; break;
+		case 3: block=ModBlocksVN.LIGHT_BLUE_GLAZED_TERRACOTTA; break;
+		case 4: block=ModBlocksVN.YELLOW_GLAZED_TERRACOTTA; break;
+		case 5: block=ModBlocksVN.LIME_GLAZED_TERRACOTTA; break;
+		case 6: block=ModBlocksVN.PINK_GLAZED_TERRACOTTA; break;
+		case 7: block=ModBlocksVN.GRAY_GLAZED_TERRACOTTA; break;
+		case 8: block=ModBlocksVN.SILVER_GLAZED_TERRACOTTA; break;
+		case 9: block=ModBlocksVN.CYAN_GLAZED_TERRACOTTA; break;
+		case 10: block=ModBlocksVN.PURPLE_GLAZED_TERRACOTTA; break;
+		case 11: block=ModBlocksVN.BLUE_GLAZED_TERRACOTTA; break;
+		case 12: block=ModBlocksVN.BROWN_GLAZED_TERRACOTTA; break;
+		case 13: block=ModBlocksVN.GREEN_GLAZED_TERRACOTTA; break;
+		case 14: block=ModBlocksVN.RED_GLAZED_TERRACOTTA; break;
+		case 15: block=ModBlocksVN.BLACK_GLAZED_TERRACOTTA; break;
+		}
+		
+		return block.getStateFromMeta(facingMeta);
+	}
 }
