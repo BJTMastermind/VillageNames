@@ -1237,7 +1237,6 @@ public class StructureVillageVN
             super(biomeProvider, componentType, random, posX, posZ, components, terrainType);
             this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, posX, posZ);
             this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, posX, posZ);
-            if (GeneralConfig.debugMessages) {LogHelper.info(this.materialType + " " +  this.villageType + " village generated in " + biomeProvider.getBiomeGenerator(new BlockPos(posX, 0, posZ)) + " at "+posX+" "+posZ);}
         }
         
         // Beth had this great idea to publicly call these protected methods lmao :'C

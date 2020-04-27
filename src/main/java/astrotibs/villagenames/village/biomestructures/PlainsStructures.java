@@ -70,7 +70,16 @@ public class PlainsStructures
     	@Override
 		public void buildComponent(StructureComponent start, List components, Random random)
 		{
-    		if (GeneralConfig.debugMessages) {LogHelper.info("Village coordBaseMode: " + this.getCoordBaseMode() + ", horiz index: " + this.getCoordBaseMode().getHorizontalIndex());}
+    		if (GeneralConfig.debugMessages)
+    		{
+    			LogHelper.info(
+    					this.materialType + " " +  this.villageType + " village generated in "
+    					+ this.worldChunkMngr.getBiomeGenerator(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2)).getBiomeName()
+    					+ " at x=" + (this.boundingBox.minX+this.boundingBox.maxX)/2 + ", z=" + (this.boundingBox.minZ+this.boundingBox.maxZ)/2
+    					+ " with town center: " + start.getClass().toString().substring(start.getClass().toString().indexOf("$")+1) + " and coordBaseMode: " + this.getCoordBaseMode() + ", horiz index: " + this.getCoordBaseMode().getHorizontalIndex()
+    					);
+    		}
+    		
 			// Northward
 			StructureVillageVN.getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX + 3, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
 			// Eastward
@@ -358,7 +367,16 @@ public class PlainsStructures
 		@Override
 		public void buildComponent(StructureComponent start, List components, Random random)
 		{
-			if (GeneralConfig.debugMessages) {LogHelper.info("Village coordBaseMode: " + this.getCoordBaseMode() + ", horiz index: " + this.getCoordBaseMode().getHorizontalIndex());}
+    		if (GeneralConfig.debugMessages)
+    		{
+    			LogHelper.info(
+    					this.materialType + " " +  this.villageType + " village generated in "
+    					+ this.worldChunkMngr.getBiomeGenerator(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2)).getBiomeName()
+    					+ " at x=" + (this.boundingBox.minX+this.boundingBox.maxX)/2 + ", z=" + (this.boundingBox.minZ+this.boundingBox.maxZ)/2
+    					+ " with town center: " + start.getClass().toString().substring(start.getClass().toString().indexOf("$")+1) + " and coordBaseMode: " + this.getCoordBaseMode() + ", horiz index: " + this.getCoordBaseMode().getHorizontalIndex()
+    					);
+    		}
+    		
         	// Northward
         	StructureVillageVN.getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX + (this.getCoordBaseMode().getHorizontalIndex()<=1? 3 : 4), this.boundingBox.maxY - 5, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
         	// Eastward
@@ -683,7 +701,16 @@ public class PlainsStructures
 		@Override
 		public void buildComponent(StructureComponent start, List components, Random random)
 		{
-			if (GeneralConfig.debugMessages) {LogHelper.info("Village coordBaseMode: " + this.getCoordBaseMode() + ", horiz index: " + this.getCoordBaseMode().getHorizontalIndex());}
+    		if (GeneralConfig.debugMessages)
+    		{
+    			LogHelper.info(
+    					this.materialType + " " +  this.villageType + " village generated in "
+    					+ this.worldChunkMngr.getBiomeGenerator(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2)).getBiomeName()
+    					+ " at x=" + (this.boundingBox.minX+this.boundingBox.maxX)/2 + ", z=" + (this.boundingBox.minZ+this.boundingBox.maxZ)/2
+    					+ " with town center: " + start.getClass().toString().substring(start.getClass().toString().indexOf("$")+1) + " and coordBaseMode: " + this.getCoordBaseMode() + ", horiz index: " + this.getCoordBaseMode().getHorizontalIndex()
+    					);
+    		}
+    		
 			// Northward
 			StructureVillageVN.getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX + (this.getCoordBaseMode().getHorizontalIndex()==0 ? 1 : this.getCoordBaseMode().getHorizontalIndex()==1 ? 10 : this.getCoordBaseMode().getHorizontalIndex()==2 ? 1 : 2), this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
 			// Eastward
@@ -951,7 +978,16 @@ public class PlainsStructures
     	@Override
 		public void buildComponent(StructureComponent start, List components, Random random)
 		{
-    		if (GeneralConfig.debugMessages) {LogHelper.info("Village coordBaseMode: " + this.getCoordBaseMode() + ", horiz index: " + this.getCoordBaseMode().getHorizontalIndex());}
+    		if (GeneralConfig.debugMessages)
+    		{
+    			LogHelper.info(
+    					this.materialType + " " +  this.villageType + " village generated in "
+    					+ this.worldChunkMngr.getBiomeGenerator(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2)).getBiomeName()
+    					+ " at x=" + (this.boundingBox.minX+this.boundingBox.maxX)/2 + ", z=" + (this.boundingBox.minZ+this.boundingBox.maxZ)/2
+    					+ " with town center: " + start.getClass().toString().substring(start.getClass().toString().indexOf("$")+1) + " and coordBaseMode: " + this.getCoordBaseMode() + ", horiz index: " + this.getCoordBaseMode().getHorizontalIndex()
+    					);
+    		}
+    		
 			// Northward
 			if (this.getCoordBaseMode().getHorizontalIndex()!=0) {StructureVillageVN.getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX + 4, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());}
 			// Eastward
