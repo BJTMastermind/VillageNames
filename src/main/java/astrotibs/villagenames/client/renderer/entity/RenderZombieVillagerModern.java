@@ -322,7 +322,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 	    	IModularSkin ims = zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
 	    	
 	    	// Changed in v3.2 to allow for modded skins
-			if (ims.getProfession() >= 0 && !zombie.isInvisible())
+			if (ims.getProfession() >= 0 && !zombie.isInvisible() && !zombie.isChild())
 			{
 				if (ims.getProfession() <= 4) // Changed in v3.2: there is no official Profession 5!
 				{

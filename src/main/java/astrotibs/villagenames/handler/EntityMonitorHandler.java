@@ -562,8 +562,12 @@ public class EntityMonitorHandler
     		int career = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});//career = compound.getInteger("Career");
     		int careerLevel = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"});//compound.getInteger("CareerLevel");
     		
-    		if (ims.getBiomeType()==-1) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
-    		if (ims.getSkinTone()==-99) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));} // v3.2
+    		// Try to assign a biome number if this villager has none.
+    		if (ims.getProfession() == -1 ) {ims.setProfession(villager.getProfession());}
+    		if (ims.getCareer() == -1 ) {ims.setCareer((Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}));}
+    		if (ims.getProfessionLevel() == -1 ) {ims.setProfessionLevel(0);} // Changed in v3.1trades
+    		if (ims.getBiomeType() == -1 ) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
+    		if (ims.getSkinTone() == -99 ) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));} // Added in v3.2
     		
     		// Added in v3.1
     		if (
