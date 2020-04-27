@@ -194,7 +194,7 @@ public class EventTracker
         	ims.setCareer(career);
         }
         else {
-        	ims.setCareer(-1);
+        	ims.setCareer(0);
         }
         
 

@@ -240,7 +240,7 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	    public void doRenderLayer(EntityVillager villager, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
 	    	// Changed in v3.2 to allow for modded skins
-			if (villager.getProfession() >= 0 && !villager.isInvisible())
+			if (villager.getProfession() >= 0 && !villager.isInvisible() && !villager.isChild())
 			{
 				if (villager.getProfession() <= 5)
 				{
@@ -335,11 +335,13 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 			        	final ResourceLocation modCareerSkin = new ResourceLocation(MIDLC, VAD + "profession/"+profRootName+".png");
 			        	this.villagerLayerRenderer.bindTexture(modCareerSkin);
 					}
+					/*
 					else
 					{
 						// If all else fails, bind the nitwit.
 						this.villagerLayerRenderer.bindTexture(villagerProfessionNitwit);
 					}
+					*/
 				}
 				
 	            this.villagerLayerRenderer.getMainModel().render(villager, p_177141_2_, p_177141_3_, p_177141_5_, p_177141_6_, p_177141_7_, scale);
@@ -378,7 +380,7 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 				// Profession levels
 				if (GeneralConfig.modernVillagerSkins)
 				{
-					final int profLevel = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getProfessionLevel();
+					final int profLevel = villager.isChild() ? 0 : villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getProfessionLevel();
 					if (profLevel >= 5) {this.villagerLayerRenderer.bindTexture(villagerProfessionLevelDiamond);}
 					switch (profLevel)
 					{
