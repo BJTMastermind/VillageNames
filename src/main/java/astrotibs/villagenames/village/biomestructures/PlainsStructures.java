@@ -1,11 +1,13 @@
 package astrotibs.villagenames.village.biomestructures;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
@@ -1281,4 +1283,62 @@ public class PlainsStructures
             return true;
         }
     }
+    
+    
+    
+	/**
+	 * Returns a list of blocks and coordinates used to construct a decor piece
+	 */
+	protected static ArrayList<BlueprintData> getRandomPlainsDecorBlueprint(StartVN startVN, EnumFacing coordBaseMode, Random random, int townColor)
+	{
+		int decorCount = 1;
+		return getPlainsDecorBlueprint(random.nextInt(decorCount), startVN, coordBaseMode, random, townColor);
+	}
+	protected static ArrayList<BlueprintData> getPlainsDecorBlueprint(int decorType, StartVN startVN, EnumFacing coordBaseMode, Random random, int townColor)
+	{
+		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
+		
+		
+		// Generate per-material blocks
+		
+		IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), startVN.materialType, startVN.biome);
+    	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), startVN.materialType, startVN.biome);
+    	
+    	// Try to get stripped wood
+    	IBlockState biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0); 
+    	
+    	// If stripped wood does not exist, try to get stripped logs
+    	if (biomeStrippedWoodOrLogOrLogVerticState==null)
+    	{
+    		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0);
+    	}
+    	
+    	// If neither exist, get vanilla logs
+    	if (biomeStrippedWoodOrLogOrLogVerticState==null)
+    	{
+    		biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;
+    	}
+    	
+		
+        switch (decorType)
+        {
+    	case 0: // Plains Lamp 1
+    		
+    		BlueprintData.addFillWithBlocks(blueprint, 0, 0, 0, 0, 2, 0, biomeFenceState);
+    		BlueprintData.addPlaceBlock(blueprint, 0, 3, 0, biomeStrippedWoodOrLogOrLogVerticState);
+    		for (int[] lamp_uwm : new int[][]{
+    			{0,-1,2},
+    			{-1,0,3},
+    			{0,1,0},
+    			{1,1,1}
+    			}) {
+    			BlueprintData.addPlaceBlock(blueprint, lamp_uwm[0], 3, lamp_uwm[1], Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(lamp_uwm[2], coordBaseMode.getHorizontalIndex())));
+    		}
+    		
+    		break;
+        }
+        
+        // Return the decor blueprint
+        return blueprint;
+	}
 }
