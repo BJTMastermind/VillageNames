@@ -83,6 +83,37 @@ public class EntityInteractHandler {
 			event.getEntityPlayer().sendMessage(new TextComponentString( "Meta value: " + targetBlockMeta ));
 			event.getEntityPlayer().sendMessage(new TextComponentString( "" ));
 		}
+		/*
+		// This block is for testing meta values when placing FMC lanterns
+		if ( 
+				GeneralConfig.debugMessages
+				//&& (
+				//		event.entityPlayer.inventory.getCurrentItem().getItem() == Items.paper
+				//		||event.entityPlayer.inventory.getCurrentItem().getItem() == Items.book )
+				&& !event.getWorld().isRemote
+				&& event.getHand() == EnumHand.MAIN_HAND
+				&& event.getEntityPlayer().getHeldItemMainhand().getItem() == Items.AIR
+				) {
+			
+			
+			Block tryBlock = Block.getBlockFromName(ModObjects.strippedWoodOakFMC);
+	    	//if (tryLantern!=null) {return tryLantern.getStateFromMeta(isHanging? 1:0);} // 1 is hanging, 0 is sitting
+	    	IBlockState lanternState = null;
+			
+	    	if (tryBlock!=null)
+	    	{
+	    		int lanternMeta = (new Random()).nextInt(16);
+	    		event.getEntityPlayer().sendMessage(new TextComponentString("Placing block with meta " + lanternMeta));
+	        	lanternState = tryBlock.getStateFromMeta(lanternMeta);
+	    	}
+	    	else
+	    	{
+	    		// None are found, so return ordinary glowstone
+		    	lanternState = Blocks.GLOWSTONE.getDefaultState();
+	    	}
+	    	
+			event.getWorld().setBlockState(event.getPos(), lanternState, 2);
+		}*/
 	}	
 	
 	

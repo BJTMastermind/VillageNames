@@ -375,6 +375,7 @@ public class FunctionsVN
     	
     	MerchantRecipe merchantrecipe;
 		Item moditem; // Used as a placeholder to attempt to add modded trades to villagers
+		ItemStack moditemstack; // Similarly used as a placeholder
 		ArrayList<MerchantRecipe> merchantRecipeArray; // Used when a random item is needed to fill a slot
 		int enchantvalue; // Used as a holder for enchantment levels to help tweak enchanted item prices
 		Enchantment enchantment;
@@ -627,13 +628,13 @@ public class FunctionsVN
 	    								// Campfire (Added 1.14)
     		    						while (true)
     			    					{
-    										moditem = FunctionsVN.getItemFromName(ModObjects.campfireFMC);
+    										moditem = ModObjects.chooseModCampfireItem();
     										
     										if (moditem != null)
     										{
     											buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)),
     													new MerchantRecipe(
-    												new ItemStack( Items.EMERALD, 5 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 4
+    												new ItemStack( Items.EMERALD, 2 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 4
     												));
     											break;
     										}
@@ -790,9 +791,10 @@ public class FunctionsVN
 								if (random.nextInt(5)<=1) {
 									if (random.nextBoolean()) {
 										while (true) {
-	    									moditem = FunctionsVN.getItemFromName(ModObjects.dyeBlackBOP);
-	    									if (moditem != null) {buyingList.add(new MerchantRecipe(
-	    											new ItemStack( moditem, 12 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
+											moditemstack = ModObjects.chooseModBlackDye();
+	    									if (moditemstack != null) {moditemstack.setCount(12);
+	    									buyingList.add(new MerchantRecipe(
+	    											moditemstack, new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
 	    											) ); break;}
 	    									
 	    									buyingList.add(new MerchantRecipe(
@@ -802,9 +804,10 @@ public class FunctionsVN
 									}
 									else {
 										while (true) {
-	    									moditem = FunctionsVN.getItemFromName(ModObjects.dyeWhiteBOP);
-	    									if (moditem != null) {buyingList.add(new MerchantRecipe(
-	    											new ItemStack( moditem, 12 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
+											moditemstack = ModObjects.chooseModWhiteDye();
+	    									if (moditemstack != null) {moditemstack.setCount(12);
+	    									buyingList.add(new MerchantRecipe(
+	    											moditemstack, new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
 	    											) ); break;}
 	    									
 	    									buyingList.add(new MerchantRecipe(
@@ -912,27 +915,15 @@ public class FunctionsVN
 	    						// Append the new trades as the final slots
 
 	    						// Slot 7
-	    						if (random.nextBoolean()) {
+	    						if (random.nextInt(3)==0) { // 1/3 of the time, try a modded dye
 	    							switch (random.nextInt(3))
 	    							{
-	    							case 0: // Special handler for green dye
+	    							case 0: // Special handler for brown dye
 	    								while (true) {
-	    									moditem = FunctionsVN.getItemFromName(ModObjects.dyeGreenBOP);
-	    									if (moditem != null) {buyingList.add(new MerchantRecipe(
-	    											new ItemStack( moditem, 12 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
-	    											) ); break;}
-	    									
+	    									moditemstack = ModObjects.chooseModBrownDye();
+	    									if (moditemstack != null) {moditemstack.setCount(12);
 	    									buyingList.add(new MerchantRecipe(
-	    											new ItemStack( Items.DYE, 12, 2 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
-	    											) );
-	    									break;}
-	    								break;
-	    								
-	    							case 1: // Special handler for brown dye
-	    								while (true) {
-	    									moditem = FunctionsVN.getItemFromName(ModObjects.dyeBrownBOP);
-	    									if (moditem != null) {buyingList.add(new MerchantRecipe(
-	    											new ItemStack( moditem, 12 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
+	    											moditemstack, new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
 	    											) ); break;}
 	    									
 	    									buyingList.add(new MerchantRecipe(
@@ -941,11 +932,12 @@ public class FunctionsVN
 	    									break;}
 	    								break;
 	    								
-	    							case 2: // Special handler for blue dye
+	    							case 1: // Special handler for blue dye
 	    								while (true) {
-	    									moditem = FunctionsVN.getItemFromName(ModObjects.dyeBlueBOP);
-	    									if (moditem != null) {buyingList.add(new MerchantRecipe(
-	    											new ItemStack( moditem, 12 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
+	    									moditemstack = ModObjects.chooseModBrownDye();
+	    									if (moditemstack != null) {moditemstack.setCount(12);
+	    									buyingList.add(new MerchantRecipe(
+	    											moditemstack, new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
 	    											) ); break;}
 	    									
 	    									buyingList.add(new MerchantRecipe(
@@ -958,7 +950,7 @@ public class FunctionsVN
 	    						}
 	    						else {
 	    							buyingList.add(new MerchantRecipe(
-											new ItemStack( Items.DYE, 12, new int[]{5,6,13}[random.nextInt(3)] ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
+											new ItemStack( Items.DYE, 12, new int[]{2,5,6,13}[random.nextInt(4)] ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
 											));
 	    						}
 								
@@ -1244,7 +1236,7 @@ public class FunctionsVN
         								// Lantern (Added in 1.14)
     		    						while (true)
     			    					{
-    										moditem = FunctionsVN.getItemFromName(ModObjects.lanternFMC);
+    										moditem = ModObjects.chooseModLanternItem();
     										
     										if (moditem != null)
     										{

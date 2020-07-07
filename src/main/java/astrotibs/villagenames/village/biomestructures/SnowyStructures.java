@@ -5,6 +5,7 @@ import java.util.Random;
 
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
@@ -90,18 +91,46 @@ public class SnowyStructures
 		@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.GRASS.getDefaultState(), this);
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this);
-        	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this);
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this);
-        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.COBBLESTONE.getDefaultState(), this);
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this);
-        	IBlockState biomeLanternState = StructureVillageVN.getLanternBlock();
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.GRASS.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.COBBLESTONE.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeLanternState = ModObjects.chooseModLanternBlock(true);
         	
-        	// For stripped wood specifically // TODO - add modded stripped wood
-        	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;//null; int biomeStrippedWoodOrLogOrLogVerticMeta = 0;
-        	IBlockState biomeStrippedWoodOrLogOrLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), false);
-        	IBlockState biomeStrippedWoodOrLogOrLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), true);
+        	// Try to get stripped wood
+        	IBlockState biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0); 
+        	IBlockState biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
+        	IBlockState biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
+        	
+        	// If stripped wood does not exist, try to get stripped logs
+        	if (biomeStrippedWoodOrLogOrLogVerticState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0);
+        	}
+        	if (biomeStrippedWoodOrLogOrLogHorAlongState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
+        	}
+        	if (biomeStrippedWoodOrLogOrLogHorAcrossState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
+        	}
+        	
+        	// If neither exist, get vanilla logs
+        	if (biomeStrippedWoodOrLogOrLogVerticState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;
+        	}
+        	if (biomeStrippedWoodOrLogOrLogHorAlongState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), false);
+        	}
+        	if (biomeStrippedWoodOrLogOrLogHorAcrossState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), true);
+        	}
         	
         	
         	if (this.averageGroundLvl < 0)
@@ -246,7 +275,7 @@ public class SnowyStructures
     					FunctionsVN.getUniqueLongForXYZ(
     							this.getXWithOffset(uvw[0], uvw[2]),
     							this.getYWithOffset(uvw[1]),
-    							this.getXWithOffset(uvw[0], uvw[2])
+    							this.getZWithOffset(uvw[0], uvw[2])
     							)
             			);
             	
@@ -393,11 +422,11 @@ public class SnowyStructures
 		@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.GRASS.getDefaultState(), this);
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this);
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this);
-        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.PLANKS.getDefaultState(), this);
-        	IBlockState biomeWoodenStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_STAIRS.getDefaultState(), this);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.GRASS.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.PLANKS.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeWoodenStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_STAIRS.getDefaultState(), this.materialType, this.biome);
         	
         	if (this.averageGroundLvl < 0)
             {
@@ -650,17 +679,45 @@ public class SnowyStructures
 		@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.GRASS.getDefaultState(), this);
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this);
-        	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this);
-        	IBlockState biomeWallSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.WALL_SIGN.getDefaultState(), this);
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this);
-        	IBlockState biomeLanternState = StructureVillageVN.getLanternBlock();
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.GRASS.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeWallSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.WALL_SIGN.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeLanternState = ModObjects.chooseModLanternBlock(true);
         	
-        	// For stripped wood specifically // TODO - add modded stripped wood
-        	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;//null; int biomeStrippedWoodOrLogOrLogVerticMeta = 0;
-        	IBlockState biomeStrippedWoodOrLogOrLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), false);
-        	IBlockState biomeStrippedWoodOrLogOrLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), true);
+        	// Try to get stripped wood
+        	IBlockState biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0); 
+        	IBlockState biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
+        	IBlockState biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
+
+        	// If stripped wood does not exist, try to get stripped logs
+        	if (biomeStrippedWoodOrLogOrLogVerticState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0);
+        	}
+        	if (biomeStrippedWoodOrLogOrLogHorAlongState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
+        	}
+        	if (biomeStrippedWoodOrLogOrLogHorAcrossState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
+        	}
+
+        	// If neither exist, get vanilla logs
+        	if (biomeStrippedWoodOrLogOrLogVerticState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;
+        	}
+        	if (biomeStrippedWoodOrLogOrLogHorAlongState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), false);
+        	}
+        	if (biomeStrippedWoodOrLogOrLogHorAcrossState==null)
+        	{
+        		biomeStrippedWoodOrLogOrLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), true);
+        	}
         	
         	
         	if (this.averageGroundLvl < 0)

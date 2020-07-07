@@ -56,7 +56,7 @@ public class GeneralConfig {
 	public static String[] moddedVillagerHeadwearGraylist;
 	public static ArrayList<String> moddedVillagerHeadwearWhitelist = new ArrayList<String>();
 	public static ArrayList<String> moddedVillagerHeadwearBlacklist = new ArrayList<String>();
-
+	
 	// Added in v3.2
 	public static String[] moddedVillagerModularSkins;
 	public static Map<String, ArrayList> moddedVillagerCareerSkins;
@@ -72,6 +72,8 @@ public class GeneralConfig {
 	public static boolean treasureTrades;
 	public static boolean writtenBookTrade;
 	public static boolean swampHutMushroomPot;
+	
+	public static String[] modDye;
 	
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
@@ -507,6 +509,17 @@ public class GeneralConfig {
 		
 		
 		//--------------Mod Integration-----------------//
+		
+	    modDye = config.getStringList("Mod Priority: Dye", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"biomesoplenty",
+ 				"quark",
+ 				"botania",
+ 				},
+ 				"Priority order for referencing dye for villager trade offers. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+		
 		
 		// Mapping for modded structures, and the creatures that can name them
 		modStructureNames = config.getStringList("Mod Structures", "Mod Integration", new String[]{
