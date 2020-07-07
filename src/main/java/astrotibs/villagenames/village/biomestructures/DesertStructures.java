@@ -108,7 +108,7 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome);
         	
         	if (this.field_143015_k < 0)
             {
@@ -361,7 +361,7 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome);
         	
         	if (this.field_143015_k < 0)
             {
@@ -643,8 +643,8 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this);
-        	IBlockState biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this); // TODO - Check for modded sandstone walls
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome); // TODO - Check for modded sandstone walls
         	
         	if (this.field_143015_k < 0)
             {

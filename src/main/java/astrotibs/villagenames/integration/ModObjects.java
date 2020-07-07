@@ -3,8 +3,10 @@ package astrotibs.villagenames.integration;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.utility.FunctionsVN;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 
 /**
  * A holder for string names for various mod items/blocks/etc for easy access
@@ -88,6 +90,31 @@ public class ModObjects {
 		}
 		return null;
 	}
+	
+	// Campfire
+	/**
+     * Give this method the orientation of the campfire and the base mode of the structure it's in,
+     * and it'll give you back the required meta value for construction.
+     * For relative orientations, use:
+     * 
+     * HANGING:
+     * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+     *   
+     * STANDING:
+     * 0=fore-facing (away from you); 4=right-facing; 8=back-facing (toward you); 12=left-facing
+     */
+	public static IBlockState chooseModCampfireBlock(int relativeOrientation, int horizIndex)
+	{
+		// No mod campfires exist. Return an upright torch.
+		return Blocks.torch.getDefaultState();
+	}
+	
+	// Lantern
+    public static IBlockState chooseModLanternBlock(boolean isHanging)
+    {
+    	// No mod lanterns exist. Return a glowstone block.
+    	return Blocks.glowstone.getDefaultState();
+    }
 	
 	// Glazed Terracotta
 	public static IBlockState chooseModGlazedTerracotta(int colorMeta, int facingMeta)

@@ -14,8 +14,11 @@ import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
 import astrotibs.villagenames.utility.FunctionsVN;
+import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.utility.LogHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
@@ -261,14 +264,14 @@ public class StructureVillageVN
     /**
      * Biome-specific block replacement
      */
-    public static IBlockState getBiomeSpecificBlock(IBlockState blockstate, StructureVillageVN.StartVN startPiece)
+    public static IBlockState getBiomeSpecificBlock(IBlockState blockstate, MaterialType materialType, BiomeGenBase biome)
     {
-    	if (startPiece==null) {return blockstate;}
+    	if (materialType==null || biome==null) {return blockstate;}
     	
     	Block block = blockstate.getBlock();
     	int meta = block.getMetaFromState(blockstate);
     	
-    	if (startPiece.materialType == FunctionsVN.MaterialType.SPRUCE)
+    	if (materialType == FunctionsVN.MaterialType.SPRUCE)
         {
         	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata()%4);}
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata());}
@@ -291,7 +294,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.BIRCH)
+        if (materialType == FunctionsVN.MaterialType.BIRCH)
         {
         	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.BIRCH.getMetadata()%4);}
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.BIRCH.getMetadata());}
@@ -309,7 +312,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogBirchUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 2};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.JUNGLE)
+        if (materialType == FunctionsVN.MaterialType.JUNGLE)
         {
         	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.JUNGLE.getMetadata()%4);}
         	if (block == Blocks.cobblestone)                   {return Blocks.mossy_cobblestone.getDefaultState();}
@@ -334,7 +337,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogJungleUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 3};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.ACACIA)
+        if (materialType == FunctionsVN.MaterialType.ACACIA)
         {
         	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log2.getStateFromMeta(BlockPlanks.EnumType.ACACIA.getMetadata()%4);}
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.ACACIA.getMetadata());}
@@ -352,7 +355,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogAcaciaUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog2EF), 4*meta + 0};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.DARK_OAK)
+        if (materialType == FunctionsVN.MaterialType.DARK_OAK)
         {
         	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log2.getStateFromMeta(BlockPlanks.EnumType.DARK_OAK.getMetadata()%4);}
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.DARK_OAK.getMetadata());}
@@ -370,7 +373,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogDarkOakUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog2EF), 4*meta + 1};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.SAND)
+        if (materialType == FunctionsVN.MaterialType.SAND)
         {
         	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.sandstone.getStateFromMeta(2);} // Cut sandstone
         	if (block == Blocks.cobblestone)                   {return Blocks.sandstone.getStateFromMeta(0);} // Regular sandstone
@@ -405,7 +408,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Blocks.sandstone, 2};} // Cut sandstone
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Blocks.sandstone, 2};} // Cut sandstone
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.MESA)
+        if (materialType == FunctionsVN.MaterialType.MESA)
         {
         	if (block == Blocks.cobblestone)                   {return Blocks.hardened_clay.getDefaultState();} // TODO - change stain color with village colors?
         	if (block == Blocks.mossy_cobblestone)             {return Blocks.hardened_clay.getDefaultState();}
@@ -421,7 +424,7 @@ public class StructureVillageVN
 			//										        		return new Object[]{block, 0};
 			//												   } // Brick wall
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.SNOW)
+        if (materialType == FunctionsVN.MaterialType.SNOW)
         {
         	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata()%4);}
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata());}
@@ -442,7 +445,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.MUSHROOM)
+        if (materialType == FunctionsVN.MaterialType.MUSHROOM)
         {
         	if (block == Blocks.log || block == Blocks.log2)   {Blocks.brown_mushroom_block.getStateFromMeta(15);} // Stem on all six sides
         	if (block == Blocks.cobblestone)                   {Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
@@ -451,7 +454,7 @@ public class StructureVillageVN
         }
         
         // Post Forge event
-        BiomeEvent.GetVillageBlockID event = new BiomeEvent.GetVillageBlockID(startPiece == null ? null : startPiece.biome, block.getStateFromMeta(meta));
+        BiomeEvent.GetVillageBlockID event = new BiomeEvent.GetVillageBlockID(biome == null ? null : biome, block.getStateFromMeta(meta));
         MinecraftForge.TERRAIN_GEN_BUS.post(event);
         if (event.getResult() == Result.DENY) return event.replacement;//new Object[]{event.replacement.getBlock(), meta};
         
@@ -535,10 +538,10 @@ public class StructureVillageVN
      */
     public static int setPathSpecificBlock(World world, StructureVillageVN.StartVN startPiece, int meta, int posX, int posY, int posZ)
     {
-    	IBlockState grassPath = getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), startPiece); // TODO - use native block in 1.9+
-    	IBlockState planks = getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), startPiece);
-    	IBlockState gravel = getBiomeSpecificBlock(Blocks.gravel.getDefaultState(), startPiece);
-    	IBlockState cobblestone = getBiomeSpecificBlock(Blocks.cobblestone.getStateFromMeta(0), startPiece);
+    	IBlockState grassPath = getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), startPiece.materialType, startPiece.biome); // TODO - use native block in 1.9+
+    	IBlockState planks = getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), startPiece.materialType, startPiece.biome);
+    	IBlockState gravel = getBiomeSpecificBlock(Blocks.gravel.getDefaultState(), startPiece.materialType, startPiece.biome);
+    	IBlockState cobblestone = getBiomeSpecificBlock(Blocks.cobblestone.getStateFromMeta(0), startPiece.materialType, startPiece.biome);
     	
     	// Top block level
     	int surfaceY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(posX, 0, posZ)).down().getY();
@@ -1236,5 +1239,345 @@ public class StructureVillageVN
 
             return true;
         }
+    }
+    
+    
+    
+    /**
+     * Returns the direction-shifted metadata for blocks that require orientation, e.g. doors, stairs, ladders.
+     */
+    public static int getMetadataWithOffset(Block blockIn, int metaIn, EnumFacing facingIn)
+    {
+        if (blockIn == Blocks.rail)
+        {
+            if (facingIn == EnumFacing.WEST || facingIn == EnumFacing.EAST)
+            {
+                if (metaIn == 1)
+                {
+                    return 0;
+                }
+
+                return 1;
+            }
+        }
+        else if (blockIn instanceof BlockDoor)
+        {
+            if (facingIn == EnumFacing.SOUTH)
+            {
+                if (metaIn == 0)
+                {
+                    return 2;
+                }
+
+                if (metaIn == 2)
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                if (facingIn == EnumFacing.WEST)
+                {
+                    return metaIn + 1 & 3;
+                }
+
+                if (facingIn == EnumFacing.EAST)
+                {
+                    return metaIn + 3 & 3;
+                }
+            }
+        }
+        else if (blockIn != Blocks.stone_stairs && blockIn != Blocks.oak_stairs && blockIn != Blocks.nether_brick_stairs && blockIn != Blocks.stone_brick_stairs && blockIn != Blocks.sandstone_stairs)
+        {
+            if (blockIn == Blocks.ladder)
+            {
+                if (facingIn == EnumFacing.SOUTH)
+                {
+                    if (metaIn == EnumFacing.NORTH.getIndex())
+                    {
+                        return EnumFacing.SOUTH.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.SOUTH.getIndex())
+                    {
+                        return EnumFacing.NORTH.getIndex();
+                    }
+                }
+                else if (facingIn == EnumFacing.WEST)
+                {
+                    if (metaIn == EnumFacing.NORTH.getIndex())
+                    {
+                        return EnumFacing.WEST.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.SOUTH.getIndex())
+                    {
+                        return EnumFacing.EAST.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.WEST.getIndex())
+                    {
+                        return EnumFacing.NORTH.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.EAST.getIndex())
+                    {
+                        return EnumFacing.SOUTH.getIndex();
+                    }
+                }
+                else if (facingIn == EnumFacing.EAST)
+                {
+                    if (metaIn == EnumFacing.NORTH.getIndex())
+                    {
+                        return EnumFacing.EAST.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.SOUTH.getIndex())
+                    {
+                        return EnumFacing.WEST.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.WEST.getIndex())
+                    {
+                        return EnumFacing.NORTH.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.EAST.getIndex())
+                    {
+                        return EnumFacing.SOUTH.getIndex();
+                    }
+                }
+            }
+            else if (blockIn == Blocks.stone_button)
+            {
+                if (facingIn == EnumFacing.SOUTH)
+                {
+                    if (metaIn == 3)
+                    {
+                        return 4;
+                    }
+
+                    if (metaIn == 4)
+                    {
+                        return 3;
+                    }
+                }
+                else if (facingIn == EnumFacing.WEST)
+                {
+                    if (metaIn == 3)
+                    {
+                        return 1;
+                    }
+
+                    if (metaIn == 4)
+                    {
+                        return 2;
+                    }
+
+                    if (metaIn == 2)
+                    {
+                        return 3;
+                    }
+
+                    if (metaIn == 1)
+                    {
+                        return 4;
+                    }
+                }
+                else if (facingIn == EnumFacing.EAST)
+                {
+                    if (metaIn == 3)
+                    {
+                        return 2;
+                    }
+
+                    if (metaIn == 4)
+                    {
+                        return 1;
+                    }
+
+                    if (metaIn == 2)
+                    {
+                        return 3;
+                    }
+
+                    if (metaIn == 1)
+                    {
+                        return 4;
+                    }
+                }
+            }
+            else if (blockIn != Blocks.tripwire_hook && !(blockIn instanceof BlockDirectional))
+            {
+                if (blockIn == Blocks.piston || blockIn == Blocks.sticky_piston || blockIn == Blocks.lever || blockIn == Blocks.dispenser)
+                {
+                    if (facingIn == EnumFacing.SOUTH)
+                    {
+                        if (metaIn == EnumFacing.NORTH.getIndex() || metaIn == EnumFacing.SOUTH.getIndex())
+                        {
+                            return EnumFacing.getFront(metaIn).getOpposite().getIndex();
+                        }
+                    }
+                    else if (facingIn == EnumFacing.WEST)
+                    {
+                        if (metaIn == EnumFacing.NORTH.getIndex())
+                        {
+                            return EnumFacing.WEST.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.SOUTH.getIndex())
+                        {
+                            return EnumFacing.EAST.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.WEST.getIndex())
+                        {
+                            return EnumFacing.NORTH.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.EAST.getIndex())
+                        {
+                            return EnumFacing.SOUTH.getIndex();
+                        }
+                    }
+                    else if (facingIn == EnumFacing.EAST)
+                    {
+                        if (metaIn == EnumFacing.NORTH.getIndex())
+                        {
+                            return EnumFacing.EAST.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.SOUTH.getIndex())
+                        {
+                            return EnumFacing.WEST.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.WEST.getIndex())
+                        {
+                            return EnumFacing.NORTH.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.EAST.getIndex())
+                        {
+                            return EnumFacing.SOUTH.getIndex();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                EnumFacing enumfacing = EnumFacing.getHorizontal(metaIn);
+
+                if (facingIn == EnumFacing.SOUTH)
+                {
+                    if (enumfacing == EnumFacing.SOUTH || enumfacing == EnumFacing.NORTH)
+                    {
+                        return enumfacing.getOpposite().getHorizontalIndex();
+                    }
+                }
+                else if (facingIn == EnumFacing.WEST)
+                {
+                    if (enumfacing == EnumFacing.NORTH)
+                    {
+                        return EnumFacing.WEST.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.SOUTH)
+                    {
+                        return EnumFacing.EAST.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.WEST)
+                    {
+                        return EnumFacing.NORTH.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.EAST)
+                    {
+                        return EnumFacing.SOUTH.getHorizontalIndex();
+                    }
+                }
+                else if (facingIn == EnumFacing.EAST)
+                {
+                    if (enumfacing == EnumFacing.NORTH)
+                    {
+                        return EnumFacing.EAST.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.SOUTH)
+                    {
+                        return EnumFacing.WEST.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.WEST)
+                    {
+                        return EnumFacing.NORTH.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.EAST)
+                    {
+                        return EnumFacing.SOUTH.getHorizontalIndex();
+                    }
+                }
+            }
+        }
+        else if (facingIn == EnumFacing.SOUTH)
+        {
+            if (metaIn == 2)
+            {
+                return 3;
+            }
+
+            if (metaIn == 3)
+            {
+                return 2;
+            }
+        }
+        else if (facingIn == EnumFacing.WEST)
+        {
+            if (metaIn == 0)
+            {
+                return 2;
+            }
+
+            if (metaIn == 1)
+            {
+                return 3;
+            }
+
+            if (metaIn == 2)
+            {
+                return 0;
+            }
+
+            if (metaIn == 3)
+            {
+                return 1;
+            }
+        }
+        else if (facingIn == EnumFacing.EAST)
+        {
+            if (metaIn == 0)
+            {
+                return 2;
+            }
+
+            if (metaIn == 1)
+            {
+                return 3;
+            }
+
+            if (metaIn == 2)
+            {
+                return 1;
+            }
+
+            if (metaIn == 3)
+            {
+                return 0;
+            }
+        }
+
+        return metaIn;
     }
 }

@@ -95,9 +95,9 @@ public class PlainsStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getDefaultState(), this);
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this);
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getDefaultState(), this);
+        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getDefaultState(), this.materialType, this.biome);
         	
         	if (this.field_143015_k < 0)
             {
@@ -392,11 +392,11 @@ public class PlainsStructures
 		@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getDefaultState(), this);
-        	IBlockState biomeCobblestoneSlabState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(3), this);
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this);
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this);
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getDefaultState(), this);
+        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeCobblestoneSlabState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(3), this.materialType, this.biome);
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getDefaultState(), this.materialType, this.biome);
         	
         	if (this.field_143015_k < 0)
             {
@@ -726,13 +726,13 @@ public class PlainsStructures
 		@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getDefaultState(), this);
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getDefaultState(), this);
-        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getDefaultState(), this);
-        	IBlockState biomeWoodenSlabState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(0), this);
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this);
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this);
-        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getDefaultState(), this);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeWoodenSlabState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getDefaultState(), this.materialType, this.biome);
         	
         	if (this.field_143015_k < 0)
             {
@@ -1003,12 +1003,12 @@ public class PlainsStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getDefaultState(), this);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getDefaultState(), this);
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getDefaultState(), this);
-        	IBlockState biomeWallSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wall_sign.getDefaultState(), this);
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this);
-        	IBlockState biomeStoneStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_stairs.getDefaultState(), this);
+        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeWallSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wall_sign.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeStoneStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_stairs.getDefaultState(), this.materialType, this.biome);
         	
         	if (this.field_143015_k < 0)
             {
