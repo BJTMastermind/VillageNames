@@ -1,11 +1,13 @@
 package astrotibs.villagenames.village.biomestructures;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
@@ -97,7 +99,7 @@ public class SnowyStructures
         	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.COBBLESTONE.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeLanternState = StructureVillageVN.getLanternBlock();
+        	IBlockState biomeLanternState = ModObjects.chooseModLanternBlockState(true);
         	
         	// For stripped wood specifically // TODO - add modded stripped wood
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;//null; int biomeStrippedWoodOrLogOrLogVerticMeta = 0;
@@ -273,38 +275,28 @@ public class SnowyStructures
             		decorHeightY = this.decorHeightY.get(j);
             	}
             	
-            	int decorType = randomFromXYZ.nextInt(3);
-            	int decorOrientation = randomFromXYZ.nextInt(4);
             	
-            	boolean genericBoolean=false;
+            	// Generate decor
+            	ArrayList<BlueprintData> decorBlueprint = getRandomSnowyDecorBlueprint(this, this.getCoordBaseMode(), randomFromXYZ);
             	
-            	int lanternX; int lanternY; int lanternZ;
-            	
-            	// Make lantern base
-            	switch (decorType)
+            	for (BlueprintData b : decorBlueprint)
             	{
-            	case 2: // Lateral lanterns
-            		lanternX =  decorOrientation==3 ? -1 : decorOrientation==1 ? 1 : 0;
-            		lanternZ =  decorOrientation==0 ? -1 : decorOrientation==2 ? 1 : 0;
-            		this.setBlockState(world, biomeFenceState, uvw[0]+lanternX, decorHeightY+3, uvw[2]+lanternZ, structureBB);
-            		this.setBlockState(world, biomeLanternState, uvw[0]+lanternX, decorHeightY+2, uvw[2]+lanternZ, structureBB);
-            		lanternX =  decorOrientation==3 ? 1 : decorOrientation==1 ? -1 : 0;
-            		lanternZ =  decorOrientation==0 ? 1 : decorOrientation==2 ? -1 : 0;
-            		this.setBlockState(world, biomeFenceState, uvw[0]+lanternX, decorHeightY+3, uvw[2]+lanternZ, structureBB);
-            		this.setBlockState(world, biomeLanternState, uvw[0]+lanternX, decorHeightY+2, uvw[2]+lanternZ, structureBB);
-            	case 1: // Second lantern opposite
-            		lanternX =  decorOrientation==0 ? -1 : decorOrientation==2 ? 1 : 0;
-            		lanternZ =  decorOrientation==3 ? -1 : decorOrientation==1 ? 1 : 0;
-            		this.setBlockState(world, biomeFenceState, uvw[0]+lanternX, decorHeightY+3, uvw[2]+lanternZ, structureBB);
-            		this.setBlockState(world, biomeLanternState, uvw[0]+lanternX, decorHeightY+2, uvw[2]+lanternZ, structureBB);
-            	case 0: // Single lantern
-            		lanternX =  decorOrientation==0 ? 1 : decorOrientation==2 ? -1 : 0;
-            		lanternZ =  decorOrientation==3 ? 1 : decorOrientation==1 ? -1 : 0;
-            		this.setBlockState(world, biomeFenceState, uvw[0]+lanternX, decorHeightY+3, uvw[2]+lanternZ, structureBB);
-            		this.setBlockState(world, biomeLanternState, uvw[0]+lanternX, decorHeightY+2, uvw[2]+lanternZ, structureBB);
-            		// Base post
-            		this.fillWithBlocks(world, structureBB, uvw[0]+0, decorHeightY+0, uvw[2]+0, uvw[0]+0, decorHeightY+3, uvw[2]+0, biomeFenceState, biomeFenceState, false);
+            		// Place block indicated by blueprint
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		
+            		// Fill below if flagged
+            		if ((b.getfillFlag()&1)!=0)
+            		{
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            		}
+            		
+            		// Clear above if flagged
+            		if ((b.getfillFlag()&2)!=0)
+            		{
+            			this.clearCurrentPositionBlocksUpwards(world, uvw[0]+b.getUPos(), decorHeightY+b.getVPos()+1, uvw[2]+b.getWPos(), structureBB);
+            		}            		
             	}
+            	
             }
         	
         	
@@ -665,7 +657,7 @@ public class SnowyStructures
         	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeWallSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.WALL_SIGN.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeLanternState = StructureVillageVN.getLanternBlock();
+        	IBlockState biomeLanternState = ModObjects.chooseModLanternBlockState(true);
         	
         	// For stripped wood specifically // TODO - add modded stripped wood
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;//null; int biomeStrippedWoodOrLogOrLogVerticMeta = 0;
@@ -877,4 +869,65 @@ public class SnowyStructures
             return true;
         }
     }
+    
+    
+	
+	/**
+	 * Returns a list of blocks and coordinates used to construct a decor piece
+	 */
+	protected static ArrayList<BlueprintData> getRandomSnowyDecorBlueprint(StartVN startVN, EnumFacing coordBaseMode, Random random)
+	{
+		int decorCount = 3;
+		return getSnowyDecorBlueprint(random.nextInt(decorCount), startVN, coordBaseMode, random);
+	}
+	protected static ArrayList<BlueprintData> getSnowyDecorBlueprint(int decorType, StartVN startVN, EnumFacing coordBaseMode, Random random)
+	{
+		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
+		
+		
+		// Generate per-material blocks
+		
+		IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), startVN.materialType, startVN.biome);
+    	IBlockState biomeHangingLanternState = ModObjects.chooseModLanternBlockState(true);
+    	
+    	boolean genericBoolean=false;
+    	
+    	int lanternX; int lanternY; int lanternZ;
+    	
+    	int decorOrientation = random.nextInt(4);
+    	
+    	// Make lantern base
+    	switch (decorType)
+    	{
+    	case 2: // Lateral lanterns
+    		lanternX =  decorOrientation==3 ? -1 : decorOrientation==1 ? 1 : 0;
+    		lanternZ =  decorOrientation==0 ? -1 : decorOrientation==2 ? 1 : 0;
+    		BlueprintData.addPlaceBlock(blueprint, lanternX, 3, lanternZ, biomeFenceState);
+    		BlueprintData.addPlaceBlock(blueprint, lanternX, 2, lanternZ, biomeHangingLanternState);
+    		
+    		lanternX =  decorOrientation==3 ? 1 : decorOrientation==1 ? -1 : 0;
+    		lanternZ =  decorOrientation==0 ? 1 : decorOrientation==2 ? -1 : 0;
+    		BlueprintData.addPlaceBlock(blueprint, lanternX, 3, lanternZ, biomeFenceState);
+    		BlueprintData.addPlaceBlock(blueprint, lanternX, 2, lanternZ, biomeHangingLanternState);
+    		
+    	case 1: // Second lantern opposite
+    		lanternX =  decorOrientation==0 ? -1 : decorOrientation==2 ? 1 : 0;
+    		lanternZ =  decorOrientation==3 ? -1 : decorOrientation==1 ? 1 : 0;
+    		BlueprintData.addPlaceBlock(blueprint, lanternX, 3, lanternZ, biomeFenceState);
+    		BlueprintData.addPlaceBlock(blueprint, lanternX, 2, lanternZ, biomeHangingLanternState);
+    		
+    	case 0: // Single lantern
+    		lanternX =  decorOrientation==0 ? 1 : decorOrientation==2 ? -1 : 0;
+    		lanternZ =  decorOrientation==3 ? 1 : decorOrientation==1 ? -1 : 0;
+    		BlueprintData.addPlaceBlock(blueprint, lanternX, 3, lanternZ, biomeFenceState);
+    		BlueprintData.addPlaceBlock(blueprint, lanternX, 2, lanternZ, biomeHangingLanternState);
+    		
+    		// Base post
+    		BlueprintData.addFillWithBlocks(blueprint, 0, 0, 0, 0, 3, 0, biomeFenceState);
+    	}
+    	
+    	
+        // Return the decor blueprint
+        return blueprint;
+	}
 }
