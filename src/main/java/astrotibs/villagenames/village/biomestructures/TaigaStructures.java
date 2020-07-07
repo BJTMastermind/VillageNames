@@ -500,7 +500,7 @@ public class TaigaStructures
             	//LogHelper.info("Decor spawned at: " + this.getXWithOffset(uvw[0], uvw[2]) + " " + (groundLevelY+this.boundingBox.minY) + " " + this.getZWithOffset(uvw[0], uvw[2]));
 
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getTaigaDecorBlueprint(randomFromXYZ.nextInt(7), this, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = getRandomTaigaDecorBlueprint(this, this.getCoordBaseMode(), randomFromXYZ);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -698,6 +698,11 @@ public class TaigaStructures
 	/**
 	 * Returns a list of blocks and coordinates used to construct a decor piece
 	 */
+	protected static ArrayList<BlueprintData> getRandomTaigaDecorBlueprint(StartVN startVN, EnumFacing coordBaseMode, Random random)
+	{
+		int decorCount = 7;
+		return getTaigaDecorBlueprint(random.nextInt(decorCount), startVN, coordBaseMode, random);
+	}
 	protected static ArrayList<BlueprintData> getTaigaDecorBlueprint(int decorType, StartVN startVN, EnumFacing coordBaseMode, Random random)
 	{
 		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
@@ -709,13 +714,11 @@ public class TaigaStructures
     	IBlockState biomeStoneStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STONE_STAIRS.getDefaultState(), startVN.materialType, startVN.biome);
     	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.PLANKS.getDefaultState(), startVN.materialType, startVN.biome);
     	IBlockState biomeTrapdoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.TRAPDOOR.getDefaultState(), startVN.materialType, startVN.biome);
-    	
+    	IBlockState campfireState = ModObjects.chooseModCampfireBlockState(random.nextInt(4), horizIndex);
     	
 		boolean genericBoolean=false;
     	
-    	IBlockState campfireState = ModObjects.chooseModCampfireBlock(random.nextInt(4), horizIndex);
-    	
-        switch (random.nextInt(7))
+        switch (decorType)
         {
     	case 0: // Wood trough
     		boolean shift=random.nextBoolean();

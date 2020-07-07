@@ -90,17 +90,65 @@ public class ModObjects {
      * STANDING:
      * 0=fore-facing (away from you); 4=right-facing; 8=back-facing (toward you); 12=left-facing
      */
-	public static IBlockState chooseModCampfireBlock(int relativeOrientation, int horizIndex)
+	public static IBlockState chooseModCampfireBlockState(int relativeOrientation, int horizIndex)
 	{
 		// No mod campfires exist. Return an upright torch.
 		return Blocks.TORCH.getDefaultState();
 	}
 	
 	// Lantern
-    public static IBlockState chooseModLanternBlock(boolean isHanging)
+    public static IBlockState chooseModLanternBlockState(boolean isHanging)
     {
     	// No mod lanterns exist. Return a glowstone block.
     	return Blocks.GLOWSTONE.getDefaultState();
     }
 	
+	// Stripped log
+	/**
+	 * Materials are: 0=oak, 1=spruce, 2=birch, 3=jungle, 4=acacia, 5=darkoak
+	 * Orientations are: 0=vertical, 1=east-west, 2=north-south
+	 */
+	public static IBlockState chooseModStrippedLog(int materialMeta, int orientation)
+	{
+		/*
+		Block logBlock=null;
+		
+		switch (materialMeta)
+		{
+		case 0: logBlock = Block.getBlockFromName(ModObjects.strippedLogOakFMC); break;
+		case 1: logBlock = Block.getBlockFromName(ModObjects.strippedLogSpruceFMC); break;
+		case 2: logBlock = Block.getBlockFromName(ModObjects.strippedLogBirchFMC); break;
+		case 3: logBlock = Block.getBlockFromName(ModObjects.strippedLogJungleFMC); break;
+		case 4: logBlock = Block.getBlockFromName(ModObjects.strippedLogAcaciaFMC); break;
+		case 5: logBlock = Block.getBlockFromName(ModObjects.strippedLogDarkOakFMC); break;
+		}
+		if (logBlock != null) {return logBlock.getStateFromMeta(orientation%3*4);}
+		*/
+		return null;
+	}
+	
+
+	// Stripped wood
+	/**
+	 * Materials are: 0=oak, 1=spruce, 2=birch, 3=jungle, 4=acacia, 5=darkoak
+	 * Orientations are: 0=vertical, 1=east-west, 2=north-south
+	 */
+	public static IBlockState chooseModStrippedWood(int materialMeta, int orientation)
+	{
+		/*
+		Block logBlock=null;
+		
+		switch (materialMeta)
+		{
+		case 0: logBlock = Block.getBlockFromName(ModObjects.strippedWoodOakFMC); break;
+		case 1: logBlock = Block.getBlockFromName(ModObjects.strippedWoodSpruceFMC); break;
+		case 2: logBlock = Block.getBlockFromName(ModObjects.strippedWoodBirchFMC); break;
+		case 3: logBlock = Block.getBlockFromName(ModObjects.strippedWoodJungleFMC); break;
+		case 4: logBlock = Block.getBlockFromName(ModObjects.strippedWoodAcaciaFMC); break;
+		case 5: logBlock = Block.getBlockFromName(ModObjects.strippedWoodDarkOakFMC); break;
+		}
+		if (logBlock != null) {return logBlock.getStateFromMeta(orientation%3*4);}
+		*/
+		return null;
+	}
 }

@@ -758,18 +758,6 @@ public class StructureVillageVN
     }
     
     /**
-     * Returns a mod-specific lantern block, or failing that, a glowstone block
-     */
-    public static IBlockState getLanternBlock()
-    {
-    	//Block tryLantern = Block.getBlockFromName(ModObjects.davyLampEM);
-    	//if (tryLantern!=null) {return new Object[]{tryLantern, 1};}
-    	
-    	// None are found, so return ordinary glowstone
-    	return Blocks.GLOWSTONE.getDefaultState();
-    }
-    
-    /**
      * Contracts bounding box by amount specified in X, Y, Z
      */
     public static StructureBoundingBox contractBB(StructureBoundingBox structureBoundingBox, int xAmount, int yAmount, int zAmount)

@@ -227,7 +227,7 @@ public class MapGenVillageVN extends MapGenVillage
 
             
             // Force a specific starter for testing purposes
-            //start = new TaigaStructures.TaigaMeetingPoint2(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize);
+            //start = new DesertStructures.DesertMeetingPoint3(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize);
             
             // Add well to the component list
             this.components.add(start);
