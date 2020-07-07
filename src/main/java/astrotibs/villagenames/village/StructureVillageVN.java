@@ -15,6 +15,7 @@ import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
 import astrotibs.villagenames.utility.FunctionsVN;
+import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.utility.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -265,14 +266,14 @@ public class StructureVillageVN
     /**
      * Biome-specific block replacement
      */
-    public static IBlockState getBiomeSpecificBlock(IBlockState blockstate, StructureVillageVN.StartVN startPiece)
+    public static IBlockState getBiomeSpecificBlock(IBlockState blockstate, MaterialType materialType, Biome biome)
     {
-    	if (startPiece==null) {return blockstate;}
+    	if (materialType==null || biome==null) {return blockstate;}
     	
     	Block block = blockstate.getBlock();
     	int meta = block.getMetaFromState(blockstate);
     	
-    	if (startPiece.materialType == FunctionsVN.MaterialType.SPRUCE)
+    	if (materialType == FunctionsVN.MaterialType.SPRUCE)
         {
         	if (block == Blocks.LOG || block == Blocks.LOG2)   {return Blocks.LOG.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata()%4);}
         	if (block == Blocks.PLANKS)                        {return Blocks.PLANKS.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata());}
@@ -295,7 +296,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.BIRCH)
+        if (materialType == FunctionsVN.MaterialType.BIRCH)
         {
         	if (block == Blocks.LOG || block == Blocks.LOG2)   {return Blocks.LOG.getStateFromMeta(BlockPlanks.EnumType.BIRCH.getMetadata()%4);}
         	if (block == Blocks.PLANKS)                        {return Blocks.PLANKS.getStateFromMeta(BlockPlanks.EnumType.BIRCH.getMetadata());}
@@ -313,7 +314,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogBirchUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 2};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.JUNGLE)
+        if (materialType == FunctionsVN.MaterialType.JUNGLE)
         {
         	if (block == Blocks.LOG || block == Blocks.LOG2)   {return Blocks.LOG.getStateFromMeta(BlockPlanks.EnumType.JUNGLE.getMetadata()%4);}
         	if (block == Blocks.COBBLESTONE)                   {return Blocks.MOSSY_COBBLESTONE.getDefaultState();}
@@ -338,7 +339,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogJungleUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 3};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.ACACIA)
+        if (materialType == FunctionsVN.MaterialType.ACACIA)
         {
         	if (block == Blocks.LOG || block == Blocks.LOG2)   {return Blocks.LOG2.getStateFromMeta(BlockPlanks.EnumType.ACACIA.getMetadata()%4);}
         	if (block == Blocks.PLANKS)                        {return Blocks.PLANKS.getStateFromMeta(BlockPlanks.EnumType.ACACIA.getMetadata());}
@@ -356,7 +357,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogAcaciaUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog2EF), 4*meta + 0};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.DARK_OAK)
+        if (materialType == FunctionsVN.MaterialType.DARK_OAK)
         {
         	if (block == Blocks.LOG || block == Blocks.LOG2)   {return Blocks.LOG2.getStateFromMeta(BlockPlanks.EnumType.DARK_OAK.getMetadata()%4);}
         	if (block == Blocks.PLANKS)                        {return Blocks.PLANKS.getStateFromMeta(BlockPlanks.EnumType.DARK_OAK.getMetadata());}
@@ -374,7 +375,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogDarkOakUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog2EF), 4*meta + 1};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.SAND)
+        if (materialType == FunctionsVN.MaterialType.SAND)
         {
         	if (block == Blocks.LOG || block == Blocks.LOG2)   {return Blocks.SANDSTONE.getStateFromMeta(2);} // Cut sandstone
         	if (block == Blocks.COBBLESTONE)                   {return Blocks.SANDSTONE.getStateFromMeta(0);} // Regular sandstone
@@ -409,7 +410,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Blocks.SANDSTONE, 2};} // Cut sandstone
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Blocks.SANDSTONE, 2};} // Cut sandstone
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.MESA)
+        if (materialType == FunctionsVN.MaterialType.MESA)
         {
         	if (block == Blocks.COBBLESTONE)                   {return Blocks.HARDENED_CLAY.getDefaultState();} // TODO - change stain color with village colors?
         	if (block == Blocks.MOSSY_COBBLESTONE)             {return Blocks.HARDENED_CLAY.getDefaultState();}
@@ -425,7 +426,7 @@ public class StructureVillageVN
 			//										        		return new Object[]{block, 0};
 			//												   } // Brick wall
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.SNOW)
+        if (materialType == FunctionsVN.MaterialType.SNOW)
         {
         	if (block == Blocks.LOG || block == Blocks.LOG2)   {return Blocks.LOG.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata()%4);}
         	if (block == Blocks.PLANKS)                        {return Blocks.PLANKS.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata());}
@@ -446,7 +447,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1};}
         }
-        if (startPiece.materialType == FunctionsVN.MaterialType.MUSHROOM)
+        if (materialType == FunctionsVN.MaterialType.MUSHROOM)
         {
         	if (block == Blocks.LOG || block == Blocks.LOG2)   {Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(15);} // Stem on all six sides
         	if (block == Blocks.COBBLESTONE)                   {Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(14);} // Cap on all six sides
@@ -455,7 +456,7 @@ public class StructureVillageVN
         }
         
         // Post Forge event
-        BiomeEvent.GetVillageBlockID event = new BiomeEvent.GetVillageBlockID(startPiece == null ? null : startPiece.biome, block.getStateFromMeta(meta));
+        BiomeEvent.GetVillageBlockID event = new BiomeEvent.GetVillageBlockID(biome == null ? null : biome, block.getStateFromMeta(meta));
         MinecraftForge.TERRAIN_GEN_BUS.post(event);
         if (event.getResult() == Result.DENY) return event.getReplacement();//new Object[]{event.replacement.getBlock(), meta};
         
@@ -704,10 +705,10 @@ public class StructureVillageVN
      */
     public static int setPathSpecificBlock(World world, StructureVillageVN.StartVN startPiece, int meta, int posX, int posY, int posZ)
     {
-    	IBlockState grassPath = getBiomeSpecificBlock(Blocks.GRASS_PATH.getDefaultState(), startPiece);
-    	IBlockState planks = getBiomeSpecificBlock(Blocks.PLANKS.getStateFromMeta(0), startPiece);
-    	IBlockState gravel = getBiomeSpecificBlock(Blocks.GRAVEL.getDefaultState(), startPiece);
-    	IBlockState cobblestone = getBiomeSpecificBlock(Blocks.COBBLESTONE.getStateFromMeta(0), startPiece);
+    	IBlockState grassPath = getBiomeSpecificBlock(Blocks.GRASS_PATH.getDefaultState(), startPiece.materialType, startPiece.biome);
+    	IBlockState planks = getBiomeSpecificBlock(Blocks.PLANKS.getStateFromMeta(0), startPiece.materialType, startPiece.biome);
+    	IBlockState gravel = getBiomeSpecificBlock(Blocks.GRAVEL.getDefaultState(), startPiece.materialType, startPiece.biome);
+    	IBlockState cobblestone = getBiomeSpecificBlock(Blocks.COBBLESTONE.getStateFromMeta(0), startPiece.materialType, startPiece.biome);
     	
     	// Top block level
     	int surfaceY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(posX, 0, posZ)).down().getY();
