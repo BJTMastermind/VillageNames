@@ -285,7 +285,7 @@ public class ModObjects {
 	
 	
 	// Lantern
-    public static IBlockState chooseModLanternBlock(boolean isHanging)
+    public static IBlockState chooseModLanternBlockState(boolean isHanging)
     {
     	Block tryLantern = Block.getBlockFromName(ModObjects.lanternFMC);
     	if (tryLantern!=null) {return tryLantern.getStateFromMeta(isHanging? 0:1);} // 1 is hanging, 0 is sitting, but they need to be assigned in reverse for some reason
