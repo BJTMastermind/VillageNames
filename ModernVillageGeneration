@@ -9,17 +9,22 @@ by five comma-separated values of the form:
 a,b,c,d,e
 
 a is the structure generation weight. The higher this value, the more likely
-the structure will be selected from the list.
+the structure will be selected from the list. Set it to 0 to prevent this
+structure component from spawning.
 
 The number of copies of a structure that can be in a list is a random integer
 between
 
-b×s + c
+b*s + c
 and
-d×s + e
+d*s + e
 
 where s is the Village Size config value you specified. Thus, there will never
 be more than d×s + e copies of a given structure in a village. There is no
 guarantee to be at least b×s + c copies, however.
+
+There is no strict requirement that b, c, d, e must be non-negative, but be
+careful to ensure that (b*s + c) is not greater than (d*s + e), and that neither
+total is less than zero.
 
 Every village will always have exactly one town center, selected based on biome.
