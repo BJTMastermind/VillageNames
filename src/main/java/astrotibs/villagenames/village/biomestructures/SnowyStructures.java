@@ -100,38 +100,26 @@ public class SnowyStructures
         	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeLanternState = ModObjects.chooseModLanternBlockState(true);
         	
-        	// Try to get stripped wood
-        	IBlockState biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0); 
-        	IBlockState biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
-        	IBlockState biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
-        	
+
+        	// For stripped wood specifically
+        	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;//null; int biomeStrippedWoodOrLogOrLogVerticMeta = 0;
+        	IBlockState biomeStrippedWoodOrLogOrLogHorAlongState = biomeLogState;
+        	IBlockState biomeStrippedWoodOrLogOrLogHorAcrossState = biomeLogState;
+        	// Try stripped wood
+        	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
+        	{
+            	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0); 
+            	biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
+            	biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
+        	}
         	// If stripped wood does not exist, try to get stripped logs
-        	if (biomeStrippedWoodOrLogOrLogVerticState==null)
+        	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
         		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0);
-        	}
-        	if (biomeStrippedWoodOrLogOrLogHorAlongState==null)
-        	{
         		biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
-        	}
-        	if (biomeStrippedWoodOrLogOrLogHorAcrossState==null)
-        	{
         		biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
         	}
         	
-        	// If neither exist, get vanilla logs
-        	if (biomeStrippedWoodOrLogOrLogVerticState==null)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;
-        	}
-        	if (biomeStrippedWoodOrLogOrLogHorAlongState==null)
-        	{
-        		biomeStrippedWoodOrLogOrLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), false);
-        	}
-        	if (biomeStrippedWoodOrLogOrLogHorAcrossState==null)
-        	{
-        		biomeStrippedWoodOrLogOrLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), true);
-        	}
         	
         	
         	if (this.averageGroundLvl < 0)
@@ -140,7 +128,7 @@ public class SnowyStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX, this.boundingBox.minZ,
         						this.boundingBox.maxX, this.boundingBox.maxZ), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
         		
                 if (this.averageGroundLvl < 0) {return true;} // Do not construct a well in a void
 
@@ -425,7 +413,7 @@ public class SnowyStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX+1, this.boundingBox.minZ+1,
         						this.boundingBox.maxX-1, this.boundingBox.maxZ-1), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
         		
                 if (this.averageGroundLvl < 0) {return true;} // Do not construct a well in a void
 
@@ -515,8 +503,8 @@ public class SnowyStructures
             		
                     if (k > -1)
                     {
+                    	this.clearCurrentPositionBlocksUpwards(world, uw[0], k+2-this.boundingBox.minY, uw[1], structureBB);
                     	StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(uw[0], uw[1]), k, this.getZWithOffset(uw[0], uw[1]));
-                    	this.clearCurrentPositionBlocksUpwards(world, uw[0], k+1-this.boundingBox.minY, uw[1], structureBB);
                    	}
         		}
             }
@@ -677,37 +665,23 @@ public class SnowyStructures
         	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeLanternState = ModObjects.chooseModLanternBlockState(true);
         	
-        	// Try to get stripped wood
-        	IBlockState biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0); 
-        	IBlockState biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
-        	IBlockState biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
-
+        	// For stripped wood specifically
+        	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;//null; int biomeStrippedWoodOrLogOrLogVerticMeta = 0;
+        	IBlockState biomeStrippedWoodOrLogOrLogHorAlongState = biomeLogState;
+        	IBlockState biomeStrippedWoodOrLogOrLogHorAcrossState = biomeLogState;
+        	// Try stripped wood
+        	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
+        	{
+            	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0); 
+            	biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
+            	biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
+        	}
         	// If stripped wood does not exist, try to get stripped logs
-        	if (biomeStrippedWoodOrLogOrLogVerticState==null)
+        	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
         		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0);
-        	}
-        	if (biomeStrippedWoodOrLogOrLogHorAlongState==null)
-        	{
         		biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
-        	}
-        	if (biomeStrippedWoodOrLogOrLogHorAcrossState==null)
-        	{
         		biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
-        	}
-
-        	// If neither exist, get vanilla logs
-        	if (biomeStrippedWoodOrLogOrLogVerticState==null)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;
-        	}
-        	if (biomeStrippedWoodOrLogOrLogHorAlongState==null)
-        	{
-        		biomeStrippedWoodOrLogOrLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), false);
-        	}
-        	if (biomeStrippedWoodOrLogOrLogHorAcrossState==null)
-        	{
-        		biomeStrippedWoodOrLogOrLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), true);
         	}
         	
         	
@@ -717,7 +691,7 @@ public class SnowyStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX, this.boundingBox.minZ,
         						this.boundingBox.maxX, this.boundingBox.maxZ), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
         		
                 if (this.averageGroundLvl < 0) {return true;} // Do not construct a well in a void
 
@@ -772,8 +746,8 @@ public class SnowyStructures
             		
                     if (k > -1)
                     {
+                    	this.clearCurrentPositionBlocksUpwards(world, uw[0], k+2-this.boundingBox.minY, uw[1], structureBB);
                     	StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(uw[0], uw[1]), k, this.getZWithOffset(uw[0], uw[1]));
-                    	this.clearCurrentPositionBlocksUpwards(world, uw[0], k+1-this.boundingBox.minY, uw[1], structureBB);
                    	}
         		}
             }

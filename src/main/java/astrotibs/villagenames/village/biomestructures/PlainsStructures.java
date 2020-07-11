@@ -106,7 +106,7 @@ public class PlainsStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX, this.boundingBox.minZ,
         						this.boundingBox.maxX, this.boundingBox.maxZ), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
         		
                 if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
                 
@@ -213,15 +213,15 @@ public class PlainsStructures
             		int k = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(i, j), 0, this.getZWithOffset(i, j))).down().getY();
                     if (k > -1)
                     {
+                    	this.clearCurrentPositionBlocksUpwards(world, i, k+2-this.boundingBox.minY, j, structureBB);
                     	StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(i, j), k, this.getZWithOffset(i, j));
-                    	this.clearCurrentPositionBlocksUpwards(world, i, k+1-this.boundingBox.minY, j, structureBB);
                    	}
                     
                     k = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(j, i), 0, this.getZWithOffset(j, i))).down().getY();
                     if (k > -1)
                     {
+                    	this.clearCurrentPositionBlocksUpwards(world, j, k+2-this.boundingBox.minY, i, structureBB);
                     	StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(j, i), k, this.getZWithOffset(j, i));
-                    	this.clearCurrentPositionBlocksUpwards(world, j, k+1-this.boundingBox.minY, i, structureBB);
                    	}
             	}
             }
@@ -386,7 +386,7 @@ public class PlainsStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX+1, this.boundingBox.minZ+1,
         						this.boundingBox.maxX-1, this.boundingBox.maxZ-1), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
         		
                 if (this.averageGroundLvl < 0) {return true;} // Do not construct a well in a void
 
@@ -525,29 +525,29 @@ public class PlainsStructures
             	int k = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(0, i+1), 0, this.getZWithOffset(0, i+1))).down().getY();
                 if (k > -1)
                 {
+                	this.clearCurrentPositionBlocksUpwards(world, 0, k+2-this.boundingBox.minY, i+1, structureBB);
                 	StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(0, i+1), k, this.getZWithOffset(0, i+1));
-                	this.clearCurrentPositionBlocksUpwards(world, 0, k+1-this.boundingBox.minY, i+1, structureBB);
                	}
                 
                 k = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(9, i), 0, this.getZWithOffset(9, i))).down().getY();
                 if (k > -1)
                 {
+                	this.clearCurrentPositionBlocksUpwards(world, 9, k+2-this.boundingBox.minY, i, structureBB);
                 	StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(9, i), k, this.getZWithOffset(9, i));
-                	this.clearCurrentPositionBlocksUpwards(world, 9, k+1-this.boundingBox.minY, i, structureBB);
                	}
 
                 k = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(i, 0), 0, this.getZWithOffset(i, 0))).down().getY();
                 if (k > -1)
                 {
+                	this.clearCurrentPositionBlocksUpwards(world, i, k+2-this.boundingBox.minY, 0, structureBB);
                 	StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(i, 0), k, this.getZWithOffset(i, 0));
-                	this.clearCurrentPositionBlocksUpwards(world, i, k+1-this.boundingBox.minY, 0, structureBB);
                	}
                 
                 k = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(i+1, 9), 0, this.getZWithOffset(i+1, 9))).down().getY();
                 if (k > -1)
                 {
+                	this.clearCurrentPositionBlocksUpwards(world, i+1, k+2-this.boundingBox.minY, 9, structureBB);
                 	StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(i+1, 9), k, this.getZWithOffset(i+1, 9));
-                	this.clearCurrentPositionBlocksUpwards(world, i+1, k+1-this.boundingBox.minY, 9, structureBB);
                	}
             }
             
@@ -709,7 +709,7 @@ public class PlainsStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX, this.boundingBox.minZ,
         						this.boundingBox.maxX, this.boundingBox.maxZ), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
         		
                 if (this.averageGroundLvl < 0) {return true;} // Do not construct a well in a void
 
@@ -985,7 +985,7 @@ public class PlainsStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX, this.boundingBox.minZ,
         						this.boundingBox.maxX, this.boundingBox.maxZ), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
         		
                 if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
 
@@ -1261,19 +1261,29 @@ public class PlainsStructures
 		IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), startVN.materialType, startVN.biome);
     	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), startVN.materialType, startVN.biome);
     	
-    	// Try to get stripped wood
-    	IBlockState biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0); 
-    	
-    	// If stripped wood does not exist, try to get stripped logs
-    	if (biomeStrippedWoodOrLogOrLogVerticState==null)
+    	// For stripped wood specifically
+    	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogState; 
+
+    	// Try to see if stripped wood exists
+    	if (biomeLogState.getBlock() == Blocks.LOG)
     	{
-    		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0);
+    		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0);
     	}
-    	
-    	// If neither exist, get vanilla logs
-    	if (biomeStrippedWoodOrLogOrLogVerticState==null)
+    	else if (biomeLogState.getBlock() == Blocks.LOG2)
     	{
-    		biomeStrippedWoodOrLogOrLogVerticState = biomeLogState;
+    		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWood(biomeLogState.getBlock().getMetaFromState(biomeLogState)+4, 0);
+    	}
+    	// If it doesn't exist, try stripped logs
+    	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
+    	{
+        	if (biomeLogState.getBlock() == Blocks.LOG)
+        	{
+        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0);
+        	}
+        	else if (biomeLogState.getBlock() == Blocks.LOG2)
+        	{
+        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLog(biomeLogState.getBlock().getMetaFromState(biomeLogState)+4, 0);
+        	}
     	}
     	
 		
