@@ -6,6 +6,7 @@ import java.util.Random;
 
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
@@ -105,7 +106,7 @@ public class SavannaStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX, this.boundingBox.minZ,
         						this.boundingBox.maxX, this.boundingBox.maxZ), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.coordBaseMode.getHorizontalIndex());
         		
                 if (this.field_143015_k < 0) {return true;} // Do not construct a well in a void
 
@@ -400,7 +401,7 @@ public class SavannaStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX, this.boundingBox.minZ,
         						this.boundingBox.maxX, this.boundingBox.maxZ), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.coordBaseMode.getHorizontalIndex());
         		
                 if (this.field_143015_k < 0) {return true;} // Do not construct a well in a void
 
@@ -674,8 +675,7 @@ public class SavannaStructures
         	IBlockState biomeWoodenSlabState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeBarkState = biomeLogState.getBlock().getStateFromMeta(biomeLogState.getBlock().getMetaFromState(biomeLogState)%4+12);
-        	
+        	IBlockState biomeBarkState = ModObjects.chooseModBark(biomeLogState);
         	
         	if (this.field_143015_k < 0)
             {
@@ -683,7 +683,7 @@ public class SavannaStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX+1, this.boundingBox.minZ+1,
         						this.boundingBox.maxX-1, this.boundingBox.maxZ-1), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.coordBaseMode.getHorizontalIndex());
         		
                 if (this.field_143015_k < 0) {return true;} // Do not construct a well in a void
 
@@ -746,8 +746,8 @@ public class SavannaStructures
             		
                     if (k > -1)
                     {
+                    	this.clearCurrentPositionBlocksUpwards(world, uw[0], k+2-this.boundingBox.minY, uw[1], structureBB);
                     	StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(uw[0], uw[1]), k, this.getZWithOffset(uw[0], uw[1]));
-                    	this.clearCurrentPositionBlocksUpwards(world, uw[0], k+1-this.boundingBox.minY, uw[1], structureBB);
                    	}
         		}
             }
@@ -956,7 +956,7 @@ public class SavannaStructures
         	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeWoodenStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeBarkState = biomeLogState.getBlock().getStateFromMeta(biomeLogState.getBlock().getMetaFromState(biomeLogState)%4+12);
+        	IBlockState biomeBarkState = ModObjects.chooseModBark(biomeLogState);
         	
         	if (this.field_143015_k < 0)
             {
@@ -964,7 +964,7 @@ public class SavannaStructures
         				new StructureBoundingBox(
         						this.boundingBox.minX+1, this.boundingBox.minZ+1,
         						this.boundingBox.maxX-1, this.boundingBox.maxZ-1), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true);
+        				true, (byte)15, this.coordBaseMode.getHorizontalIndex());
         		
                 if (this.field_143015_k < 0) {return true;} // Do not construct a well in a void
 
@@ -1014,8 +1014,8 @@ public class SavannaStructures
             		
                     if (k > -1)
                     {
+                    	this.clearCurrentPositionBlocksUpwards(world, uw[0], k+2-this.boundingBox.minY, uw[1], structureBB);
                     	StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(uw[0], uw[1]), k, this.getZWithOffset(uw[0], uw[1]));
-                    	this.clearCurrentPositionBlocksUpwards(world, uw[0], k+1-this.boundingBox.minY, uw[1], structureBB);
                    	}
         		}
             }
