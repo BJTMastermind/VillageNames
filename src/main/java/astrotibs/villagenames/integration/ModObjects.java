@@ -75,6 +75,17 @@ public class ModObjects {
 	// --------------------------- //
 	// --- Generator Functions --- //
 	// --------------------------- //
+
+	// Bark
+	public static IBlockState chooseModBark(IBlockState blockstate)
+	{
+		if (blockstate.getBlock()==Blocks.LOG || blockstate.getBlock()==Blocks.LOG2)
+		{
+			return blockstate.getBlock().getStateFromMeta(12 + blockstate.getBlock().getMetaFromState(blockstate)%4);
+		}
+		
+		return blockstate;
+	}
 	
 	// Concrete
 	public static IBlockState chooseModConcrete(int color)
