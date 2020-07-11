@@ -23,6 +23,7 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
@@ -222,7 +223,17 @@ public class StructureVillageVN
             IBlockState blockstate = chunk.getBlockState(blockpos1);
             Block block = blockstate.getBlock();
 
-            if ((blockstate.getMaterial().blocksMovement() && !block.isLeaves(world.getBlockState(blockpos1), world, blockpos1) && !block.isFoliage(world, blockpos1))
+            if (
+            		// If it's a solid, full block that isn't one of these particular types
+            		(blockstate.getMaterial().blocksMovement()
+    				&& !block.isLeaves(world.getBlockState(blockpos1), world, blockpos1)
+    				&& blockstate.getMaterial() != Material.LEAVES
+					&& blockstate.getMaterial() != Material.PLANTS
+					&& blockstate.getMaterial() != Material.VINE
+					&& blockstate.getMaterial() != Material.AIR
+    				&& !block.isFoliage(world, blockpos1))
+            		&& blockstate.isOpaqueCube()
+            		// If the block is liquid, return the value above it
             		|| blockstate.getMaterial().isLiquid()
             		)
             {
@@ -239,7 +250,7 @@ public class StructureVillageVN
      * (An ACTUAL median of all the levels in the BB's horizontal rectangle).
      * Use outlineOnly if you'd like to tally only the boundary values.
      */
-    public static int getMedianGroundLevel(World world, StructureBoundingBox boundingBox, boolean outlineOnly)
+    public static int getMedianGroundLevel(World world, StructureBoundingBox boundingBox, boolean outlineOnly, byte sideFlag, int horizIndex)
     {
     	ArrayList<Integer> i = new ArrayList<Integer>();
     	
@@ -249,12 +260,18 @@ public class StructureVillageVN
             {
                 if (boundingBox.isVecInside(new BlockPos(l, 64, k)))
                 {
-                	if (!outlineOnly || (outlineOnly && (k==boundingBox.minZ || k==boundingBox.maxZ || l==boundingBox.minX || l==boundingBox.maxX)))
+                	if (!outlineOnly || (outlineOnly &&
+                			(
+                					(k==boundingBox.minZ && (sideFlag&(new int[]{1,2,4,2}[horizIndex]))>0) ||
+                					(k==boundingBox.maxZ && (sideFlag&(new int[]{4,8,1,8}[horizIndex]))>0) ||
+                					(l==boundingBox.minX && (sideFlag&(new int[]{2,4,2,1}[horizIndex]))>0) ||
+                					(l==boundingBox.maxX && (sideFlag&(new int[]{8,1,8,4}[horizIndex]))>0) ||
+                					false
+                					)
+                			))
                 	{
-                		//i.add(Math.max(world.getTopSolidOrLiquidBlock(l, k), world.provider.getAverageGroundLevel())); // getAverageGroundLevel returns 64
-                		//LogHelper.info("height " + world.getTopSolidOrLiquidBlock(l, k) + " at " + l + " " + k);
-                		i.add(getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(l, 64, k)).getY());
-                		//i.add(Math.max(world.getTopSolidOrLiquidBlock(l, k), world.provider.getAverageGroundLevel()));
+                		int aboveTopLevel = getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(l, 64, k)).getY();
+                		if (aboveTopLevel != -1) {i.add(aboveTopLevel);}
                 	}
                 }
             }
