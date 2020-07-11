@@ -78,6 +78,17 @@ public class ModObjects {
 	// --- Generator Functions --- //
 	// --------------------------- //
 
+	// Bark
+	public static IBlockState chooseModBark(IBlockState blockstate)
+	{
+		if (blockstate.getBlock()==Blocks.LOG || blockstate.getBlock()==Blocks.LOG2)
+		{
+			return blockstate.getBlock().getStateFromMeta(12 + blockstate.getBlock().getMetaFromState(blockstate)%4);
+		}
+		
+		return blockstate;
+	}
+	
 	// Campfire
 	/**
      * Give this method the orientation of the campfire and the base mode of the structure it's in,
@@ -124,7 +135,7 @@ public class ModObjects {
 		}
 		if (logBlock != null) {return logBlock.getStateFromMeta(orientation%3*4);}
 		*/
-		return null;
+		return (materialMeta<4 ? Blocks.LOG : Blocks.LOG2).getStateFromMeta(orientation*4+materialMeta%4);
 	}
 	
 
@@ -149,6 +160,6 @@ public class ModObjects {
 		}
 		if (logBlock != null) {return logBlock.getStateFromMeta(orientation%3*4);}
 		*/
-		return null;
+		return (materialMeta<4 ? Blocks.LOG : Blocks.LOG2).getStateFromMeta(orientation*4+materialMeta%4);
 	}
 }
