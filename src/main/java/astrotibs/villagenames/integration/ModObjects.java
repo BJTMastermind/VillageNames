@@ -153,7 +153,7 @@ public class ModObjects {
 		}
 		if (logBlock != null) {return logBlock.getStateFromMeta(orientation%3*4);}
 		*/
-		return null;
+		return (materialMeta<4 ? Blocks.LOG : Blocks.LOG2).getStateFromMeta(orientation*4+materialMeta%4);
 	}
 	
 
@@ -178,6 +178,6 @@ public class ModObjects {
 		}
 		if (logBlock != null) {return logBlock.getStateFromMeta(orientation%3*4);}
 		*/
-		return null;
+		return (materialMeta<4 ? Blocks.LOG : Blocks.LOG2).getStateFromMeta(orientation*4+materialMeta%4);
 	}
 }
