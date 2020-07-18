@@ -129,8 +129,8 @@ public class DesertStructures
         			this.getXWithOffset(6, 4),
         			this.getYWithOffset(2),
         			this.getZWithOffset(6, 4));
-        	int townColor = villageNBTtag.getInteger("townColor");
-        	int townColor2 = villageNBTtag.getInteger("townColor2");
+        	this.townColor = villageNBTtag.getInteger("townColor");
+        	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	
         	// Set sandstone ground and clear area above
         	this.fillWithBlocks(world, structureBB, 3, 0, 0, 9, 0, 8, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
@@ -242,9 +242,9 @@ public class DesertStructures
     			int bannerXBB = 7;
     			int bannerZBB = 1;
     			int bannerYBB = -1;
-    			if (this.bannerY==-1)
+    			if (this.bannerY==0)
     			{
-    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY;
+    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
@@ -382,8 +382,8 @@ public class DesertStructures
         			this.getXWithOffset(8, 1),
         			this.getYWithOffset(1),
         			this.getZWithOffset(8, 1));
-        	int townColor = villageNBTtag.getInteger("townColor");
-        	int townColor2 = villageNBTtag.getInteger("townColor2");
+        	this.townColor = villageNBTtag.getInteger("townColor");
+        	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	
         	// Set sandstone ground and clear area above
         	this.fillWithBlocks(world, structureBB, 1, 0, 1, 10, 0, 10, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
@@ -524,9 +524,9 @@ public class DesertStructures
     			int bannerXBB = 10;
     			int bannerZBB = 10;
     			int bannerYBB = -1;
-    			if (this.bannerY==-1)
+    			if (this.bannerY==0)
     			{
-    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY;
+    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
@@ -665,8 +665,8 @@ public class DesertStructures
         			this.getXWithOffset(8, 2),
         			this.getYWithOffset(3),
         			this.getZWithOffset(8, 2));
-        	int townColor = villageNBTtag.getInteger("townColor");
-        	int townColor2 = villageNBTtag.getInteger("townColor2");
+        	this.townColor = villageNBTtag.getInteger("townColor");
+        	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	
         	
         	// Set ground and clear area above
@@ -935,9 +935,9 @@ public class DesertStructures
     			int bannerXBB = 10;
     			int bannerZBB = 11;
     			int bannerYBB = -1;
-    			if (this.bannerY==-1)
+    			if (this.bannerY==0)
     			{
-    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY;
+    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}

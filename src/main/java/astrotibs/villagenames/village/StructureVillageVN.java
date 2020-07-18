@@ -1104,8 +1104,10 @@ public class StructureVillageVN
     	// Set them to defaults here
     	public FunctionsVN.VillageType villageType = FunctionsVN.VillageType.PLAINS;
     	public FunctionsVN.MaterialType materialType = FunctionsVN.MaterialType.OAK;
+    	public int townColor = 14; // Red
+    	public int townColor2 = 0; // White
     	public boolean villagersGenerated = false;
-    	public int bannerY = -1;
+    	public int bannerY = 0;
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	
         public StartVN() {}

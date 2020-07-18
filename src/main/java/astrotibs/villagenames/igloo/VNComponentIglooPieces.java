@@ -221,7 +221,10 @@ public class VNComponentIglooPieces
                 	this.setBlockState(worldIn, Blocks.crafting_table.getDefaultState(), (this.coordBaseMode.getHorizontalIndex()<2?2:6)+xOffset, 1, 5, structureBoundingBoxIn);
                 	this.setBlockState(worldIn, Blocks.redstone_torch.getStateFromMeta(5), (this.coordBaseMode.getHorizontalIndex()<2?2:6)+xOffset, 1, 4, structureBoundingBoxIn);
                 	this.setBlockState(worldIn, Blocks.furnace.getStateFromMeta((new int[]{5,3,4,2})[this.coordBaseMode.getHorizontalIndex()]), (this.coordBaseMode.getHorizontalIndex()<2?2:6)+xOffset, 1, 3, structureBoundingBoxIn);
-                	
+                	// Have to manually set metadata to get it to stick
+                    worldIn.setBlockState(new BlockPos(this.getXWithOffset((this.coordBaseMode.getHorizontalIndex()<2?2:6)+xOffset, 3), this.getYWithOffset(1), this.getZWithOffset((this.coordBaseMode.getHorizontalIndex()<2?2:6)+xOffset, 3)),
+                    		Blocks.furnace.getStateFromMeta((new int[]{5,3,4,2})[this.coordBaseMode.getHorizontalIndex()]), 2);
+                    
                 	// Blank out the space next to the furnace to ensure it will face the right direction
                 	//this.setBlockState(worldIn, Blocks.furnace.getDefaultState(), (this.coordBaseMode.getHorizontalIndex()<2?2:6)+xOffset, 1, 3, structureBoundingBoxIn);
                 	//this.setBlockState(worldIn, Blocks.air.getDefaultState(), (this.coordBaseMode.getHorizontalIndex()<2?2:6)+xOffset, 1, 4, structureBoundingBoxIn);
