@@ -141,8 +141,8 @@ public class SnowyStructures
         			this.getXWithOffset(2, 5),
         			this.getYWithOffset(2),
         			this.getZWithOffset(2, 5));
-        	int townColor = villageNBTtag.getInteger("townColor");
-        	int townColor2 = villageNBTtag.getInteger("townColor2");
+        	this.townColor = villageNBTtag.getInteger("townColor");
+        	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	
         	// Top layer is grass path
         	for (int u=0; u<=11; u++) {for (int w=0; w<=7; w++) {
@@ -426,8 +426,8 @@ public class SnowyStructures
         			this.getXWithOffset(9, 4),
         			this.getYWithOffset(1),
         			this.getZWithOffset(9, 4));
-        	int townColor = villageNBTtag.getInteger("townColor");
-        	int townColor2 = villageNBTtag.getInteger("townColor2");
+        	this.townColor = villageNBTtag.getInteger("townColor");
+        	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	
         	// Top layer is grass path
         	for (int u=1; u<=9; u++) {for (int w=1; w<=7; w++) {
@@ -704,8 +704,8 @@ public class SnowyStructures
         			this.getXWithOffset(3, 3),
         			this.getYWithOffset(3),
         			this.getZWithOffset(3, 3));
-        	int townColor = villageNBTtag.getInteger("townColor");
-        	int townColor2 = villageNBTtag.getInteger("townColor2");
+        	this.townColor = villageNBTtag.getInteger("townColor");
+        	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	
         	// Top layer is grass path
         	for (int u=1; u<=5; u++) {for (int w=1; w<=5; w++) {
@@ -827,9 +827,9 @@ public class SnowyStructures
                 int bannerXBB = 5;
     			int bannerZBB = 0;
     			int bannerYBB = -1;
-    			if (this.bannerY==-1)
+    			if (this.bannerY==0)
     			{
-    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY;
+    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
