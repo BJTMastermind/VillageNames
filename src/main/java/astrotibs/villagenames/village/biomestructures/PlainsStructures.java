@@ -119,8 +119,8 @@ public class PlainsStructures
         			this.getXWithOffset(4, 4),
         			this.getYWithOffset(2),
         			this.getZWithOffset(4, 4));
-        	int townColor = villageNBTtag.getInteger("townColor");
-        	int townColor2 = villageNBTtag.getInteger("townColor2");
+        	this.townColor = villageNBTtag.getInteger("townColor");
+        	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	
         	
         	// Clear out area
@@ -271,9 +271,9 @@ public class PlainsStructures
     			int bannerXBB = 8;
     			int bannerZBB = 6;
     			int bannerYBB = -1;
-    			if (this.bannerY==-1)
+    			if (this.bannerY==0)
     			{
-    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY;
+    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
@@ -420,8 +420,8 @@ public class PlainsStructures
         			this.getXWithOffset(4, 4),
         			this.getYWithOffset(12),
         			this.getZWithOffset(4, 4));
-        	int townColor = villageNBTtag.getInteger("townColor");
-        	int townColor2 = villageNBTtag.getInteger("townColor2");
+        	this.townColor = villageNBTtag.getInteger("townColor");
+        	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	
         	
             // The well gets filled completely with water first
@@ -547,7 +547,7 @@ public class PlainsStructures
                         if (k > -1)
                         {
                             StructureVillageVN.setPathSpecificBlock(world, this, 0, this.getXWithOffset(i, j), k, this.getZWithOffset(i, j));
-                        	this.clearCurrentPositionBlocksUpwards(world, i, k+1-this.boundingBox.minY, j, structureBB);
+                        	this.clearCurrentPositionBlocksUpwards(world, i, k+2-this.boundingBox.minY, j, structureBB);
                        	}
                     }
                 }
@@ -608,9 +608,9 @@ public class PlainsStructures
                 int bannerXBB = 8;
     			int bannerZBB = 6;
     			int bannerYBB = -1;
-    			if (this.bannerY==-1)
+    			if (this.bannerY==0)
     			{
-    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY;
+    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
@@ -755,8 +755,8 @@ public class PlainsStructures
         			this.getXWithOffset(4, 4),
         			this.getYWithOffset(12),
         			this.getZWithOffset(4, 4));
-        	int townColor = villageNBTtag.getInteger("townColor");
-        	int townColor2 = villageNBTtag.getInteger("townColor2");
+        	this.townColor = villageNBTtag.getInteger("townColor");
+        	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	
         	// Top layer is grass
         	this.fillWithBlocks(world, structureBB, 0, 0, 0, 7, 0, 14, biomeGrassState, biomeGrassState, false);
@@ -883,9 +883,9 @@ public class PlainsStructures
                 int bannerXBB = 6;
     			int bannerZBB = 4;
     			int bannerYBB = -1;
-    			if (this.bannerY==-1)
+    			if (this.bannerY==0)
     			{
-    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY;
+    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
@@ -1030,8 +1030,8 @@ public class PlainsStructures
         			this.getXWithOffset(5, 5),
         			this.getYWithOffset(2),
         			this.getZWithOffset(5, 5));
-        	int townColor = villageNBTtag.getInteger("townColor");
-        	int townColor2 = villageNBTtag.getInteger("townColor2");
+        	this.townColor = villageNBTtag.getInteger("townColor");
+        	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	
         	
         	// Level the ground with grass and then insert grass paths
@@ -1225,9 +1225,9 @@ public class PlainsStructures
                 int bannerXBB = 7;
     			int bannerZBB = 8;
     			int bannerYBB = -1;
-    			if (this.bannerY==-1)
+    			if (this.bannerY==0)
     			{
-    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY;
+    				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
