@@ -56,7 +56,7 @@ public class ModObjects {
 	public static final String TQGuardClass = "net.torocraft.toroquest.entities.EntityGuard";
 	public static final String TQSentryClass = "net.torocraft.toroquest.entities.EntitySentry";
 	public static final String TQVillageLordClass = "net.torocraft.toroquest.entities.EntityVillageLord";
-
+	
 	
 	// Added in v3.1trades
  	
@@ -87,6 +87,14 @@ public class ModObjects {
 	
 	// Lantern
 	public static final String lanternFMC = "futuremc:lantern";
+	
+	// Sandstone walls
+	public static final String sandstoneWallQu = "quark:sandstone_wall";
+	public static final String redSandstoneWallQu = "quark:red_sandstone_wall";
+	
+	// Smooth Sandstone Slab
+	public static final String smoothSandstoneSlabQu = "quark:sandstone_smooth_slab";
+	public static final String smoothRedSandstoneSlabQu = "quark:red_sandstone_smooth_slab";
 	
 	// Stripped log
 	public static final String strippedLogOakFMC = "futuremc:stripped_oak_log";
@@ -330,6 +338,16 @@ public class ModObjects {
 	{
 		Item moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.lanternFMC));
 		if (moditem != null) {return moditem;}
+		
+		return null;
+	}
+	
+	
+	// Sandstone Wall
+	public static IBlockState chooseModSandstoneWall(boolean isRed)
+	{
+		Block modblock = Block.getBlockFromName(isRed ? ModObjects.redSandstoneWallQu : ModObjects.sandstoneWallQu);
+		if (modblock != null) {return modblock.getDefaultState();}
 		
 		return null;
 	}
