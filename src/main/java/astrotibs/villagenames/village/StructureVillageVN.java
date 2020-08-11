@@ -299,6 +299,8 @@ public class StructureVillageVN
     	
     	if (materialType == FunctionsVN.MaterialType.OAK)
         {
+        	if (block == Blocks.sandstone && meta==2)          {return Blocks.cobblestone.getStateFromMeta(0);} // Cut sandstone into stone brick
+        	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
@@ -326,6 +328,8 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.barkEF)) {return new Object[]{block, 1};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1};}
+        	if (block == Blocks.sandstone && meta==2)          {return Blocks.cobblestone.getStateFromMeta(0);} // Cut sandstone into stone brick
+        	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
@@ -348,6 +352,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.barkEF)) {return new Object[]{block, 2};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogBirchUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 2};}
+        	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
@@ -377,6 +382,8 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.barkEF)) {return new Object[]{block, 3};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogJungleUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 3};}
+        	if (block == Blocks.sandstone && meta==2)          {return Blocks.cobblestone.getStateFromMeta(0);} // Cut sandstone into stone brick
+        	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
@@ -399,6 +406,8 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.barkEF)) {return new Object[]{block, 4};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogAcaciaUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog2EF), 4*meta + 0};}
+        	if (block == Blocks.sandstone && meta==2)          {return Blocks.cobblestone.getStateFromMeta(0);} // Cut sandstone into stone brick
+        	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
@@ -421,6 +430,8 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.barkEF)) {return new Object[]{block, 5};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogDarkOakUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog2EF), 4*meta + 1};}
+        	if (block == Blocks.sandstone && meta==2)          {return Blocks.cobblestone.getStateFromMeta(0);} // Cut sandstone into stone brick
+        	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
@@ -429,6 +440,8 @@ public class StructureVillageVN
         if (materialType == FunctionsVN.MaterialType.SAND)
         {
         	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.sandstone.getStateFromMeta(2);} // Cut sandstone
+        	if (block == Blocks.stonebrick && meta==0)         {return Blocks.sandstone.getStateFromMeta(2);} // Stone brick into cut sandstone
+        	if (block == Blocks.cobblestone && meta==3)        {return Blocks.sandstone.getStateFromMeta(1);} // Chiseled sandstone
         	if (block == Blocks.cobblestone)                   {return Blocks.sandstone.getStateFromMeta(0);} // Regular sandstone
         	if (block == Blocks.mossy_cobblestone)             {return Blocks.sandstone.getStateFromMeta(0);} // Regular sandstone
         	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.JUNGLE.getMetadata());}
@@ -494,14 +507,15 @@ public class StructureVillageVN
         	if (block == Blocks.acacia_door || block == Blocks.birch_door || block == Blocks.dark_oak_door || block == Blocks.jungle_door || block == Blocks.oak_door || block == Blocks.spruce_door)
 			   												   {return Blocks.spruce_door.getStateFromMeta(meta);}
         	//if (block == Blocks.trapdoor)                      {return new Object[]{ModObjects.chooseModWoodenTrapdoor(1), meta};}
-        	if (block == Blocks.cobblestone)                   {Blocks.packed_ice.getDefaultState();}
-        	if (block == Blocks.mossy_cobblestone)             {Blocks.packed_ice.getDefaultState();}
-        	if (block == Blocks.gravel)                        {Blocks.packed_ice.getDefaultState();}
+        	if (block == Blocks.cobblestone)                   {return Blocks.packed_ice.getDefaultState();}
+        	if (block == Blocks.mossy_cobblestone)             {return Blocks.packed_ice.getDefaultState();}
+        	if (block == Blocks.gravel)                        {return Blocks.packed_ice.getDefaultState();}
         	//if (block == Blocks.standing_sign)                 {return new Object[]{ModObjects.chooseModWoodenSign(1, true), meta/4};}
         	//if (block == Blocks.wall_sign)                     {return new Object[]{ModObjects.chooseModWoodenSign(1, false), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.barkEF)) {return new Object[]{block, 1};} // Spruce bark
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1};}
+        	if (block == Blocks.stonebrick)                    {return Blocks.packed_ice.getDefaultState();}
         	if (block == Blocks.sandstone)                     {return Blocks.packed_ice.getDefaultState();}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
@@ -509,11 +523,15 @@ public class StructureVillageVN
         }
         if (materialType == FunctionsVN.MaterialType.MUSHROOM)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {Blocks.brown_mushroom_block.getStateFromMeta(15);} // Stem on all six sides
-        	if (block == Blocks.cobblestone)                   {Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
-        	if (block == Blocks.mossy_cobblestone)             {Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
-        	if (block == Blocks.planks)                        {Blocks.brown_mushroom_block.getStateFromMeta(0);} // Pores on all six sides
-        	if (block == Blocks.sandstone)                     {Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.brown_mushroom_block.getStateFromMeta(15);} // Stem on all six sides
+        	if (block == Blocks.cobblestone)                   {return Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
+        	if (block == Blocks.mossy_cobblestone)             {return Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
+        	if (block == Blocks.planks)                        {return Blocks.brown_mushroom_block.getStateFromMeta(0);} // Pores on all six sides
+        	if (block == Blocks.cobblestone && meta==3)        {return Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
+        	if (block == Blocks.stonebrick)                    {return Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
+        	if (block == Blocks.sandstone && meta==2)          {return Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
+        	if (block == Blocks.sandstone && meta==1)          {return Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
+        	if (block == Blocks.sandstone)                     {return Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
