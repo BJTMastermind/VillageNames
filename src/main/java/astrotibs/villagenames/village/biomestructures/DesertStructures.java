@@ -6,7 +6,9 @@ import java.util.Random;
 
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.FunctionsVN;
+import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
@@ -626,7 +628,10 @@ public class DesertStructures
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
         	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome); // TODO - Check for modded sandstone walls
+        	//IBlockState biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome); // TODO - Check for modded sandstone walls
+        	IBlockState biomeSandstoneWallState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA);
+        	if (biomeSandstoneWallState==null) {StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome);}
+        	else {biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallState, this.materialType, this.biome);}
         	
         	if (this.averageGroundLvl < 0)
             {
