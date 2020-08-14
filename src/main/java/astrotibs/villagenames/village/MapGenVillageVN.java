@@ -156,8 +156,11 @@ public class MapGenVillageVN extends MapGenVillage
         {
             super(chunkX, chunkZ);
             
+            // Choose starter type based on biome
+            FunctionsVN.VillageType startVillageType = FunctionsVN.VillageType.getVillageTypeFromBiome(world, (chunkX << 4) + 2, (chunkZ << 4) + 2);
+            
             // My modified version, which allows the user to disable each building
-            List list = StructureVillageVN.getStructureVillageWeightedPieceList(random, villageSize);
+            List list = StructureVillageVN.getStructureVillageWeightedPieceList(random, villageSize, startVillageType);
             
             // Generate the "start" component and add it to the list
             StructureVillageVN.StartVN start = null;
@@ -199,10 +202,6 @@ public class MapGenVillageVN extends MapGenVillage
             		new SnowyStructures.SnowyMeetingPoint2(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Frozen Fountain
             		new SnowyStructures.SnowyMeetingPoint3(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Snowy Pavilion
             };
-            
-            
-            // Choose starter type based on biome
-            FunctionsVN.VillageType startVillageType = FunctionsVN.VillageType.getVillageTypeFromBiome(world, (chunkX << 4) + 2, (chunkZ << 4) + 2);
             
             if (startVillageType==FunctionsVN.VillageType.DESERT)
             {
