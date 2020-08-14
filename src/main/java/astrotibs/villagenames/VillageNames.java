@@ -152,9 +152,12 @@ public final class VillageNames
 		{
 			// New village generator
 			MapGenStructureIO.registerStructure(MapGenVillageVN.Start.class, "MapGenVillageVN");
-			
-			// Structure components
+
+			// Village Misc
 	        MapGenStructureIO.registerStructureComponent(StructureVillageVN.PathVN.class, "VNPath"); // Path
+	        MapGenStructureIO.registerStructureComponent(StructureVillageVN.DecorTorch.class, "VNDecTor"); // Decor Torch
+	        
+	        // Village Centers
 	        MapGenStructureIO.registerStructureComponent(PlainsStructures.PlainsFountain01.class, "VNPlF01"); // Fountain
 	        MapGenStructureIO.registerStructureComponent(PlainsStructures.PlainsMeetingPoint1.class, "VNPlMP1"); // Plains Well
 	        MapGenStructureIO.registerStructureComponent(PlainsStructures.PlainsMeetingPoint2.class, "VNPlMP2"); // Plains Market
