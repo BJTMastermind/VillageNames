@@ -17,6 +17,12 @@ import astrotibs.villagenames.nbt.VNWorldDataStructure;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.utility.LogHelper;
+import astrotibs.villagenames.village.biomestructures.BlueprintData;
+import astrotibs.villagenames.village.biomestructures.DesertStructures;
+import astrotibs.villagenames.village.biomestructures.PlainsStructures;
+import astrotibs.villagenames.village.biomestructures.SavannaStructures;
+import astrotibs.villagenames.village.biomestructures.SnowyStructures;
+import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockPlanks;
@@ -42,6 +48,7 @@ import net.minecraft.world.gen.structure.MapGenStructureData;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
+import net.minecraft.world.gen.structure.StructureVillagePieces.PieceWeight;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -52,7 +59,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class StructureVillageVN
 {
-    public static List getStructureVillageWeightedPieceList(Random random, int villageSize)
+    public static List getStructureVillageWeightedPieceList(Random random, int villageSize, FunctionsVN.VillageType villageType)
     {
         ArrayList arraylist = new ArrayList();
         
@@ -72,10 +79,43 @@ public class StructureVillageVN
 
         while (iterator.hasNext())
         {
-            if (((StructureVillagePieces.PieceWeight)iterator.next()).villagePiecesLimit == 0)
+        	PieceWeight pw = (StructureVillagePieces.PieceWeight)iterator.next();
+
+        	// Remove all buildings that rolled 0 for number or which have a weight of 0
+            if (pw.villagePiecesLimit == 0 || pw.villagePieceWeight <=0) {iterator.remove(); continue;}
+            /*
+            // Remove buildings that aren't appropriate for the current biome
+            if (villageType!=FunctionsVN.VillageType.PLAINS)
             {
-                iterator.remove();
+            	if (
+            			   pw.villagePieceClass==PlainsStructures.PlainsAccessory1.class
+               			|| pw.villagePieceClass==PlainsStructures.PlainsArmorerHouse1.class
+            			)
+            	{
+            		iterator.remove(); continue;
+            	}
             }
+            if (villageType!=FunctionsVN.VillageType.DESERT)
+            {
+            	if (
+         			   pw.villagePieceClass==DesertStructures.DesertWeaponsmith1.class
+         			)
+	         		iterator.remove(); continue;
+	         	}
+            }
+            if (villageType!=FunctionsVN.VillageType.TAIGA)
+            {
+            	
+            }
+            if (villageType!=FunctionsVN.VillageType.SAVANNA)
+            {
+            	
+            }
+            if (villageType!=FunctionsVN.VillageType.SNOWY)
+            {
+            	
+            }
+            */
         }
 
         return arraylist;
@@ -85,7 +125,7 @@ public class StructureVillageVN
     // Pasted in from StructureVillagePieces so that I can access it, particularly to expand the allowed village biomes
     // This prepares a new path component to build upon
     // Called func_176066_d in 1.8
-    public static StructureComponent getNextVillageStructureComponent(StructureVillagePieces.Start start, List<StructureComponent> components, Random rand, int x, int y, int z, EnumFacing facing, int componentType)
+    public static StructureComponent getNextVillageStructureComponent(StartVN start, List<StructureComponent> components, Random random, int x, int y, int z, EnumFacing facing, int componentType)
     {
         if (componentType > 50)
         {
@@ -101,20 +141,21 @@ public class StructureVillageVN
 					);
 			
 			StructureVillagePieces.Village structurecomponent = null;
-
-			try
-			{
-				structurecomponent = (StructureVillagePieces.Village)generateComponent_reflected.invoke(start, (StructureVillagePieces.Start)start, components, rand, x, y, z, facing, componentType + 1);
-			}
-    		catch (Exception e)
-			{
-    			if (GeneralConfig.debugMessages) LogHelper.warn("Could not invoke StructureVillagePieces.generateComponent method");
-    		}
+			try {structurecomponent = (StructureVillagePieces.Village)generateComponent_reflected.invoke(start, (StructureVillagePieces.Start)start, components, random, x, y, z, facing, componentType + 1);}
+    		catch (Exception e) {if (GeneralConfig.debugMessages) LogHelper.warn("Could not invoke StructureVillagePieces.generateComponent method");}
 			
         	//StructureComponent structurecomponent = func_176067_c(start, components, rand, x, y, z, facing, componentType + 1);
             
             if (structurecomponent != null)
             {
+            	// Substitute old torch with the new one
+            	if (structurecomponent instanceof StructureVillagePieces.Torch)
+            	{
+            		StructureBoundingBox decorTorchBB = StructureVillageVN.DecorTorch.findPieceBox(start, components, random, x, y, z, facing);
+            		if (decorTorchBB==null) {return null;}
+            		structurecomponent = new StructureVillageVN.DecorTorch(start, componentType, random, decorTorchBB, facing);
+            	}
+            	
                 int medianX = (structurecomponent.getBoundingBox().minX + structurecomponent.getBoundingBox().maxX) / 2;
                 int medianZ = (structurecomponent.getBoundingBox().minZ + structurecomponent.getBoundingBox().maxZ) / 2;
                 int rangeX = structurecomponent.getBoundingBox().maxX - structurecomponent.getBoundingBox().minX;
@@ -156,15 +197,38 @@ public class StructureVillageVN
         }
     }
     
+    
+    /**
+     * Pasted in from StructureVillagePieces.Path findPieceBox so that I can access it
+     */
+    public static StructureBoundingBox findPieceBox(StructureVillagePieces.Start start, List<StructureComponent> components, Random random, int x, int y, int z, EnumFacing coordBaseMode)
+    {
+    	// Select a length for the road. Start with a random length of 21, 28, or 35,
+    	// and then decrement 7 blocks at a time until the road doesn't intersect with any generated components
+        for (int i = 7 * MathHelper.getInt(random, 3, 5); i >= 7; i -= 7)
+        {
+            StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(
+            		x, y, z, // Structure coordinates
+            		0, 0, 0, // u, v, w offset. The u and w offsets are positive for horizIndex <=1 and negative for horizIndex >=2
+            		3, 3, i, // width, height, depth
+            		coordBaseMode);
+            
+            if (StructureComponent.findIntersecting(components, structureboundingbox) == null)
+            {
+                return structureboundingbox;
+            }
+        }
+        
+        return null;
+    }
+    
+    
     // Pasted in from StructureVillagePieces so that I can access it
     // This prepares a new path component to build upon
     // func_176069_e for 1.8
-    public static StructureComponent getNextComponentVillagePath(StructureVillagePieces.Start start, List<StructureComponent> components, Random rand, int x, int y, int z, EnumFacing facing, int componentType)
+    public static StructureComponent generateAndAddRoadPiece(StructureVillagePieces.Start start, List<StructureComponent> components, Random rand, int x, int y, int z, EnumFacing facing, int componentType)
     {
-        if (componentType > 3 + start.terrainType)
-        {
-            return null;
-        }
+    	if (componentType > 3 + start.terrainType) {return null;} // Idk what this is
         else if (Math.abs(x - start.getBoundingBox().minX) <= 112 && Math.abs(z - start.getBoundingBox().minZ) <= 112)
         {
             StructureBoundingBox structureboundingbox = StructureVillagePieces.Path.findPieceBox(start, components, rand, x, y, z, facing);
@@ -1308,8 +1372,13 @@ public class StructureVillageVN
     	// Set them to defaults here
     	public FunctionsVN.VillageType villageType = FunctionsVN.VillageType.PLAINS;
     	public FunctionsVN.MaterialType materialType = FunctionsVN.MaterialType.OAK;
-    	public int townColor = 14; // Red
-    	public int townColor2 = 0; // White
+    	public int townColor = 11; // Blue
+    	public int townColor2 = 14; // Red
+    	// These colors are used in case more are needed
+    	public int townColorA = 0; // White
+    	public int townColorB = 13; // Green
+    	public int townColorC = 4; // Yellow
+    	
     	public boolean villagersGenerated = false;
     	public int bannerY = 0;
     	public ArrayList<Integer> decorHeightY = new ArrayList();
@@ -1327,6 +1396,215 @@ public class StructureVillageVN
         //public int getXWithOffsetPublic(int xOffset, int zOffset) {return this.getXWithOffset(xOffset, zOffset);}
         //public int getYWithOffsetPublic(int yOffset) {return this.getYWithOffset(yOffset);}
         //public int getZWithOffsetPublic(int xOffset, int zOffset) {return this.getZWithOffset(xOffset, zOffset);}
+    }
+    
+    
+    /**
+     * Gets the next village component, with the bounding box shifted -1 in the X and Z direction.
+     */
+    protected static StructureComponent getNextComponentNN(StartVN start, List components, Random random, int yOffset, int lateralOffset, EnumFacing coordBaseMode, int componentType, StructureBoundingBox boundingBox)
+    {
+        switch (coordBaseMode)
+        {
+            case SOUTH:
+                return StructureVillageVN.getNextVillageStructureComponent(start, components, random, boundingBox.minX - 1, boundingBox.minY + yOffset, boundingBox.minZ + lateralOffset, EnumFacing.WEST, componentType);
+            case WEST:
+                return StructureVillageVN.getNextVillageStructureComponent(start, components, random, boundingBox.minX + lateralOffset, boundingBox.minY + yOffset, boundingBox.minZ - 1, EnumFacing.NORTH, componentType);
+            case NORTH:
+                return StructureVillageVN.getNextVillageStructureComponent(start, components, random, boundingBox.minX - 1, boundingBox.minY + yOffset, boundingBox.minZ + lateralOffset, EnumFacing.WEST, componentType);
+            case EAST:
+                return StructureVillageVN.getNextVillageStructureComponent(start, components, random, boundingBox.minX + lateralOffset, boundingBox.minY + yOffset, boundingBox.minZ - 1, EnumFacing.NORTH, componentType);
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Gets the next village component, with the bounding box shifted +1 in the X and Z direction.
+     */
+    protected static StructureComponent getNextComponentPP(StartVN start, List components, Random random, int yOffset, int lateralOffset, EnumFacing coordBaseMode, int componentType, StructureBoundingBox boundingBox)
+    {
+        switch (coordBaseMode)
+        {
+            case SOUTH:
+                return StructureVillageVN.getNextVillageStructureComponent(start, components, random, boundingBox.maxX + 1, boundingBox.minY + yOffset, boundingBox.minZ + lateralOffset, EnumFacing.EAST, componentType);
+            case WEST:
+                return StructureVillageVN.getNextVillageStructureComponent(start, components, random, boundingBox.minX + lateralOffset, boundingBox.minY + yOffset, boundingBox.maxZ + 1, EnumFacing.SOUTH, componentType);
+            case NORTH:
+                return StructureVillageVN.getNextVillageStructureComponent(start, components, random, boundingBox.maxX + 1, boundingBox.minY + yOffset, boundingBox.minZ + lateralOffset, EnumFacing.EAST, componentType);
+            case EAST:
+                return StructureVillageVN.getNextVillageStructureComponent(start, components, random, boundingBox.minX + lateralOffset, boundingBox.minY + yOffset, boundingBox.maxZ + 1, EnumFacing.SOUTH, componentType);
+            default:
+                return null;
+        }
+    }
+    
+    
+    public static class DecorTorch extends StructureVillagePieces.Village
+    {
+    	public FunctionsVN.VillageType villageType = FunctionsVN.VillageType.PLAINS;
+    	public FunctionsVN.MaterialType materialType = FunctionsVN.MaterialType.OAK;
+    	public ArrayList<Integer> decorHeightY = new ArrayList();
+    	public StartVN start;
+    	
+    	private static final int GROUND_LEVEL = 0; // Spaces above the bottom of the structure considered to be "ground level"
+    	private int averageGroundLevel = -1;
+    	
+        public DecorTorch() {}
+        
+        public DecorTorch(StartVN start, int componentType, Random random, StructureBoundingBox structureBB, EnumFacing coordBaseMode)
+        {
+            super(start, componentType);
+            this.setCoordBaseMode(coordBaseMode);
+            this.boundingBox = structureBB;
+            
+            this.start = start;
+            // Set biome and material type, to be used during construction
+            int averageX = (structureBB.minX+structureBB.maxX)/2;
+            int averageZ = (structureBB.minZ+structureBB.maxZ)/2;
+            this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(start.biomeProvider, averageX, averageZ);
+            this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(start.biomeProvider, averageX, averageZ);
+        }
+        
+        public static StructureBoundingBox findPieceBox(StartVN start, List components, Random random, int x, int y, int z, EnumFacing coordBaseMode)
+        {
+            StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(
+            		x, y, z, // Structure coordinates
+            		0, 0, 0, // u, v, w offset. The u and w offsets are positive for horizIndex <=1 and negative for horizIndex >=2
+            		3, 4, 3, // width, height, depth
+            		coordBaseMode);
+            
+            return StructureComponent.findIntersecting(components, structureboundingbox) != null ? null : structureboundingbox;
+        }
+        
+        /**
+         * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes
+         * Mineshafts at the end, it adds Fences...
+         */
+        @Override
+        public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
+        {
+        	if (this.averageGroundLevel < 0)
+            {
+        		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
+        				// Set the bounding box version as this bounding box but with Y going from 0 to 512
+        				new StructureBoundingBox(
+        						this.boundingBox.minX, this.boundingBox.minZ,
+        						this.boundingBox.maxX, this.boundingBox.maxZ),
+        				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
+        		
+                if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
+
+                this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
+            }
+        	/*
+            if (this.field_143015_k < 0)
+            {
+                this.field_143015_k = this.getAverageGroundLevel(world, structureBB);
+                
+                if (this.field_143015_k < 0)
+                {
+                    return true;
+                }
+                
+                this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 4 - 1, 0);
+            }
+            
+            this.fillWithBlocks(world, structureBB, 0, 0, 0, 2, 3, 1, Blocks.air, Blocks.air, false);
+            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 0, 0, structureBB);
+            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 1, 0, structureBB);
+            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 2, 0, structureBB);
+            this.placeBlockAtCurrentPosition(world, Blocks.log,   0, 1, 3, 0, structureBB);
+            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 0, 3, 0, structureBB);
+            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 1, 3, 1, structureBB);
+            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 2, 3, 0, structureBB);
+            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 1, 3, -1, structureBB);
+            */
+        	// Decor
+            int[][] decorUVW = new int[][]{
+            	{1, 0, 1},
+            };  
+            
+            for (int j=0; j<decorUVW.length; j++)
+            {
+            	// Get coordinates
+            	int[] uvw = decorUVW[j];
+            	
+            	LogHelper.info("Decor generated at " + this.getXWithOffset(uvw[0], uvw[2]) + " " + this.getYWithOffset(uvw[1]) +  " " + this.getZWithOffset(uvw[0], uvw[2]));
+            	
+            	// Set random seed
+            	Random randomFromXYZ = new Random();
+            	randomFromXYZ.setSeed(
+    					world.getSeed() +
+    					FunctionsVN.getUniqueLongForXYZ(
+    							this.getXWithOffset(uvw[0], uvw[2]),
+    							this.getYWithOffset(uvw[1]),
+    							this.getZWithOffset(uvw[0], uvw[2])
+    							)
+            			);
+            	
+            	int decorHeightY = uvw[1];
+            	
+            	// Get ground level
+            	if (this.decorHeightY.size()<(j+1))
+            	{
+            		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
+            		// Add new ground level
+            		//decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
+            		this.decorHeightY.add(decorHeightY);
+            	}
+            	else
+            	{
+            		// There is already (presumably) a value for this ground level, so this decor is being multiply generated.
+            		// Retrieve ground level
+            		decorHeightY = this.decorHeightY.get(j);
+            	}
+            	
+            	// Generate lantern-like decor
+            	ArrayList<BlueprintData> decorBlueprint = null;
+            	
+            	if (this.villageType==FunctionsVN.VillageType.DESERT)
+            	{
+            		decorBlueprint = DesertStructures.getDesertDecorBlueprint(0, this.start, this.getCoordBaseMode(), randomFromXYZ);//, 5); // Use lime
+            	}
+            	else if (this.villageType==FunctionsVN.VillageType.TAIGA)
+            	{
+            		decorBlueprint = TaigaStructures.getTaigaDecorBlueprint(6, this.start, this.getCoordBaseMode(), randomFromXYZ);
+            	}
+            	else if (this.villageType==FunctionsVN.VillageType.SAVANNA)
+            	{
+            		decorBlueprint = SavannaStructures.getSavannaDecorBlueprint(0, this.start, this.getCoordBaseMode(), randomFromXYZ);
+            	}
+            	else if (this.villageType==FunctionsVN.VillageType.SNOWY)
+            	{
+            		decorBlueprint = SnowyStructures.getSnowyDecorBlueprint(randomFromXYZ.nextInt(3), this.start, this.getCoordBaseMode(), randomFromXYZ);
+            	}
+            	else // Plains
+            	{
+            		decorBlueprint = PlainsStructures.getPlainsDecorBlueprint(0, this.start, this.getCoordBaseMode(), randomFromXYZ);
+            	}
+            	
+            	for (BlueprintData b : decorBlueprint)
+            	{
+            		// Place block indicated by blueprint
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		
+            		// Fill below if flagged
+            		if ((b.getfillFlag()&1)!=0)
+            		{
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            		}
+            		
+            		// Clear above if flagged
+            		if ((b.getfillFlag()&2)!=0)
+            		{
+            			this.clearCurrentPositionBlocksUpwards(world, uvw[0]+b.getUPos(), decorHeightY+b.getVPos()+1, uvw[2]+b.getWPos(), structureBB);
+            		}        		
+            	}
+            }
+        	
+            return true;
+        }
     }
     
     
@@ -1370,21 +1648,23 @@ public class StructureVillageVN
             int i;
             StructureComponent structurecomponent1;
 
+        	// Construct buildings on the -x/-z sides of roads
             for (i = random.nextInt(5); i < this.length - 8; i += 2 + random.nextInt(5))
             {
-                structurecomponent1 = this.getNextComponentNN((StructureVillagePieces.Start)start, components, random, 0, i);
-
+            	structurecomponent1 = StructureVillageVN.getNextComponentNN((StartVN)start, components, random, 0, i, this.getCoordBaseMode(), this.getComponentType(), this.getBoundingBox());
+                
                 if (structurecomponent1 != null)
                 {
                     i += Math.max(structurecomponent1.getBoundingBox().getXSize(), structurecomponent1.getBoundingBox().getZSize());
                     flag = true;
                 }
             }
-
+            
+            // Construct buildings on the +x/+z sides of roads
             for (i = random.nextInt(5); i < this.length - 8; i += 2 + random.nextInt(5))
             {
-                structurecomponent1 = this.getNextComponentPP((StructureVillagePieces.Start)start, components, random, 0, i);
-
+            	structurecomponent1 = StructureVillageVN.getNextComponentPP((StartVN)start, components, random, 0, i, this.getCoordBaseMode(), this.getComponentType(), this.getBoundingBox());
+                
                 if (structurecomponent1 != null)
                 {
                     i += Math.max(structurecomponent1.getBoundingBox().getXSize(), structurecomponent1.getBoundingBox().getZSize());
@@ -1397,16 +1677,16 @@ public class StructureVillageVN
                 switch (this.getCoordBaseMode())
                 {
                     case NORTH:
-                        getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.WEST, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.WEST, this.getComponentType());
                         break;
                     case SOUTH:
-                        getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
                         break;
                     case WEST:
-                        getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.WEST, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.WEST, this.getComponentType());
                         break;
                     case EAST:
-                        getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
                     default: // This shouldn't be reached because paths don't go vertically
                 }
             }
@@ -1416,16 +1696,16 @@ public class StructureVillageVN
                 switch (this.getCoordBaseMode())
                 {
                     case NORTH:
-                        getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.EAST, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.EAST, this.getComponentType());
                         break;
                     case SOUTH:
-                        getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
                         break;
                     case WEST:
-                        getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.EAST, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.EAST, this.getComponentType());
                         break;
                     case EAST:
-                        getNextComponentVillagePath((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
                     default: // This shouldn't be reached because paths don't go vertically
                 }
             }
@@ -1441,18 +1721,21 @@ public class StructureVillageVN
         	StructureVillagePieces.Start startPiece_reflected = ReflectionHelper.getPrivateValue(StructureVillagePieces.Village.class, this, new String[]{"startPiece", "startPiece"});
         	
         	// Scans X, Z inside bounding box and finds the ground layer
-            for (int i = this.boundingBox.minX; i <= this.boundingBox.maxX; ++i)
+        	for (int u = 0; u <= (this.boundingBox.maxX-this.boundingBox.minX); ++u)
             {
-                for (int j = this.boundingBox.minZ; j <= this.boundingBox.maxZ; ++j)
+        		for (int w = 0; w <= (this.boundingBox.maxZ-this.boundingBox.minZ); ++w)
                 {
-                	BlockPos blockpos = new BlockPos(i, 64, j);
+        			int x = this.boundingBox.minX + u;
+        			int z = this.boundingBox.minZ + w;
+        			
+                	BlockPos blockpos = new BlockPos(x, 64, z);
                 	
                 	if (structureBB.isVecInside(blockpos))
                     {
                     	// Gets ground level, so long as it's not leaves or other foliage
-                		blockpos = world.getTopSolidOrLiquidBlock(blockpos).down();
+                        int y = getAboveTopmostSolidOrLiquidBlockVN(world, blockpos).getY() - 1;
                         
-                        setPathSpecificBlock(world, (StartVN)startPiece_reflected, 0, i, blockpos.getY(), j);
+                        setPathSpecificBlock(world, (StartVN)startPiece_reflected, 0, x, y, z);
                     }
                 }
             }
@@ -1460,4 +1743,28 @@ public class StructureVillageVN
             return true;
         }
     }
+	
+	/**
+	 * Inputs an int array of colors being used in a village, and returns one that is not in use
+	 * useWeighted uses the banner color weighting. Set to false for uniform. 
+	 */
+	public static int generateUnusedColor(int[] colorArray, Random random, boolean useWeighted)
+	{
+		int candidateColor = (useWeighted ? (Integer) FunctionsVN.weightedRandom(BannerGenerator.colorMeta, BannerGenerator.colorWeights, random) : random.nextInt(16));
+		if (colorArray.length>=16) {return candidateColor;} // If it's not possible to return a unique color (pigeonhole principle), just return a random one
+		boolean matchFound=false;
+		
+		// Then check the color against the provided array
+		while (true)
+		{
+			candidateColor = (useWeighted ? (Integer) FunctionsVN.weightedRandom(BannerGenerator.colorMeta, BannerGenerator.colorWeights, random) : random.nextInt(16));
+			
+			for (int color : colorArray)
+			{
+				if (color==candidateColor) {matchFound=true;}
+			}
+			if (matchFound) {matchFound=false; continue;}
+			else {return candidateColor;}
+		}
+	}
 }
