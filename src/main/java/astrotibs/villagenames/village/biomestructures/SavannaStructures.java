@@ -98,7 +98,6 @@ public class SavannaStructures
         	IBlockState biomeWoodenStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_STAIRS.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.COBBLESTONE.getDefaultState(), this.materialType, this.biome);
         	
         	if (this.averageGroundLvl < 0)
             {
@@ -122,9 +121,13 @@ public class SavannaStructures
         	this.townColor = villageNBTtag.getInteger("townColor");
         	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	// Generate additional colors to be used in the town
-        	this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);
-        	this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);
-        	this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);
+        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
+        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
+        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
+
+    		this.namePrefix = villageNBTtag.getString("namePrefix");
+    		this.nameRoot = villageNBTtag.getString("nameRoot");
+    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
         	
         	// Top layer is grass
         	this.fillWithBlocks(world, structureBB, 0, 0, 0, 13, 0, 11, biomeGrassState, biomeGrassState, false);
@@ -261,9 +264,6 @@ public class SavannaStructures
             int signY = this.getYWithOffset(signYBB);
             int signZ = this.getZWithOffset(signXBB, signZBB);
     		
-    		String namePrefix = villageNBTtag.getString("namePrefix");
-    		String nameRoot = villageNBTtag.getString("nameRoot");
-    		String nameSuffix = villageNBTtag.getString("nameSuffix");
     		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
 			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(4, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
@@ -421,10 +421,14 @@ public class SavannaStructures
         	this.townColor = villageNBTtag.getInteger("townColor");
         	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	// Generate additional colors to be used in the town
-        	this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);
-        	this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);
-        	this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);
+        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
+        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
+        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
 
+    		this.namePrefix = villageNBTtag.getString("namePrefix");
+    		this.nameRoot = villageNBTtag.getString("nameRoot");
+    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
+        	
         	// Top layer 
         	
         	// Set grass paths
@@ -564,9 +568,6 @@ public class SavannaStructures
             int signY = this.getYWithOffset(signYBB);
             int signZ = this.getZWithOffset(signXBB, signZBB);
     		
-    		String namePrefix = villageNBTtag.getString("namePrefix");
-    		String nameRoot = villageNBTtag.getString("nameRoot");
-    		String nameSuffix = villageNBTtag.getString("nameSuffix");
     		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
 
 			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(12, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
@@ -707,9 +708,13 @@ public class SavannaStructures
         	this.townColor = villageNBTtag.getInteger("townColor");
         	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	// Generate additional colors to be used in the town
-        	this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);
-        	this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);
-        	this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);
+        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
+        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
+        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
+
+    		this.namePrefix = villageNBTtag.getString("namePrefix");
+    		this.nameRoot = villageNBTtag.getString("nameRoot");
+    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
         	
         	// Top grass path 
         	for (int u=2; u<=6; u++) {for (int w=1; w<=9; w++) {
@@ -851,9 +856,6 @@ public class SavannaStructures
             int signY = this.getYWithOffset(signYBB);
             int signZ = this.getZWithOffset(signXBB, signZBB);
     		
-    		String namePrefix = villageNBTtag.getString("namePrefix");
-    		String nameRoot = villageNBTtag.getString("nameRoot");
-    		String nameSuffix = villageNBTtag.getString("nameSuffix");
     		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
 			world.setBlockState(new BlockPos(signX, signY, signZ), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(3, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // 2 is "send change to clients without block update notification"
@@ -992,9 +994,13 @@ public class SavannaStructures
         	this.townColor = villageNBTtag.getInteger("townColor");
         	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	// Generate additional colors to be used in the town
-        	this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);
-        	this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);
-        	this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);
+        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
+        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
+        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
+
+    		this.namePrefix = villageNBTtag.getString("namePrefix");
+    		this.nameRoot = villageNBTtag.getString("nameRoot");
+    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
         	
         	// Set grass paths
         	for (int u=1; u<=7; u++) {for (int w=1; w<=7; w++) {
@@ -1119,9 +1125,6 @@ public class SavannaStructures
             int signY = this.getYWithOffset(signYBB);
             int signZ = this.getZWithOffset(signXBB, signZBB);
     		
-    		String namePrefix = villageNBTtag.getString("namePrefix");
-    		String nameRoot = villageNBTtag.getString("nameRoot");
-    		String nameSuffix = villageNBTtag.getString("nameSuffix");
     		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
 			world.setBlockState(new BlockPos(signX, signY, signZ), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(2, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // 2 is "send change to clients without block update notification"
