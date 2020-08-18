@@ -117,7 +117,6 @@ public class TaigaStructures
         	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.PLANKS.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeTrapdoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.TRAPDOOR.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.COBBLESTONE.getDefaultState(), this.materialType, this.biome);
         	
         	if (this.averageGroundLvl < 0)
             {
@@ -140,9 +139,13 @@ public class TaigaStructures
         	this.townColor = villageNBTtag.getInteger("townColor");
         	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	// Generate additional colors to be used in the town
-        	this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);
-        	this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);
-        	this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);
+        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
+        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
+        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
+
+    		this.namePrefix = villageNBTtag.getString("namePrefix");
+    		this.nameRoot = villageNBTtag.getString("nameRoot");
+    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
         	
         	// Top layer is grass path
         	for (int i=0; i<=10; i++)
@@ -216,9 +219,6 @@ public class TaigaStructures
             int signY = this.getYWithOffset(signYBB);
             int signZ = this.getZWithOffset(signXBB, signZBB);
     		
-    		String namePrefix = villageNBTtag.getString("namePrefix");
-    		String nameRoot = villageNBTtag.getString("nameRoot");
-    		String nameSuffix = villageNBTtag.getString("nameSuffix");
     		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
 			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
@@ -356,14 +356,10 @@ public class TaigaStructures
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.GRASS.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeCobblestoneSlabState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STONE_SLAB.getStateFromMeta(3), this.materialType, this.biome);
-        	IBlockState biomeStoneStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STONE_STAIRS.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeCobblestoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.COBBLESTONE_WALL.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeWallSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.WALL_SIGN.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.PLANKS.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeTrapdoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.TRAPDOOR.getDefaultState(), this.materialType, this.biome);
         	
         	if (this.averageGroundLvl < 0)
             {
@@ -386,9 +382,13 @@ public class TaigaStructures
         	this.townColor = villageNBTtag.getInteger("townColor");
         	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	// Generate additional colors to be used in the town
-        	this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);
-        	this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);
-        	this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);
+        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
+        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
+        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
+
+    		this.namePrefix = villageNBTtag.getString("namePrefix");
+    		this.nameRoot = villageNBTtag.getString("nameRoot");
+    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
         	
             // Encircle the well with path
         	StructureVillagePieces.Start startPiece_reflected = ReflectionHelper.getPrivateValue(StructureVillagePieces.Village.class, this, new String[]{"startPiece"});
@@ -596,9 +596,6 @@ public class TaigaStructures
             int signZ = this.getZWithOffset(signXBB, signZBB);
             int signZ2 = this.getZWithOffset(signXBB, signZBB2);
     		
-    		String namePrefix = villageNBTtag.getString("namePrefix");
-    		String nameRoot = villageNBTtag.getString("nameRoot");
-    		String nameSuffix = villageNBTtag.getString("nameSuffix");
     		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
 			world.setBlockState(new BlockPos(signX, signY, signZ), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(0, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // Facing away from you

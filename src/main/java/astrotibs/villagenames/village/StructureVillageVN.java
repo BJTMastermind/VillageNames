@@ -1379,6 +1379,9 @@ public class StructureVillageVN
     	public int townColorB = 13; // Green
     	public int townColorC = 4; // Yellow
     	
+    	public String namePrefix = "";
+    	public String nameRoot = "";
+    	public String nameSuffix = "";
     	public boolean villagersGenerated = false;
     	public int bannerY = 0;
     	public ArrayList<Integer> decorHeightY = new ArrayList();
@@ -1529,8 +1532,6 @@ public class StructureVillageVN
             {
             	// Get coordinates
             	int[] uvw = decorUVW[j];
-            	
-            	LogHelper.info("Decor generated at " + this.getXWithOffset(uvw[0], uvw[2]) + " " + this.getYWithOffset(uvw[1]) +  " " + this.getZWithOffset(uvw[0], uvw[2]));
             	
             	// Set random seed
             	Random randomFromXYZ = new Random();

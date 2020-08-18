@@ -133,9 +133,13 @@ public class DesertStructures
         	this.townColor = villageNBTtag.getInteger("townColor");
         	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	// Generate additional colors to be used in the town
-        	this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);
-        	this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);
-        	this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);
+        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
+        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
+        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
+
+    		this.namePrefix = villageNBTtag.getString("namePrefix");
+    		this.nameRoot = villageNBTtag.getString("nameRoot");
+    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
         	
         	// Set sandstone ground and clear area above
         	this.fillWithBlocks(world, structureBB, 3, 0, 0, 9, 0, 8, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
@@ -226,9 +230,6 @@ public class DesertStructures
             int signY = this.getYWithOffset(signYBB);
             int signZ = this.getZWithOffset(signXBB, signZBB);
     		
-    		String namePrefix = villageNBTtag.getString("namePrefix");
-    		String nameRoot = villageNBTtag.getString("nameRoot");
-    		String nameSuffix = villageNBTtag.getString("nameSuffix");
     		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
 			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(4, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
@@ -384,9 +385,13 @@ public class DesertStructures
         	this.townColor = villageNBTtag.getInteger("townColor");
         	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	// Generate additional colors to be used in the town
-        	this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);
-        	this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);
-        	this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);
+        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
+        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
+        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
+
+    		this.namePrefix = villageNBTtag.getString("namePrefix");
+    		this.nameRoot = villageNBTtag.getString("nameRoot");
+    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
         	
         	// Set sandstone ground and clear area above
         	this.fillWithBlocks(world, structureBB, 1, 0, 1, 10, 0, 10, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
@@ -500,9 +505,6 @@ public class DesertStructures
             int signY = this.getYWithOffset(signYBB);
             int signZ = this.getZWithOffset(signXBB, signZBB);
     		
-    		String namePrefix = villageNBTtag.getString("namePrefix");
-    		String nameRoot = villageNBTtag.getString("nameRoot");
-    		String nameSuffix = villageNBTtag.getString("nameSuffix");
     		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
 			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(12, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
@@ -662,9 +664,13 @@ public class DesertStructures
         	this.townColor = villageNBTtag.getInteger("townColor");
         	this.townColor2 = villageNBTtag.getInteger("townColor2");
         	// Generate additional colors to be used in the town
-        	this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);
-        	this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);
-        	this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);
+        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
+        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
+        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
+
+    		this.namePrefix = villageNBTtag.getString("namePrefix");
+    		this.nameRoot = villageNBTtag.getString("nameRoot");
+    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
         	
         	// Set ground and clear area above
         	int fillXmin; int fillZmin; int fillXmax; int fillZmax; int clearToHeight = 5;
@@ -898,9 +904,6 @@ public class DesertStructures
             int signY = this.getYWithOffset(signYBB);
             int signZ = this.getZWithOffset(signXBB, signZBB);
     		
-    		String namePrefix = villageNBTtag.getString("namePrefix");
-    		String nameRoot = villageNBTtag.getString("nameRoot");
-    		String nameSuffix = villageNBTtag.getString("nameSuffix");
     		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
 			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(0, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
