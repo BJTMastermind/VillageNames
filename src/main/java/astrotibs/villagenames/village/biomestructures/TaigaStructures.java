@@ -193,7 +193,7 @@ public class TaigaStructures
         	
         	// Single wood platform for the "bell"
         	this.setBlockState(world, biomeDirtState, 2, 0, 3, structureBB);
-        	if (GeneralConfig.decorateVillageCenter)
+        	if (GeneralConfig.useVillageColors)
         	{
         		IBlockState concreteBlockstate = Blocks.CONCRETE.getStateFromMeta(townColor);
             	
@@ -212,21 +212,25 @@ public class TaigaStructures
         	
         	
         	// Sign
-            int signXBB = 2;
-			int signYBB = 2;
-			int signZBB = 3;
-            int signX = this.getXWithOffset(signXBB, signZBB);
-            int signY = this.getYWithOffset(signYBB);
-            int signZ = this.getZWithOffset(signXBB, signZBB);
+        	if (GeneralConfig.nameSign)
+            {
+        		int signXBB = 2;
+    			int signYBB = 2;
+    			int signZBB = 3;
+                int signX = this.getXWithOffset(signXBB, signZBB);
+                int signY = this.getYWithOffset(signYBB);
+                int signZ = this.getZWithOffset(signXBB, signZBB);
+        		
+        		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
+        		
+    			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
+        		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
+            }
+            
     		
-    		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
-			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
-    		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
-    		
-    		
-			// Banner
-    		if (GeneralConfig.decorateVillageCenter)
+			// Banner    		
+    		if (GeneralConfig.villageBanners)
     		{
                 int bannerXBB = 5;
     			int bannerZBB = 4;
@@ -570,7 +574,7 @@ public class TaigaStructures
             
             
             // Colored block where bell used to be
-            if (GeneralConfig.decorateVillageCenter)
+            if (GeneralConfig.useVillageColors)
             {
             	int metaBase = ((int)world.getSeed()%4+this.getCoordBaseMode().getHorizontalIndex())%4; // Procedural based on world seed and base mode
             	
@@ -586,32 +590,36 @@ public class TaigaStructures
             
             
         	// Signs
-            int signXBB = 4;
-			int signYBB = 5;
-			int signZBB = 5;
-			int signZBB2 = 3;
-            int signX = this.getXWithOffset(signXBB, signZBB);
-            int signX2 = this.getXWithOffset(signXBB, signZBB2);
-            int signY = this.getYWithOffset(signYBB);
-            int signZ = this.getZWithOffset(signXBB, signZBB);
-            int signZ2 = this.getZWithOffset(signXBB, signZBB2);
-    		
-    		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
-    		
-			world.setBlockState(new BlockPos(signX, signY, signZ), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(0, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // Facing away from you
-			world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
-    		
-            // I need to make a duplicate TileEntity because the first one gets consumed when applied to the first sign
-    		TileEntitySign signContents2 = new TileEntitySign();
-    		for (int i=0; i<4; i++) {signContents2.signText[i] = signContents.signText[i];}
-			
-			world.setBlockState(new BlockPos(signX2, signY, signZ2), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(2, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // Facing toward you
-			world.setTileEntity(new BlockPos(signX2, signY, signZ2), signContents2);
+            if (GeneralConfig.nameSign)
+            {
+            	int signXBB = 4;
+    			int signYBB = 5;
+    			int signZBB = 5;
+    			int signZBB2 = 3;
+                int signX = this.getXWithOffset(signXBB, signZBB);
+                int signX2 = this.getXWithOffset(signXBB, signZBB2);
+                int signY = this.getYWithOffset(signYBB);
+                int signZ = this.getZWithOffset(signXBB, signZBB);
+                int signZ2 = this.getZWithOffset(signXBB, signZBB2);
+        		
+        		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
+        		
+    			world.setBlockState(new BlockPos(signX, signY, signZ), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(0, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // Facing away from you
+    			world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
+        		
+                // I need to make a duplicate TileEntity because the first one gets consumed when applied to the first sign
+        		TileEntitySign signContents2 = new TileEntitySign();
+        		for (int i=0; i<4; i++) {signContents2.signText[i] = signContents.signText[i];}
+    			
+    			world.setBlockState(new BlockPos(signX2, signY, signZ2), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(2, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // Facing toward you
+    			world.setTileEntity(new BlockPos(signX2, signY, signZ2), signContents2);
+            }
+            
             
     		
 			
-			// Banner
-    		if (GeneralConfig.decorateVillageCenter)
+			// Banner    		
+    		if (GeneralConfig.villageBanners)
     		{
     			int bannerXBB = 7;
     			int bannerZBB = 8;

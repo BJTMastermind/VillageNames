@@ -146,7 +146,7 @@ public class PlainsStructures
             	world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
             }
             
-            if (GeneralConfig.decorateVillageCenter)
+            if (GeneralConfig.useVillageColors)
             {
             	IBlockState concreteBlockstate = Blocks.CONCRETE.getStateFromMeta(townColor);
             	
@@ -180,7 +180,7 @@ public class PlainsStructures
             this.fillWithAir(world, structureBB, 3, 1, 3, 5, 1, 5);
             
             // Spout
-            if (GeneralConfig.decorateVillageCenter)
+            if (GeneralConfig.useVillageColors)
             {
             	IBlockState concreteBlockstate = Blocks.CONCRETE.getStateFromMeta(townColor2);
             	
@@ -234,22 +234,26 @@ public class PlainsStructures
             }
             
             
-        	// Sign
-            int signXBB = 4;
-			int signYBB = 2;
-			int signZBB = 2;
-            int signX = this.getXWithOffset(signXBB, signZBB);
-            int signY = this.getYWithOffset(signYBB);
-            int signZ = this.getZWithOffset(signXBB, signZBB);
-    		
-    		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
-    		
-			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
-    		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
+            // Sign
+            if (GeneralConfig.nameSign)
+            {
+            	int signXBB = 4;
+    			int signYBB = 2;
+    			int signZBB = 2;
+                int signX = this.getXWithOffset(signXBB, signZBB);
+                int signY = this.getYWithOffset(signYBB);
+                int signZ = this.getZWithOffset(signXBB, signZBB);
+        		
+        		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
+        		
+    			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
+        		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
+            }
+            
     		
     		
 			// Banner    		
-    		if (GeneralConfig.decorateVillageCenter)
+    		if (GeneralConfig.villageBanners)
     		{
     			int bannerXBB = 8;
     			int bannerZBB = 6;
@@ -420,7 +424,7 @@ public class PlainsStructures
             this.fillWithBlocks(world, structureBB, 4, 1+wellDepthDecrease, 4, 5, 12, 5, Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false); // Water
             
             // Well rim
-            if (GeneralConfig.decorateVillageCenter)
+            if (GeneralConfig.useVillageColors)
             {
             	this.fillWithBlocks(world, structureBB, 4, 12, 3, 5, 12, 3, biomeCobblestoneSlabState, biomeCobblestoneSlabState, false);
             	this.fillWithBlocks(world, structureBB, 4, 12, 6, 5, 12, 6, biomeCobblestoneSlabState, biomeCobblestoneSlabState, false);
@@ -446,7 +450,7 @@ public class PlainsStructures
             // Roof of the well
             this.fillWithBlocks(world, structureBB, 3, 15, 3, 6, 15, 6, biomeCobblestoneState, biomeCobblestoneState, false);
             
-            if (GeneralConfig.decorateVillageCenter)
+            if (GeneralConfig.useVillageColors)
             {
             	BlockPos uvw = new BlockPos(4, 15, 4); // Starting position of the block cluster. Use lowest X, Z.
             	
@@ -472,7 +476,7 @@ public class PlainsStructures
                 {
                     if (j == 2 || j == 7 || i == 2 || i == 7)
                     {
-                    	if (GeneralConfig.decorateVillageCenter)
+                    	if (GeneralConfig.useVillageColors)
                     	{
                     		IBlockState concreteBlockstate = Blocks.CONCRETE.getStateFromMeta(townColor);
                         	
@@ -564,21 +568,25 @@ public class PlainsStructures
             
             
             // Sign
-            int signXBB = 6;
-			int signYBB = 12;
-			int signZBB = 7;
-            int signX = this.getXWithOffset(signXBB, signZBB);
-            int signY = this.getYWithOffset(signYBB);
-            int signZ = this.getZWithOffset(signXBB, signZBB);
+            if (GeneralConfig.nameSign)
+            {
+            	int signXBB = 6;
+    			int signYBB = 12;
+    			int signZBB = 7;
+                int signX = this.getXWithOffset(signXBB, signZBB);
+                int signY = this.getYWithOffset(signYBB);
+                int signZ = this.getZWithOffset(signXBB, signZBB);
+        		
+        		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
+        		
+    			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(0, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
+        		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
+            }
+            
     		
-    		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
-			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(0, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
-    		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
-    		
-    		
-			// Banner
-    		if (GeneralConfig.decorateVillageCenter)
+			// Banner    		
+    		if (GeneralConfig.villageBanners)
     		{
                 int bannerXBB = 8;
     			int bannerZBB = 6;
@@ -783,10 +791,10 @@ public class PlainsStructures
         	this.fillWithBlocks(world, structureBB, 7, 1, 2, 7, 3, 2, biomeFenceState, biomeFenceState, false);
         	this.fillWithBlocks(world, structureBB, 7, 1, 0, 7, 3, 0, biomeFenceState, biomeFenceState, false);
         	this.fillWithBlocks(world, structureBB, 4, 4, 0, 7, 4, 2, biomeWoodenSlabState, biomeWoodenSlabState, false);
-        	this.fillWithBlocks(world, structureBB, 5, 4, 0, 6, 4, 2, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor : 4), Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor : 4), false);
-        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor2 : 0), 5, 4, 0, structureBB);
-        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor2 : 0), 6, 4, 1, structureBB);
-        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor2 : 0), 5, 4, 2, structureBB);
+        	this.fillWithBlocks(world, structureBB, 5, 4, 0, 6, 4, 2, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor : 4), Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor : 4), false);
+        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 5, 4, 0, structureBB);
+        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 6, 4, 1, structureBB);
+        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 5, 4, 2, structureBB);
             
         	// Torches
             for (int[] uvwm : new int[][]{
@@ -804,10 +812,10 @@ public class PlainsStructures
         	this.fillWithBlocks(world, structureBB, 3, 1, 8, 3, 3, 8, biomeFenceState, biomeFenceState, false);
         	this.fillWithBlocks(world, structureBB, 3, 1, 5, 3, 3, 5, biomeFenceState, biomeFenceState, false);
         	this.fillWithBlocks(world, structureBB, 1, 4, 5, 3, 4, 8, biomeWoodenSlabState, biomeWoodenSlabState, false);
-        	this.fillWithBlocks(world, structureBB, 1, 4, 6, 3, 4, 7, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor : 4), Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor : 4), false);
-        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor2 : 0), 1, 4, 7, structureBB);
-        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor2 : 0), 2, 4, 6, structureBB);
-        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor2 : 0), 3, 4, 7, structureBB);
+        	this.fillWithBlocks(world, structureBB, 1, 4, 6, 3, 4, 7, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor : 4), Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor : 4), false);
+        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 1, 4, 7, structureBB);
+        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 2, 4, 6, structureBB);
+        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 3, 4, 7, structureBB);
 
             // Torches
             for (int[] uvwm : new int[][]{
@@ -825,10 +833,10 @@ public class PlainsStructures
         	this.fillWithBlocks(world, structureBB, 7, 1, 14, 7, 3, 14, biomeFenceState, biomeFenceState, false);
         	this.fillWithBlocks(world, structureBB, 7, 1, 12, 7, 3, 12, biomeFenceState, biomeFenceState, false);
         	this.fillWithBlocks(world, structureBB, 4, 4, 12, 7, 4, 14, biomeWoodenSlabState, biomeWoodenSlabState, false);
-        	this.fillWithBlocks(world, structureBB, 5, 4, 12, 6, 4, 14, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor : 4), Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor : 4), false);
-        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor2 : 0), 5, 4, 12, structureBB);
-        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor2 : 0), 6, 4, 13, structureBB);
-        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.decorateVillageCenter ? townColor2 : 0), 5, 4, 14, structureBB);
+        	this.fillWithBlocks(world, structureBB, 5, 4, 12, 6, 4, 14, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor : 4), Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor : 4), false);
+        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 5, 4, 12, structureBB);
+        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 6, 4, 13, structureBB);
+        	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 5, 4, 14, structureBB);
         	
             // Torches
             for (int[] uvwm : new int[][]{
@@ -841,24 +849,28 @@ public class PlainsStructures
         	
         	        	        	
             // Sign
-            int signXBB = 2;
-			int signYBB = 2;
-			int signZBB = 10;
-            int signX = this.getXWithOffset(signXBB, signZBB);
-            int signY = this.getYWithOffset(signYBB);
-            int signZ = this.getZWithOffset(signXBB, signZBB);
+            if (GeneralConfig.nameSign)
+            {
+            	int signXBB = 2;
+    			int signYBB = 2;
+    			int signZBB = 10;
+                int signX = this.getXWithOffset(signXBB, signZBB);
+                int signY = this.getYWithOffset(signYBB);
+                int signZ = this.getZWithOffset(signXBB, signZBB);
+        		
+        		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
+        		
+        		this.setBlockState(world, biomePlankState, signXBB, signYBB-1, signZBB, structureBB);
+        		this.setBlockState(world, biomeDirtState, signXBB, signYBB-2, signZBB, structureBB);
+            	
+    			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(12, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
+        		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
+            }
+            
     		
-    		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
-    		this.setBlockState(world, biomePlankState, signXBB, signYBB-1, signZBB, structureBB);
-    		this.setBlockState(world, biomeDirtState, signXBB, signYBB-2, signZBB, structureBB);
-        	
-			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(12, this.getCoordBaseMode().getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
-    		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
-    		
-    		
-			// Banner
-    		if (GeneralConfig.decorateVillageCenter)
+			// Banner    		
+    		if (GeneralConfig.villageBanners)
     		{
                 int bannerXBB = 6;
     			int bannerZBB = 4;
@@ -1143,7 +1155,7 @@ public class PlainsStructures
             // Posts
         	this.fillWithBlocks(world, structureBB, 4, 1, 1, 4, 4, 1, biomeFenceState, biomeFenceState, false);
         	this.fillWithBlocks(world, structureBB, 6, 1, 1, 6, 4, 1, biomeFenceState, biomeFenceState, false);
-        	if (GeneralConfig.decorateVillageCenter)
+        	if (GeneralConfig.useVillageColors)
         	{
         		IBlockState concreteBlockstate = Blocks.CONCRETE.getStateFromMeta(townColor);
             	
@@ -1157,7 +1169,7 @@ public class PlainsStructures
         	
         	this.fillWithBlocks(world, structureBB, 4, 1, 9, 4, 4, 9, biomeFenceState, biomeFenceState, false);
         	this.fillWithBlocks(world, structureBB, 6, 1, 9, 6, 4, 9, biomeFenceState, biomeFenceState, false);
-        	if (GeneralConfig.decorateVillageCenter)
+        	if (GeneralConfig.useVillageColors)
         	{
         		IBlockState concreteBlockstate = Blocks.CONCRETE.getStateFromMeta(townColor2);
             	
@@ -1169,32 +1181,36 @@ public class PlainsStructures
         		this.setBlockState(world, biomeCobblestoneState, 5, 4, 9, structureBB);
         	}
         	
-        	// Signs
-            int signXBB = 5;
-			int signYBB = 4;
-			int signZBB = 0;
-			int signZBB2 = 10;
-            int signX = this.getXWithOffset(signXBB, signZBB);
-            int signX2 = this.getXWithOffset(signXBB, signZBB2);
-            int signY = this.getYWithOffset(signYBB);
-            int signZ = this.getZWithOffset(signXBB, signZBB);
-            int signZ2 = this.getZWithOffset(signXBB, signZBB2);
-    		
-    		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
-    		
-			world.setBlockState(new BlockPos(signX, signY, signZ), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(2, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // 2 is "send change to clients without block update notification"
-			world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
-    		
-            // I need to make a duplicate TileEntity because the first one gets consumed when applied to the first sign
-    		TileEntitySign signContents2 = new TileEntitySign();
-    		for (int i=0; i<4; i++) {signContents2.signText[i] = signContents.signText[i];}
-    		
-			world.setBlockState(new BlockPos(signX2, signY, signZ2), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(0, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // 2 is "send change to clients without block update notification"
-    		world.setTileEntity(new BlockPos(signX2, signY, signZ2), signContents2);
+            // Signs
+            if (GeneralConfig.nameSign)
+            {
+            	int signXBB = 5;
+    			int signYBB = 4;
+    			int signZBB = 0;
+    			int signZBB2 = 10;
+                int signX = this.getXWithOffset(signXBB, signZBB);
+                int signX2 = this.getXWithOffset(signXBB, signZBB2);
+                int signY = this.getYWithOffset(signYBB);
+                int signZ = this.getZWithOffset(signXBB, signZBB);
+                int signZ2 = this.getZWithOffset(signXBB, signZBB2);
+        		
+        		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
+        		
+    			world.setBlockState(new BlockPos(signX, signY, signZ), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(2, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // 2 is "send change to clients without block update notification"
+    			world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
+        		
+                // I need to make a duplicate TileEntity because the first one gets consumed when applied to the first sign
+        		TileEntitySign signContents2 = new TileEntitySign();
+        		for (int i=0; i<4; i++) {signContents2.signText[i] = signContents.signText[i];}
+        		
+    			world.setBlockState(new BlockPos(signX2, signY, signZ2), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(0, this.getCoordBaseMode().getHorizontalIndex(), true)), 2); // 2 is "send change to clients without block update notification"
+        		world.setTileEntity(new BlockPos(signX2, signY, signZ2), signContents2);
+            }
+            
     		
     		
 			// Banner    		
-    		if (GeneralConfig.decorateVillageCenter)
+    		if (GeneralConfig.villageBanners)
     		{
                 int bannerXBB = 7;
     			int bannerZBB = 8;
