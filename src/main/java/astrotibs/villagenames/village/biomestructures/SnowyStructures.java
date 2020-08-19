@@ -185,7 +185,7 @@ public class SnowyStructures
         	
         	
         	// Place the sign base. Concrete if requested/allowed, ice otherwise
-        	if (GeneralConfig.decorateVillageCenter)
+        	if (GeneralConfig.useVillageColors)
         	{
         		IBlockState concreteBlockstate = Blocks.stained_hardened_clay.getStateFromMeta(townColor);
             	
@@ -203,22 +203,26 @@ public class SnowyStructures
         	}
         	
         	
-        	// Sign
-            int signXBB = 2;
-			int signYBB = 2;
-			int signZBB = 5;
-            int signX = this.getXWithOffset(signXBB, signZBB);
-            int signY = this.getYWithOffset(signYBB);
-            int signZ = this.getZWithOffset(signXBB, signZBB);
+            // Sign
+            if (GeneralConfig.nameSign)
+            {
+            	int signXBB = 2;
+    			int signYBB = 2;
+    			int signZBB = 5;
+                int signX = this.getXWithOffset(signXBB, signZBB);
+                int signY = this.getYWithOffset(signYBB);
+                int signZ = this.getZWithOffset(signXBB, signZBB);
+        		
+        		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
+        		
+    			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(0, this.coordBaseMode.getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
+        		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
+            }
+            
     		
-    		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
-			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(0, this.coordBaseMode.getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
-    		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
-    		
-    		
-			// Banner
-    		if (GeneralConfig.decorateVillageCenter)
+			// Banner    		
+    		if (GeneralConfig.villageBanners)
     		{
                 int bannerXBB = 10;
     			int bannerZBB = 2;
@@ -516,7 +520,7 @@ public class SnowyStructures
         	
         	
         	// Place the sign base. Concrete if requested/allowed, ice otherwise
-        	if (GeneralConfig.decorateVillageCenter)
+        	if (GeneralConfig.useVillageColors)
         	{
         		IBlockState concreteBlockstate = Blocks.stained_hardened_clay.getStateFromMeta(townColor);
         		// Basin rim
@@ -532,22 +536,27 @@ public class SnowyStructures
         		this.setBlockState(world, biomePlankState, 9, 0, 4, structureBB);
         	}
         	
-        	// Sign
-            int signXBB = 9;
-			int signYBB = 1;
-			int signZBB = 4;
-            int signX = this.getXWithOffset(signXBB, signZBB);
-            int signY = this.getYWithOffset(signYBB);
-            int signZ = this.getZWithOffset(signXBB, signZBB);
+        	
+            // Sign
+            if (GeneralConfig.nameSign)
+            {
+            	int signXBB = 9;
+    			int signYBB = 1;
+    			int signZBB = 4;
+                int signX = this.getXWithOffset(signXBB, signZBB);
+                int signY = this.getYWithOffset(signYBB);
+                int signZ = this.getZWithOffset(signXBB, signZBB);
+        		
+        		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
+        		
+    			world.setBlockState(new BlockPos(signX, signY, signZ), Blocks.standing_sign.getStateFromMeta(StructureVillageVN.getSignRotationMeta(4, this.coordBaseMode.getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
+        		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
+            }
+            
     		
-    		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
     		
-			world.setBlockState(new BlockPos(signX, signY, signZ), Blocks.standing_sign.getStateFromMeta(StructureVillageVN.getSignRotationMeta(4, this.coordBaseMode.getHorizontalIndex(), false)), 2); // 2 is "send change to clients without block update notification"
-    		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
-    		
-    		
-			// Banner
-    		if (GeneralConfig.decorateVillageCenter)
+			// Banner    		
+    		if (GeneralConfig.villageBanners)
     		{
                 int bannerXBB = 8;
     			int bannerZBB = 7;
@@ -784,7 +793,7 @@ public class SnowyStructures
         	
         	
         	// Place the sign base. Concrete if requested/allowed
-        	if (GeneralConfig.decorateVillageCenter)
+        	if (GeneralConfig.useVillageColors)
         	{
         		IBlockState concreteBlockstate = Blocks.stained_hardened_clay.getStateFromMeta(townColor);
 
@@ -803,34 +812,38 @@ public class SnowyStructures
         	
         	
         	
-        	// Sign
-            int signXBB = 2;
-			int signYBB = 3;
-			int signZBB = 3;
-            int signX = this.getXWithOffset(signXBB, signZBB);
-            int signY = this.getYWithOffset(signYBB);
-            int signZ = this.getZWithOffset(signXBB, signZBB);
-    		
-    		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
-    		
-			world.setBlockState(new BlockPos(signX, signY, signZ), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(3, this.coordBaseMode.getHorizontalIndex(), true)), 2); // 2 is "send change to clients without block update notification"
-    		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
-    		
-            int signXBB2 = 4;
-            int signX2 = this.getXWithOffset(signXBB2, signZBB);
-            int signZ2 = this.getZWithOffset(signXBB2, signZBB);
+            // Sign
+            if (GeneralConfig.nameSign)
+            {
+            	int signXBB = 2;
+    			int signYBB = 3;
+    			int signZBB = 3;
+                int signX = this.getXWithOffset(signXBB, signZBB);
+                int signY = this.getYWithOffset(signYBB);
+                int signZ = this.getZWithOffset(signXBB, signZBB);
+        		
+        		TileEntitySign signContents = StructureVillageVN.generateSignContents(namePrefix, nameRoot, nameSuffix);
+        		
+    			world.setBlockState(new BlockPos(signX, signY, signZ), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(3, this.coordBaseMode.getHorizontalIndex(), true)), 2); // 2 is "send change to clients without block update notification"
+        		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
+        		
+                int signXBB2 = 4;
+                int signX2 = this.getXWithOffset(signXBB2, signZBB);
+                int signZ2 = this.getZWithOffset(signXBB2, signZBB);
+                
+                // I need to make a duplicate TileEntity because the first one gets consumed when applied to the first sign
+        		TileEntitySign signContents2 = new TileEntitySign();
+        		for (int i=0; i<4; i++) {signContents2.signText[i] = signContents.signText[i];}
+                
+    			world.setBlockState(new BlockPos(signX2, signY, signZ2), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(1, this.coordBaseMode.getHorizontalIndex(), true)), 2); // 2 is "send change to clients without block update notification"
+        		world.setTileEntity(new BlockPos(signX2, signY, signZ2), signContents2);
+            }
             
-            // I need to make a duplicate TileEntity because the first one gets consumed when applied to the first sign
-    		TileEntitySign signContents2 = new TileEntitySign();
-    		for (int i=0; i<4; i++) {signContents2.signText[i] = signContents.signText[i];}
-            
-			world.setBlockState(new BlockPos(signX2, signY, signZ2), biomeWallSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(1, this.coordBaseMode.getHorizontalIndex(), true)), 2); // 2 is "send change to clients without block update notification"
-    		world.setTileEntity(new BlockPos(signX2, signY, signZ2), signContents2);
     		
     		
     		
-			// Banner
-    		if (GeneralConfig.decorateVillageCenter)
+			// Banner    		
+    		if (GeneralConfig.villageBanners)
     		{
                 int bannerXBB = 5;
     			int bannerZBB = 0;

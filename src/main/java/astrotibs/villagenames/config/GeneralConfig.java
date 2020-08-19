@@ -2,6 +2,7 @@ package astrotibs.villagenames.config;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,20 +86,20 @@ public class GeneralConfig {
 	public static int newVillageSpacingMedian;
 	public static int newVillageSpacingSpread;
 	public static String[] spawnBiomesNames;
-	// Old Village buildings
-	public static boolean structureLegacyHut;
-	public static boolean structureLegacySmallHouse;
-	public static boolean structureLegacyLargeHouse;
-	public static boolean structureLegacyButcherShop;
-	public static boolean structureLegacyLibrary;
-	public static boolean structureLegacySmallFarm;
-	public static boolean structureLegacyLargeFarm;
-	public static boolean structureLegacySmithy;
-	public static boolean structureLegacyChurch;
+	// Legacy Village buildings
+	public static String componentLegacyHouse4Garden_string; public static ArrayList<Integer> componentLegacyHouse4Garden_vals;
+	public static String componentLegacyChurch_string; public static ArrayList<Integer> componentLegacyChurch_vals;
+	public static String componentLegacyHouse1_string; public static ArrayList<Integer> componentLegacyHouse1_vals;
+	public static String componentLegacyWoodHut_string; public static ArrayList<Integer> componentLegacyWoodHut_vals;
+	public static String componentLegacyHall_string; public static ArrayList<Integer> componentLegacyHall_vals;
+	public static String componentLegacyField1_string; public static ArrayList<Integer> componentLegacyField1_vals;
+	public static String componentLegacyField2_string; public static ArrayList<Integer> componentLegacyField2_vals;
+	public static String componentLegacyHouse2_string; public static ArrayList<Integer> componentLegacyHouse2_vals;
+	public static String componentLegacyHouse3_string; public static ArrayList<Integer> componentLegacyHouse3_vals;
 	
 	// Misc new village stuff
 	//public static boolean spawnModdedVillagers;
-	public static boolean decorateVillageCenter;
+	public static boolean useVillageColors;
 	
 	
 	public static void init(File configFile)
@@ -117,21 +118,50 @@ public class GeneralConfig {
 		newVillageSize = config.getInt("Village Size", "Village Generator", 1, 1, 10, "How large villages are. Vanilla is 1.");
 		newVillageSpacingMedian = config.getInt("Village Spacing: Median", "Village Generator", 20, 1, 100, "Median distance between villages. Vanilla is 20.");
 		newVillageSpacingSpread = config.getInt("Village Spacing: Range", "Village Generator", 12, 1, 100, "Variation in distances between villages. Must be lower than Median value. Vanilla is 12.");
+
 		
-		// Old Village buildings
-		structureLegacyHut = config.getBoolean("Structure: Legacy Hut", "Village Generator", false, "Whether this structure can generate in villages.");
-		structureLegacySmallHouse = config.getBoolean("Structure: Legacy Small House", "Village Generator", false, "Whether this structure can generate in villages.");
-		structureLegacyLargeHouse = config.getBoolean("Structure: Legacy Large House", "Village Generator", false, "Whether this structure can generate in villages.");
-		structureLegacyButcherShop = config.getBoolean("Structure: Legacy Butcher's Shop", "Village Generator", false, "Whether this structure can generate in villages.");
-		structureLegacyLibrary = config.getBoolean("Structure: Legacy Library", "Village Generator", false, "Whether this structure can generate in villages.");
-		structureLegacySmallFarm = config.getBoolean("Structure: Legacy Small Farm", "Village Generator", false, "Whether this structure can generate in villages.");
-		structureLegacyLargeFarm = config.getBoolean("Structure: Legacy Large Farm", "Village Generator", false, "Whether this structure can generate in villages.");
-		structureLegacySmithy = config.getBoolean("Structure: Legacy Smithy", "Village Generator", false, "Whether this structure can generate in villages.");
-		structureLegacyChurch = config.getBoolean("Structure: Legacy Church", "Village Generator", false, "Whether this structure can generate in villages.");
+		ArrayList<Integer> ali; // For setting default values as integer lists
+		
+		// Legacy Village components
+		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 2, 4));
+		componentLegacyHouse4Garden_string = config.getString("Component: Legacy Small House", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 4");
+		componentLegacyHouse4Garden_vals = parseIntegerArray(componentLegacyHouse4Garden_string, ali);
+
+		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 0, 1, 1));
+		componentLegacyChurch_string = config.getString("Component: Legacy Church", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 20");
+		componentLegacyChurch_vals = parseIntegerArray(componentLegacyChurch_string, ali);
+
+		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 0, 1, 2));
+		componentLegacyHouse1_string = config.getString("Component: Legacy Library", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 20");
+		componentLegacyHouse1_vals = parseIntegerArray(componentLegacyHouse1_string, ali);
+
+		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 5));
+		componentLegacyWoodHut_string = config.getString("Component: Legacy Hut", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3");
+		componentLegacyWoodHut_vals = parseIntegerArray(componentLegacyWoodHut_string, ali);
+
+		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 0, 1, 2));
+		componentLegacyHall_string = config.getString("Component: Legacy Butcher Shop", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 15");
+		componentLegacyHall_vals = parseIntegerArray(componentLegacyHall_string, ali);
+
+		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 1, 1, 4));
+		componentLegacyField1_string = config.getString("Component: Legacy Large Farm", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3");
+		componentLegacyField1_vals = parseIntegerArray(componentLegacyField1_string, ali);
+
+		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 2, 4));
+		componentLegacyField2_string = config.getString("Component: Legacy Small Farm", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3");
+		componentLegacyField2_vals = parseIntegerArray(componentLegacyField2_string, ali);
+
+		ali = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 1, 1));
+		componentLegacyHouse2_string = config.getString("Component: Legacy Smithy", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 15");
+		componentLegacyHouse2_vals = parseIntegerArray(componentLegacyHouse2_string, ali);
+
+		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 0, 2, 3));
+		componentLegacyHouse3_string = config.getString("Component: Legacy Large House", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 8");
+		componentLegacyHouse3_vals = parseIntegerArray(componentLegacyHouse3_string, ali);
 		
 		// Misc
 		//spawnModdedVillagers = config.getBoolean("Allow mod villagers in new structures", "Village Generator", false, "When modern structures spawn random villagers on generation, set this to true to allow non-vanilla professions.");
-		decorateVillageCenter = config.getBoolean("Decorate village center", "Village Generator", true, "Whether to decorate the town center with concrete, terracotta, banners, etc. based on the village's colors");
+		useVillageColors = config.getBoolean("Use village colors", "Village Generator", true, "Whether to apply the village's colors to concrete, terracotta, carpet, etc.");
 		
 		spawnBiomesNames = config.getStringList("Spawn Biome Names", "Village Generator",
 				new String[] {
@@ -236,7 +266,7 @@ public class GeneralConfig {
 				"Names of biomes which can spawn villages. Only used with Village Generator, and only applies to Overworld. Note that this list is EXCLUSIVE: other mod configs won't override this. You have to paste all biome names here.");
 		
 		// --- General --- //
-	    nameSign = config.getBoolean("Name Sign", Configuration.CATEGORY_GENERAL, true, "Villages display their name on a sign near the well. You can still discover the name by right-clicking a book onto a villager.");
+	    nameSign = config.getBoolean("Name Sign", Configuration.CATEGORY_GENERAL, true, "Town centers display their name on one or more signs.");
 	    recordStructureCoords = config.getBoolean("Record Structure Coords", Configuration.CATEGORY_GENERAL, true, "Books generated by villagers or the Codex record the structure's coordinates.");
 	    villagerDropBook = config.getBoolean("Villager drops book", Configuration.CATEGORY_GENERAL, false, "Village books are dropped by the villager rather than going directly into your inventory.");
 	    villagerSellsCodex = config.getBoolean("Villager makes codex", Configuration.CATEGORY_GENERAL, true, "Librarian villagers will give you a codex if you right-click them while holding emerald, iron ingots, and/or gold ingots.");
