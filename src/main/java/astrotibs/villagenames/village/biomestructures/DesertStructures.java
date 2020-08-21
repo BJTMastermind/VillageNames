@@ -9,6 +9,7 @@ import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
+import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
 import net.minecraft.block.Block;
@@ -24,6 +25,7 @@ import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -129,16 +131,20 @@ public class DesertStructures
         			this.getXWithOffset(6, 4),
         			this.getYWithOffset(2),
         			this.getZWithOffset(6, 4));
-        	this.townColor = villageNBTtag.getInteger("townColor");
-        	this.townColor2 = villageNBTtag.getInteger("townColor2");
-        	// Generate additional colors to be used in the town
-        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
-        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
-        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
-
-    		this.namePrefix = villageNBTtag.getString("namePrefix");
-    		this.nameRoot = villageNBTtag.getString("nameRoot");
-    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
+        	
+        	// Load the values of interest into memory
+        	if (this.townColor==-1) {this.townColor = villageNBTtag.getInteger("townColor");}
+        	if (this.townColor2==-1) {this.townColor2 = villageNBTtag.getInteger("townColor2");}
+        	if (this.townColor3==-1) {this.townColor3 = villageNBTtag.getInteger("townColor3");}
+        	if (this.townColor4==-1) {this.townColor4 = villageNBTtag.getInteger("townColor4");}
+        	if (this.townColor5==-1) {this.townColor5 = villageNBTtag.getInteger("townColor5");}
+        	if (this.townColor6==-1) {this.townColor6 = villageNBTtag.getInteger("townColor6");}
+        	if (this.townColor7==-1) {this.townColor7 = villageNBTtag.getInteger("townColor7");}
+        	if (this.namePrefix.equals("")) {this.namePrefix = villageNBTtag.getString("namePrefix");}
+        	if (this.nameRoot.equals("")) {this.nameRoot = villageNBTtag.getString("nameRoot");}
+        	if (this.nameSuffix.equals("")) {this.nameSuffix = villageNBTtag.getString("nameSuffix");}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.DESERT);}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.SAND);}
         	
         	// Set sandstone ground and clear area above
         	this.fillWithBlocks(world, structureBB, 3, 0, 0, 9, 0, 8, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
@@ -391,16 +397,20 @@ public class DesertStructures
         			this.getXWithOffset(8, 1),
         			this.getYWithOffset(1),
         			this.getZWithOffset(8, 1));
-        	this.townColor = villageNBTtag.getInteger("townColor");
-        	this.townColor2 = villageNBTtag.getInteger("townColor2");
-        	// Generate additional colors to be used in the town
-        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
-        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
-        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
-
-    		this.namePrefix = villageNBTtag.getString("namePrefix");
-    		this.nameRoot = villageNBTtag.getString("nameRoot");
-    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
+        	
+        	// Load the values of interest into memory
+        	if (this.townColor==-1) {this.townColor = villageNBTtag.getInteger("townColor");}
+        	if (this.townColor2==-1) {this.townColor2 = villageNBTtag.getInteger("townColor2");}
+        	if (this.townColor3==-1) {this.townColor3 = villageNBTtag.getInteger("townColor3");}
+        	if (this.townColor4==-1) {this.townColor4 = villageNBTtag.getInteger("townColor4");}
+        	if (this.townColor5==-1) {this.townColor5 = villageNBTtag.getInteger("townColor5");}
+        	if (this.townColor6==-1) {this.townColor6 = villageNBTtag.getInteger("townColor6");}
+        	if (this.townColor7==-1) {this.townColor7 = villageNBTtag.getInteger("townColor7");}
+        	if (this.namePrefix.equals("")) {this.namePrefix = villageNBTtag.getString("namePrefix");}
+        	if (this.nameRoot.equals("")) {this.nameRoot = villageNBTtag.getString("nameRoot");}
+        	if (this.nameSuffix.equals("")) {this.nameSuffix = villageNBTtag.getString("nameSuffix");}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.DESERT);}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.SAND);}
         	
         	// Set sandstone ground and clear area above
         	this.fillWithBlocks(world, structureBB, 1, 0, 1, 10, 0, 10, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
@@ -683,16 +693,20 @@ public class DesertStructures
         			this.getXWithOffset(8, 2),
         			this.getYWithOffset(3),
         			this.getZWithOffset(8, 2));
-        	this.townColor = villageNBTtag.getInteger("townColor");
-        	this.townColor2 = villageNBTtag.getInteger("townColor2");
-        	// Generate additional colors to be used in the town
-        	if (this.townColorA==-1) {this.townColorA = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2}, random, false);}
-        	if (this.townColorB==-1) {this.townColorB = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA}, random, false);}
-        	if (this.townColorC==-1) {this.townColorC = StructureVillageVN.generateUnusedColor(new int[]{this.townColor, this.townColor2, this.townColorA, this.townColorB}, random, false);}
-
-    		this.namePrefix = villageNBTtag.getString("namePrefix");
-    		this.nameRoot = villageNBTtag.getString("nameRoot");
-    		this.nameSuffix = villageNBTtag.getString("nameSuffix");
+        	
+        	// Load the values of interest into memory
+        	if (this.townColor==-1) {this.townColor = villageNBTtag.getInteger("townColor");}
+        	if (this.townColor2==-1) {this.townColor2 = villageNBTtag.getInteger("townColor2");}
+        	if (this.townColor3==-1) {this.townColor3 = villageNBTtag.getInteger("townColor3");}
+        	if (this.townColor4==-1) {this.townColor4 = villageNBTtag.getInteger("townColor4");}
+        	if (this.townColor5==-1) {this.townColor5 = villageNBTtag.getInteger("townColor5");}
+        	if (this.townColor6==-1) {this.townColor6 = villageNBTtag.getInteger("townColor6");}
+        	if (this.townColor7==-1) {this.townColor7 = villageNBTtag.getInteger("townColor7");}
+        	if (this.namePrefix.equals("")) {this.namePrefix = villageNBTtag.getString("namePrefix");}
+        	if (this.nameRoot.equals("")) {this.nameRoot = villageNBTtag.getString("nameRoot");}
+        	if (this.nameSuffix.equals("")) {this.nameSuffix = villageNBTtag.getString("nameSuffix");}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.DESERT);}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.SAND);}
         	
         	// Set ground and clear area above
         	int fillXmin; int fillZmin; int fillXmax; int fillZmax; int clearToHeight = 5;
@@ -915,7 +929,7 @@ public class DesertStructures
             	}
             	
         		// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this, this.getCoordBaseMode(), randomFromXYZ, townColor);
+            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.biome, this.getCoordBaseMode(), randomFromXYZ, townColor);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -1024,12 +1038,12 @@ public class DesertStructures
 	/**
 	 * Returns a list of blocks and coordinates used to construct a decor piece
 	 */
-	public static ArrayList<BlueprintData> getRandomDesertDecorBlueprint(StartVN startVN, EnumFacing coordBaseMode, Random random, int townColor)
+	public static ArrayList<BlueprintData> getRandomDesertDecorBlueprint(MaterialType materialType, Biome biome, EnumFacing coordBaseMode, Random random, int townColor)
 	{
 		int decorCount = 1;
-		return getDesertDecorBlueprint(random.nextInt(decorCount), startVN, coordBaseMode, random);//, townColor);
+		return getDesertDecorBlueprint(random.nextInt(decorCount), materialType, biome, coordBaseMode, random);//, townColor);
 	}
-	public static ArrayList<BlueprintData> getDesertDecorBlueprint(int decorType, StartVN startVN, EnumFacing coordBaseMode, Random random)//, int townColor)
+	public static ArrayList<BlueprintData> getDesertDecorBlueprint(int decorType, MaterialType materialType, Biome biome, EnumFacing coordBaseMode, Random random)//, int townColor)
 	{
 		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
 		
