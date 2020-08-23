@@ -85,15 +85,15 @@ public class GeneralConfig {
 	public static int newVillageSpacingSpread;
 	public static String[] spawnBiomesNames;
 	// Legacy Village buildings
-	public static String componentLegacyHouse4Garden_string; public static ArrayList<Integer> componentLegacyHouse4Garden_vals;
-	public static String componentLegacyChurch_string; public static ArrayList<Integer> componentLegacyChurch_vals;
-	public static String componentLegacyHouse1_string; public static ArrayList<Integer> componentLegacyHouse1_vals;
-	public static String componentLegacyWoodHut_string; public static ArrayList<Integer> componentLegacyWoodHut_vals;
-	public static String componentLegacyHall_string; public static ArrayList<Integer> componentLegacyHall_vals;
-	public static String componentLegacyField1_string; public static ArrayList<Integer> componentLegacyField1_vals;
-	public static String componentLegacyField2_string; public static ArrayList<Integer> componentLegacyField2_vals;
-	public static String componentLegacyHouse2_string; public static ArrayList<Integer> componentLegacyHouse2_vals;
-	public static String componentLegacyHouse3_string; public static ArrayList<Integer> componentLegacyHouse3_vals;
+	public static String componentLegacyHouse4Garden_string; public static ArrayList<Double> componentLegacyHouse4Garden_vals;
+	public static String componentLegacyChurch_string; public static ArrayList<Double> componentLegacyChurch_vals;
+	public static String componentLegacyHouse1_string; public static ArrayList<Double> componentLegacyHouse1_vals;
+	public static String componentLegacyWoodHut_string; public static ArrayList<Double> componentLegacyWoodHut_vals;
+	public static String componentLegacyHall_string; public static ArrayList<Double> componentLegacyHall_vals;
+	public static String componentLegacyField1_string; public static ArrayList<Double> componentLegacyField1_vals;
+	public static String componentLegacyField2_string; public static ArrayList<Double> componentLegacyField2_vals;
+	public static String componentLegacyHouse2_string; public static ArrayList<Double> componentLegacyHouse2_vals;
+	public static String componentLegacyHouse3_string; public static ArrayList<Double> componentLegacyHouse3_vals;
 	
 	// Misc new village stuff
 	public static boolean spawnModdedVillagers;
@@ -116,46 +116,46 @@ public class GeneralConfig {
 		newVillageSize = config.getInt("Village Size", "Village Generator", 1, 1, 10, "How large villages are. Vanilla is 1.");
 		newVillageSpacingMedian = config.getInt("Village Spacing: Median", "Village Generator", 20, 1, 100, "Median distance between villages. Vanilla is 20.");
 		newVillageSpacingSpread = config.getInt("Village Spacing: Range", "Village Generator", 12, 1, 100, "Variation in distances between villages. Must be lower than Median value. Vanilla is 12.");
-
 		
-		ArrayList<Integer> ali; // For setting default values as integer lists
+		
+		ArrayList<Double> ali; // For setting default values as integer lists
 		
 		// Legacy Village components
-		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 2, 4));
-		componentLegacyHouse4Garden_string = config.getString("Component: Legacy Small House", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 4");
-		componentLegacyHouse4Garden_vals = parseIntegerArray(componentLegacyHouse4Garden_string, ali);
+		ali = new ArrayList<Double>(Arrays.asList(0D,1D,2D,2D,4D));
+		componentLegacyHouse4Garden_string = config.getString("Component: Legacy Small House", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 4.0");
+		componentLegacyHouse4Garden_vals = parseDoubleArray(componentLegacyHouse4Garden_string, ali);
 
-		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 0, 1, 1));
-		componentLegacyChurch_string = config.getString("Component: Legacy Church", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 20");
-		componentLegacyChurch_vals = parseIntegerArray(componentLegacyChurch_string, ali);
+		ali = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,1D));
+		componentLegacyChurch_string = config.getString("Component: Legacy Church", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 20.0");
+		componentLegacyChurch_vals = parseDoubleArray(componentLegacyChurch_string, ali);
 
-		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 0, 1, 2));
-		componentLegacyHouse1_string = config.getString("Component: Legacy Library", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 20");
-		componentLegacyHouse1_vals = parseIntegerArray(componentLegacyHouse1_string, ali);
+		ali = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,2D));
+		componentLegacyHouse1_string = config.getString("Component: Legacy Library", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 20.0");
+		componentLegacyHouse1_vals = parseDoubleArray(componentLegacyHouse1_string, ali);
 
-		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3, 5));
-		componentLegacyWoodHut_string = config.getString("Component: Legacy Hut", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3");
-		componentLegacyWoodHut_vals = parseIntegerArray(componentLegacyWoodHut_string, ali);
+		ali = new ArrayList<Double>(Arrays.asList(0D,1D,2D,3D,5D));
+		componentLegacyWoodHut_string = config.getString("Component: Legacy Hut", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3.0");
+		componentLegacyWoodHut_vals = parseDoubleArray(componentLegacyWoodHut_string, ali);
 
-		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 0, 1, 2));
-		componentLegacyHall_string = config.getString("Component: Legacy Butcher Shop", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 15");
-		componentLegacyHall_vals = parseIntegerArray(componentLegacyHall_string, ali);
+		ali = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,2D));
+		componentLegacyHall_string = config.getString("Component: Legacy Butcher Shop", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 15.0");
+		componentLegacyHall_vals = parseDoubleArray(componentLegacyHall_string, ali);
 
-		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 1, 1, 4));
-		componentLegacyField1_string = config.getString("Component: Legacy Large Farm", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3");
-		componentLegacyField1_vals = parseIntegerArray(componentLegacyField1_string, ali);
+		ali = new ArrayList<Double>(Arrays.asList(0D,1D,1D,1D,4D));
+		componentLegacyField1_string = config.getString("Component: Legacy Large Farm", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3.0");
+		componentLegacyField1_vals = parseDoubleArray(componentLegacyField1_string, ali);
 
-		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 2, 4));
-		componentLegacyField2_string = config.getString("Component: Legacy Small Farm", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3");
-		componentLegacyField2_vals = parseIntegerArray(componentLegacyField2_string, ali);
+		ali = new ArrayList<Double>(Arrays.asList(0D,1D,2D,2D,4D));
+		componentLegacyField2_string = config.getString("Component: Legacy Small Farm", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3.0");
+		componentLegacyField2_vals = parseDoubleArray(componentLegacyField2_string, ali);
 
-		ali = new ArrayList<Integer>(Arrays.asList(0, 0, 0, 1, 1));
-		componentLegacyHouse2_string = config.getString("Component: Legacy Smithy", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 15");
-		componentLegacyHouse2_vals = parseIntegerArray(componentLegacyHouse2_string, ali);
+		ali = new ArrayList<Double>(Arrays.asList(0D,0D,0D,1D,1D));
+		componentLegacyHouse2_string = config.getString("Component: Legacy Smithy", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 15.0");
+		componentLegacyHouse2_vals = parseDoubleArray(componentLegacyHouse2_string, ali);
 
-		ali = new ArrayList<Integer>(Arrays.asList(0, 1, 0, 2, 3));
-		componentLegacyHouse3_string = config.getString("Component: Legacy Large House", "Village Generator", convertIntegerArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 8");
-		componentLegacyHouse3_vals = parseIntegerArray(componentLegacyHouse3_string, ali);
+		ali = new ArrayList<Double>(Arrays.asList(0D,1D,0D,2D,3D));
+		componentLegacyHouse3_string = config.getString("Component: Legacy Large House", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 8.0");
+		componentLegacyHouse3_vals = parseDoubleArray(componentLegacyHouse3_string, ali);
 		
 		// Misc
 		spawnModdedVillagers = config.getBoolean("Allow mod villagers in new structures", "Village Generator", false, "When modern structures spawn random villagers on generation, set this to true to allow non-vanilla professions.");
@@ -898,21 +898,21 @@ public class GeneralConfig {
 		
 		return map;
 	}
-
+	
 	/**
 	 * Used to convert the comma-separated-integer string in the config value into an array of integers
 	 * Returns the given default array if the user screws up.
 	 */
-	public static ArrayList<Integer> parseIntegerArray(String configvalue, ArrayList<Integer> defaultValues)
+	public static ArrayList<Double> parseDoubleArray(String configvalue, ArrayList<Double> defaultValues)
 	{
 		try
 		{
 			String[] sMPA1_stringarray = configvalue.split(",");
-			ArrayList<Integer> integerArrayListToReturn = new ArrayList<Integer>();
+			ArrayList<Double> doubleArrayListToReturn = new ArrayList<Double>();
 			
 			for (int i=0; i<sMPA1_stringarray.length; i++)
 			{
-				integerArrayListToReturn.add(Integer.parseInt(sMPA1_stringarray[i].trim()));
+				doubleArrayListToReturn.add(Double.parseDouble(sMPA1_stringarray[i].trim()));
 			}
 
 			// HALL OF SHAME
@@ -920,52 +920,52 @@ public class GeneralConfig {
 			// User entered wrong number of parameters
 			if (sMPA1_stringarray.length!=5)
 			{
-				LogHelper.error("Config entry " + configvalue + " requires five values, not " + sMPA1_stringarray.length + ". Using default values " + convertIntegerArrayToString(defaultValues) + " until this is fixed.");
+				LogHelper.error("Config entry " + configvalue + " requires five values, not " + sMPA1_stringarray.length + ". Using default values " + convertDoubleArrayToString(defaultValues) + " until this is fixed.");
 				return defaultValues;
 			}
 			
 			// User entered a negative component weight
-			if (integerArrayListToReturn.get(0) < 0)
+			if (doubleArrayListToReturn.get(0) < 0)
 			{
-				integerArrayListToReturn.set(0, 0);
+				doubleArrayListToReturn.set(0, 0D);
 				LogHelper.error("The first value of config entry " + configvalue + " is a weight and must not be less than zero. It will be set to 0 until this is fixed.");
 			}
 			
 			// User's lower bound for number of structures is negative
-			if ((integerArrayListToReturn.get(1) * GeneralConfig.newVillageSize + integerArrayListToReturn.get(2)) < 0)
+			if ((doubleArrayListToReturn.get(1) * GeneralConfig.newVillageSize + doubleArrayListToReturn.get(2)) < 0)
 			{
-				LogHelper.error("Values two and three of config entry " + configvalue + " can result in fewer than zero of this structure component. Using default values " + convertIntegerArrayToString(defaultValues) + " until this is fixed.");
+				LogHelper.error("Values two and three of config entry " + configvalue + " can result in fewer than zero of this structure component. Using default values " + convertDoubleArrayToString(defaultValues) + " until this is fixed.");
 				return defaultValues;
 			}
 			
 			// User's upper bound for number of structures is negative
-			if ((integerArrayListToReturn.get(3) * GeneralConfig.newVillageSize + integerArrayListToReturn.get(4)) < 0)
+			if ((doubleArrayListToReturn.get(3) * GeneralConfig.newVillageSize + doubleArrayListToReturn.get(4)) < 0)
 			{
-				LogHelper.error("Values four and five of config entry " + configvalue + " will result in fewer than zero of this structure component. Using default values " + convertIntegerArrayToString(defaultValues) + " until this is fixed.");
+				LogHelper.error("Values four and five of config entry " + configvalue + " will result in fewer than zero of this structure component. Using default values " + convertDoubleArrayToString(defaultValues) + " until this is fixed.");
 				return defaultValues;
 			}
 			
 			// User's lower bound for number of structures is greater than their upper bound
-			if ((integerArrayListToReturn.get(1) * GeneralConfig.newVillageSize + integerArrayListToReturn.get(2)) > (integerArrayListToReturn.get(3) * GeneralConfig.newVillageSize + integerArrayListToReturn.get(4)))
+			if ((doubleArrayListToReturn.get(1) * GeneralConfig.newVillageSize + doubleArrayListToReturn.get(2)) > (doubleArrayListToReturn.get(3) * GeneralConfig.newVillageSize + doubleArrayListToReturn.get(4)))
 			{
-				LogHelper.error("Values two through five of config entry " + configvalue + " result in a higher upper bound than a lower bound for this structure component. Using default values " + convertIntegerArrayToString(defaultValues) + " until this is fixed.");
+				LogHelper.error("Values two through five of config entry " + configvalue + " result in a higher upper bound than a lower bound for this structure component. Using default values " + convertDoubleArrayToString(defaultValues) + " until this is fixed.");
 				return defaultValues;
 			}
 			
 			// This only happens if the user didn't cock up royally
-			return integerArrayListToReturn;
+			return doubleArrayListToReturn;
 		}
 		catch (Exception e) // Config entry was malformed
 		{
-			LogHelper.error("Config entry " + configvalue + " was malformed. Check that it is five comma-separated integers. Using default values " + convertIntegerArrayToString(defaultValues) + " until this is fixed.");
+			LogHelper.error("Config entry " + configvalue + " was malformed. Check that it is five comma-separated integers. Using default values " + convertDoubleArrayToString(defaultValues) + " until this is fixed.");
 			return defaultValues;
 		}
 	}
 	
 	/**
-	 * Converts an integer arraylist back into a comma-separated string
+	 * Converts a double arraylist back into a comma-separated string
 	 */
-	public static String convertIntegerArrayToString(ArrayList<Integer> arraylist)
+	public static String convertDoubleArrayToString(ArrayList<Double> arraylist)
 	{
 		String s=arraylist.get(0).toString();
 		
