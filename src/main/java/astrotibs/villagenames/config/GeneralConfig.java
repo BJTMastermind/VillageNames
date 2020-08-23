@@ -120,44 +120,44 @@ public class GeneralConfig {
 		newVillageSpacingSpread = config.getInt("Village Spacing: Range", "Village Generator", 12, 1, 100, "Variation in distances between villages. Must be lower than Median value. Vanilla is 12.");
 		
 		
-		ArrayList<Double> ali; // For setting default values as integer lists
+		ArrayList<Double> ald; // For setting default values as integer lists
 		
 		// Legacy Village components
-		ali = new ArrayList<Double>(Arrays.asList(0D,1D,2D,2D,4D));
-		componentLegacyHouse4Garden_string = config.getString("Component: Legacy Small House", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 4.0");
-		componentLegacyHouse4Garden_vals = parseDoubleArray(componentLegacyHouse4Garden_string, ali);
+		ald = new ArrayList<Double>(Arrays.asList(0D,1D,2D,2D,4D));
+		componentLegacyHouse4Garden_string = config.getString("Component: Legacy Small House", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 4.0");
+		componentLegacyHouse4Garden_vals = parseDoubleArray(componentLegacyHouse4Garden_string, ald);
 
-		ali = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,1D));
-		componentLegacyChurch_string = config.getString("Component: Legacy Church", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 20.0");
-		componentLegacyChurch_vals = parseDoubleArray(componentLegacyChurch_string, ali);
+		ald = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,1D));
+		componentLegacyChurch_string = config.getString("Component: Legacy Church", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 20.0");
+		componentLegacyChurch_vals = parseDoubleArray(componentLegacyChurch_string, ald);
 
-		ali = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,2D));
-		componentLegacyHouse1_string = config.getString("Component: Legacy Library", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 20.0");
-		componentLegacyHouse1_vals = parseDoubleArray(componentLegacyHouse1_string, ali);
+		ald = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,2D));
+		componentLegacyHouse1_string = config.getString("Component: Legacy Library", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 20.0");
+		componentLegacyHouse1_vals = parseDoubleArray(componentLegacyHouse1_string, ald);
 
-		ali = new ArrayList<Double>(Arrays.asList(0D,1D,2D,3D,5D));
-		componentLegacyWoodHut_string = config.getString("Component: Legacy Hut", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3.0");
-		componentLegacyWoodHut_vals = parseDoubleArray(componentLegacyWoodHut_string, ali);
+		ald = new ArrayList<Double>(Arrays.asList(0D,1D,2D,3D,5D));
+		componentLegacyWoodHut_string = config.getString("Component: Legacy Hut", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 3.0");
+		componentLegacyWoodHut_vals = parseDoubleArray(componentLegacyWoodHut_string, ald);
 
-		ali = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,2D));
-		componentLegacyHall_string = config.getString("Component: Legacy Butcher Shop", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 15.0");
-		componentLegacyHall_vals = parseDoubleArray(componentLegacyHall_string, ali);
+		ald = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,2D));
+		componentLegacyHall_string = config.getString("Component: Legacy Butcher Shop", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 15.0");
+		componentLegacyHall_vals = parseDoubleArray(componentLegacyHall_string, ald);
 
-		ali = new ArrayList<Double>(Arrays.asList(0D,1D,1D,1D,4D));
-		componentLegacyField1_string = config.getString("Component: Legacy Large Farm", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3.0");
-		componentLegacyField1_vals = parseDoubleArray(componentLegacyField1_string, ali);
+		ald = new ArrayList<Double>(Arrays.asList(0D,1D,1D,1D,4D));
+		componentLegacyField1_string = config.getString("Component: Legacy Large Farm", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 3.0");
+		componentLegacyField1_vals = parseDoubleArray(componentLegacyField1_string, ald);
 
-		ali = new ArrayList<Double>(Arrays.asList(0D,1D,2D,2D,4D));
-		componentLegacyField2_string = config.getString("Component: Legacy Small Farm", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 3.0");
-		componentLegacyField2_vals = parseDoubleArray(componentLegacyField2_string, ali);
+		ald = new ArrayList<Double>(Arrays.asList(0D,1D,2D,2D,4D));
+		componentLegacyField2_string = config.getString("Component: Legacy Small Farm", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 3.0");
+		componentLegacyField2_vals = parseDoubleArray(componentLegacyField2_string, ald);
 
-		ali = new ArrayList<Double>(Arrays.asList(0D,0D,0D,1D,1D));
-		componentLegacyHouse2_string = config.getString("Component: Legacy Smithy", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 15.0");
-		componentLegacyHouse2_vals = parseDoubleArray(componentLegacyHouse2_string, ali);
+		ald = new ArrayList<Double>(Arrays.asList(0D,0D,0D,1D,1D));
+		componentLegacyHouse2_string = config.getString("Component: Legacy Smithy", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 15.0");
+		componentLegacyHouse2_vals = parseDoubleArray(componentLegacyHouse2_string, ald);
 
-		ali = new ArrayList<Double>(Arrays.asList(0D,1D,0D,2D,3D));
-		componentLegacyHouse3_string = config.getString("Component: Legacy Large House", "Village Generator", convertDoubleArrayToString(ali), "Generation stats for this component in all villages. Vanilla weight is 8.0");
-		componentLegacyHouse3_vals = parseDoubleArray(componentLegacyHouse3_string, ali);
+		ald = new ArrayList<Double>(Arrays.asList(0D,1D,0D,2D,3D));
+		componentLegacyHouse3_string = config.getString("Component: Legacy Large House", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 8.0");
+		componentLegacyHouse3_vals = parseDoubleArray(componentLegacyHouse3_string, ald);
 		
 		// Misc
 		//spawnModdedVillagers = config.getBoolean("Allow mod villagers in new structures", "Village Generator", false, "When modern structures spawn random villagers on generation, set this to true to allow non-vanilla professions.");
