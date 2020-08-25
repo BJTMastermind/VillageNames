@@ -232,12 +232,14 @@ public class SavannaStructures
         	
 			// Banners on the market stalls
 			for (int[] uvwoc : new int[][]{ // u, v, w, orientation, color
-				{0, 4, 6, 3, townColor},
-				{0, 4, 5, 3, townColor2},
-				{10, 4, 0, 2, townColor},
-				{11, 4, 0, 2, townColor2},
-				{11, 4, 11, 0, townColor},
-				{10, 4, 11, 0, townColor2},
+				{0, 4, 6, 3, GeneralConfig.useVillageColors ? townColor3: 12}, // Brown by default
+				{0, 4, 5, 3, GeneralConfig.useVillageColors ? townColor6 : 12}, // Brown by default
+				
+				{10, 4, 0, 2, GeneralConfig.useVillageColors ? townColor2 : 12}, // Brown by default
+				{11, 4, 0, 2, GeneralConfig.useVillageColors ? townColor7 : 12}, // Brown by default
+				
+				{11, 4, 11, 0, GeneralConfig.useVillageColors ? townColor4 : 12}, // Brown by default
+				{10, 4, 11, 0, GeneralConfig.useVillageColors ? townColor5 : 12}, // Brown by default
 			})
 			{
     			int bannerXBB = uvwoc[0];
@@ -255,7 +257,7 @@ public class SavannaStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				NBTTagCompound modifystanding = new NBTTagCompound();
 				tilebanner.writeToNBT(modifystanding);
-				modifystanding.setInteger("Base", 15 - (GeneralConfig.useVillageColors ? uvwoc[4] : 12));
+				modifystanding.setInteger("Base", 15 - uvwoc[4]);
 				tilebanner.readFromNBT(modifystanding);
 				
         		world.setTileEntity(new BlockPos(bannerX, bannerY, bannerZ), tilebanner);

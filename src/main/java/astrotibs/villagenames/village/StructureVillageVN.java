@@ -1015,10 +1015,6 @@ public class StructureVillageVN
     	int posX = pos.getX(); int posY = pos.getY(); int posZ = pos.getZ(); 
 
     	int townColorMeta;
-    	int townColorMeta2;
-    	int townColorMeta3;
-    	int townColorMeta4;
-    	int townColorMeta5;
     	
     	String townSignEntry="";
     	String namePrefix; String nameRoot; String nameSuffix;
@@ -1090,13 +1086,29 @@ public class StructureVillageVN
         	        {
         				NBTTagList nbttaglistPattern = bannerNBT.getTagList("Patterns", 9);
         				
+        				// The banner color array has repeat values. Create a version that does not. 
+        				ArrayList<Integer> colorSet = new ArrayList();
+        				// Add the first element straight away
+        				colorSet.add(townColorMeta);
+        				// Go through the colors in the array and add them only if they're unique
         				for (int i=0; i < nbttaglistPattern.tagCount(); i++)
         				{
         					NBTTagCompound patterntag = nbttaglistPattern.getCompoundTagAt(i);
         					if (patterntag.hasKey("Color"))
         					{
-        						townColorArray[i+1] = patterntag.getInteger("Color");
+        						int candidateColor = patterntag.getInteger("Color");
+        						
+        						boolean matchFound = false;
+            					// Go through colors already in the set and seee if this matches any of them
+            					for (int j=0; j<colorSet.size(); j++) {if (candidateColor==colorSet.get(j)) {matchFound=true; break;}}
+            					// Color is unique!
+            					if (!matchFound) {colorSet.add(candidateColor);}
         					}
+        				}
+        				// Assign the new unique colors to the town color array 
+        				for (int i=1; i<colorSet.size(); i++)
+        				{
+        					townColorArray[i] = 15-colorSet.get(i);
         				}
         	        }
         		}
@@ -1216,13 +1228,29 @@ public class StructureVillageVN
     	        {
     				NBTTagList nbttaglistPattern = bannerNBT.getTagList("Patterns", 9);
     				
+    				// The banner color array has repeat values. Create a version that does not. 
+    				ArrayList<Integer> colorSet = new ArrayList();
+    				// Add the first element straight away
+    				colorSet.add(townColorMeta);
+    				// Go through the colors in the array and add them only if they're unique
     				for (int i=0; i < nbttaglistPattern.tagCount(); i++)
     				{
     					NBTTagCompound patterntag = nbttaglistPattern.getCompoundTagAt(i);
     					if (patterntag.hasKey("Color"))
     					{
-    						townColorArray[i+1] = patterntag.getInteger("Color");
+    						int candidateColor = patterntag.getInteger("Color");
+    						
+    						boolean matchFound = false;
+        					// Go through colors already in the set and seee if this matches any of them
+        					for (int j=0; j<colorSet.size(); j++) {if (candidateColor==colorSet.get(j)) {matchFound=true; break;}}
+        					// Color is unique!
+        					if (!matchFound) {colorSet.add(candidateColor);}
     					}
+    				}
+    				// Assign the new unique colors to the town color array 
+    				for (int i=1; i<colorSet.size(); i++)
+    				{
+    					townColorArray[i] = 15-colorSet.get(i);
     				}
     	        }
     		}
@@ -1315,9 +1343,24 @@ public class StructureVillageVN
         
 		boolean updateTownNBT=false;
 		int[] townColorArray = new int[]{townColorMeta,-1,-1,-1,-1,-1,-1};
+		// The banner color array has repeat values. Create a version that does not. 
+		ArrayList<Integer> colorSet = new ArrayList();
+		// Add the first element straight away
+		colorSet.add(colorArray.get(0));
+		// Go through the colors in the array and add them only if they're unique
 		for (int i=1; i<colorArray.size(); i++)
 		{
-			townColorArray[i] = 15-colorArray.get(i);
+			int candidateColor = colorArray.get(i);
+			boolean matchFound = false;
+			// Go through colors already in the set and seee if this matches any of them
+			for (int j=0; j<colorSet.size(); j++) {if (candidateColor==colorSet.get(j)) {matchFound=true; break;}}
+			// Color is unique!
+			if (!matchFound) {colorSet.add(candidateColor);}
+		}
+		// Assign the new unique colors to the town color array 
+		for (int i=1; i<colorSet.size(); i++)
+		{
+			townColorArray[i] = 15-colorSet.get(i);
 		}
 		// Change each entry that's -1 to a unique color
 		for (int c=1; c<(townColorArray.length); c++)
