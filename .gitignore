@@ -1,0 +1,31 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+gradle*
+
+# forge
+CREDITS-fml.txt
+LICENSE-new.txt
+MinecraftForge-Credits.txt
+forge-*
+
+# other
+eclipse
+Paulscode*
+run
+README.txt
