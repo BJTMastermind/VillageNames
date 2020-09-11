@@ -1,0 +1,35 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+gradle*
+
+# forge
+MinecraftForge-Credits.txt
+MinecraftForge-License.txt
+forge-*
+CREDITS-fml.txt
+LICENSE-fml.txt
+README.txt
+
+# other
+eclipse
+run
+Paulscode*
+
+# Junk added by AstroTibs
+1.8 ITradeList.txt
