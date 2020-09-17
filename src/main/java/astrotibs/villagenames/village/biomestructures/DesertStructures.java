@@ -1013,11 +1013,17 @@ public class DesertStructures
 	{
 		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
 		
+		
+		// Generate per-material blocks
+		
+		IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.SANDSTONE.getStateFromMeta(2), materialType, biome);
+		
+		
         switch (decorType)
         {
     	case 0: // Torch on stained terracotta and cut sandstone
     		
-    		BlueprintData.addFillWithBlocks(blueprint, 0, 0, 0, 0, 1, 0, Blocks.SANDSTONE.getStateFromMeta(2));
+    		BlueprintData.addFillWithBlocks(blueprint, 0, 0, 0, 0, 1, 0, biomeCutSandstoneState);
     		//BlueprintData.addPlaceBlock(blueprint, 0, 2, 0, GeneralConfig.decorateVillageCenter ? Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(townColor) : Blocks.HARDENED_CLAY.getDefaultState());
     		BlueprintData.addPlaceBlock(blueprint, 0, 2, 0, Blocks.HARDENED_CLAY.getDefaultState());
     		BlueprintData.addPlaceBlock(blueprint, 0, 3, 0, Blocks.TORCH.getStateFromMeta(0));
