@@ -323,24 +323,27 @@ public class SavannaStructures
             {
             	this.villagersGenerated=true;
             	
-        		for (int[] ia : new int[][]{
-        			{3, 1, 2, -1, 0},
-        			{5, 1, 4, -1, 0},
-        			{8, 1, 4, -1, 0},
-        			})
-        		{
-        			EntityVillager entityvillager = new EntityVillager(world);
-        			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
-        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
-        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
-        			
-        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
-        			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
-                    		random.nextFloat()*360F, 0.0F);
-                    world.spawnEntityInWorld(entityvillager);
-        		}
+            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	{
+	        		for (int[] ia : new int[][]{
+	        			{3, 1, 2, -1, 0},
+	        			{5, 1, 4, -1, 0},
+	        			{8, 1, 4, -1, 0},
+	        			})
+	        		{
+	        			EntityVillager entityvillager = new EntityVillager(world);
+	        			
+	        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
+	        			
+	        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
+	        			
+	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+	                    		random.nextFloat()*360F, 0.0F);
+	                    world.spawnEntityInWorld(entityvillager);
+	        		}
+            	}
             }
             
             return true;
@@ -612,24 +615,27 @@ public class SavannaStructures
             {
             	this.villagersGenerated=true;
             	
-        		for (int[] ia : new int[][]{
-        			{3, 1, 8, -1, 0},
-        			{6, 1, 9, -1, 0},
-        			{9, 1, 6, -1, 0},
-        			})
-        		{
-        			EntityVillager entityvillager = new EntityVillager(world);
-        			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
-        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
-        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
-        			
-        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
-        			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
-                    		random.nextFloat()*360F, 0.0F);
-                    world.spawnEntityInWorld(entityvillager);
-        		}
+            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	{
+	        		for (int[] ia : new int[][]{
+	        			{3, 1, 8, -1, 0},
+	        			{6, 1, 9, -1, 0},
+	        			{9, 1, 6, -1, 0},
+	        			})
+	        		{
+	        			EntityVillager entityvillager = new EntityVillager(world);
+	        			
+	        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
+	        			
+	        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
+	        			
+	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+	                    		random.nextFloat()*360F, 0.0F);
+	                    world.spawnEntityInWorld(entityvillager);
+	        		}
+            	}
             }
             
             return true;
@@ -907,24 +913,27 @@ public class SavannaStructures
             {
             	this.villagersGenerated=true;
             	
-        		for (int[] ia : new int[][]{
-        			{6, 1, 5, -1, 0},
-        			{7, 1, 3, -1, 0},
-        			{9, 1, 6, -1, 0},
-        			})
-        		{
-        			EntityVillager entityvillager = new EntityVillager(world);
-        			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
-        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
-        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
-        			
-        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
-        			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
-                    		random.nextFloat()*360F, 0.0F);
-                    world.spawnEntityInWorld(entityvillager);
-        		}
+            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	{
+	        		for (int[] ia : new int[][]{
+	        			{6, 1, 5, -1, 0},
+	        			{7, 1, 3, -1, 0},
+	        			{9, 1, 6, -1, 0},
+	        			})
+	        		{
+	        			EntityVillager entityvillager = new EntityVillager(world);
+	        			
+	        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
+	        			
+	        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
+	        			
+	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+	                    		random.nextFloat()*360F, 0.0F);
+	                    world.spawnEntityInWorld(entityvillager);
+	        		}
+            	}
             }
             
             return true;
@@ -1185,23 +1194,26 @@ public class SavannaStructures
             {
             	this.villagersGenerated=true;
             	
-        		for (int[] ia : new int[][]{
-        			{7, 1, 1, -1, 0},
-        			{8, 1, 3, -1, 0},
-        			})
-        		{
-        			EntityVillager entityvillager = new EntityVillager(world);
-        			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
-        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
-        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
-        			
-        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
-        			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
-                    		random.nextFloat()*360F, 0.0F);
-                    world.spawnEntityInWorld(entityvillager);
-        		}
+            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	{
+	        		for (int[] ia : new int[][]{
+	        			{7, 1, 1, -1, 0},
+	        			{8, 1, 3, -1, 0},
+	        			})
+	        		{
+	        			EntityVillager entityvillager = new EntityVillager(world);
+	        			
+	        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
+	        			
+	        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
+	        			
+	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+	                    		random.nextFloat()*360F, 0.0F);
+	                    world.spawnEntityInWorld(entityvillager);
+	        		}
+            	}
             }
             
             return true;

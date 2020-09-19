@@ -291,25 +291,28 @@ public class DesertStructures
             if (!this.villagersGenerated)
             {
             	this.villagersGenerated=true;
-            	            	
-        		for (int[] ia : new int[][]{
-        			{1, 1, 1, -1, 0},
-        			{5, 1, 0, -1, 0},
-        			{1, 1, 7, -1, 0},
-        			})
-        		{
-        			EntityVillager entityvillager = new EntityVillager(world);
-        			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
-        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
-        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
-        			
-        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
-        			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
-                    		random.nextFloat()*360F, 0.0F);
-                    world.spawnEntityInWorld(entityvillager);
-        		}
+            	
+            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	{
+	        		for (int[] ia : new int[][]{
+	        			{1, 1, 1, -1, 0},
+	        			{5, 1, 0, -1, 0},
+	        			{1, 1, 7, -1, 0},
+	        			})
+	        		{
+	        			EntityVillager entityvillager = new EntityVillager(world);
+	        			
+	        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
+	        			
+	        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
+	        			
+	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+	                    		random.nextFloat()*360F, 0.0F);
+	                    world.spawnEntityInWorld(entityvillager);
+	        		}
+            	}
             }
             
             return true;
@@ -587,24 +590,27 @@ public class DesertStructures
             {
             	this.villagersGenerated=true;
             	
-        		for (int[] ia : new int[][]{
-        			{10, 1, 8, -1, 0},
-        			{1, 1, 10, -1, 0},
-        			{7, 1, 10, -1, 0},
-        			})
-        		{
-        			EntityVillager entityvillager = new EntityVillager(world);
-        			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
-        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
-        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
-        			
-        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
-        			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
-                    		random.nextFloat()*360F, 0.0F);
-                    world.spawnEntityInWorld(entityvillager);
-        		}
+            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	{
+	        		for (int[] ia : new int[][]{
+	        			{10, 1, 8, -1, 0},
+	        			{1, 1, 10, -1, 0},
+	        			{7, 1, 10, -1, 0},
+	        			})
+	        		{
+	        			EntityVillager entityvillager = new EntityVillager(world);
+	        			
+	        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
+	        			
+	        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
+	        			
+	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+	                    		random.nextFloat()*360F, 0.0F);
+	                    world.spawnEntityInWorld(entityvillager);
+	        		}
+            	}
             }
             
             return true;
@@ -1010,24 +1016,27 @@ public class DesertStructures
             {
             	this.villagersGenerated=true;
             	
-        		for (int[] ia : new int[][]{
-        			{6, 1, 5, -1, 0},
-        			{8, 1, 10, -1, 0},
-        			{11, 1, 10, -1, 0},
-        			})
-        		{
-        			EntityVillager entityvillager = new EntityVillager(world);
-        			
-        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
-        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
-        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
-        			
-        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
-        			
-        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
-                    		random.nextFloat()*360F, 0.0F);
-                    world.spawnEntityInWorld(entityvillager);
-        		}
+            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	{
+	        		for (int[] ia : new int[][]{
+	        			{6, 1, 5, -1, 0},
+	        			{8, 1, 10, -1, 0},
+	        			{11, 1, 10, -1, 0},
+	        			})
+	        		{
+	        			EntityVillager entityvillager = new EntityVillager(world);
+	        			
+	        			// Nitwits more often than not // TODO - Re-introduce Nitwits in 1.9+
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
+	        			
+	        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
+	        			
+	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+	                    		random.nextFloat()*360F, 0.0F);
+	                    world.spawnEntityInWorld(entityvillager);
+	        		}
+            	}
             }
             
             return true;
