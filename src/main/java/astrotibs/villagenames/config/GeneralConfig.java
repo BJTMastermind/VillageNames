@@ -100,7 +100,8 @@ public class GeneralConfig {
 	// Misc new village stuff
 	public static boolean spawnModdedVillagers;
 	public static boolean useVillageColors;
-	
+	public static boolean spawnVillagersInResidences;
+	public static boolean spawnVillagersInTownCenters;
 	
 	public static void init(File configFile)
 	{
@@ -162,6 +163,8 @@ public class GeneralConfig {
 		// Misc
 		spawnModdedVillagers = config.getBoolean("Allow mod villagers in new structures", "Village Generator", false, "When modern structures spawn random villagers on generation, set this to true to allow non-vanilla professions.");
 		useVillageColors = config.getBoolean("Use village colors", "Village Generator", true, "Whether to apply the village's colors to concrete, terracotta, carpet, etc.");
+		spawnVillagersInResidences = config.getBoolean("Spawn Villagers in Residences", "Village Generator", false, "Spawn villagers with random professions and ages in non-job-specific residential houses.");
+		spawnVillagersInTownCenters = config.getBoolean("Spawn Villagers in Town Centers", "Village Generator", true, "Spawn villagers with random professions and ages in the town center.");
 		
 		spawnBiomesNames = config.getStringList("Spawn Biome Names", "Village Generator",
 				new String[] {
