@@ -437,6 +437,7 @@ public class StructureVillageVN
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
+        	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
         }
     	if (materialType == FunctionsVN.MaterialType.SPRUCE)
         {
@@ -466,7 +467,6 @@ public class StructureVillageVN
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
-        	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
         }
         if (materialType == FunctionsVN.MaterialType.BIRCH)
         {
@@ -491,6 +491,7 @@ public class StructureVillageVN
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
+        	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.JUNGLE)
         {
@@ -523,6 +524,7 @@ public class StructureVillageVN
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
+        	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.ACACIA)
         {
@@ -548,6 +550,7 @@ public class StructureVillageVN
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
+        	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.DARK_OAK)
         {
@@ -573,6 +576,7 @@ public class StructureVillageVN
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
+        	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.SAND)
         {
@@ -611,6 +615,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Blocks.sandstone, 2};} // Cut sandstone
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Blocks.sandstone, 2};} // Cut sandstone
         	if (block == Blocks.snow)                          {return Blocks.sand.getStateFromMeta(0);}
+        	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.MESA)
         {
@@ -633,6 +638,7 @@ public class StructureVillageVN
 			if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab2.getDefaultState();}
 			if (block == Blocks.sandstone_stairs)              {return Blocks.red_sandstone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.snow)                          {return Blocks.hardened_clay.getStateFromMeta(0);}
+        	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.SNOW)
         {
@@ -646,16 +652,13 @@ public class StructureVillageVN
         	if (block == Blocks.acacia_door || block == Blocks.birch_door || block == Blocks.dark_oak_door || block == Blocks.jungle_door || block == Blocks.oak_door || block == Blocks.spruce_door)
 			   												   {return Blocks.spruce_door.getStateFromMeta(meta);}
         	//if (block == Blocks.trapdoor)                      {return new Object[]{ModObjects.chooseModWoodenTrapdoor(1), meta};}
-        	if (block == Blocks.cobblestone)                   {return Blocks.packed_ice.getDefaultState();}
-        	if (block == Blocks.mossy_cobblestone)             {return Blocks.packed_ice.getDefaultState();}
-        	if (block == Blocks.gravel)                        {return Blocks.packed_ice.getDefaultState();}
+        	if (block == Blocks.mossy_cobblestone)             {return Blocks.cobblestone.getDefaultState();}
         	//if (block == Blocks.standing_sign)                 {return new Object[]{ModObjects.chooseModWoodenSign(1, true), meta/4};}
         	//if (block == Blocks.wall_sign)                     {return new Object[]{ModObjects.chooseModWoodenSign(1, false), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.barkEF)) {return new Object[]{block, 1};} // Spruce bark
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta};}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1};}
-        	if (block == Blocks.stonebrick)                    {return Blocks.packed_ice.getDefaultState();}
-        	if (block == Blocks.sandstone)                     {return Blocks.packed_ice.getDefaultState();}
+        	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getDefaultState();}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
@@ -674,8 +677,9 @@ public class StructureVillageVN
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
-        	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
         	if (block == Blocks.grass)                         {return Blocks.mycelium.getStateFromMeta(0);}
+        	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
+        	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
         }
         
         // Post Forge event
