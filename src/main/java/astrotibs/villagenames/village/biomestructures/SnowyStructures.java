@@ -185,13 +185,14 @@ public class SnowyStructures
         	this.fillWithBlocks(world, structureBB, 8, 1, 2, 8, 1, 4, biomeStrippedWoodOrLogOrLogHorAlongState, biomeStrippedWoodOrLogOrLogHorAlongState, false);
         	
         	// Set snow layer
-        	this.setBlockState(world, Blocks.SNOW_LAYER.getStateFromMeta(0), 0, 1, 7, structureBB);
-        	this.fillWithBlocks(world, structureBB, 0, 1, 1, 0, 1, 3, Blocks.SNOW_LAYER.getStateFromMeta(0), Blocks.SNOW_LAYER.getStateFromMeta(0), false);
-        	this.fillWithBlocks(world, structureBB, 0, 1, 0, 5, 1, 0, Blocks.SNOW_LAYER.getStateFromMeta(0), Blocks.SNOW_LAYER.getStateFromMeta(0), false);
-        	this.setBlockState(world, Blocks.SNOW_LAYER.getStateFromMeta(0), 8, 1, 7, structureBB);
-        	this.fillWithBlocks(world, structureBB, 10, 1, 7, 11, 1, 7, Blocks.SNOW_LAYER.getStateFromMeta(0), Blocks.SNOW_LAYER.getStateFromMeta(0), false);
-        	this.fillWithBlocks(world, structureBB, 11, 1, 0, 11, 1, 3, Blocks.SNOW_LAYER.getStateFromMeta(0), Blocks.SNOW_LAYER.getStateFromMeta(0), false);
-        	this.fillWithBlocks(world, structureBB, 5, 2, 2, 8, 2, 5, Blocks.SNOW_LAYER.getStateFromMeta(0), Blocks.SNOW_LAYER.getStateFromMeta(0), false);
+        	IBlockState biomeSnowLayerState = StructureVillageVN.getBiomeSpecificBlock(Blocks.SNOW_LAYER.getDefaultState(), this.materialType, this.biome);
+        	this.setBlockState(world, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, 0, 1, 7, structureBB);
+        	this.fillWithBlocks(world, structureBB, 0, 1, 1, 0, 1, 3, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, false);
+        	this.fillWithBlocks(world, structureBB, 0, 1, 0, 5, 1, 0, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, false);
+        	this.setBlockState(world, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, 8, 1, 7, structureBB);
+        	this.fillWithBlocks(world, structureBB, 10, 1, 7, 11, 1, 7, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, false);
+        	this.fillWithBlocks(world, structureBB, 11, 1, 0, 11, 1, 3, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, false);
+        	this.fillWithBlocks(world, structureBB, 5, 2, 2, 8, 2, 5, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, biomeSnowLayerState.getBlock()==Blocks.SNOW_LAYER ? Blocks.SNOW_LAYER.getStateFromMeta(0) : biomeSnowLayerState, false);
         	
         	// Ice spire
         	this.fillWithBlocks(world, structureBB, 6, 1, 3, 7, 2, 4, Blocks.PACKED_ICE.getDefaultState(), Blocks.PACKED_ICE.getDefaultState(), false);
