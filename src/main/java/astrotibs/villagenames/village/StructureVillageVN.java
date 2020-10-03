@@ -28,6 +28,7 @@ import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockGrass;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
+import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.passive.EntityVillager;
@@ -430,24 +431,29 @@ public class StructureVillageVN
     	
     	if (materialType == FunctionsVN.MaterialType.OAK)
         {
+    		int woodMeta = BlockPlanks.EnumType.OAK.getMetadata();
         	if (block == Blocks.sandstone && meta==2)          {return Blocks.cobblestone.getStateFromMeta(0);} // Cut sandstone into stone brick
         	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
+        	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
         	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
+        	if (block == Blocks.ice)                           {return Blocks.planks.getStateFromMeta(woodMeta);}
+        	if (block == Blocks.packed_ice)                    {return Blocks.cobblestone.getDefaultState();}
         }
     	if (materialType == FunctionsVN.MaterialType.SPRUCE)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata()%4);}
-        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata());}
+    		int woodMeta = BlockPlanks.EnumType.SPRUCE.getMetadata();
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(woodMeta%4);}
+        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(woodMeta);}
         	if (block == Blocks.oak_fence)					   {return Blocks.spruce_fence.getDefaultState();}
 	        if (block == Blocks.oak_fence_gate)				   {return Blocks.spruce_fence_gate.getDefaultState();}
         	if (block == Blocks.oak_stairs)                    {return Blocks.spruce_stairs.getStateFromMeta(meta);}
-        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +BlockPlanks.EnumType.SPRUCE.getMetadata(): meta==8? 8 +BlockPlanks.EnumType.SPRUCE.getMetadata() : meta);}
-        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata());}
+        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +woodMeta: meta==8? 8 +woodMeta : meta);}
+        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(woodMeta);}
         	if (block == Blocks.acacia_door
         		|| block == Blocks.birch_door
         		|| block == Blocks.dark_oak_door
@@ -467,16 +473,20 @@ public class StructureVillageVN
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
+        	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
+        	if (block == Blocks.ice)                           {return Blocks.planks.getStateFromMeta(woodMeta);}
+        	if (block == Blocks.packed_ice)                    {return Blocks.cobblestone.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.BIRCH)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.BIRCH.getMetadata()%4);}
-        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.BIRCH.getMetadata());}
+    		int woodMeta = BlockPlanks.EnumType.BIRCH.getMetadata();
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(woodMeta%4);}
+        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(woodMeta);}
         	if (block == Blocks.oak_fence)					   {return Blocks.birch_fence.getDefaultState();}
         	if (block == Blocks.oak_fence_gate)				   {return Blocks.birch_fence_gate.getDefaultState();}
         	if (block == Blocks.oak_stairs)                    {return Blocks.birch_stairs.getStateFromMeta(meta);}
-        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +BlockPlanks.EnumType.BIRCH.getMetadata(): meta==8? 8 +BlockPlanks.EnumType.BIRCH.getMetadata() : meta);}
-        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(BlockPlanks.EnumType.BIRCH.getMetadata());}
+        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +woodMeta: meta==8? 8 +woodMeta : meta);}
+        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(woodMeta);}
         	if (block == Blocks.acacia_door || block == Blocks.birch_door || block == Blocks.dark_oak_door || block == Blocks.jungle_door || block == Blocks.oak_door || block == Blocks.spruce_door)
 			   												   {return Blocks.birch_door.getStateFromMeta(meta);}
         	//if (block == Blocks.trapdoor)                      {return new Object[]{ModObjects.chooseModWoodenTrapdoor(2), meta};}
@@ -490,12 +500,16 @@ public class StructureVillageVN
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
+        	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
         	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
+        	if (block == Blocks.ice)                           {return Blocks.planks.getStateFromMeta(woodMeta);}
+        	if (block == Blocks.packed_ice)                    {return Blocks.cobblestone.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.JUNGLE)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.JUNGLE.getMetadata()%4);}
+    		int woodMeta = BlockPlanks.EnumType.JUNGLE.getMetadata();
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(woodMeta%4);}
         	if (block == Blocks.cobblestone)                   {return Blocks.mossy_cobblestone.getDefaultState();}
         	//if (block == Blocks.stone_stairs)                  {
 			//										        		block = Block.getBlockFromName(ModObjects.mossyCobblestoneStairsUTD);
@@ -503,12 +517,12 @@ public class StructureVillageVN
 			//										        		return new Object[]{block, meta};
         	//												   } // Mossy cobblestone stairs
         	if (block == Blocks.cobblestone_wall)              {return Blocks.cobblestone_wall.getStateFromMeta(1);} // Mossy cobblestone wall
-        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.JUNGLE.getMetadata());}
+        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(woodMeta);}
         	if (block == Blocks.oak_fence)					   {return Blocks.jungle_fence.getDefaultState();}
         	if (block == Blocks.oak_fence_gate)				   {return Blocks.jungle_fence_gate.getDefaultState();}
         	if (block == Blocks.oak_stairs)                    {return Blocks.jungle_stairs.getStateFromMeta(meta);}
-        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +BlockPlanks.EnumType.JUNGLE.getMetadata(): meta==8? 8 +BlockPlanks.EnumType.JUNGLE.getMetadata() : meta);}
-        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(BlockPlanks.EnumType.JUNGLE.getMetadata());}
+        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +woodMeta: meta==8? 8 +woodMeta : meta);}
+        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(woodMeta);}
         	if (block == Blocks.acacia_door || block == Blocks.birch_door || block == Blocks.dark_oak_door || block == Blocks.jungle_door || block == Blocks.oak_door || block == Blocks.spruce_door)
         													   {return Blocks.jungle_door.getStateFromMeta(meta);}
         	//if (block == Blocks.trapdoor)                      {return new Object[]{ModObjects.chooseModWoodenTrapdoor(3), meta};}
@@ -523,18 +537,22 @@ public class StructureVillageVN
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
+        	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
         	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
+        	if (block == Blocks.ice)                           {return Blocks.planks.getStateFromMeta(woodMeta);}
+        	if (block == Blocks.packed_ice)                    {return Blocks.cobblestone.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.ACACIA)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log2.getStateFromMeta(BlockPlanks.EnumType.ACACIA.getMetadata()%4);}
-        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.ACACIA.getMetadata());}
+    		int woodMeta = BlockPlanks.EnumType.ACACIA.getMetadata();
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log2.getStateFromMeta(woodMeta%4);}
+        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(woodMeta);}
         	if (block == Blocks.oak_fence)					   {return Blocks.acacia_fence.getDefaultState();}
         	if (block == Blocks.oak_fence_gate)				   {return Blocks.acacia_fence_gate.getDefaultState();}
         	if (block == Blocks.oak_stairs)                    {return Blocks.acacia_stairs.getStateFromMeta(meta);}
-        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +BlockPlanks.EnumType.ACACIA.getMetadata(): meta==8? 8 +BlockPlanks.EnumType.ACACIA.getMetadata() : meta);}
-        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(BlockPlanks.EnumType.ACACIA.getMetadata());}
+        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +woodMeta: meta==8? 8 +woodMeta : meta);}
+        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(woodMeta);}
         	if (block == Blocks.acacia_door || block == Blocks.birch_door || block == Blocks.dark_oak_door || block == Blocks.jungle_door || block == Blocks.oak_door || block == Blocks.spruce_door)
 			   												   {return Blocks.acacia_door.getStateFromMeta(meta);}
         	//if (block == Blocks.trapdoor)                      {return new Object[]{ModObjects.chooseModWoodenTrapdoor(4), meta};}
@@ -549,18 +567,22 @@ public class StructureVillageVN
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
+        	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
         	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
+        	if (block == Blocks.ice)                           {return Blocks.planks.getStateFromMeta(woodMeta);}
+        	if (block == Blocks.packed_ice)                    {return Blocks.cobblestone.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.DARK_OAK)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log2.getStateFromMeta(BlockPlanks.EnumType.DARK_OAK.getMetadata()%4);}
-        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.DARK_OAK.getMetadata());}
+    		int woodMeta = BlockPlanks.EnumType.DARK_OAK.getMetadata();
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log2.getStateFromMeta(woodMeta%4);}
+        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(woodMeta);}
         	if (block == Blocks.oak_fence)					   {return Blocks.dark_oak_fence.getDefaultState();}
         	if (block == Blocks.oak_fence_gate)				   {return Blocks.dark_oak_fence_gate.getDefaultState();}
         	if (block == Blocks.oak_stairs)                    {return Blocks.dark_oak_stairs.getStateFromMeta(meta);}
-        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +BlockPlanks.EnumType.DARK_OAK.getMetadata(): meta==8? 8 +BlockPlanks.EnumType.DARK_OAK.getMetadata() : meta);}
-        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(BlockPlanks.EnumType.DARK_OAK.getMetadata());}
+        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +woodMeta: meta==8? 8 +woodMeta : meta);}
+        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(woodMeta);}
         	if (block == Blocks.acacia_door || block == Blocks.birch_door || block == Blocks.dark_oak_door || block == Blocks.jungle_door || block == Blocks.oak_door || block == Blocks.spruce_door)
 			   												   {return Blocks.dark_oak_door.getStateFromMeta(meta);}
         	//if (block == Blocks.trapdoor)                      {return new Object[]{ModObjects.chooseModWoodenTrapdoor(5), meta};}
@@ -575,17 +597,21 @@ public class StructureVillageVN
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
+        	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
         	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
+        	if (block == Blocks.ice)                           {return Blocks.planks.getStateFromMeta(woodMeta);}
+        	if (block == Blocks.packed_ice)                    {return Blocks.cobblestone.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.SAND)
         {
+    		int woodMeta = BlockPlanks.EnumType.JUNGLE.getMetadata();
         	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.sandstone.getStateFromMeta(2);} // Cut sandstone
         	if (block == Blocks.stonebrick && meta==0)         {return Blocks.sandstone.getStateFromMeta(2);} // Stone brick into cut sandstone
         	if (block == Blocks.cobblestone && meta==3)        {return Blocks.sandstone.getStateFromMeta(1);} // Chiseled sandstone
         	if (block == Blocks.cobblestone)                   {return Blocks.sandstone.getStateFromMeta(0);} // Regular sandstone
         	if (block == Blocks.mossy_cobblestone)             {return Blocks.sandstone.getStateFromMeta(0);} // Regular sandstone
-        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.JUNGLE.getMetadata());}
+        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(woodMeta);}
         	if (block == Blocks.oak_fence)					   {return Blocks.jungle_fence.getDefaultState();}
 			if (block == Blocks.acacia_fence_gate || block == Blocks.birch_fence_gate || block == Blocks.dark_oak_fence_gate || block == Blocks.jungle_fence_gate || block == Blocks.oak_fence_gate || block == Blocks.spruce_fence_gate)
 															   {return Blocks.jungle_fence_gate.getDefaultState();}
@@ -599,8 +625,8 @@ public class StructureVillageVN
         	if (block == Blocks.gravel)                        {return Blocks.sandstone.getStateFromMeta(0);}
         	if (block == Blocks.dirt)                          {return Blocks.sand.getStateFromMeta(0);}
         	if (block == Blocks.grass)                         {return Blocks.sand.getStateFromMeta(0);}
-        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +BlockPlanks.EnumType.JUNGLE.getMetadata(): meta==8? 8 +BlockPlanks.EnumType.JUNGLE.getMetadata() : meta);}
-        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(BlockPlanks.EnumType.JUNGLE.getMetadata());}
+        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +woodMeta: meta==8? 8 +woodMeta : meta);}
+        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(woodMeta);}
         	if (block == Blocks.acacia_door || block == Blocks.birch_door || block == Blocks.dark_oak_door || block == Blocks.jungle_door || block == Blocks.oak_door || block == Blocks.spruce_door)
         													   {return Blocks.jungle_door.getStateFromMeta(meta);}
         	//if (block == Blocks.trapdoor)                      {return new Object[]{ModObjects.chooseModWoodenTrapdoor(3), meta};} // Jungle trapdoor
@@ -614,8 +640,11 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.barkEF)) {return new Object[]{Blocks.sandstone, 2};} // Cut sandstone
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {return new Object[]{Blocks.sandstone, 2};} // Cut sandstone
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Blocks.sandstone, 2};} // Cut sandstone
+        	if (block == Blocks.sapling)                       {return Blocks.deadbush.getDefaultState();}
         	if (block == Blocks.snow)                          {return Blocks.sand.getStateFromMeta(0);}
         	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
+        	if (block == Blocks.ice)                           {return Blocks.sandstone.getStateFromMeta(0);}
+        	if (block == Blocks.packed_ice)                    {return Blocks.sandstone.getStateFromMeta(2);} // Cut sandstone
         }
         if (materialType == FunctionsVN.MaterialType.MESA)
         {
@@ -623,8 +652,6 @@ public class StructureVillageVN
         	if (block == Blocks.mossy_cobblestone)             {return Blocks.hardened_clay.getDefaultState();}
         	if (block == Blocks.stone_stairs)                  {return Blocks.brick_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.gravel)                        {return Blocks.hardened_clay.getDefaultState();}
-        	if (block == Blocks.dirt)                          {return Blocks.clay.getDefaultState();}
-        	if (block == Blocks.grass)                         {return Blocks.clay.getDefaultState();}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==3? 4: meta==11? 12 : meta);} // Brick slab
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(1);} // Sandstone double slab
         	//if (block == Blocks.cobblestone_wall)              {
@@ -632,23 +659,28 @@ public class StructureVillageVN
 			//										        		if (block==null) {block = Blocks.brick_block;}
 			//										        		return new Object[]{block, 0};
 			//												   } // Brick wall
+        	if (block == Blocks.sand)                          {return Blocks.sand.getStateFromMeta(1);} // Red Sand
 			if (block == Blocks.cobblestone_wall)              {return Blocks.red_sandstone.getDefaultState();}
 			if (block == Blocks.sandstone)                     {return Blocks.red_sandstone.getDefaultState();}
 			if (block == Blocks.stone_slab)                    {return Blocks.stone_slab2.getStateFromMeta(meta>=8? 8:0);}
 			if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab2.getDefaultState();}
 			if (block == Blocks.sandstone_stairs)              {return Blocks.red_sandstone_stairs.getStateFromMeta(meta);}
-        	if (block == Blocks.snow)                          {return Blocks.hardened_clay.getStateFromMeta(0);}
+        	if (block == Blocks.sapling)                       {return Blocks.tallgrass.getStateFromMeta(0);} // Shrub
+        	if (block == Blocks.snow)                          {return Blocks.sand.getStateFromMeta(1);} // Red Sand
         	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
+        	if (block == Blocks.ice)                           {return Blocks.hardened_clay.getDefaultState();}
+        	if (block == Blocks.packed_ice)                    {return Blocks.hardened_clay.getDefaultState();}
         }
         if (materialType == FunctionsVN.MaterialType.SNOW)
         {
-        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata()%4);}
-        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata());}
+    		int woodMeta = BlockPlanks.EnumType.SPRUCE.getMetadata();
+        	if (block == Blocks.log || block == Blocks.log2)   {return Blocks.log.getStateFromMeta(woodMeta%4);}
+        	if (block == Blocks.planks)                        {return Blocks.planks.getStateFromMeta(woodMeta);}
         	if (block == Blocks.oak_fence)					   {return Blocks.spruce_fence.getDefaultState();}
         	if (block == Blocks.oak_fence_gate)				   {return Blocks.spruce_fence_gate.getDefaultState();}
         	if (block == Blocks.oak_stairs)                    {return Blocks.spruce_stairs.getStateFromMeta(meta);}
-        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +BlockPlanks.EnumType.SPRUCE.getMetadata(): meta==8? 8 +BlockPlanks.EnumType.SPRUCE.getMetadata() : meta);}
-        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(BlockPlanks.EnumType.SPRUCE.getMetadata());}
+        	if (block == Blocks.wooden_slab)                   {return Blocks.wooden_slab.getStateFromMeta(meta==0? 0 +woodMeta: meta==8? 8 +woodMeta : meta);}
+        	if (block == Blocks.double_wooden_slab)            {return Blocks.double_wooden_slab.getStateFromMeta(woodMeta);}
         	if (block == Blocks.acacia_door || block == Blocks.birch_door || block == Blocks.dark_oak_door || block == Blocks.jungle_door || block == Blocks.oak_door || block == Blocks.spruce_door)
 			   												   {return Blocks.spruce_door.getStateFromMeta(meta);}
         	//if (block == Blocks.trapdoor)                      {return new Object[]{ModObjects.chooseModWoodenTrapdoor(1), meta};}
@@ -662,6 +694,7 @@ public class StructureVillageVN
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
+        	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
         }
         if (materialType == FunctionsVN.MaterialType.MUSHROOM)
         {
@@ -677,9 +710,12 @@ public class StructureVillageVN
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
+        	if (block == Blocks.sapling)                       {return Blocks.brown_mushroom.getStateFromMeta(0);}
         	if (block == Blocks.grass)                         {return Blocks.mycelium.getStateFromMeta(0);}
         	if (block == Blocks.snow)                          {return Blocks.dirt.getStateFromMeta(0);}
         	if (block == Blocks.snow_layer)                    {return Blocks.air.getDefaultState();}
+        	if (block == Blocks.ice)                           {return Blocks.brown_mushroom_block.getStateFromMeta(0);} // Pores on all six sides
+        	if (block == Blocks.packed_ice)                    {return Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
         }
         
         // Post Forge event
