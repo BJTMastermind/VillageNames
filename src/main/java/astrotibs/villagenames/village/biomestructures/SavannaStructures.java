@@ -181,7 +181,7 @@ public class SavannaStructures
         		{13, 1}, {13, 7}, {13, 9}, 
         	})
         	{
-        		this.setBlockState(world, Blocks.TALLGRASS.getDefaultState(), grass_uw[0], 1, grass_uw[1], structureBB);
+        		this.setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(1), grass_uw[0], 1, grass_uw[1], structureBB);
         	}
         	// Tall Grass
         	this.setBlockState(world, Blocks.DOUBLE_PLANT.getStateFromMeta(2), 0, 1, 5, structureBB);
