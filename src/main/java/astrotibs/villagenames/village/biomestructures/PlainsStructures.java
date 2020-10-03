@@ -797,11 +797,11 @@ public class PlainsStructures
         	}
         	
         	// Unkempt grass
-        	this.setBlockState(world, Blocks.TALLGRASS.getDefaultState(), 0, 1, 8, structureBB);
-        	this.setBlockState(world, Blocks.TALLGRASS.getDefaultState(), 1, 1, 7, structureBB);
-        	this.setBlockState(world, Blocks.TALLGRASS.getDefaultState(), 1, 1, 12, structureBB);
-        	this.setBlockState(world, Blocks.TALLGRASS.getDefaultState(), 4, 1, 10, structureBB);
-        	this.setBlockState(world, Blocks.TALLGRASS.getDefaultState(), 4, 1, 11, structureBB);
+        	this.setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(1), 0, 1, 8, structureBB);
+        	this.setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(1), 1, 1, 7, structureBB);
+        	this.setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(1), 1, 1, 12, structureBB);
+        	this.setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(1), 4, 1, 10, structureBB);
+        	this.setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(1), 4, 1, 11, structureBB);
         	
         	// Stalls
         	this.fillWithBlocks(world, structureBB, 4, 1, 1, 7, 1, 1, biomePlankState, biomePlankState, false);
@@ -1122,7 +1122,7 @@ public class PlainsStructures
         		{10, 0}, {10, 3}, 
         	})
         	{
-        		this.setBlockState(world, Blocks.TALLGRASS.getDefaultState(), offset_xy[0], 1, offset_xy[1], structureBB);
+        		this.setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(1), offset_xy[0], 1, offset_xy[1], structureBB);
         	}
         	this.setBlockState(world, Blocks.YELLOW_FLOWER.getDefaultState(), 3, 1, 1, structureBB);
         	
