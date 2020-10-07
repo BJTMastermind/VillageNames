@@ -491,7 +491,12 @@ public class SnowyStructures
         	this.fillWithBlocks(world, structureBB, 6, 1, 4, 6, 2, 4, Blocks.PACKED_ICE.getDefaultState(), Blocks.PACKED_ICE.getDefaultState(), false);
         	this.setBlockState(world, Blocks.PACKED_ICE.getDefaultState(), 5, 3, 4, structureBB);
         	// Torch
-        	world.setBlockState(new BlockPos(this.getXWithOffset(5, 4), this.getYWithOffset(4), this.getZWithOffset(5, 4)), Blocks.TORCH.getStateFromMeta(0), 2);
+        	for (int[] uvwo : new int[][]{
+        		{5,4,4, -1},
+        	})
+        	{
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        	}
         	
         	// Rim
         	for (int uvwm[] : new int[][]{
@@ -871,13 +876,15 @@ public class SnowyStructures
     		{
                 int bannerXBB = 5;
     			int bannerZBB = 0;
-    			int bannerYBB = -1;
+    			int bannerYBB = 1;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
+    			*/
     			
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);

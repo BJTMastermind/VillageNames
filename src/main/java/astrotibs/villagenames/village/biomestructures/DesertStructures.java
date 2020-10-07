@@ -214,11 +214,11 @@ public class DesertStructures
         		this.setBlockState(world, Blocks.HARDENED_CLAY.getDefaultState(), 4, 4, 4, structureBB);
         	}
             // Just the tip
-            for (int[] uvwm : new int[][]{
-            	{4, 5, 4, 0},
+            for (int[] uvwo : new int[][]{
+            	{4, 5, 4, -1},
             })
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             // Cactus
@@ -259,13 +259,16 @@ public class DesertStructures
     		{
     			int bannerXBB = 7;
     			int bannerZBB = 1;
-    			int bannerYBB = -1;
+    			int bannerYBB = 1;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
+    			*/
+    			
     			
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);
@@ -491,14 +494,14 @@ public class DesertStructures
             this.fillWithBlocks(world, structureBB, 7, 1, 4, 7, 4, 4, Blocks.SANDSTONE.getStateFromMeta(2), Blocks.SANDSTONE.getStateFromMeta(2), false);
             
             // Torches
-            for (int[] uvwm : new int[][]{
-            	{4, 5, 4, 0},
-            	{4, 5, 7, 0},
-            	{7, 5, 7, 0},
-            	{7, 5, 4, 0},
+            for (int[] uvwo : new int[][]{
+            	{4, 5, 4, -1},
+            	{4, 5, 7, -1},
+            	{7, 5, 7, -1},
+            	{7, 5, 4, -1},
             })
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -560,13 +563,16 @@ public class DesertStructures
     		{
     			int bannerXBB = 10;
     			int bannerZBB = 10;
-    			int bannerYBB = -1;
+    			int bannerYBB = 1;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
+    			*/
+    			
     			
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);
@@ -922,15 +928,15 @@ public class DesertStructures
         							this.getZWithOffset(uvw[0], uvw[2])
         							)
             			);
-            	
-            	int decorHeightY;
-            	
+
+            	int decorHeightY = uvw[1];
+            	/*
             	// Get ground level
             	if (this.decorHeightY.size()<(j+1))
             	{
             		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
             		// Add new ground level
-            		decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 0, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.boundingBox.minY;
+            		decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
             		this.decorHeightY.add(decorHeightY);
             	}
             	else
@@ -939,6 +945,7 @@ public class DesertStructures
             		// Retrieve ground level
             		decorHeightY = this.decorHeightY.get(j);
             	}
+            	*/
             	
         		// Generate decor
             	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.biome, this.getCoordBaseMode(), randomFromXYZ);//, townColor);
@@ -989,13 +996,16 @@ public class DesertStructures
     		{
     			int bannerXBB = 10;
     			int bannerZBB = 11;
-    			int bannerYBB = -1;
+    			int bannerYBB = 1;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
+    			*/
+    			
     			
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);
