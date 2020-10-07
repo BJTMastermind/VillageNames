@@ -141,16 +141,16 @@ public class PlainsStructures
         	
             // Basin bottom
         	this.fillWithBlocks(world, structureBB, 2, -1, 2, 6, 0, 6, biomeCobblestoneState, biomeCobblestoneState, false);
-            
-            // Torches with the correct metas
-            for (int[] uvwm : new int[][]{
-            	{2, 1, 2, 0},
-            	{2, 1, 6, 0},
-            	{6, 1, 2, 0},
-            	{6, 1, 6, 0},
-            })
+
+            // Torches
+            for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
+            	{2, 1, 2, -1},
+            	{2, 1, 6, -1},
+            	{6, 1, 2, -1},
+            	{6, 1, 6, -1},
+            	}) 
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             if (GeneralConfig.useVillageColors)
@@ -284,14 +284,15 @@ public class PlainsStructures
     		{
     			int bannerXBB = 8;
     			int bannerZBB = 6;
-    			int bannerYBB = -1;
+    			int bannerYBB = 1;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
-    			
+    			*/
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
@@ -550,14 +551,14 @@ public class PlainsStructures
             */
             
             // Over-lid torches
-            for (int[] uvwm : new int[][]{
-            	{3, 16, 3, 0},
-            	{3, 16, 6, 0},
-            	{6, 16, 3, 0},
-            	{6, 16, 6, 0},
+            for (int[] uvwo : new int[][]{
+            	{3, 16, 3, -1},
+            	{3, 16, 6, -1},
+            	{6, 16, 3, -1},
+            	{6, 16, 6, -1},
             })
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -636,14 +637,15 @@ public class PlainsStructures
     		{
                 int bannerXBB = 8;
     			int bannerZBB = 6;
-    			int bannerYBB = -1;
+    			int bannerYBB = 11;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
-    			
+    			*/
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
@@ -848,14 +850,14 @@ public class PlainsStructures
         	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 5, 4, 0, structureBB);
         	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 6, 4, 1, structureBB);
         	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 5, 4, 2, structureBB);
-            
+        	
         	// Torches
-            for (int[] uvwm : new int[][]{
-            	{4, 2, 1, 0},
-            	{7, 2, 1, 0},
+            for (int[] uvwo : new int[][]{
+            	{4, 2, 1, -1},
+            	{7, 2, 1, -1},
             })
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	this.fillWithBlocks(world, structureBB, 2, 1, 5, 2, 1, 8, biomePlankState, biomePlankState, false);
@@ -871,12 +873,12 @@ public class PlainsStructures
         	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 3, 4, 7, structureBB);
 
             // Torches
-            for (int[] uvwm : new int[][]{
-            	{2, 2, 5, 0},
-            	{2, 2, 8, 0},
+            for (int[] uvwo : new int[][]{
+            	{2, 2, 5, -1},
+            	{2, 2, 8, -1},
             })
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	this.fillWithBlocks(world, structureBB, 4, 1, 13, 7, 1, 13, biomePlankState, biomePlankState, false);
@@ -892,12 +894,12 @@ public class PlainsStructures
         	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 0), 5, 4, 14, structureBB);
         	
             // Torches
-            for (int[] uvwm : new int[][]{
-            	{4, 2, 13, 0},
-            	{7, 2, 13, 0},
+            for (int[] uvwo : new int[][]{
+            	{4, 2, 13, -1},
+            	{7, 2, 13, -1},
             })
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	        	        	
@@ -927,14 +929,15 @@ public class PlainsStructures
     		{
                 int bannerXBB = 6;
     			int bannerZBB = 4;
-    			int bannerYBB = -1;
+    			int bannerYBB = 1;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
-    			
+    			*/
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
@@ -1202,14 +1205,14 @@ public class PlainsStructures
             	world.setBlockState(new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2])), Blocks.AIR.getDefaultState(), 2);
             }
             
-            for (int[] uvwm : new int[][]{
-            	{5, 3, 4, StructureVillageVN.getTorchRotationMeta(2, this.getCoordBaseMode().getHorizontalIndex())},
-            	{4, 3, 5, StructureVillageVN.getTorchRotationMeta(3, this.getCoordBaseMode().getHorizontalIndex())},
-            	{5, 3, 6, StructureVillageVN.getTorchRotationMeta(0, this.getCoordBaseMode().getHorizontalIndex())},
-            	{6, 3, 5, StructureVillageVN.getTorchRotationMeta(1, this.getCoordBaseMode().getHorizontalIndex())},
+            for (int[] uvwo : new int[][]{
+            	{5, 3, 4, 2},
+            	{4, 3, 5, 3},
+            	{5, 3, 6, 0},
+            	{6, 3, 5, 1},
             })
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
                     	        	
             // Posts
@@ -1284,14 +1287,15 @@ public class PlainsStructures
     		{
                 int bannerXBB = 7;
     			int bannerZBB = 8;
-    			int bannerYBB = -1;
+    			int bannerYBB = 1;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
-    			
+    			*/
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);

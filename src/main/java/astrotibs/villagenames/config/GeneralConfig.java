@@ -161,10 +161,10 @@ public class GeneralConfig {
 		componentLegacyHouse3_vals = parseDoubleArray(componentLegacyHouse3_string, ald);
 		
 		// Misc
-		spawnModdedVillagers = config.getBoolean("Allow mod villagers in new structures", "Village Generator", false, "When modern structures spawn random villagers on generation, set this to true to allow non-vanilla professions.");
+		spawnModdedVillagers = config.getBoolean("Spawn Extra Villagers with mod professions", "Village Generator", false, "Villagers spawned in town centers or residential houses can have non-vanilla professions.");
 		useVillageColors = config.getBoolean("Use village colors", "Village Generator", true, "Whether to apply the village's colors to concrete, terracotta, carpet, etc.");
-		spawnVillagersInResidences = config.getBoolean("Spawn Villagers in Residences", "Village Generator", false, "Spawn villagers with random professions and ages in non-job-specific residential houses.");
-		spawnVillagersInTownCenters = config.getBoolean("Spawn Villagers in Town Centers", "Village Generator", true, "Spawn villagers with random professions and ages in the town center.");
+		spawnVillagersInResidences = config.getBoolean("Spawn Extra Villagers in Residences", "Village Generator", false, "Spawn villagers with random professions and ages in non-job-specific residential houses.");
+		spawnVillagersInTownCenters = config.getBoolean("Spawn Extra Villagers in Town Centers", "Village Generator", true, "Spawn villagers with random professions and ages in the town center.");
 		
 		spawnBiomesNames = config.getStringList("Spawn Biome Names", "Village Generator",
 				new String[] {
