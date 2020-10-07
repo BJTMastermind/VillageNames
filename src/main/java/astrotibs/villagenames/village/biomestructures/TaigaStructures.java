@@ -240,13 +240,16 @@ public class TaigaStructures
     		{
                 int bannerXBB = 5;
     			int bannerZBB = 4;
-    			int bannerYBB = -1;
+    			int bannerYBB = 1;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
+    			*/
+    			
     			
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);
@@ -574,15 +577,15 @@ public class TaigaStructures
         	this.fillWithBlocks(world, structureBB, 2, 5, 2, 2, 5, 6, roofLogState, roofLogState, false);
         	this.fillWithBlocks(world, structureBB, 6, 5, 2, 6, 5, 6, roofLogState, roofLogState, false);
         	// Add torches
-        	for (int[] uvwm : new int[][]{
-        		{2, 5, 1, new int[]{4,1,3,2}[this.getCoordBaseMode().getHorizontalIndex()%4]},
-        		{6, 5, 1, new int[]{4,1,3,2}[this.getCoordBaseMode().getHorizontalIndex()%4]},
+        	for (int[] uvwo : new int[][]{
+        		{2, 5, 1, 2},
+        		{6, 5, 1, 2},
         		// Banner side
-        		{2, 5, 7, new int[]{3,2,4,1}[this.getCoordBaseMode().getHorizontalIndex()%4]},
-        		{6, 5, 7, new int[]{3,2,4,1}[this.getCoordBaseMode().getHorizontalIndex()%4]},
+        		{2, 5, 7, 0},
+        		{6, 5, 7, 0},
         	})
         	{
-        		world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         	}
             
             
@@ -636,13 +639,16 @@ public class TaigaStructures
     		{
     			int bannerXBB = 7;
     			int bannerZBB = 8;
-    			int bannerYBB = -1;
+    			int bannerYBB = 2;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
+    			*/
+    			
     			
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);

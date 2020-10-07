@@ -222,13 +222,13 @@ public class SavannaStructures
         	this.fillWithBlocks(world, structureBB, 11, 4, 8, 11, 4, 10, biomeWoodenStairsState.getBlock().getStateFromMeta(1), biomeWoodenStairsState.getBlock().getStateFromMeta(this.getCoordBaseMode().getHorizontalIndex()%2==0 ? 1 : 3), false);
         	// Logs
         	this.fillWithBlocks(world, structureBB, 10, 1, 9, 11, 1, 9, biomeLogState, biomeLogState, false);
-        	
+        	/*
         	// Fences with torches
         	this.setBlockState(world, biomeFenceState, 2, 1, 10, structureBB);
         	world.setBlockState(new BlockPos(this.getXWithOffset(2, 10), this.getYWithOffset(2), this.getZWithOffset(2, 10)), Blocks.TORCH.getDefaultState(), 2);
         	this.setBlockState(world, biomeFenceState, 8, 1, 0, structureBB);
         	world.setBlockState(new BlockPos(this.getXWithOffset(8, 0), this.getYWithOffset(2), this.getZWithOffset(8, 0)), Blocks.TORCH.getDefaultState(), 2);        	
-        	
+        	*/
         	
 			// Banners on the market stalls
 			for (int[] uvwoc : new int[][]{ // u, v, w, orientation, color
@@ -264,6 +264,70 @@ public class SavannaStructures
 			}
         	
         	
+            // Decor
+            int[][] decorUVW = new int[][]{
+            	{2,1,10},
+            	{8,1,0},
+            	{13,1,11},
+            };  
+            
+            for (int j=0; j<decorUVW.length; j++)
+            {
+            	// Get coordinates
+            	int[] uvw = decorUVW[j];
+            	
+            	// Set random seed
+            	Random randomFromXYZ = new Random();
+            	randomFromXYZ.setSeed(
+        					world.getSeed() +
+        					FunctionsVN.getUniqueLongForXYZ(
+        							this.getXWithOffset(uvw[0], uvw[2]),
+        							this.getYWithOffset(uvw[1]),
+        							this.getZWithOffset(uvw[0], uvw[2])
+        							)
+            			);
+
+            	int decorHeightY = uvw[1];
+            	/*
+            	// Get ground level
+            	if (this.decorHeightY.size()<(j+1))
+            	{
+            		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
+            		// Add new ground level
+            		decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
+            		this.decorHeightY.add(decorHeightY);
+            	}
+            	else
+            	{
+            		// There is already (presumably) a value for this ground level, so this decor is being multiply generated.
+            		// Retrieve ground level
+            		decorHeightY = this.decorHeightY.get(j);
+            	}
+            	*/
+            	
+        		// Generate decor
+            	ArrayList<BlueprintData> decorBlueprint = getRandomSavannaDecorBlueprint(this.materialType, this.biome, this.getCoordBaseMode(), randomFromXYZ);//, townColor);
+            	
+            	for (BlueprintData b : decorBlueprint)
+            	{
+            		// Place block indicated by blueprint
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		
+            		// Fill below if flagged
+            		if ((b.getfillFlag()&1)!=0)
+            		{
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            		}
+            		
+            		// Clear above if flagged
+            		if ((b.getfillFlag()&2)!=0)
+            		{
+            			this.clearCurrentPositionBlocksUpwards(world, uvw[0]+b.getUPos(), decorHeightY+b.getVPos()+1, uvw[2]+b.getWPos(), structureBB);
+            		}            		
+            	}
+            }
+        	
+        	
             // Sign
             if (GeneralConfig.nameSign)
             {
@@ -287,13 +351,15 @@ public class SavannaStructures
     		{
                 int bannerXBB = 11;
     			int bannerZBB = 6;
-    			int bannerYBB = -1;
+    			int bannerYBB = 1;
+    			/*
     			if (this.bannerY==0)
     			{
     				this.bannerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(bannerXBB, bannerZBB), 0, this.getZWithOffset(bannerXBB, bannerZBB))).getY()-this.boundingBox.minY +1;
     				bannerYBB = this.bannerY;
     			}
     			else {bannerYBB = this.bannerY;}
+    			*/
     			
     			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
     			int bannerY = this.getYWithOffset(bannerYBB);
@@ -535,8 +601,13 @@ public class SavannaStructures
         	this.setBlockState(world, Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(GeneralConfig.useVillageColors ? townColor2 : 1), 5, 4, 5, structureBB);
         	
         	// Torches
-        	world.setBlockState(new BlockPos(this.getXWithOffset(1, 1), this.getYWithOffset(2), this.getZWithOffset(1, 1)), Blocks.TORCH.getStateFromMeta(0), 2);     
-        	world.setBlockState(new BlockPos(this.getXWithOffset(9, 9), this.getYWithOffset(2), this.getZWithOffset(9, 9)), Blocks.TORCH.getStateFromMeta(0), 2);     
+        	for (int[] uvwo : new int[][]{
+        		{1,2,1, -1},
+        		{9,2,9, -1},
+        	})
+        	{
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        	}
         	
             // Sign
             if (GeneralConfig.nameSign)
@@ -822,16 +893,6 @@ public class SavannaStructures
         	this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(biomeLogState, this.getCoordBaseMode().getHorizontalIndex(), true), 4, 0, 7, structureBB);
         	this.setBlockState(world, Blocks.FLOWING_WATER.getDefaultState(), 4, 1, 7, structureBB);
         	
-        	// Torches on the corners
-        	for (int[] uvwm : new int[][]{
-        		{3, 2, 2, 0},
-        		{5, 2, 2, 0},
-        		{3, 2, 8, 0},
-        		{5, 2, 8, 0},
-        	})
-        	{
-        		world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
-        	}
         	
         	// Pavilion
         	this.fillWithBlocks(world, structureBB, 3, 2, 4, 5, 3, 6, biomeFenceState, biomeFenceState, false);
@@ -840,11 +901,15 @@ public class SavannaStructures
         	this.fillWithBlocks(world, structureBB, 3, 4, 4, 5, 4, 6, biomeWoodenSlabState, biomeWoodenSlabState, false);
         	this.setBlockState(world, biomePlankState, 4, 4, 5, structureBB);
         	// Torch
-        	for (int[] uvwm : new int[][]{
-        		{4, 5, 5, 0},
+        	for (int[] uvwo : new int[][]{
+        		{3,2,2, -1},
+        		{5,2,2, -1},
+        		{3,2,8, -1},
+        		{5,2,8, -1},
+        		{4,5,5, -1},
         	})
         	{
-        		world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         	}
     		
         	// Sign support
@@ -1100,14 +1165,14 @@ public class SavannaStructures
         	this.fillWithBlocks(world, structureBB, 3, 1, 4, 5, 1, 4, Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
         	
         	// Torches on the corners
-        	for (int[] uvwm : new int[][]{
-        		{2, 2, 4, 0},
-        		{4, 2, 2, 0},
-        		{4, 2, 6, 0},
-        		{6, 2, 4, 0},
+        	for (int[] uvwo : new int[][]{
+        		{2,2,4, -1},
+        		{4,2,2, -1},
+        		{4,2,6, -1},
+        		{6,2,4, -1},
         	})
         	{
-        		world.setBlockState(new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2])), Blocks.TORCH.getStateFromMeta(uvwm[3]), 2);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         	}
         	
         	// Pavilion
