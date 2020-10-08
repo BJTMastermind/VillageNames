@@ -44,7 +44,8 @@ entity.Villager.blacksmith=Blacksmith
 entity.Villager.mason=Mason
 
 # Config Menu
-config.villagenames.global.tooltip=Controls everything that's not name syllable pools
+config.villagenames.global.tooltip=Controls everything that's not name syllable pools or the village generator
+config.villagenames.villagegenerator.tooltip=Settings for the village generation system
 config.villagenames.syllables.tooltip=Collection of the pools of syllables accessible to the name generator
 
 # Advancements

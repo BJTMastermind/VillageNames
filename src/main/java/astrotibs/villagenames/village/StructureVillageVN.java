@@ -11,6 +11,7 @@ import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.capabilities.IModularSkin;
 import astrotibs.villagenames.capabilities.ModularSkinProvider;
 import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
 import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
@@ -66,73 +67,73 @@ public class StructureVillageVN
         ArrayList arraylist = new ArrayList();
         
     	// Legacy structures
-        if (GeneralConfig.componentLegacyHouse4Garden_vals.get(0)>0)
+        if (VillageGeneratorConfigHandler.componentLegacyHouse4Garden_vals.get(0)>0)
         {
-        	ArrayList<Double> ald = GeneralConfig.componentLegacyHouse4Garden_vals;
+        	ArrayList<Double> ald = VillageGeneratorConfigHandler.componentLegacyHouse4Garden_vals;
 	    	double weightDouble = ald.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
 	    	double lowerLimitDouble = villageSize * ald.get(1) + ald.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ald.get(3) + ald.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House4Garden.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic)));
         }
-        if (GeneralConfig.componentLegacyChurch_vals.get(0)>0)
+        if (VillageGeneratorConfigHandler.componentLegacyChurch_vals.get(0)>0)
         {
-        	ArrayList<Double> ald = GeneralConfig.componentLegacyChurch_vals;
+        	ArrayList<Double> ald = VillageGeneratorConfigHandler.componentLegacyChurch_vals;
 	    	double weightDouble = ald.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
 	    	double lowerLimitDouble = villageSize * ald.get(1) + ald.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ald.get(3) + ald.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Church.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic)));
         }
-        if (GeneralConfig.componentLegacyHouse1_vals.get(0)>0)
+        if (VillageGeneratorConfigHandler.componentLegacyHouse1_vals.get(0)>0)
         {
-        	ArrayList<Double> ald = GeneralConfig.componentLegacyHouse1_vals;
+        	ArrayList<Double> ald = VillageGeneratorConfigHandler.componentLegacyHouse1_vals;
 	    	double weightDouble = ald.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
 	    	double lowerLimitDouble = villageSize * ald.get(1) + ald.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ald.get(3) + ald.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic)));
         }
-        if (GeneralConfig.componentLegacyWoodHut_vals.get(0)>0)
+        if (VillageGeneratorConfigHandler.componentLegacyWoodHut_vals.get(0)>0)
         {
-        	ArrayList<Double> ald = GeneralConfig.componentLegacyWoodHut_vals;
+        	ArrayList<Double> ald = VillageGeneratorConfigHandler.componentLegacyWoodHut_vals;
 	    	double weightDouble = ald.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
 	    	double lowerLimitDouble = villageSize * ald.get(1) + ald.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ald.get(3) + ald.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.WoodHut.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic)));
         }
-        if (GeneralConfig.componentLegacyHall_vals.get(0)>0)
+        if (VillageGeneratorConfigHandler.componentLegacyHall_vals.get(0)>0)
         {
-        	ArrayList<Double> ald = GeneralConfig.componentLegacyHall_vals;
+        	ArrayList<Double> ald = VillageGeneratorConfigHandler.componentLegacyHall_vals;
 	    	double weightDouble = ald.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
 	    	double lowerLimitDouble = villageSize * ald.get(1) + ald.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ald.get(3) + ald.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Hall.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic)));
         }
-        if (GeneralConfig.componentLegacyField1_vals.get(0)>0)
+        if (VillageGeneratorConfigHandler.componentLegacyField1_vals.get(0)>0)
         {
-        	ArrayList<Double> ald = GeneralConfig.componentLegacyField1_vals;
+        	ArrayList<Double> ald = VillageGeneratorConfigHandler.componentLegacyField1_vals;
 	    	double weightDouble = ald.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
 	    	double lowerLimitDouble = villageSize * ald.get(1) + ald.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ald.get(3) + ald.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Field1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic)));
         }
-        if (GeneralConfig.componentLegacyField2_vals.get(0)>0)
+        if (VillageGeneratorConfigHandler.componentLegacyField2_vals.get(0)>0)
         {
-        	ArrayList<Double> ald = GeneralConfig.componentLegacyField2_vals;
+        	ArrayList<Double> ald = VillageGeneratorConfigHandler.componentLegacyField2_vals;
 	    	double weightDouble = ald.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
 	    	double lowerLimitDouble = villageSize * ald.get(1) + ald.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ald.get(3) + ald.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.Field2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic)));
         }
-        if (GeneralConfig.componentLegacyHouse2_vals.get(0)>0)
+        if (VillageGeneratorConfigHandler.componentLegacyHouse2_vals.get(0)>0)
         {
-        	ArrayList<Double> ald = GeneralConfig.componentLegacyHouse2_vals;
+        	ArrayList<Double> ald = VillageGeneratorConfigHandler.componentLegacyHouse2_vals;
 	    	double weightDouble = ald.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
 	    	double lowerLimitDouble = villageSize * ald.get(1) + ald.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ald.get(3) + ald.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic)));
         }
-        if (GeneralConfig.componentLegacyHouse3_vals.get(0)>0)
+        if (VillageGeneratorConfigHandler.componentLegacyHouse3_vals.get(0)>0)
         {
-        	ArrayList<Double> ald = GeneralConfig.componentLegacyHouse3_vals;
+        	ArrayList<Double> ald = VillageGeneratorConfigHandler.componentLegacyHouse3_vals;
 	    	double weightDouble = ald.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
 	    	double lowerLimitDouble = villageSize * ald.get(1) + ald.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ald.get(3) + ald.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
@@ -231,11 +232,11 @@ public class StructureVillageVN
                 // Replaces the ordinary "areBiomesViable" method with one that uses the VN biome config list
                 Biome biome = start.biomeProvider.getBiome(new BlockPos(medianX, 0, medianZ));
 
-            	if (GeneralConfig.spawnBiomesNames != null) // Biome list is not empty
+            	if (VillageGeneratorConfigHandler.spawnBiomesNames != null) // Biome list is not empty
         		{
-        			for (int i = 0; i < GeneralConfig.spawnBiomesNames.length; i++)
+        			for (int i = 0; i < VillageGeneratorConfigHandler.spawnBiomesNames.length; i++)
         			{
-        				if (GeneralConfig.spawnBiomesNames[i].equals(biome.getBiomeName()))
+        				if (VillageGeneratorConfigHandler.spawnBiomesNames[i].equals(biome.getBiomeName()))
         				{
         					BiomeManager.addVillageBiome(biome, true); // Set biome to be able to spawn villages
         					
@@ -311,11 +312,11 @@ public class StructureVillageVN
                 // Replaces the ordinary "areBiomesViable" method with one that uses the VN biome config list
                 Biome biome = start.biomeProvider.getBiome(new BlockPos(medianX, 0, medianZ));
 
-            	if (GeneralConfig.spawnBiomesNames != null) // Biome list is not empty
+            	if (VillageGeneratorConfigHandler.spawnBiomesNames != null) // Biome list is not empty
         		{
-        			for (int i = 0; i < GeneralConfig.spawnBiomesNames.length; i++)
+        			for (int i = 0; i < VillageGeneratorConfigHandler.spawnBiomesNames.length; i++)
         			{
-        				if (GeneralConfig.spawnBiomesNames[i].equals(biome.getBiomeName()))
+        				if (VillageGeneratorConfigHandler.spawnBiomesNames[i].equals(biome.getBiomeName()))
         				{
         					BiomeManager.addVillageBiome(biome, true); // Set biome to be able to spawn villages
         					
@@ -1533,7 +1534,7 @@ public class StructureVillageVN
 		// Set profession
 		if (profession==-1)
 		{
-			if (GeneralConfig.spawnModdedVillagers)
+			if (VillageGeneratorConfigHandler.spawnModdedVillagers)
 			{
 				net.minecraftforge.fml.common.registry.VillagerRegistry.setRandomProfession(entityvillager, random);
 			}
