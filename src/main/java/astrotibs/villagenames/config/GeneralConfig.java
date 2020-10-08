@@ -2,11 +2,9 @@ package astrotibs.villagenames.config;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraftforge.common.config.Configuration;
 
@@ -37,6 +35,7 @@ public class GeneralConfig {
 	
 	public static boolean wellBoundary;
 	public static boolean wellDecorations;
+	public static boolean useVillageColors;
 	public static boolean debugMessages;
 	public static boolean nameGolems;
 	
@@ -80,29 +79,6 @@ public class GeneralConfig {
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
 	
-    // --- Villages --- //
-	public static boolean newVillageGenerator;
-	public static int newVillageSize;
-	public static int newVillageSpacingMedian;
-	public static int newVillageSpacingSpread;
-	public static String[] spawnBiomesNames;
-	// Legacy Village buildings
-	public static String componentLegacyHouse4Garden_string; public static ArrayList<Double> componentLegacyHouse4Garden_vals;
-	public static String componentLegacyChurch_string; public static ArrayList<Double> componentLegacyChurch_vals;
-	public static String componentLegacyHouse1_string; public static ArrayList<Double> componentLegacyHouse1_vals;
-	public static String componentLegacyWoodHut_string; public static ArrayList<Double> componentLegacyWoodHut_vals;
-	public static String componentLegacyHall_string; public static ArrayList<Double> componentLegacyHall_vals;
-	public static String componentLegacyField1_string; public static ArrayList<Double> componentLegacyField1_vals;
-	public static String componentLegacyField2_string; public static ArrayList<Double> componentLegacyField2_vals;
-	public static String componentLegacyHouse2_string; public static ArrayList<Double> componentLegacyHouse2_vals;
-	public static String componentLegacyHouse3_string; public static ArrayList<Double> componentLegacyHouse3_vals;
-	
-	// Misc new village stuff
-	//public static boolean spawnModdedVillagers;
-	public static boolean useVillageColors;
-	public static boolean spawnVillagersInResidences;
-	public static boolean spawnVillagersInTownCenters;
-	
 	public static void init(File configFile)
 	{
 		if (config == null)
@@ -114,166 +90,13 @@ public class GeneralConfig {
 	
 	protected static void loadConfiguration()
 	{
-		// --- New Villages --- //
-		newVillageGenerator = config.getBoolean("Activate New Village Generator", "Village Generator", true, "Use replacement village generation system. You may need to deactivate village generation from other mods. All other settings in this section require this to be true.");
-		newVillageSize = config.getInt("Village Size", "Village Generator", 1, 1, 10, "How large villages are. Vanilla is 1.");
-		newVillageSpacingMedian = config.getInt("Village Spacing: Median", "Village Generator", 20, 1, 100, "Median distance between villages. Vanilla is 20.");
-		newVillageSpacingSpread = config.getInt("Village Spacing: Range", "Village Generator", 12, 1, 100, "Variation in distances between villages. Must be lower than Median value. Vanilla is 12.");
-		
-		
-		ArrayList<Double> ald; // For setting default values as integer lists
-		
-		// Legacy Village components
-		ald = new ArrayList<Double>(Arrays.asList(0D,1D,2D,2D,4D));
-		componentLegacyHouse4Garden_string = config.getString("Component: Legacy Small House", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 4.0");
-		componentLegacyHouse4Garden_vals = parseDoubleArray(componentLegacyHouse4Garden_string, ald);
-
-		ald = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,1D));
-		componentLegacyChurch_string = config.getString("Component: Legacy Church", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 20.0");
-		componentLegacyChurch_vals = parseDoubleArray(componentLegacyChurch_string, ald);
-
-		ald = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,2D));
-		componentLegacyHouse1_string = config.getString("Component: Legacy Library", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 20.0");
-		componentLegacyHouse1_vals = parseDoubleArray(componentLegacyHouse1_string, ald);
-
-		ald = new ArrayList<Double>(Arrays.asList(0D,1D,2D,3D,5D));
-		componentLegacyWoodHut_string = config.getString("Component: Legacy Hut", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 3.0");
-		componentLegacyWoodHut_vals = parseDoubleArray(componentLegacyWoodHut_string, ald);
-
-		ald = new ArrayList<Double>(Arrays.asList(0D,1D,0D,1D,2D));
-		componentLegacyHall_string = config.getString("Component: Legacy Butcher Shop", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 15.0");
-		componentLegacyHall_vals = parseDoubleArray(componentLegacyHall_string, ald);
-
-		ald = new ArrayList<Double>(Arrays.asList(0D,1D,1D,1D,4D));
-		componentLegacyField1_string = config.getString("Component: Legacy Large Farm", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 3.0");
-		componentLegacyField1_vals = parseDoubleArray(componentLegacyField1_string, ald);
-
-		ald = new ArrayList<Double>(Arrays.asList(0D,1D,2D,2D,4D));
-		componentLegacyField2_string = config.getString("Component: Legacy Small Farm", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 3.0");
-		componentLegacyField2_vals = parseDoubleArray(componentLegacyField2_string, ald);
-
-		ald = new ArrayList<Double>(Arrays.asList(0D,0D,0D,1D,1D));
-		componentLegacyHouse2_string = config.getString("Component: Legacy Smithy", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 15.0");
-		componentLegacyHouse2_vals = parseDoubleArray(componentLegacyHouse2_string, ald);
-
-		ald = new ArrayList<Double>(Arrays.asList(0D,1D,0D,2D,3D));
-		componentLegacyHouse3_string = config.getString("Component: Legacy Large House", "Village Generator", convertDoubleArrayToString(ald), "Generation stats for this component in all villages. Vanilla weight is 8.0");
-		componentLegacyHouse3_vals = parseDoubleArray(componentLegacyHouse3_string, ald);
-		
-		// Misc
-		//spawnModdedVillagers = config.getBoolean("Spawn Extra Villagers with mod professions", "Village Generator", false, "Villagers spawned in town centers or residential houses can have non-vanilla professions.");
-		useVillageColors = config.getBoolean("Use village colors", "Village Generator", true, "Whether to apply the village's colors to concrete, terracotta, carpet, etc.");
-		spawnVillagersInResidences = config.getBoolean("Spawn Extra Villagers in Residences", "Village Generator", false, "Spawn villagers with random professions and ages in non-job-specific residential houses.");
-		spawnVillagersInTownCenters = config.getBoolean("Spawn Extra Villagers in Town Centers", "Village Generator", true, "Spawn villagers with random professions and ages in the town center.");
-		
-		spawnBiomesNames = config.getStringList("Spawn Biome Names", "Village Generator",
-				new String[] {
-						// Vanilla
-						"Plains",
-						"Desert",
-						"Extreme Hills",
-						"Forest",
-						"Taiga",
-						"Swampland",
-						"Ice Plains",
-						"MushroomIsland",
-						"ForestHills",
-						"TaigaHills",
-						"Jungle",
-						"JungleHills",
-						"Birch Forest",
-						"Birch Forest Hills",
-						"Roofed Forest",
-						"Cold Taiga",
-						"Mega Taiga",
-						"Mega Taiga Hills",
-						"Savanna",
-						"Mesa",
-						"Sunflower Plains",
-						"Flower Forest",
-						"Mega Spruce Taiga",
-						"Mega Spruce Taiga Hill",
-						// Biomes o' Plenty
-						"Bamboo Forest",
-						"Bayou",
-						"Bog",
-						"Boreal Forest",
-						"Canyon",
-						"Chaparral",
-						"Cherry Blossom Grove",
-						"Coniferous Forest",
-						"Snowy Coniferous Forest",
-						"Deciduous Forest",
-						"Dense Forest",
-						"Eucalyptus Forest",
-						"Flower Field",
-						"Frost Forest",
-						"Fungi Forest",
-						"Garden",
-						"Grassland",
-						"Grove",
-						"Heathland",
-						"Highland",
-						"Lavender Fields",
-						"Lush Swamp",
-						"Maple Woods",
-						"Meadow",
-						"Mountain",
-						"Mystic Grove",
-						"Orchard",
-						"Outback",
-						"Prairie",
-						"Rainforest",
-						"Redwood Forest",
-						"Sacred Springs",
-						"Seasonal Forest",
-						"Shield",
-						"Shrubland",
-						"Steppe",
-						"Temperate Rainforest",
-						"Tropical Rainforest",
-						"Tundra",
-						"Wetland",
-						"Woodland",
-						"Xeric Shrubland",
-						"Meadow Forest",
-						"Oasis",
-						"Scrubland",
-						"Seasonal Forest Clearing",
-						"Spruce Woods",
-						// ATG
-						"Rocky Steppe",
-						// ExtrabiomeXL
-						"Autumn Woods",
-						"Forested Hills",
-						"Green Hills",
-						"Mini Jungle",
-						"Mountain Taiga",
-						"Pine Forest",
-						"Redwood Lush",
-						"Snowy Forest",
-						"Snowy Rainforest",
-						"Woodlands",
-						// Highlands
-						"Autumn Forest",
-						"Badlands",
-						"Birch Hills",
-						"Highlands",
-						"Lowlands",
-						"Outback",
-						"Pinelands",
-						"Sahel",
-						"Tall Pine Forest",
-						"Tropics",
-						},
-				"Names of biomes which can spawn villages. Only used with Village Generator, and only applies to Overworld. Note that this list is EXCLUSIVE: other mod configs won't override this. You have to paste all biome names here.");
-		
 		// --- General --- //
 	    nameSign = config.getBoolean("Name Sign", Configuration.CATEGORY_GENERAL, true, "Town centers display their name on one or more signs.");
 	    recordStructureCoords = config.getBoolean("Record Structure Coords", Configuration.CATEGORY_GENERAL, true, "Books generated by villagers or the Codex record the structure's coordinates.");
 	    villagerDropBook = config.getBoolean("Villager drops book", Configuration.CATEGORY_GENERAL, false, "Village books are dropped by the villager rather than going directly into your inventory.");
 	    villagerSellsCodex = config.getBoolean("Villager makes codex", Configuration.CATEGORY_GENERAL, true, "Librarian villagers will give you a codex if you right-click them while holding emerald, iron ingots, and/or gold ingots.");
-	    
+		useVillageColors = config.getBoolean("Use village colors", Configuration.CATEGORY_GENERAL, true, "Whether to apply the village's colors to concrete, terracotta, carpet, etc.");
+		
 	    wellBoundary = config.getBoolean("Well boundary", Configuration.CATEGORY_GENERAL, true, "Whether to surround the well with colored blocks");
 	    wellSlabs = config.getBoolean("Well slabs", Configuration.CATEGORY_GENERAL, true, "Replace the cobblestone rims of wells with stone slabs, making it easier for players and villagers to escape if they fall in.");
 	    
@@ -431,7 +254,7 @@ public class GeneralConfig {
 				// Minecraft
 				//"demon||net.minecraft.entity.boss.EntityWither|add",
 				"villager-goblin|Witch|net.minecraft.entity.monster.EntityWitch|add",
-				"alien-golem|Elder Guardian|"+Reference.elderGuardianClass+"|add", // NOT AN ACTUAL CLASSPATH: hard-coded in EntityInteractHandler.java
+				"alien-golem|Elder Guardian|"+Reference.ELDER_GUARDIAN_CLASS+"|add", // NOT AN ACTUAL CLASSPATH: hard-coded in EntityInteractHandler.java
 				"dragon-angel|Ender Dragon|net.minecraft.entity.boss.EntityDragon|add",
 				"villager-demon|Evoker|net.minecraft.entity.monster.EntityEvoker|add",
 				"villager-demon|Vindicator|net.minecraft.entity.monster.EntityVindicator|add",
@@ -927,80 +750,4 @@ public class GeneralConfig {
 		return map;
 	}
 	
-	/**
-	 * Used to convert the comma-separated-integer string in the config value into an array of integers
-	 * Returns the given default array if the user screws up.
-	 */
-	public static ArrayList<Double> parseDoubleArray(String configvalue, ArrayList<Double> defaultValues)
-	{
-		try
-		{
-			String[] sMPA1_stringarray = configvalue.split(",");
-			ArrayList<Double> doubleArrayListToReturn = new ArrayList<Double>();
-			
-			for (int i=0; i<sMPA1_stringarray.length; i++)
-			{
-				doubleArrayListToReturn.add(Double.parseDouble(sMPA1_stringarray[i].trim()));
-			}
-
-			// HALL OF SHAME
-			
-			// User entered wrong number of parameters
-			if (sMPA1_stringarray.length!=5)
-			{
-				LogHelper.error("Config entry " + configvalue + " requires five values, not " + sMPA1_stringarray.length + ". Using default values " + convertDoubleArrayToString(defaultValues) + " until this is fixed.");
-				return defaultValues;
-			}
-			
-			// User entered a negative component weight
-			if (doubleArrayListToReturn.get(0) < 0)
-			{
-				doubleArrayListToReturn.set(0, 0D);
-				LogHelper.error("The first value of config entry " + configvalue + " is a weight and must not be less than zero. It will be set to 0 until this is fixed.");
-			}
-			
-			// User's lower bound for number of structures is negative
-			if ((doubleArrayListToReturn.get(1) * GeneralConfig.newVillageSize + doubleArrayListToReturn.get(2)) < 0)
-			{
-				LogHelper.error("Values two and three of config entry " + configvalue + " can result in fewer than zero of this structure component. Using default values " + convertDoubleArrayToString(defaultValues) + " until this is fixed.");
-				return defaultValues;
-			}
-			
-			// User's upper bound for number of structures is negative
-			if ((doubleArrayListToReturn.get(3) * GeneralConfig.newVillageSize + doubleArrayListToReturn.get(4)) < 0)
-			{
-				LogHelper.error("Values four and five of config entry " + configvalue + " will result in fewer than zero of this structure component. Using default values " + convertDoubleArrayToString(defaultValues) + " until this is fixed.");
-				return defaultValues;
-			}
-			
-			// User's lower bound for number of structures is greater than their upper bound
-			if ((doubleArrayListToReturn.get(1) * GeneralConfig.newVillageSize + doubleArrayListToReturn.get(2)) > (doubleArrayListToReturn.get(3) * GeneralConfig.newVillageSize + doubleArrayListToReturn.get(4)))
-			{
-				LogHelper.error("Values two through five of config entry " + configvalue + " result in a higher upper bound than a lower bound for this structure component. Using default values " + convertDoubleArrayToString(defaultValues) + " until this is fixed.");
-				return defaultValues;
-			}
-			
-			// This only happens if the user didn't cock up royally
-			return doubleArrayListToReturn;
-		}
-		catch (Exception e) // Config entry was malformed
-		{
-			LogHelper.error("Config entry " + configvalue + " was malformed. Check that it is five comma-separated integers. Using default values " + convertDoubleArrayToString(defaultValues) + " until this is fixed.");
-			return defaultValues;
-		}
-	}
-	
-	/**
-	 * Converts a double arraylist back into a comma-separated string
-	 */
-	public static String convertDoubleArrayToString(ArrayList<Double> arraylist)
-	{
-		String s=arraylist.get(0).toString();
-		
-		for (int i=1; i<arraylist.size(); i++) 
-		{
-			s+=","+arraylist.get(i).toString();
-		}
-		return s;
-	}
 }

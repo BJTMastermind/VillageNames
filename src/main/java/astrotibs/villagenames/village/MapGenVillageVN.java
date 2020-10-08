@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.village.biomestructures.DesertStructures;
 import astrotibs.villagenames.village.biomestructures.PlainsStructures;
@@ -38,7 +38,7 @@ public class MapGenVillageVN extends MapGenVillage
 	@SubscribeEvent(priority = EventPriority.LOW)
     public void onInitMapGen(InitMapGenEvent event)
 	{
-		if (event.type == EventType.VILLAGE && GeneralConfig.newVillageGenerator)
+		if (event.type == EventType.VILLAGE && VillageGeneratorConfigHandler.newVillageGenerator)
         {
 			// Do a try/catch because in case the Overworld has not yet loaded
 	        try 
@@ -57,13 +57,13 @@ public class MapGenVillageVN extends MapGenVillage
     
     public MapGenVillageVN()
     {
-    	this.terrainType = GeneralConfig.newVillageSize-1; // Because vanilla is "0" and default provided value is 1
+    	this.terrainType = VillageGeneratorConfigHandler.newVillageSize-1; // Because vanilla is "0" and default provided value is 1
     	
     	// Set spacings
-    	this.field_82666_h = GeneralConfig.newVillageSpacingMedian - GeneralConfig.newVillageSpacingSpread;
+    	this.field_82666_h = VillageGeneratorConfigHandler.newVillageSpacingMedian - VillageGeneratorConfigHandler.newVillageSpacingSpread;
     	if (this.field_82666_h<1) {this.field_82666_h=1;}
     	
-        this.field_82665_g = GeneralConfig.newVillageSpacingMedian + GeneralConfig.newVillageSpacingSpread;
+        this.field_82665_g = VillageGeneratorConfigHandler.newVillageSpacingMedian + VillageGeneratorConfigHandler.newVillageSpacingSpread;
         
     }
     
@@ -124,13 +124,13 @@ public class MapGenVillageVN extends MapGenVillage
         {
         	BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(new BlockPos(chunkX * 16 + 8, 0, chunkZ * 16 + 8)); // Biome doesn't care about Y
         	
-        	if (GeneralConfig.spawnBiomesNames != null) // Biome list is not empty
+        	if (VillageGeneratorConfigHandler.spawnBiomesNames != null) // Biome list is not empty
     		{
         		//int dimension = this.worldObj.provider.dimensionId;
     			
-    			for (int i = 0; i < GeneralConfig.spawnBiomesNames.length; i++)
+    			for (int i = 0; i < VillageGeneratorConfigHandler.spawnBiomesNames.length; i++)
     			{
-    				if (GeneralConfig.spawnBiomesNames[i].equals(biome.biomeName))
+    				if (VillageGeneratorConfigHandler.spawnBiomesNames[i].equals(biome.biomeName))
     				{
     					BiomeManager.addVillageBiome(biome, true); // Set biome to be able to spawn villages
     					

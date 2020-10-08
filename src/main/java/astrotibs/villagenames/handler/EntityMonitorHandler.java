@@ -536,7 +536,7 @@ public class EntityMonitorHandler
         // --- Initialize villager trades and sync skin with client --- //
         
         else if (
-        		event.entity.getClass().toString().substring(6).equals(Reference.villagerClass) // Explicit vanilla villager class - v3.2.4
+        		event.entity.getClass().toString().substring(6).equals(Reference.VILLAGER_CLASS) // Explicit vanilla villager class - v3.2.4
 				&& !event.entity.worldObj.isRemote
         		)
         {

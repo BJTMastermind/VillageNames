@@ -7,6 +7,7 @@ import java.util.Random;
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
 import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
@@ -285,7 +286,7 @@ public class TaigaStructures
             {
             	this.villagersGenerated=true;
             	
-            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	if (VillageGeneratorConfigHandler.spawnVillagersInTownCenters)
             	{
 	        		for (int[] ia : new int[][]{
 	        			{2, 1, 5, -1, 0},
@@ -699,7 +700,7 @@ public class TaigaStructures
             {
             	this.villagersGenerated=true;
             	
-            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	if (VillageGeneratorConfigHandler.spawnVillagersInTownCenters)
             	{
 	        		for (int[] ia : new int[][]{
 	        			{7, 2, 1, -1, 0},
