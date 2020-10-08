@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 import astrotibs.villagenames.VillageNames;
 import astrotibs.villagenames.capabilities.IModularSkin;
@@ -23,7 +22,6 @@ import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.EntityZombieVillager;
@@ -527,7 +525,7 @@ public class EntityMonitorHandler {
         // --- Initialize villager trades and sync skin with client --- //
         
         else if (
-        		event.getEntity().getClass().toString().substring(6).equals(Reference.villagerClass) // Explicit vanilla villager class - v3.2.4
+        		event.getEntity().getClass().toString().substring(6).equals(Reference.VILLAGER_CLASS) // Explicit vanilla villager class - v3.2.4
 				&& !event.getEntity().world.isRemote
         		)
         {

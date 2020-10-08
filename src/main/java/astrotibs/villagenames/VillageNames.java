@@ -9,6 +9,7 @@ import astrotibs.villagenames.command.CommandBanner;
 import astrotibs.villagenames.command.CommandName;
 import astrotibs.villagenames.config.ConfigInit;
 import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
 import astrotibs.villagenames.handler.DevVersionWarning;
 import astrotibs.villagenames.handler.EntityMonitorHandler;
 import astrotibs.villagenames.handler.ReputationHandler;
@@ -146,7 +147,7 @@ public final class VillageNames
 		ModBlocksVN.init();
 		
 		// New village generator
-		if (GeneralConfig.newVillageGenerator)
+		if (VillageGeneratorConfigHandler.newVillageGenerator)
 		{
 			// New village generator
 			MapGenStructureIO.registerStructure(MapGenVillageVN.Start.class, "MapGenVillageVN");

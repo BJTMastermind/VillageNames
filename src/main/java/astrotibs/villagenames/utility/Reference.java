@@ -14,5 +14,11 @@ public class Reference
 	public static final String COMMON_PROXY = "astrotibs.villagenames.proxy.CommonProxy";
 	public static final String GUI_FACTORY = "astrotibs.villagenames.config.gui.VNGuiFactory";
     
-    public static final String villagerClass = "net.minecraft.entity.passive.EntityVillager"; // v3.2.4
+    public static final String VILLAGER_CLASS = "net.minecraft.entity.passive.EntityVillager"; // v3.2.4
+    public static final int STREET_WIDTH = 3;
+    
+    // Config values
+    public static final String FOLDER_NAMEPIECES = "namepieces";
+    public static final String FOLDER_NEWVILLAGES = "newvillages";
+    public static final String CATEGORY_VILLAGE_GENERATOR = "Village Generator";
 }
