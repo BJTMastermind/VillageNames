@@ -16,6 +16,12 @@ public class Reference
 
     // Elder Guardian class path: prior to 1.11, the Elder is just a normal Guardian with an "Elder" flag turned on.
     // This helps distinguish the two via hard-coding a faux class path
-    public static final String elderGuardianClass = "net.minecraft.entity.monster.EntityElderGuardian";
-    public static final String villagerClass = "net.minecraft.entity.passive.EntityVillager"; // v3.2.4
+    public static final String ELDER_GUARDIAN_CLASS = "net.minecraft.entity.monster.EntityElderGuardian";
+    public static final String VILLAGER_CLASS = "net.minecraft.entity.passive.EntityVillager"; // v3.2.4
+    public static final int STREET_WIDTH = 3;
+    
+    // Config values
+    public static final String FOLDER_NAMEPIECES = "namepieces";
+    public static final String FOLDER_NEWVILLAGES = "newvillages";
+    public static final String CATEGORY_VILLAGE_GENERATOR = "Village Generator";
 }

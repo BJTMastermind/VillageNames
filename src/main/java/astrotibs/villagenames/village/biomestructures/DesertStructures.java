@@ -7,6 +7,7 @@ import java.util.Random;
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.utility.LogHelper;
@@ -295,7 +296,7 @@ public class DesertStructures
             {
             	this.villagersGenerated=true;
             	
-            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	if (VillageGeneratorConfigHandler.spawnVillagersInTownCenters)
             	{
 	        		for (int[] ia : new int[][]{
 	        			{1, 1, 1, -1, 0},
@@ -596,7 +597,7 @@ public class DesertStructures
             {
             	this.villagersGenerated=true;
             	
-            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	if (VillageGeneratorConfigHandler.spawnVillagersInTownCenters)
             	{
 	        		for (int[] ia : new int[][]{
 	        			{10, 1, 8, -1, 0},
@@ -1026,7 +1027,7 @@ public class DesertStructures
             {
             	this.villagersGenerated=true;
             	
-            	if (GeneralConfig.spawnVillagersInTownCenters)
+            	if (VillageGeneratorConfigHandler.spawnVillagersInTownCenters)
             	{
 	        		for (int[] ia : new int[][]{
 	        			{6, 1, 5, -1, 0},

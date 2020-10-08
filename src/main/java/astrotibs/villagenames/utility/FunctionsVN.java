@@ -8,7 +8,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import astrotibs.villagenames.VillageNames;
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.capabilities.IModularSkin;
@@ -17,7 +16,6 @@ import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.name.NameGenerator;
-import astrotibs.villagenames.network.MessageModernVillagerSkin;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.Enchantment;
@@ -47,7 +45,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 //Added in v3.1
