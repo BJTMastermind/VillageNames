@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -31,6 +32,13 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -61,6 +69,101 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 public class StructureVillageVN
 {
 	public static final int VILLAGE_RADIUS_BUFFER = 112;
+	
+	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	public static final int[][] FURNACE_META_ARRAY = new int[][]{
+		{3,4,2,5},
+		{5,3,5,3},
+		{2,5,3,4},
+		{4,2,4,2},
+	};
+	
+	// Array of meta values for buyttons indexed by [orientation][horizIndex]
+	public static final int[][] BUTTON_META_ARRAY = new int[][]{
+		{3,2,4,1},
+		{1,3,1,3},
+		{4,1,3,2},
+		{2,4,2,4},
+	};
+	
+	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	public static final int[][] ANVIL_META_ARRAY = new int[][]{
+		{1,2,3,0},
+		{0,1,0,1},
+		{3,0,1,2},
+		{2,3,2,3},
+	};
+	
+	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	public static final int[][] GLAZED_TERRACOTTA_META_ARRAY = new int[][]{
+		{1,2,2,3},
+		{0,1,3,0},
+		{3,0,0,1},
+		{2,3,1,2},
+	};
+	
+	// Array of meta values for door indexed by [isLower][isRightHanded][isShut][orientation][horizIndex]
+	public static final int[][][][][] DOOR_META_ARRAY = new int[][][][][]
+	{
+		// --- UPPER HALF --- //
+		// Left-hand
+		{{{ // Open
+		{8,8,9,9},
+		{8,8,9,9},
+		{8,8,9,9},
+		{8,8,9,9}
+		},
+		{ // Shut
+		{8,8,9,9},
+		{8,8,9,9},
+		{8,8,9,9},
+		{8,8,9,9}
+		}},
+		
+		// Right-hand
+		{{ // Open
+		{9,9,8,8},
+		{9,9,8,8},
+		{9,9,8,8},
+		{9,9,8,8}
+		},
+		{ // Shut
+		{9,9,8,8},
+		{9,9,8,8},
+		{9,9,8,8},
+		{9,9,8,8}
+		}}},
+		
+		// --- LOWER HALF --- //
+		// Left-hand
+		{{{ // Open
+		{7,4,5,6},
+		{6,7,6,7},
+		{5,6,7,4},
+		{4,5,4,5}
+		},
+		{ // Shut
+		{3,0,1,2},
+		{2,3,2,3},
+		{1,2,3,0},
+		{0,1,0,1}
+		}},
+		
+		// Right-hand
+		{{ // Open
+		{7,4,5,6},
+		{6,7,6,7},
+		{5,6,7,4},
+		{4,5,4,5}
+		},
+		{ // Shut
+		{3,0,1,2},
+		{2,3,2,3},
+		{1,2,3,0},
+		{0,1,0,1}
+		}}}
+	};
+	
 	
     public static List getStructureVillageWeightedPieceList(Random random, int villageSize, FunctionsVN.VillageType villageType)
     {
@@ -150,40 +253,41 @@ public class StructureVillageVN
 
         	// Remove all buildings that rolled 0 for number or which have a weight of 0
             if (pw.villagePiecesLimit == 0 || pw.villagePieceWeight <=0) {iterator.remove(); continue;}
-            /*
+
+            
             // Remove buildings that aren't appropriate for the current biome
-            if (villageType!=FunctionsVN.VillageType.PLAINS)
+            
+			ArrayList<String> classPaths = new ArrayList();
+			ArrayList<String> villageTypes = new ArrayList();
+            
+            // keys: "ClassPaths", "VillageTypes"
+			Map<String, ArrayList> mappedComponentVillageTypes = VillageGeneratorConfigHandler.unpackComponentVillageTypes(VillageGeneratorConfigHandler.componentVillageTypes);
+			
+			classPaths.addAll( mappedComponentVillageTypes.get("ClassPaths") );
+			villageTypes.addAll( mappedComponentVillageTypes.get("VillageTypes") );
+			
+			String villageTypeToCompare = "";
+			
+			switch (villageType)
+			{
+				default:
+				case PLAINS: villageTypeToCompare = "plains"; break;
+				case DESERT: villageTypeToCompare = "desert"; break;
+				case TAIGA: villageTypeToCompare = "taiga"; break;
+				case SAVANNA: villageTypeToCompare = "savanna"; break;
+				case SNOWY: villageTypeToCompare = "snowy"; break;
+			}
+			
+			int classPathListIndex = mappedComponentVillageTypes.get("ClassPaths").indexOf(pw.villagePieceClass.toString().substring(6));
+			
+			if (
+					classPathListIndex!=-1 &&
+					!((String) ((mappedComponentVillageTypes.get("VillageTypes")).get(classPathListIndex))).trim().toLowerCase().contains(villageTypeToCompare)
+            		)
             {
-            	if (
-            			   pw.villagePieceClass==PlainsStructures.PlainsAccessory1.class
-               			|| pw.villagePieceClass==PlainsStructures.PlainsArmorerHouse1.class
-            			)
-            	{
-            		iterator.remove(); continue;
-            	}
+            	iterator.remove(); continue;
             }
-            if (villageType!=FunctionsVN.VillageType.DESERT)
-            {
-            	if (
-         			   pw.villagePieceClass==DesertStructures.DesertWeaponsmith1.class
-         			)
-	         	{
-	         		iterator.remove(); continue;
-	         	}
-            }
-            if (villageType!=FunctionsVN.VillageType.TAIGA)
-            {
-            	
-            }
-            if (villageType!=FunctionsVN.VillageType.SAVANNA)
-            {
-            	
-            }
-            if (villageType!=FunctionsVN.VillageType.SNOWY)
-            {
-            	
-            }
-            */
+            
         }
 
         return arraylist;
@@ -2244,6 +2348,24 @@ public class StructureVillageVN
 
         return metaIn;
     }
+
+	/**
+	 * Returns a random animal from the /structures/village/common/animals folder, not including cats
+	 */
+	public static EntityLiving getVillageAnimal(World world, BlockPos pos, Random random, boolean includeHorses, boolean mooshroomsInsteadOfCows)
+	{
+		EntityLiving animal;
+		int animalIndex = random.nextInt(4 + (includeHorses ? 5 : 0));
+		
+		if (animalIndex==0)      {animal = mooshroomsInsteadOfCows ? new EntityMooshroom(world) : new EntityCow(world);}
+		else if (animalIndex==1) {animal = new EntityPig(world);}
+		else if (animalIndex<=3) {animal = new EntitySheep(world);}
+		else                     {animal = new EntityHorse(world);}
+		
+		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(pos), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+		
+		return animal;
+	}
 	
 	/**
 	 * Inputs an int array of colors being used in a village, and returns one that is not in use

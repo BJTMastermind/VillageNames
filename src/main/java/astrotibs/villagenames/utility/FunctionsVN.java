@@ -419,7 +419,7 @@ public class FunctionsVN
 	    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.potato, 26 ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 6) );
 	    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.carrot, 22 ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 6) );
 	    								while (true) {
-	    									moditem = FunctionsVN.getItemFromName(ModObjects.beetrootSB);
+	    									moditem = FunctionsVN.getItemFromName(ModObjects.beetrootItemSB);
 	    									if (moditem != null) {merchantRecipeArray.add(new MerchantRecipe( new ItemStack( moditem, 15 ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 6) ); break;}
 	    									break;}
 	    								buyingList.add(MathHelper.clamp_int(addToSlot++, 0, Math.max(buyingList.size()-1,0)), merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
@@ -4011,4 +4011,33 @@ public class FunctionsVN
 		
 		return block.getStateFromMeta(facingMeta);
 	}
+	
+	/*
+	// Way to convert from color meta int into string formatting (for e.g. signs)
+	public static String mapColorMetaToStringFormat(int colorMeta) {
+		HashMap<Integer, String> signColorToFormat = new HashMap<Integer, String>();//new HashMap();
+		// This hashmap translates the town's name color on the sign to a color meta value.
+		// This meta should be universal through e.g. wool, clay, etc
+		signColorToFormat.put(0, "\u00a7f"); //white
+		signColorToFormat.put(1, "\u00a76"); //gold
+		signColorToFormat.put(2, "\u00a7d"); //light_purple
+		signColorToFormat.put(3, "\u00a79"); //blue
+		signColorToFormat.put(4, "\u00a7e"); //yellow
+		signColorToFormat.put(5, "\u00a7a"); //green
+		signColorToFormat.put(6, "\u00a7c"); //red
+		signColorToFormat.put(7, "\u00a78"); //dark_gray
+		signColorToFormat.put(8, "\u00a77"); //gray
+		//signColorToFormat.put(9, "\u00a7b"); //aqua
+		signColorToFormat.put(9, "\u00a73"); //dark_aqua
+		signColorToFormat.put(10, "\u00a75"); //dark_purple
+		signColorToFormat.put(11, "\u00a71"); //dark_blue
+		signColorToFormat.put(12, "\u00a70"); //black
+		signColorToFormat.put(13, "\u00a72"); //dark_green
+		signColorToFormat.put(14, "\u00a74"); //dark_red
+		signColorToFormat.put(15, "\u00a70"); //black
+		
+		// Return a "town color" string
+		return signColorToFormat.get(colorMeta);
+	}
+	*/
 }

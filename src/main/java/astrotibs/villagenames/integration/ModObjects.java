@@ -3,8 +3,12 @@ package astrotibs.villagenames.integration;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.utility.FunctionsVN;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 /**
  * A holder for string names for various mod items/blocks/etc for easy access
@@ -60,7 +64,9 @@ public class ModObjects {
 	// --- Items --- //
 	
 	// Beetroot
-	public static final String beetrootSB = "samsbeetroot:beetroot_item";
+	public static final String beetrootSeedSB = "samsbeetroot:beetroot_seed";
+	public static final String beetrootItemSB = "samsbeetroot:beetroot_item";
+	public static final String beetrootSoupSB = "samsbeetroot:beetroot_soup";
 	
 	// Dye
 	public static final String dyeBlueBOP = "biomesoplenty:blue_dye";
@@ -88,6 +94,37 @@ public class ModObjects {
 		}
 		
 		return blockstate;
+	}
+	
+	
+	// Barrel
+	public static ItemStack chooseModBarrelItem()
+	{
+		return null;
+	}
+	// Uses furnace metas. 1 is vertical, and horizontal are 2, 3, 4, 5. 0 is inverted
+	public static IBlockState chooseModBarrelBlockState()
+	{
+		return null;
+	}
+	
+	
+	// Beetroot Seeds
+	public static ItemStack chooseModBeetrootSeeds()
+	{
+		Item moditem = FunctionsVN.getItemFromName(ModObjects.beetrootSeedSB);
+		if (moditem != null) {return new ItemStack(moditem, 1);}
+		
+		return null;
+	}
+	
+	// Beetroot Soup
+	public static ItemStack chooseModBeetrootSoup()
+	{
+		Item moditem = FunctionsVN.getItemFromName(ModObjects.beetrootSoupSB);
+		if (moditem != null) {return new ItemStack(moditem, 1);}
+		
+		return null;
 	}
 	
 	// Concrete
@@ -135,11 +172,35 @@ public class ModObjects {
 		return null;
 	}
 	
-	// Selects a modded Grass Path block if able; returns Gravel otherwise.
+	// Grass Path block if able; returns Gravel otherwise.
 	public static IBlockState chooseModPathBlock()
 	{
 		return Blocks.gravel.getDefaultState();
 	}
+	
+	
+	// Iron Nugget
+	public static ItemStack chooseModIronNugget()
+	{
+		return null;
+	}
+
+	
+	
+	// Sign
+	public static ItemStack chooseModWoodenSignItem(int materialMeta)
+	{
+		// If all else fails, grab the vanilla version
+		return new ItemStack(Items.sign, 1);
+	}
+	
+	
+	// Smooth Stone
+	public static IBlockState chooseModSmoothStoneBlockState()
+	{
+		return Blocks.double_stone_slab.getStateFromMeta(8);
+	}
+	
 	
 	// Stripped log
 	/**
@@ -188,5 +249,12 @@ public class ModObjects {
 		if (logBlock != null) {return logBlock.getStateFromMeta(orientation%3*4);}
 		*/
 		return (materialMeta<4 ? Blocks.log : Blocks.log2).getStateFromMeta(orientation*4+materialMeta%4);
+	}
+	
+	
+	// Sweet Berries
+	public static ItemStack chooseModSweetBerriesItem()
+	{
+		return null;
 	}
 }
