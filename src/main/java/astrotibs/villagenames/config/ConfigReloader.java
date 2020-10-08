@@ -57,6 +57,8 @@ public class ConfigReloader {
 		GoblinConfigHandler.loadConfiguration();
 		
 		CustomConfigHandler.loadConfiguration();
+		
+		VillageConfigHandler.loadConfiguration();
 	}
 	
 }

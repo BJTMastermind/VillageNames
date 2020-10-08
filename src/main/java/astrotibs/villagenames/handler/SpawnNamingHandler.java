@@ -38,7 +38,7 @@ public class SpawnNamingHandler {
 			// Have a specific string for Elder Guardian, so that it can be accessed independently of ordinary Guardians.
 			if (event.getEntity() instanceof EntityGuardian) {
 				if ( ((EntityGuardian) event.getEntity()).isElder() ) { // Reference "Elder" guardians using the below string. Reference ordinary guardians as EntityGuardian
-					entityClassPath = Reference.elderGuardianClass;
+					entityClassPath = Reference.ELDER_GUARDIAN_CLASS;
 				}
 			}
 			

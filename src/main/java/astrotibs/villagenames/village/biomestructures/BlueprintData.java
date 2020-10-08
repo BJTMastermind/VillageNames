@@ -2,7 +2,6 @@ package astrotibs.villagenames.village.biomestructures;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 
 /**
