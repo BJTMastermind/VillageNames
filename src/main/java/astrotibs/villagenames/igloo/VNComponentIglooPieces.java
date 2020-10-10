@@ -683,13 +683,13 @@ public class VNComponentIglooPieces
 	                                		(z + (new int[]{0, -4, 0, 4})[coordBaseMode])
 	                                		)
                             			);
-                            	if (tileEntityChest instanceof IInventory) {
-                            		
-	                            	ChestGenHooks iglooChest = ChestGenHooks.getInfo("iglooChest");
-	                            	WeightedRandomChestContent.generateChestContents(randomIn, iglooChest.getItems(randomIn), (TileEntityChest)tileEntityChest, iglooChest.getCount(randomIn));
-	                            	
+                            	if (tileEntityChest instanceof IInventory)
+                            	{
 	                            	ChestGenHooks iglooChestGoldapple = ChestGenHooks.getInfo("iglooChestGoldapple");
 	                            	WeightedRandomChestContent.generateChestContents(randomIn, iglooChestGoldapple.getItems(randomIn), (TileEntityChest)tileEntityChest, iglooChestGoldapple.getCount(randomIn));
+	                            	
+	                            	ChestGenHooks iglooChest = ChestGenHooks.getInfo("iglooChest");
+	                            	WeightedRandomChestContent.generateChestContents(randomIn, iglooChest.getItems(randomIn), (TileEntityChest)tileEntityChest, iglooChest.getCount(randomIn));
                             	}
                             	
                 				return;

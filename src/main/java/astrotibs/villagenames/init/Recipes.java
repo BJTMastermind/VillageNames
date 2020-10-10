@@ -2,6 +2,7 @@ package astrotibs.villagenames.init;
 
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
+import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -71,6 +72,7 @@ public class Recipes {
 			GameRegistry.addSmelting(new ItemStack(Blocks.stained_hardened_clay, 1, 15), new ItemStack(ModBlocksVN.blockGlazedTerracottaBlack, 1, 0), 0.1F);
 		}
 		
-		
+		// Turn off Trapdoor stinky validation yuck
+		BlockTrapDoor.disableValidation = true;
 	}
 }

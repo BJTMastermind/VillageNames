@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBanner;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -782,7 +783,7 @@ public class SavannaStructures
         	IBlockState biomeWoodenSlabState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeBarkState = ModObjects.chooseModBark(biomeLogState);
+        	IBlockState biomeBarkState = ModObjects.chooseModBarkState(biomeLogState);
         	
         	if (this.field_143015_k < 0)
             {
@@ -1072,7 +1073,7 @@ public class SavannaStructures
         	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getDefaultState(), this.materialType, this.biome);
         	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeWoodenStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeBarkState = ModObjects.chooseModBark(biomeLogState);
+        	IBlockState biomeBarkState = ModObjects.chooseModBarkState(biomeLogState);
         	
         	if (this.field_143015_k < 0)
             {
@@ -1426,7 +1427,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -1449,7 +1449,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -1467,7 +1467,7 @@ public class SavannaStructures
             	{2,1,7, 6,1,7}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
         	
             
@@ -1477,7 +1477,7 @@ public class SavannaStructures
             	{1,0,2, 7,0,7},  
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassBlock, biomeGrassMeta, biomeGrassBlock, biomeGrassMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);	
             }
         	
             
@@ -1491,12 +1491,12 @@ public class SavannaStructures
             	{7,0,2}, {7,0,3}, {7,0,4}, {7,0,5}, {7,0,6}, {7,0,7}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, biomeDirtState, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, biomeDirtState, uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Frame
             	{0,1,1, 8,1,1}, 
@@ -1507,28 +1507,28 @@ public class SavannaStructures
             	{0,2,4, 0,3,4}, {4,1,4, 4,3,4}, {8,2,4, 8,3,4}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
         	// Fence Gate
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence_gate, 0, this.materialType, this.biome); Block biomeFenceGateBlock = (Block)blockObject[0]; int biomeFenceGateMeta = (Integer)blockObject[1];
+        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome);
         	for(int[] uvw : new int[][]{
             	{4,1,1}, 
             	})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeFenceGateBlock, StructureVillageVN.getMetadataWithOffset(biomeFenceGateBlock, biomeFenceGateMeta, this.coordBaseMode), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeFenceGateState.getBlock(), biomeFenceGateState.getBlock().getMetaFromState(biomeFenceGateState), this.coordBaseMode)), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Trough
             	{2,1,5, 6,1,5}, {2,1,6, 2,1,6}, {6,1,6, 6,1,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
             
             
@@ -1539,51 +1539,51 @@ public class SavannaStructures
             	{5,1,6}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
             // Wooden slabs (Bottom)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 0, this.materialType, this.biome); Block biomeWoodSlabBottomBlock = (Block)blockObject[0]; int biomeWoodSlabBottomMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	{0,2,8, 8,2,8}, 
             	{0,3,6, 8,3,6}, 
             	{0,4,4, 8,4,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomBlock, biomeWoodSlabBottomMeta, biomeWoodSlabBottomBlock, biomeWoodSlabBottomMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
             }
             
             
             // Wooden slabs (Top)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 8, this.materialType, this.biome); Block biomeWoodSlabTopBlock = (Block)blockObject[0]; int biomeWoodSlabTopMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(8), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	{0,2,7, 1,2,7}, {7,2,7, 8,2,7}, 
             	{0,3,5, 8,3,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
             }
             
             
             // Double wood slab
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.double_wooden_slab, 0, this.materialType, this.biome); Block biomeWoodDoubleSlabBlock = (Block)blockObject[0]; int biomeWoodDoubleSlabMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodDoubleSlabState = StructureVillageVN.getBiomeSpecificBlock(Blocks.double_wooden_slab.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	{2,2,7, 6,2,7}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodDoubleSlabBlock, biomeWoodDoubleSlabMeta, biomeWoodDoubleSlabBlock, biomeWoodDoubleSlabMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodDoubleSlabState, biomeWoodDoubleSlabState, false);	
             }
             
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Chairs
         		{4,0,0, 3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
     		
             
@@ -1601,7 +1601,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -1624,7 +1624,7 @@ public class SavannaStructures
                     world.spawnEntityInWorld(animal);
                     
                     // Dirt block underneath
-                    //this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1]-1, uvw[2], structureBB);
+                    //this.setBlockState(world, biomeGrassState, uvw[0], uvw[1]-1, uvw[2], structureBB);
         		}
             }
             
@@ -1780,7 +1780,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -1803,7 +1802,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -1814,13 +1813,13 @@ public class SavannaStructures
             	{4,0,6}, {5,0,5}, {9,0,6}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, biomeDirtState, uvw[0], uvw[1], uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1]+1, uvw[2], structureBB); 
+            	this.setBlockState(world, biomeDirtState, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1]+1, uvw[2], structureBB); 
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	{6,2,0, 7,2,0}, 
             	{7,3,0, 7,4,0}, 
@@ -1842,17 +1841,17 @@ public class SavannaStructures
             	{4,2,1, 6,2,1}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
         	// Fence Gate
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence_gate, 0, this.materialType, this.biome); Block biomeFenceGateBlock = (Block)blockObject[0]; int biomeFenceGateMeta = (Integer)blockObject[1];
+        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome);
         	for(int[] uvw : new int[][]{
             	{8,2,0}, 
             	})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeFenceGateBlock, StructureVillageVN.getMetadataWithOffset(biomeFenceGateBlock, biomeFenceGateMeta, this.coordBaseMode), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeFenceGateState.getBlock(), biomeFenceGateState.getBlock().getMetaFromState(biomeFenceGateState), this.coordBaseMode)), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -1866,7 +1865,7 @@ public class SavannaStructures
             	{7,3,8, -1}, 
             	{0,3,4, -1}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -1887,12 +1886,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
@@ -1943,12 +1942,12 @@ public class SavannaStructures
             	for (BlueprintData b : decorBlueprint)
             	{
             		// Place block indicated by blueprint
-            		this.placeBlockAtCurrentPosition(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
             		
             		// Fill below if flagged
             		if ((b.getfillFlag()&1)!=0)
             		{
-            			this.replaceAirAndLiquidDownwards(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
             		}
             		
             		// Clear above if flagged
@@ -1974,7 +1973,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -1998,7 +1997,7 @@ public class SavannaStructures
                     world.spawnEntityInWorld(animal);
                     
                     // Dirt block underneath
-                    //this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1]-1, uvw[2], structureBB);
+                    //this.setBlockState(world, biomeGrassState, uvw[0], uvw[1]-1, uvw[2], structureBB);
         		}
             }
             
@@ -2151,7 +2150,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -2174,14 +2172,14 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Front fence
             	{0,1,0, 1,1,0}, {3,1,0, 3,1,0}, {5,1,0, 7,1,0}, 
@@ -2196,17 +2194,17 @@ public class SavannaStructures
             	{2,2,8, 2,3,8}, {5,2,8, 5,3,8}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
         	// Fence Gate
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence_gate, 0, this.materialType, this.biome); Block biomeFenceGateBlock = (Block)blockObject[0]; int biomeFenceGateMeta = (Integer)blockObject[1];
+        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome);
         	for(int[] uvw : new int[][]{
             	{2,1,0}, {4,1,0}, 
             	})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeFenceGateBlock, StructureVillageVN.getMetadataWithOffset(biomeFenceGateBlock, biomeFenceGateMeta, this.coordBaseMode), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeFenceGateState.getBlock(), biomeFenceGateState.getBlock().getMetaFromState(biomeFenceGateState), this.coordBaseMode)), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -2214,28 +2212,28 @@ public class SavannaStructures
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
             	{3,2,8, -1}, {4,2,8, -1}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Wooden slabs (Bottom)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 0, this.materialType, this.biome); Block biomeWoodSlabBottomBlock = (Block)blockObject[0]; int biomeWoodSlabBottomMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	{2,4,5, 5,4,5}, {2,4,8, 5,4,8}, 
             	{2,4,6, 2,4,7}, {5,4,6, 5,4,7}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomBlock, biomeWoodSlabBottomMeta, biomeWoodSlabBottomBlock, biomeWoodSlabBottomMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
             }
             
             
             // Double wood slab
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.double_wooden_slab, 0, this.materialType, this.biome); Block biomeWoodDoubleSlabBlock = (Block)blockObject[0]; int biomeWoodDoubleSlabMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodDoubleSlabState = StructureVillageVN.getBiomeSpecificBlock(Blocks.double_wooden_slab.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	{3,4,6, 4,4,7}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodDoubleSlabBlock, biomeWoodDoubleSlabMeta, biomeWoodDoubleSlabBlock, biomeWoodDoubleSlabMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodDoubleSlabState, biomeWoodDoubleSlabState, false);	
             }
             
         	
@@ -2251,12 +2249,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
@@ -2307,12 +2305,12 @@ public class SavannaStructures
             	for (BlueprintData b : decorBlueprint)
             	{
             		// Place block indicated by blueprint
-            		this.placeBlockAtCurrentPosition(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
             		
             		// Fill below if flagged
             		if ((b.getfillFlag()&1)!=0)
             		{
-            			this.replaceAirAndLiquidDownwards(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
             		}
             		
             		// Clear above if flagged
@@ -2339,7 +2337,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -2362,7 +2360,7 @@ public class SavannaStructures
                     world.spawnEntityInWorld(animal);
                     
                     // Dirt block underneath
-                    //this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1]-1, uvw[2], structureBB);
+                    //this.setBlockState(world, biomeGrassState, uvw[0], uvw[1]-1, uvw[2], structureBB);
         		}
             }
             
@@ -2513,7 +2511,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -2536,7 +2533,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -2555,7 +2552,7 @@ public class SavannaStructures
             	{5,1,2, 5,3,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -2566,7 +2563,7 @@ public class SavannaStructures
             	{3,0,1, 3,0,1}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -2577,7 +2574,7 @@ public class SavannaStructures
             	{3,3,1, 3,3,1}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
@@ -2585,12 +2582,12 @@ public class SavannaStructures
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
             	{3,3,2, 0}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Floor
             	{2,0,2, 4,0,2}, 
@@ -2600,12 +2597,12 @@ public class SavannaStructures
             	{2,5,2, 2,5,4}, {3,5,2, 3,5,3}, {4,5,2, 4,5,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
             
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Lower ceiling rims
         		// Front
@@ -2627,7 +2624,7 @@ public class SavannaStructures
         		{5,5,2, 1}, {5,5,3, 1}, {5,5,4, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -2636,9 +2633,9 @@ public class SavannaStructures
         		{3,1,4, 2}, 
         		})
             {
-        		blockObject = ModObjects.chooseModBlastFurnaceBlock(uvw[3], this.coordBaseMode); Block blastFurnaceBlock = (Block) blockObject[0]; int blastFurnaceMeta = (Integer) blockObject[1];
-                this.placeBlockAtCurrentPosition(world, blastFurnaceBlock, 0, uvw[0], uvw[1], uvw[2], structureBB);
-                world.setBlockMetadataWithNotify(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2]), blastFurnaceMeta, 2);
+        		blockObject = ModObjects.chooseModBlastFurnaceBlock(uvw[3], this.coordBaseMode); Block blastFurnaceBlock = (Block) blockObject[0]; int blastFurnaceState.getBlock().getMetaFromState(blastFurnaceState) = (Integer) blockObject[1];
+                this.setBlockState(world, blastFurnaceState.getBlock().getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2])), blastFurnaceState, 2);
             }
         	
         	
@@ -2651,9 +2648,9 @@ public class SavannaStructures
         		})
             {
         		// Orange
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], 
-        				Blocks.stained_hardened_clay, (GeneralConfig.useVillageColors ? this.townColor2 : 1),
-        				Blocks.stained_hardened_clay, (GeneralConfig.useVillageColors ? this.townColor2 : 1), 
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta((GeneralConfig.useVillageColors ? this.townColor2 : 1)),
+        				Blocks.stained_hardened_clay.getStateFromMeta((GeneralConfig.useVillageColors ? this.townColor2 : 1)), 
         				false);
             }
         	
@@ -2665,20 +2662,20 @@ public class SavannaStructures
         		{3,2,4, 2, GeneralConfig.useVillageColors ? this.townColor2 : 1}, // Orange
            		})
         	{
-        		tryGlazedTerracotta = ModObjects.chooseModGlazedTerracotta(uvwoc[4], (uvwoc[3] + this.coordBaseMode + (this.coordBaseMode < 2 ? 1 : 0))%4);
+        		tryGlazedTerracotta = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.coordBaseMode + (this.coordBaseMode < 2 ? 1 : 0))%4);
         		if (tryGlazedTerracotta != null)
             	{
-        			this.placeBlockAtCurrentPosition(world, (Block)tryGlazedTerracotta[0], (Integer)tryGlazedTerracotta[1], uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
+        			this.setBlockState(world, (Block)tryGlazedTerracotta[0], (Integer)tryGlazedTerracotta[1], uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
             	}
         		else
         		{
-        			this.placeBlockAtCurrentPosition(world, Blocks.stained_hardened_clay, uvwoc[4], uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
+        			this.setBlockState(world, Blocks.stained_hardened_clay.getStateFromMeta(uvwoc[4]), uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
         		}
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,1, 0, 1, 0}, 
@@ -2686,7 +2683,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -2701,12 +2698,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
@@ -2878,7 +2875,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -2901,7 +2897,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -2923,7 +2919,7 @@ public class SavannaStructures
             	{5,4,6, 5,4,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
@@ -2935,7 +2931,7 @@ public class SavannaStructures
         		{3,3,6}, {7,3,6}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -2944,7 +2940,7 @@ public class SavannaStructures
             	// Interior
             	{4,4,2, 0}, {5,4,5, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -2967,7 +2963,7 @@ public class SavannaStructures
             	{2,1,7, 2,1,10}, {3,1,10, 6,1,10}, {7,1,7, 7,1,10}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
         	
             
@@ -2977,18 +2973,18 @@ public class SavannaStructures
             	{3,1,7, 6,1,9},  
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassBlock, biomeGrassMeta, biomeGrassBlock, biomeGrassMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);	
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Backyard
             	{2,2,7, 2,2,10}, {3,2,10, 6,2,10}, {7,2,7, 7,2,10}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
@@ -2999,12 +2995,12 @@ public class SavannaStructures
             	// Yard
             	{2,3,10, -1}, {7,3,10, -1}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Ceiling rim
             	{2,5,1, 5,5,1}, {5,5,2, 6,5,2}, 
@@ -3015,12 +3011,12 @@ public class SavannaStructures
             	{3,6,2, 4,6,2}, {3,6,3, 5,6,3}, {3,6,4, 8,6,4}, {2,6,5, 8,6,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
             
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Front Steps
         		{4,1,0, 3}, {3,1,0, 0}, {5,1,0, 1}, 
@@ -3043,7 +3039,7 @@ public class SavannaStructures
         		{2,6,3, 0}, {2,6,2, 0}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
 
@@ -3069,40 +3065,40 @@ public class SavannaStructures
             	{8,1,4, GeneralConfig.useVillageColors? this.townColor  : 4}, // Yellow
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.stained_hardened_clay, uvwc[3], uvwc[0], uvwc[1], uvwc[2], structureBB);
+            	this.setBlockState(world, Blocks.stained_hardened_clay.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
             }
             
             
             // Smoker
-        	blockObject = ModObjects.chooseModSmokerBlock(3, this.coordBaseMode); Block smokerBlock = (Block) blockObject[0];
+        	IBlockState smokerState = ModObjects.chooseModSmokerState(3, this.coordBaseMode);
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
             	{2,2,4, 1}
             	})
             {
-                this.placeBlockAtCurrentPosition(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
-                world.setBlockMetadataWithNotify(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]), StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode), 2);
+                //this.setBlockState(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
             }
             
         	
         	// Cobblestone
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone, 0, this.materialType, this.biome); Block biomeCobblestoneBlock = (Block)blockObject[0]; int biomeCobblestoneMeta = (Integer)blockObject[1];
+        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Counter
             	{2,2,5, 2,2,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneBlock, biomeCobblestoneMeta, biomeCobblestoneBlock, biomeCobblestoneMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
             }
             
             
             // Cobblestone Wall
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone_wall, 0, this.materialType, this.biome); Block biomeCobblestoneWallBlock = (Block)blockObject[0]; int biomeCobblestoneWallMeta = (Integer)blockObject[1];
+        	IBlockState biomeCobblestoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone_wall.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Chimney
             	{2,3,4, 2,7,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneWallBlock, biomeCobblestoneWallMeta, biomeCobblestoneWallBlock, biomeCobblestoneWallMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneWallState, biomeCobblestoneWallState, false);	
             }
             
             
@@ -3112,7 +3108,7 @@ public class SavannaStructures
             	{7,1,4, 7,1,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.stone_slab, 8, Blocks.stone_slab, 8, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.stone_slab, 8, Blocks.stone_slab, 8, false);
             }
             
             
@@ -3121,12 +3117,12 @@ public class SavannaStructures
         		{8,2,4, 8,2,5}, 
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], Blocks.double_stone_slab, 0, Blocks.double_stone_slab, 0, false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], Blocks.double_stone_slab.getStateFromMeta(0), Blocks.double_stone_slab.getStateFromMeta(0), false);
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{4,2,1, 0, 1, 1}, 
@@ -3135,7 +3131,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -3154,12 +3150,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
     		
@@ -3180,7 +3176,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -3203,7 +3199,7 @@ public class SavannaStructures
                     world.spawnEntityInWorld(animal);
                     
                     // Dirt block underneath
-                    //this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1]-1, uvw[2], structureBB);
+                    //this.setBlockState(world, biomeGrassState, uvw[0], uvw[1]-1, uvw[2], structureBB);
         		}
             	
             	// Villager
@@ -3388,7 +3384,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -3411,14 +3406,14 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Yard
             	{2,1,1, 2,1,4}, {0,1,4, 1,1,4}, {0,1,5, 0,1,12}, 
@@ -3433,12 +3428,12 @@ public class SavannaStructures
             	{5,2,5, 5,2,5},
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Front stairs
             	{3,1,1, 5,1,1}, {3,3,3, 5,3,3}, 
@@ -3450,12 +3445,12 @@ public class SavannaStructures
             	{3,8,5, 5,8,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
             
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Front Steps
         		{3,1,0, 3}, {4,1,0, 3}, {5,1,0, 3}, 
@@ -3477,12 +3472,12 @@ public class SavannaStructures
         		{2,8,5, 0}, {2,8,6, 0}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Wooden slabs (Top)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 8, this.materialType, this.biome); Block biomeWoodSlabTopBlock = (Block)blockObject[0]; int biomeWoodSlabTopMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(8), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Front steps
             	{3,2,2, 5,2,2}, 
@@ -3490,7 +3485,7 @@ public class SavannaStructures
             	{3,3,8, 4,3,8}, {6,2,8, 6,2,8}, {6,1,9, 6,1,9}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
             }
             
             
@@ -3503,7 +3498,7 @@ public class SavannaStructures
             	{2,4,7, 3,6,7}, {5,4,7, 6,6,7}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -3516,7 +3511,7 @@ public class SavannaStructures
             	{4,6,7, 4,6,7}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
@@ -3533,7 +3528,7 @@ public class SavannaStructures
             	{6,4,5, 6,4,6}, {6,6,5, 6,6,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -3548,7 +3543,7 @@ public class SavannaStructures
             	// Yard
             	{0,2,12, -1}, {8,2,12, -1}, {8,2,4, -1}, {4,1,5, -1}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -3560,23 +3555,23 @@ public class SavannaStructures
         		{6,5,5}, {6,5,6}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Smoker
-        	blockObject = ModObjects.chooseModSmokerBlock(3, this.coordBaseMode); Block smokerBlock = (Block) blockObject[0];
+        	IBlockState smokerState = ModObjects.chooseModSmokerState(3, this.coordBaseMode);
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
             	{3,4,8, 0}
             	})
             {
-                this.placeBlockAtCurrentPosition(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
-                world.setBlockMetadataWithNotify(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]), StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode), 2);
+                //this.setBlockState(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{4,4,4, 0, 1, 1}, 
@@ -3585,7 +3580,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -3601,7 +3596,7 @@ public class SavannaStructures
             	// Make dirt foundation
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvwg[0], uvwg[1]-2, uvwg[2], structureBB);
             	// top with grass
-            	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvwg[0], uvwg[1]-1, uvwg[2], structureBB);
+            	this.setBlockState(world, biomeGrassState, uvwg[0], uvwg[1]-1, uvwg[2], structureBB);
             }
             
         	
@@ -3621,12 +3616,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
         	
@@ -3637,9 +3632,8 @@ public class SavannaStructures
         	int chestV = 4;
         	int chestW = 6;
         	int chestO = 3; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, chestU, chestV, chestW, structureBB);
-            world.setBlockMetadataWithNotify(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW), StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode), 2);
-        	TileEntity te = world.getTileEntity(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
+            world.setBlockState(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)), Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	TileEntity te = world.getTileEntity(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)));
         	if (te instanceof IInventory)
         	{
             	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_butcher");
@@ -3663,7 +3657,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -3686,7 +3680,7 @@ public class SavannaStructures
                     world.spawnEntityInWorld(animal);
                     
                     // Dirt block underneath
-                    //this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1]-1, uvw[2], structureBB);
+                    //this.setBlockState(world, biomeGrassState, uvw[0], uvw[1]-1, uvw[2], structureBB);
         		}
             	
             	// Villager
@@ -3861,7 +3855,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -3884,14 +3877,14 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Supports
             	{1,0,2, 1,1,2}, {3,0,2, 3,1,2}, {5,0,2, 5,1,2}, {7,0,2, 7,1,2}, 
@@ -3899,12 +3892,12 @@ public class SavannaStructures
             	{1,0,6, 1,1,6}, {3,0,6, 3,1,6}, {5,0,6, 5,1,6}, {7,0,6, 7,1,6}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Front stairs
             	{3,0,1, 5,0,1}, {4,1,2, 4,1,2}, 
@@ -3916,12 +3909,12 @@ public class SavannaStructures
             	{2,7,3, 6,7,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
             
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Front steps
         		{3,0,0, 3}, {4,0,0, 3}, {5,0,0, 3}, 
@@ -3938,7 +3931,7 @@ public class SavannaStructures
         		{7,7,3, 1}, {7,7,4, 1}, {7,7,5, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -3949,7 +3942,7 @@ public class SavannaStructures
             	{2,2,2, 6,2,2}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
             }
             
             
@@ -3961,18 +3954,18 @@ public class SavannaStructures
             	{1,3,6, 1,5,6}, {7,3,6, 7,5,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
             // Wood with bark on all sides
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	// Tower roof
             	{2,3,4, 2,3,4}, {6,3,5, 6,3,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
@@ -3980,7 +3973,7 @@ public class SavannaStructures
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
             	{2,4,4, -1}, {6,4,5, -1}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -3993,7 +3986,7 @@ public class SavannaStructures
             	{7,3,3, 7,5,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
@@ -4006,7 +3999,7 @@ public class SavannaStructures
             	{2,3,6, 6,5,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -4015,7 +4008,7 @@ public class SavannaStructures
             	// Out front
             	{4,5,2, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -4025,22 +4018,22 @@ public class SavannaStructures
         		{3,4,6}, {5,4,6}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
         	
         	// Cartography Table
-        	blockObject = ModObjects.chooseModCartographyTable(); Block cartographyTableBlock = (Block) blockObject[0]; int cartographyTableMeta = (Integer) blockObject[1];
+        	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState();
             for (int[] uvw : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
         		{2,3,5}, 
            		})
         	{
-            	this.placeBlockAtCurrentPosition(world, cartographyTableBlock, cartographyTableMeta, uvw[0], uvw[1], uvw[2], structureBB);
+            	this.setBlockState(world, cartographyTableState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{4,3,3, 2, 1, 0}, 
@@ -4048,7 +4041,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -4060,9 +4053,8 @@ public class SavannaStructures
         	int chestV = 3;
         	int chestW = 4;
         	int chestO = 3; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, chestU, chestV, chestW, structureBB);
-            world.setBlockMetadataWithNotify(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW), StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode), 2);
-        	TileEntity te = world.getTileEntity(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
+            world.setBlockState(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)), Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	TileEntity te = world.getTileEntity(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)));
         	if (te instanceof IInventory)
         	{
             	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_cartographer");
@@ -4179,7 +4171,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -4351,7 +4343,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -4374,14 +4365,14 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
             
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Front steps
         		{3,2,0, 3}, {4,2,0, 3}, {5,2,0, 3}, 
@@ -4399,12 +4390,12 @@ public class SavannaStructures
         		{6,10,4, 1}, {6,10,5, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Front stairs
             	{3,2,1, 5,2,1}, {3,3,2, 5,3,2}, {3,4,3, 3,4,3}, {5,4,3, 5,4,3}, 
@@ -4416,7 +4407,7 @@ public class SavannaStructures
             	{3,10,4, 5,10,5},
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
             
             
@@ -4429,7 +4420,7 @@ public class SavannaStructures
             	{3,6,6, 5,8,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -4438,7 +4429,7 @@ public class SavannaStructures
             	// Out front
             	{3,7,3, 2}, {5,7,3, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -4452,19 +4443,19 @@ public class SavannaStructures
             	{2,1,6, 2,1,6}, {4,1,6, 4,1,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Supports
             	{2,2,3, 2,4,3}, {4,2,3, 4,4,3}, {6,2,3, 6,4,3}, 
             	{2,2,6, 2,4,6}, {4,2,6, 4,4,6}, {6,2,6, 6,4,6}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
@@ -4475,7 +4466,7 @@ public class SavannaStructures
             	{3,5,3, 5,5,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
             }
             
             
@@ -4488,7 +4479,7 @@ public class SavannaStructures
             	{6,6,4, 6,8,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
@@ -4498,12 +4489,12 @@ public class SavannaStructures
         		{4,7,6}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
         	// Barrels
-    		Block barrelBlock = ModObjects.chooseModBarrelBlock();
+    		IBlockState barrelState = ModObjects.chooseModBarrelBlockState();
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward
@@ -4517,9 +4508,9 @@ public class SavannaStructures
             })
             {
     			// Set the barrel, or a chest if it's not supported
-    			if (barrelBlock==null) {barrelBlock = Blocks.chest;}
-    			this.placeBlockAtCurrentPosition(world, barrelBlock, 0, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockMetadataWithNotify(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2]), barrelBlock==Blocks.chest?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.coordBaseMode):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.coordBaseMode), 2);
+    			if (barrelState==null) {barrelState = Blocks.chest.getDefaultState();}
+    			this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(barrelState.getBlock()==Blocks.chest?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.coordBaseMode):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.coordBaseMode)), 2);
             }
             
             
@@ -4532,13 +4523,13 @@ public class SavannaStructures
             	{5,1,6}, {5,1,7}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB); 
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{4,6,4, 2, 1, 1}, 
@@ -4546,7 +4537,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -4563,12 +4554,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
     		
@@ -4589,7 +4580,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -4804,7 +4795,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -4827,7 +4817,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -4840,8 +4830,8 @@ public class SavannaStructures
         		{6,1,3, 8,4,3, GeneralConfig.useVillageColors ? this.townColor : 4}, // Yellow 
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
@@ -4852,7 +4842,7 @@ public class SavannaStructures
             	{4,1,6, 4,1,6}, {6,1,6, 6,1,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -4863,7 +4853,7 @@ public class SavannaStructures
             	// Interior
             	{4,2,6, -1}, {6,2,6, -1}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	
@@ -4878,8 +4868,8 @@ public class SavannaStructures
         		{9,1,4, 9,4,6, GeneralConfig.useVillageColors ? this.townColor : 4}, // Yellow  
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
@@ -4892,12 +4882,12 @@ public class SavannaStructures
             	{5,1,7, 5,4,7},  
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Interior chairs
         		{2,1,4, 2}, {2,1,6, 3}, 
@@ -4914,12 +4904,12 @@ public class SavannaStructures
         		{9,6,4, 1}, {9,6,5, 1}, {9,6,6, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Top of pillars
             	{1,4,1, 1,4,1}, {5,4,1, 5,4,1}, {9,4,1, 9,4,1}, 
@@ -4931,12 +4921,12 @@ public class SavannaStructures
             	{2,0,4, 8,0,6}, {3,0,3, 3,0,3}, {7,0,3, 7,0,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Supports
             	{1,1,1, 1,3,1}, {5,1,1, 5,3,1}, {9,1,1, 9,3,1}, 
@@ -4944,40 +4934,40 @@ public class SavannaStructures
             	{2,1,5, 2,1,5}, {8,1,5, 8,1,5}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
         	
         	
             // Wooden pressure plate
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_pressure_plate, 0, this.materialType, this.biome); Block biomeWoodPressurePlateBlock = (Block)blockObject[0]; int biomeWoodPressurePlateMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_pressure_plate.getDefaultState(), this.materialType, this.biome);
         	for (int[] uvw : new int[][]{
         		{2,2,5}, 
         		{8,2,5}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodPressurePlateBlock, biomeWoodPressurePlateMeta, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Wooden slabs (Bottom)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 0, this.materialType, this.biome); Block biomeWoodSlabBottomBlock = (Block)blockObject[0]; int biomeWoodSlabBottomMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Awning
             	{2,4,1, 4,4,1}, {6,4,1, 8,4,1}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomBlock, biomeWoodSlabBottomMeta, biomeWoodSlabBottomBlock, biomeWoodSlabBottomMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
             }
             
             
             // Wooden slabs (Top)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 8, this.materialType, this.biome); Block biomeWoodSlabTopBlock = (Block)blockObject[0]; int biomeWoodSlabTopMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(8), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Awning
             	{2,4,2, 8,4,2}, {1,4,2, 1,4,3}, {9,4,2, 9,4,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
             }
             
             
@@ -4990,28 +4980,28 @@ public class SavannaStructures
         		{9,2,5}, {9,3,5}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{3,0,0}, {3,0,1}, {3,0,2}, 
             	{7,0,0}, {7,0,1}, {7,0,2}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Fletching Table
-        	blockObject = ModObjects.chooseModFletchingTable(); Block fletchingTableBlock = (Block) blockObject[0]; int fletchingTableMeta = (Integer) blockObject[1];
-        	this.placeBlockAtCurrentPosition(world, fletchingTableBlock, fletchingTableMeta, 5, 1, 6, structureBB);
+        	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState();
+        	this.setBlockState(world, fletchingTableState, 5, 1, 6, structureBB);
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,3, 0, 1, 0}, 
@@ -5020,7 +5010,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -5085,12 +5075,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
     		
@@ -5110,7 +5100,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -5282,7 +5272,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -5305,7 +5294,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -5321,12 +5310,12 @@ public class SavannaStructures
             	{8,1,1, 8,1,3}, {8,1,5, 8,1,7}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Interior chairs
         		{4,1,0, 3}, 
@@ -5335,18 +5324,18 @@ public class SavannaStructures
         		{8,1,4, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Top of pillars
             	{1,1,4, 3,1,4}, {4,1,1, 4,1,7}, {5,1,4, 7,1,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
             
             
@@ -5359,7 +5348,7 @@ public class SavannaStructures
             	{5,1,6, 5,1,7}, {6,1,5, 7,1,7}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.farmland, 7, Blocks.farmland, 7, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.farmland.getStateFromMeta(7), Blocks.farmland.getStateFromMeta(7), false);	
             }
             
             
@@ -5369,14 +5358,14 @@ public class SavannaStructures
             	{3,1,5}, {5,1,5}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1]-1, uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, biomeGrassState, uvw[0], uvw[1]-1, uvw[2], structureBB); 
             }
             
             
             // Attempt to add GardenCore Compost Bins. If this fails, do nothing
-            Block compostBin = Block.getBlockFromName(ModObjects.compostBinGC);
-            if (compostBin != null)
+            IBlockState compostBinState = ModObjects.chooseModCompostBinState();
+            if (compostBinState != null)
             {
             	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
             		// Interior chairs
@@ -5384,7 +5373,7 @@ public class SavannaStructures
             		{0,1,8}, 
             		})
                 {
-            		this.placeBlockAtCurrentPosition(world, compostBin, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+            		this.setBlockState(world, compostBinState.getBlock().getDefaultState(), uvwo[0], uvwo[1], uvwo[2], structureBB);	
                 }
             }
             
@@ -5396,12 +5385,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
     		
@@ -5420,7 +5409,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -5441,7 +5430,7 @@ public class SavannaStructures
             	
             	for (int i=0; i<2; i++)
             	{
-            		this.fillWithMetadataBlocks(world, structureBB, cropPos[i][0], cropPos[i][1], cropPos[i][2], cropPos[i][3], cropPos[i][4], cropPos[i][5], cropBlock, 7, cropBlock, 7, false);
+            		this.fillWithBlocks(world, structureBB, cropPos[i][0], cropPos[i][1], cropPos[i][2], cropPos[i][3], cropPos[i][4], cropPos[i][5], cropBlock, 7, cropBlock, 7, false);
             	}
             }
             
@@ -5615,7 +5604,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -5638,7 +5626,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -5693,8 +5681,8 @@ public class SavannaStructures
             	
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.wheat, uvw[3], uvw[0], uvw[1]+1, uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, Blocks.farmland, 7, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.wheat, uvw[3], uvw[0], uvw[1]+1, uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.farmland.getStateFromMeta(7), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
@@ -5708,8 +5696,8 @@ public class SavannaStructures
             	{8,1,3}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeDirtMeta, uvw[0], uvw[1]-1, uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, biomeGrassBlock, biomeDirtMeta, uvw[0], uvw[1]-1, uvw[2], structureBB); 
             }
             
             
@@ -5718,12 +5706,12 @@ public class SavannaStructures
             	{1,0,7}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, biomeGrassState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{0,1,2}, {0,1,5}, {0,1,6}, 
             	{1,1,1}, {1,1,5}, 
@@ -5736,20 +5724,20 @@ public class SavannaStructures
             	{9,1,4}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Attempt to add GardenCore Compost Bins. If this fails, do nothing
-            Block compostBin = Block.getBlockFromName(ModObjects.compostBinGC);
-            if (compostBin != null)
+            IBlockState compostBinState = ModObjects.chooseModCompostBinState();
+            if (compostBinState != null)
             {
             	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
             		// Interior chairs
             		{6,2,2}, 
             		})
                 {
-            		this.placeBlockAtCurrentPosition(world, compostBin, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+            		this.setBlockState(world, compostBinState.getBlock().getDefaultState(), uvwo[0], uvwo[1], uvwo[2], structureBB);	
                 }
             }
             
@@ -5769,12 +5757,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
@@ -5825,12 +5813,12 @@ public class SavannaStructures
             	for (BlueprintData b : decorBlueprint)
             	{
             		// Place block indicated by blueprint
-            		this.placeBlockAtCurrentPosition(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
             		
             		// Fill below if flagged
             		if ((b.getfillFlag()&1)!=0)
             		{
-            			this.replaceAirAndLiquidDownwards(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
             		}
             		
             		// Clear above if flagged
@@ -6022,7 +6010,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -6045,7 +6032,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -6067,7 +6054,7 @@ public class SavannaStructures
             	{3,2,6, 3,2,6}, {5,2,6, 5,2,6}, {7,2,6, 7,2,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -6080,7 +6067,7 @@ public class SavannaStructures
             	{3,1,6, 3,1,6}, {5,1,6, 5,1,6}, {7,1,6, 7,1,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -6091,7 +6078,7 @@ public class SavannaStructures
             	{4,5,3, 5,5,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
         	
         	
@@ -6108,8 +6095,8 @@ public class SavannaStructures
         		{2,3,6, 7,5,6, GeneralConfig.useVillageColors ? this.townColor2 : 1}, // Orange 
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
@@ -6120,12 +6107,12 @@ public class SavannaStructures
             	// Interior
             	{3,5,5, 2}, {6,5,5, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Front stairs
         		{4,1,0, 3}, {5,1,0, 3}, 
@@ -6144,12 +6131,12 @@ public class SavannaStructures
         		{7,3,4, 0}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Front entrance
             	{4,1,1, 5,1,2}, 
@@ -6162,7 +6149,7 @@ public class SavannaStructures
             	{2,7,4, 7,7,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
             
             
@@ -6172,27 +6159,27 @@ public class SavannaStructures
         		{3,4,6}, {6,4,6}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
         	
             // Lecterns
         	/*
         	blockObject = ModObjects.chooseModLectern(); Block lecternBlock = (Block) blockObject[0]; int lecternMeta = (Integer) blockObject[1];
-            this.placeBlockAtCurrentPosition(world, lecternBlock, lecternMeta, 2, 3, 5, structureBB);
+            this.setBlockState(world, lecternBlock, lecternMeta, 2, 3, 5, structureBB);
             */
             for (int[] uvwo : new int[][]{ // u, v, w, orientation, color meta
             	// Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
             	{2,3,5, 1},
             })
             {
-        		ModObjects.setModLecternBlock(world,
+        		ModObjects.setModLecternState(world,
             			this.getXWithOffset(uvwo[0], uvwo[2]),
             			this.getYWithOffset(uvwo[1]),
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.coordBaseMode,
-            			biomePlankMeta);
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
             }
             
             
@@ -6202,7 +6189,7 @@ public class SavannaStructures
         		{7,3,5, 7,6,5}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.bookshelf, 0, Blocks.bookshelf, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.bookshelf.getDefaultState(), Blocks.bookshelf.getDefaultState(), false);
             }
             
             
@@ -6214,12 +6201,12 @@ public class SavannaStructures
         		{4,3,5, (GeneralConfig.useVillageColors ? this.townColor4 : 0)}, // White
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.carpet, uvwm[3], uvwm[0], uvwm[1], uvwm[2], structureBB); 
+        		this.setBlockState(world, Blocks.carpet.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB); 
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{4,3,3, 0, 1, 0}, 
@@ -6228,7 +6215,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -6240,7 +6227,7 @@ public class SavannaStructures
             	{6,1,1}, {6,1,2}, {7,1,1}, {7,1,2}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, biomeGrassState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
         	
@@ -6258,12 +6245,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
@@ -6274,17 +6261,17 @@ public class SavannaStructures
         		{2,2,2}, {6,2,1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.red_flower, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.red_flower, 0, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
         	// Sapling
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.sapling, 0, this.materialType, this.biome); Block biomeSaplingBlock = (Block)blockObject[0]; int biomeSaplingMeta = (Integer)blockObject[1];
+        	IBlockState biomeSaplingState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sapling.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvw : new int[][]{
         		{2,2,1}, {7,2,1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeSaplingBlock, biomeSaplingMeta, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, biomeSaplingState, uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
             
@@ -6303,7 +6290,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -6473,7 +6460,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -6496,7 +6482,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -6526,7 +6512,7 @@ public class SavannaStructures
             	{8,1,5, 8,3,5},             	
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -6541,7 +6527,7 @@ public class SavannaStructures
             	{8,3,4, 8,3,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -6553,7 +6539,7 @@ public class SavannaStructures
             	{6,3,6, 6,3,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
         	
         	
@@ -6569,14 +6555,14 @@ public class SavannaStructures
         		{7,3,2, 0, GeneralConfig.useVillageColors ? this.townColor : 4}, // Yellow
            		})
         	{
-        		tryGlazedTerracotta = ModObjects.chooseModGlazedTerracotta(uvwoc[4], (uvwoc[3] + this.coordBaseMode + (this.coordBaseMode < 2 ? 1 : 0))%4);
+        		tryGlazedTerracotta = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.coordBaseMode + (this.coordBaseMode < 2 ? 1 : 0))%4);
         		if (tryGlazedTerracotta != null)
             	{
-        			this.placeBlockAtCurrentPosition(world, (Block)tryGlazedTerracotta[0], (Integer)tryGlazedTerracotta[1], uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
+        			this.setBlockState(world, (Block)tryGlazedTerracotta[0], (Integer)tryGlazedTerracotta[1], uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
             	}
         		else
         		{
-        			this.placeBlockAtCurrentPosition(world, Blocks.stained_hardened_clay, uvwoc[4], uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
+        			this.setBlockState(world, Blocks.stained_hardened_clay.getStateFromMeta(uvwoc[4]), uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
         		}
             }
             
@@ -6586,12 +6572,12 @@ public class SavannaStructures
             	// Interior
             	{3,3,5, 2}, {6,3,5, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Floor
             	{2,0,3, 7,0,5}, {3,0,2, 6,0,2}, 
@@ -6601,12 +6587,12 @@ public class SavannaStructures
             	{2,5,3, 7,5,5}, {3,5,2, 6,5,2}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Front roof
         		{1,4,2, 3}, {2,4,1, 3}, {3,4,0, 3}, {4,4,0, 3}, {5,4,0, 3}, {6,4,0, 3}, {7,4,1, 3}, {8,4,2, 3}, 
@@ -6616,7 +6602,7 @@ public class SavannaStructures
         		{1,5,5, 2}, {1,4,6, 2}, {2,5,6, 2}, {3,5,6, 2}, {4,5,6, 2}, {5,5,6, 2}, {6,5,6, 2}, {7,5,6, 2}, {8,4,6, 2}, {8,5,5, 2}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -6626,14 +6612,14 @@ public class SavannaStructures
         		{1,2,4}, {3,2,6}, {6,2,6}, {8,2,4}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
             // Stone Cutter
         	// Orientation:0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	blockObject = ModObjects.chooseModStonecutter(3); Block stonecutterBlock = (Block) blockObject[0]; int stonecutterMeta = (Integer) blockObject[1];
-            this.placeBlockAtCurrentPosition(world, stonecutterBlock, stonecutterMeta, 2, 1, 4, structureBB);
+        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(3);
+            this.setBlockState(world, stonecutterState, 2, 1, 4, structureBB);
         	
             
             // Clay
@@ -6641,7 +6627,7 @@ public class SavannaStructures
             	{4,1,5}, {6,1,5}, {7,1,5}, {7,2,5}, {7,3,5}, {7,1,4}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.clay, 0, uvw[0], uvw[1], uvw[2], structureBB);	
+            	this.setBlockState(world, Blocks.clay.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);	
             }
         	
         	
@@ -6651,9 +6637,8 @@ public class SavannaStructures
         	int chestV = 1;
         	int chestW = 5;
         	int chestO = 2; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, chestU, chestV, chestW, structureBB);
-            world.setBlockMetadataWithNotify(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW), StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode), 2);
-        	TileEntity te = world.getTileEntity(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
+            world.setBlockState(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)), Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	TileEntity te = world.getTileEntity(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)));
         	if (te instanceof IInventory)
         	{
             	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_mason");
@@ -6662,29 +6647,29 @@ public class SavannaStructures
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Tables
             	{3,1,2, 3,1,2}, {6,1,2, 6,1,2}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
         	
         	
             // Wooden pressure plate
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_pressure_plate, 0, this.materialType, this.biome); Block biomeWoodPressurePlateBlock = (Block)blockObject[0]; int biomeWoodPressurePlateMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_pressure_plate.getDefaultState(), this.materialType, this.biome);
         	for (int[] uvw : new int[][]{
         		{3,2,2}, 
         		{6,2,2}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodPressurePlateBlock, biomeWoodPressurePlateMeta, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{4,1,1, 0, 1, 0}, 
@@ -6693,7 +6678,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -6713,12 +6698,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
     		
@@ -6738,7 +6723,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -6908,7 +6893,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -6931,7 +6915,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -6946,7 +6930,7 @@ public class SavannaStructures
             	{13,3,3, 13,3,3},
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeLogHorAlongState, biomeLogHorAlongState, false);
             }
             
             
@@ -6958,30 +6942,30 @@ public class SavannaStructures
             	{3,3,5, 3,3,5}, {11,3,5, 11,3,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Garden path
             	{6,1,2, 8,1,2}, 
             	{4,1,6, 4,1,7}, {5,1,7, 9,1,7}, {10,1,6, 10,1,7}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	// Right house platform
             	{10,1,4, 10,1,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
@@ -6995,7 +6979,7 @@ public class SavannaStructures
             	{6,3,3, 1}, {8,3,3, 3}, 
             	{4,2,7, -1}, {10,2,7, -1}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -7024,12 +7008,12 @@ public class SavannaStructures
             	{9,1,2, 9,3,2}, {9,1,4, 9,3,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Left house
             	
@@ -7050,12 +7034,12 @@ public class SavannaStructures
             	{10,5,2, 12,5,4}, {11,6,3, 11,6,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Left roof
         		{1,4,0, 3}, {2,4,0, 3}, {3,4,0, 3}, {4,4,0, 3}, {5,4,0, 3}, 
@@ -7091,7 +7075,7 @@ public class SavannaStructures
         		
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
         	
                         
@@ -7104,8 +7088,8 @@ public class SavannaStructures
             	{9,0,5, 7}, {9,0,6, 7}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.wheat, uvw[3], uvw[0], uvw[1]+1, uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, Blocks.farmland, 7, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.wheat, uvw[3], uvw[0], uvw[1]+1, uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.farmland.getStateFromMeta(7), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
@@ -7114,7 +7098,7 @@ public class SavannaStructures
             	{7,0,6}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
@@ -7125,7 +7109,7 @@ public class SavannaStructures
         		{13,2,3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -7135,9 +7119,8 @@ public class SavannaStructures
         	int chestV = 1;
         	int chestW = 2;
         	int chestO = 1; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, chestU, chestV, chestW, structureBB);
-            world.setBlockMetadataWithNotify(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW), StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode), 2);
-        	TileEntity te = world.getTileEntity(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
+            world.setBlockState(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)), Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	TileEntity te = world.getTileEntity(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)));
         	if (te instanceof IInventory)
         	{
             	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_savanna_house");
@@ -7146,11 +7129,11 @@ public class SavannaStructures
             
             
             // Crafting Table
-            this.placeBlockAtCurrentPosition(world, Blocks.crafting_table, 0, 4,1,4, structureBB);
+            this.setBlockState(world, Blocks.crafting_table, 0, 4,1,4, structureBB);
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,1, 0, 1, 1}, 
@@ -7161,7 +7144,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -7174,12 +7157,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
@@ -7253,12 +7236,12 @@ public class SavannaStructures
             	for (BlueprintData b : decorBlueprint)
             	{
             		// Place block indicated by blueprint
-            		this.placeBlockAtCurrentPosition(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
             		
             		// Fill below if flagged
             		if ((b.getfillFlag()&1)!=0)
             		{
-            			this.replaceAirAndLiquidDownwards(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
             		}
             		
             		// Clear above if flagged
@@ -7271,12 +7254,12 @@ public class SavannaStructures
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{3,0,0}, {11,0,0}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -7295,7 +7278,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -7475,7 +7458,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -7498,7 +7480,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -7530,12 +7512,12 @@ public class SavannaStructures
             	{9,1,5, 9,3,5}, {9,1,7, 9,3,7}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
             // Wood with bark on all sides
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	// Left house
             	{1,1,3, 1,1,3}, {1,3,3, 1,3,3}, 
@@ -7549,7 +7531,7 @@ public class SavannaStructures
             	{7,1,8, 7,1,8}, {7,3,8, 7,3,8}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
@@ -7558,12 +7540,12 @@ public class SavannaStructures
             	// Interior
             	{3,3,4, 2}, {6,3,6, 1}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Left house
             	// Floor
@@ -7580,23 +7562,23 @@ public class SavannaStructures
             	{5,4,6, 5,4,8}, {6,4,8, 8,4,8}, {9,4,4, 9,4,8}, {6,4,4, 8,4,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
             
             
             // Wooden slabs (Top)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 8, this.materialType, this.biome); Block biomeWoodSlabTopBlock = (Block)blockObject[0]; int biomeWoodSlabTopMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(8), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	{2,5,2, 4,5,4}, 
             	{6,5,5, 8,5,7}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Left roof
         		// Front
@@ -7631,7 +7613,7 @@ public class SavannaStructures
         		{8,1,5, 2}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
         	
                         
@@ -7640,8 +7622,8 @@ public class SavannaStructures
             	{6,0,2, 0}, {7,0,2, 0}, {7,0,3, 1}, {8,0,3, 0}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.wheat, uvw[3], uvw[0], uvw[1]+1, uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, Blocks.farmland, 7, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.wheat, uvw[3], uvw[0], uvw[1]+1, uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.farmland.getStateFromMeta(7), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
@@ -7650,7 +7632,7 @@ public class SavannaStructures
             	{6,0,3}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
@@ -7662,7 +7644,7 @@ public class SavannaStructures
         		{5,2,6}, {7,2,8}, {7,2,4}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -7672,9 +7654,8 @@ public class SavannaStructures
         	int chestV = 1;
         	int chestW = 7;
         	int chestO = 2; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, chestU, chestV, chestW, structureBB);
-            world.setBlockMetadataWithNotify(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW), StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode), 2);
-        	TileEntity te = world.getTileEntity(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
+            world.setBlockState(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)), Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	TileEntity te = world.getTileEntity(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)));
         	if (te instanceof IInventory)
         	{
             	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_savanna_house");
@@ -7683,11 +7664,11 @@ public class SavannaStructures
             
             
             // Crafting Table
-            this.placeBlockAtCurrentPosition(world, Blocks.crafting_table, 0, 2,1,2, structureBB);
+            this.setBlockState(world, Blocks.crafting_table, 0, 2,1,2, structureBB);
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,1, 0, 1, 0}, 
@@ -7696,7 +7677,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -7771,12 +7752,12 @@ public class SavannaStructures
             	for (BlueprintData b : decorBlueprint)
             	{
             		// Place block indicated by blueprint
-            		this.placeBlockAtCurrentPosition(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
             		
             		// Fill below if flagged
             		if ((b.getfillFlag()&1)!=0)
             		{
-            			this.replaceAirAndLiquidDownwards(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
             		}
             		
             		// Clear above if flagged
@@ -7789,7 +7770,7 @@ public class SavannaStructures
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{3,0,0}, {4,0,0}, {5,0,0}, {6,0,0}, 
             	{6,0,1}, {7,0,1}, 
@@ -7800,7 +7781,7 @@ public class SavannaStructures
             	{12,0,4}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -7819,7 +7800,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -8002,7 +7983,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -8025,7 +8005,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -8046,7 +8026,7 @@ public class SavannaStructures
             	{5,0,3, 5,0,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -8063,7 +8043,7 @@ public class SavannaStructures
             	{5,0,5, 5,0,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -8076,12 +8056,12 @@ public class SavannaStructures
             	{5,3,5, 5,3,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Backyard
             	{0,1,4, 2,1,4}, {8,1,4, 10,1,4}, 
@@ -8090,7 +8070,7 @@ public class SavannaStructures
             	{0,1,12, 10,1,12}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
@@ -8103,12 +8083,12 @@ public class SavannaStructures
             	// Fence
             	{6,2,12, -1}, {10,2,12, -1}, {10,2,8, -1}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Floor
             	{4,0,2, 6,0,2}, 
@@ -8124,12 +8104,12 @@ public class SavannaStructures
             	{4,5,2, 6,5,4}, {5,6,3, 5,6,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -8150,7 +8130,7 @@ public class SavannaStructures
         		{6,6,3, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -8159,33 +8139,33 @@ public class SavannaStructures
         		{3,2,3}, {7,2,3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
             // Loom
-        	blockObject = ModObjects.chooseModLoom(); Block loomBlock = (Block) blockObject[0]; int loomMeta = (Integer) blockObject[1];
+        	IBlockState loomState = ModObjects.chooseModLoom();
             for(int[] uvw : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
             	{6,1,3}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, loomBlock, loomMeta, uvw[0], uvw[1], uvw[2], structureBB);
+            	this.setBlockState(world, loomState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Wood with bark on all sides
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	{6,1,2, 6,1,2}, 
             	{6,1,4, 6,1,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{5,1,1, 0, 1, 0}, 
@@ -8194,7 +8174,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -8215,12 +8195,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
@@ -8233,32 +8213,32 @@ public class SavannaStructures
             	{5,0,10}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeDirtMeta, uvw[0], uvw[1]-1, uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, biomeGrassBlock, biomeDirtMeta, uvw[0], uvw[1]-1, uvw[2], structureBB); 
             }
             
             
         	// Tree
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.sapling, 0, this.materialType, this.biome); Block biomeSaplingBlock = (Block)blockObject[0]; int biomeSaplingMeta = (Integer)blockObject[1];
+        	IBlockState biomeSaplingState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sapling.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwss : new int[][]{
         		// u,v,w, ushift,wshift: Which adjacent spaces to use if this is a Dark Oak sapling
         		{8,1,10, -1,-1},
         		})
             {
         		// Place the sapling
-        		this.placeBlockAtCurrentPosition(world, biomeSaplingBlock, biomeSaplingMeta, uvwss[0], uvwss[1], uvwss[2], structureBB);
+        		this.setBlockState(world, biomeSaplingState, uvwss[0], uvwss[1], uvwss[2], structureBB);
         		
         		// Grow it into a tree
-        		if (biomeSaplingBlock instanceof BlockSapling)
+        		if (biomeSaplingState.getBlock() instanceof BlockSapling)
                 {
-        			if (biomeSaplingMeta==5) // This is a dark oak. You need four to grow.
+        			if (biomeSaplingState.getBlock().getMetaFromState(biomeSaplingState)==5) // This is a dark oak. You need four to grow.
         			{
-        				this.placeBlockAtCurrentPosition(world, biomeSaplingBlock, biomeSaplingMeta, uvwss[0]+uvwss[3], uvwss[1], uvwss[2], structureBB);
-        				this.placeBlockAtCurrentPosition(world, biomeSaplingBlock, biomeSaplingMeta, uvwss[0], uvwss[1], uvwss[2]+uvwss[4], structureBB);
-        				this.placeBlockAtCurrentPosition(world, biomeSaplingBlock, biomeSaplingMeta, uvwss[0]+uvwss[3], uvwss[1], uvwss[2]+uvwss[4], structureBB);
+        				this.setBlockState(world, biomeSaplingState, uvwss[0]+uvwss[3], uvwss[1], uvwss[2], structureBB);
+        				this.setBlockState(world, biomeSaplingState, uvwss[0], uvwss[1], uvwss[2]+uvwss[4], structureBB);
+        				this.setBlockState(world, biomeSaplingState, uvwss[0]+uvwss[3], uvwss[1], uvwss[2]+uvwss[4], structureBB);
         			}
         			
-        			((BlockSapling)biomeSaplingBlock).func_149878_d(world, this.getXWithOffset(uvwss[0], uvwss[2]), this.getYWithOffset(uvwss[1]), this.getZWithOffset(uvwss[0], uvwss[2]), world.rand);
+        			((BlockSapling)biomeSaplingState.getBlock()).generateTree(world, new BlockPos(this.getXWithOffset(uvwss[0], uvwss[2]), this.getYWithOffset(uvwss[1]), this.getZWithOffset(uvwss[0], uvwss[2])), biomeSaplingState, world.rand);
                 }
             }
     		
@@ -8277,7 +8257,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -8305,7 +8285,7 @@ public class SavannaStructures
         			})
         		{
             		EntityLiving animal = new EntitySheep(world);
-            		IEntityLivingData ientitylivingdata = animal.onSpawnWithEgg(null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+            		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2]))), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
             		
                     animal.setLocationAndAngles((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D, random.nextFloat()*360F, 0.0F);
                     world.spawnEntityInWorld(animal);
@@ -8461,7 +8441,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -8482,12 +8461,12 @@ public class SavannaStructures
             			// If marked with F: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);            		}
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);            		}
             		else if (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
             		{
             			// Otherwise, if dirt, add dirt foundation and then cap with grass:
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-            			this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+            			this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -8503,8 +8482,8 @@ public class SavannaStructures
             	{5,0,3, 7}, {5,0,4, 7}, {5,0,5, 6}, {5,0,7, 5}, {5,0,8, 6}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.wheat, uvw[3], uvw[0], uvw[1]+1, uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, Blocks.farmland, 7, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.wheat, uvw[3], uvw[0], uvw[1]+1, uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.farmland.getStateFromMeta(7), uvw[0], uvw[1], uvw[2], structureBB); 
             }
         	
                         
@@ -8513,8 +8492,8 @@ public class SavannaStructures
             	{1,0,0, 0}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.wheat, uvw[3], uvw[0], uvw[1]+1, uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, Blocks.farmland, 0, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.wheat, uvw[3], uvw[0], uvw[1]+1, uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.farmland.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
@@ -8523,7 +8502,7 @@ public class SavannaStructures
             	{1,1,8}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.melon_block, random.nextInt(3), uvw[0], uvw[1], uvw[2], structureBB); // Random pumpkin orientation
+            	this.setBlockState(world, Blocks.melon_block, random.nextInt(3), uvw[0], uvw[1], uvw[2], structureBB); // Random pumpkin orientation
             }
             
             
@@ -8534,25 +8513,25 @@ public class SavannaStructures
             	{3,0,5}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1]-1, uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, biomeGrassState, uvw[0], uvw[1]-1, uvw[2], structureBB); 
             }
             
             
             // Attempt to add GardenCore Compost Bins. If this fails, place a melon instead.
-            Block compostBin = Block.getBlockFromName(ModObjects.compostBinGC);
+            IBlockState compostBinState = ModObjects.chooseModCompostBinState();
             for(int[] uvw : new int[][]{
             	{1,1,5}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
-            	if (compostBin != null)
+            	this.setBlockState(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
+            	if (compostBinState != null)
                 {
-                	this.placeBlockAtCurrentPosition(world, compostBin, 0, uvw[0], uvw[1], uvw[2], structureBB);
+                	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
                 }
             	else
             	{
-            		this.placeBlockAtCurrentPosition(world, Blocks.melon_block, random.nextInt(3), uvw[0], uvw[1], uvw[2], structureBB);
+            		this.setBlockState(world, Blocks.melon_block, random.nextInt(3), uvw[0], uvw[1], uvw[2], structureBB);
             	}
             }
             
@@ -8568,12 +8547,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
@@ -8757,7 +8736,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -8780,7 +8758,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -8798,20 +8776,20 @@ public class SavannaStructures
         		{2,1,5, 4,3,5, GeneralConfig.useVillageColors ? this.townColor  : 4}, // Yellow
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	{2,0,2, 4,0,4}, 
             	{3,0,1, 3,0,1}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
@@ -8820,12 +8798,12 @@ public class SavannaStructures
             	// Interior
             	{3,3,4, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Wall tops
             	{1,4,1, 5,4,1}, {1,4,2, 1,4,4}, {1,4,5, 5,4,5}, {5,4,2, 5,4,4}, 
@@ -8833,12 +8811,12 @@ public class SavannaStructures
             	{2,5,2, 4,5,4}, {3,6,3, 3,6,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -8859,7 +8837,7 @@ public class SavannaStructures
         		{4,6,3, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -8870,28 +8848,28 @@ public class SavannaStructures
         		{5,2,3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Tables
             	{2,1,4, 2,1,4}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
         	
         	
             // Wooden pressure plate
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_pressure_plate, 0, this.materialType, this.biome); Block biomeWoodPressurePlateBlock = (Block)blockObject[0]; int biomeWoodPressurePlateMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_pressure_plate.getDefaultState(), this.materialType, this.biome);
         	for (int[] uvw : new int[][]{
         		{2,2,4}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodPressurePlateBlock, biomeWoodPressurePlateMeta, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -8918,7 +8896,7 @@ public class SavannaStructures
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,1, 0, 1, 0}, 
@@ -8926,7 +8904,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -8944,12 +8922,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
     		
@@ -8968,7 +8946,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -9145,7 +9123,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -9168,7 +9145,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -9186,20 +9163,20 @@ public class SavannaStructures
         		{2,1,5, 4,3,5, GeneralConfig.useVillageColors ? this.townColor4 : 14}, // Red
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	{2,0,2, 4,0,4}, 
             	{3,0,1, 3,0,1}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
@@ -9210,12 +9187,12 @@ public class SavannaStructures
             	// Interior
             	{3,3,4, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Wall tops
             	{1,4,1, 5,4,1}, {1,4,2, 1,4,4}, {1,4,5, 5,4,5}, {5,4,2, 5,4,4}, 
@@ -9223,12 +9200,12 @@ public class SavannaStructures
             	{2,5,2, 4,5,4}, {3,6,3, 3,6,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -9249,7 +9226,7 @@ public class SavannaStructures
         		{4,6,3, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -9260,7 +9237,7 @@ public class SavannaStructures
         		{5,2,3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -9270,9 +9247,8 @@ public class SavannaStructures
         	int chestV = 1;
         	int chestW = 4;
         	int chestO = 2; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, chestU, chestV, chestW, structureBB);
-            world.setBlockMetadataWithNotify(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW), StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode), 2);
-        	TileEntity te = world.getTileEntity(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
+            world.setBlockState(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)), Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	TileEntity te = world.getTileEntity(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)));
         	if (te instanceof IInventory)
         	{
             	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_savanna_house");
@@ -9303,7 +9279,7 @@ public class SavannaStructures
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,1, 0, 1, 0}, 
@@ -9311,7 +9287,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -9329,12 +9305,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
     		
@@ -9353,7 +9329,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -9530,7 +9506,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -9553,7 +9528,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -9571,20 +9546,20 @@ public class SavannaStructures
         		{2,1,5, 4,3,5, GeneralConfig.useVillageColors ? this.townColor2 : 1}, // Orange
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	{2,0,2, 4,0,4}, 
             	{3,0,1, 3,0,1}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
@@ -9594,12 +9569,12 @@ public class SavannaStructures
             	{3,3,4, 2}, 
             	{2,3,2, 0}, {4,3,2, 0}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Wall tops
             	{1,4,1, 5,4,1}, {1,4,2, 1,4,4}, {1,4,5, 5,4,5}, {5,4,2, 5,4,4}, 
@@ -9607,12 +9582,12 @@ public class SavannaStructures
             	{2,5,2, 4,5,4}, {3,6,3, 3,6,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -9633,7 +9608,7 @@ public class SavannaStructures
         		{4,6,3, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -9644,12 +9619,12 @@ public class SavannaStructures
         		{5,2,3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Crafting Table
-            this.placeBlockAtCurrentPosition(world, Blocks.crafting_table, 0, 4,1,4, structureBB);
+            this.setBlockState(world, Blocks.crafting_table, 0, 4,1,4, structureBB);
             
             
             // Beds
@@ -9675,7 +9650,7 @@ public class SavannaStructures
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,1, 0, 1, 0}, 
@@ -9683,7 +9658,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -9700,12 +9675,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
     		
@@ -9724,7 +9699,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -9901,7 +9876,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -9924,7 +9898,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -9943,7 +9917,7 @@ public class SavannaStructures
             	{8,1,2, 8,4,2}, {8,1,4, 8,4,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -9956,7 +9930,7 @@ public class SavannaStructures
             	{8,1,3, 8,1,3}, {8,3,3, 8,3,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -9969,23 +9943,23 @@ public class SavannaStructures
             	{6,1,5, 6,1,5}, {6,3,5, 6,3,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
             // Wood with bark on all sides
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	{6,0,1, 6,0,1}, 
             	{4,0,3, 4,0,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Windows
             	{6,4,1, 6,4,1}, 
@@ -9996,7 +9970,7 @@ public class SavannaStructures
             	{1,1,1, 1,3,1}, {1,1,5, 1,3,5}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
@@ -10007,12 +9981,12 @@ public class SavannaStructures
             	{6,3,2, 0}, 
             	{6,3,4, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Floor
             	{5,0,2, 7,0,4}, 
@@ -10024,12 +9998,12 @@ public class SavannaStructures
             	{1,4,1, 1,4,1}, {1,4,5, 1,4,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -10050,19 +10024,19 @@ public class SavannaStructures
         		{7,7,3, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Wooden slabs (Top)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 8, this.materialType, this.biome); Block biomeWoodSlabTopBlock = (Block)blockObject[0]; int biomeWoodSlabTopMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(8), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	{1,4,2, 1,4,4}, 
             	{2,4,1, 2,4,5}, 
             	{3,4,1, 3,4,1}, {3,4,5, 3,4,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
             }
             
             
@@ -10072,7 +10046,7 @@ public class SavannaStructures
         		{6,2,5}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -10129,9 +10103,8 @@ public class SavannaStructures
         	int chestV = 1;
         	int chestW = 2;
         	int chestO = 3; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, chestU, chestV, chestW, structureBB);
-            world.setBlockMetadataWithNotify(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW), StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode), 2);
-        	TileEntity te = world.getTileEntity(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
+            world.setBlockState(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)), Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	TileEntity te = world.getTileEntity(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)));
         	if (te instanceof IInventory)
         	{
             	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_savanna_house");
@@ -10162,7 +10135,7 @@ public class SavannaStructures
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{6,1,1, 0, 1, 1}, 
@@ -10171,7 +10144,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -10192,23 +10165,23 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{6,0,0}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
             
@@ -10226,7 +10199,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -10403,7 +10376,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -10426,7 +10398,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -10445,7 +10417,7 @@ public class SavannaStructures
             	{5,1,2, 5,3,2}, {5,1,4, 5,3,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -10458,7 +10430,7 @@ public class SavannaStructures
             	{5,1,3, 5,1,3}, {5,3,3, 5,3,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -10471,7 +10443,7 @@ public class SavannaStructures
             	{3,1,5, 3,1,5}, {3,3,5, 3,3,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
         	
         	
@@ -10491,13 +10463,13 @@ public class SavannaStructures
         		{2,5,4, 4,7,4, GeneralConfig.useVillageColors ? this.townColor  : 4}, // Yellow
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Windows
             	{3,6,2, 3,6,2}, 
@@ -10513,17 +10485,17 @@ public class SavannaStructures
             	{4,1,4, 4,1,4}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
         	
         	
             // Wooden pressure plate
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_pressure_plate, 0, this.materialType, this.biome); Block biomeWoodPressurePlateBlock = (Block)blockObject[0]; int biomeWoodPressurePlateMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_pressure_plate.getDefaultState(), this.materialType, this.biome);
         	for (int[] uvw : new int[][]{
         		{4,2,4}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodPressurePlateBlock, biomeWoodPressurePlateMeta, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -10534,12 +10506,12 @@ public class SavannaStructures
             	{3,3,2, 0}, 
             	{3,3,4, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Floor
             	{2,0,2, 4,0,4}, {3,0,1, 3,0,1}, 
@@ -10547,12 +10519,12 @@ public class SavannaStructures
             	{2,8,2, 4,8,4}, {3,9,3, 3,9,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -10569,12 +10541,12 @@ public class SavannaStructures
         		{4,9,3, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Wooden slabs (Bottom)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 0, this.materialType, this.biome); Block biomeWoodSlabBottomBlock = (Block)blockObject[0]; int biomeWoodSlabBottomMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	{0,5,1, 0,5,5}, 
             	{1,5,0, 1,5,6}, 
@@ -10583,7 +10555,7 @@ public class SavannaStructures
             	{6,5,1, 6,5,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomBlock, biomeWoodSlabBottomMeta, biomeWoodSlabBottomBlock, biomeWoodSlabBottomMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
             }
             
             
@@ -10594,7 +10566,7 @@ public class SavannaStructures
         		{5,2,3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -10621,7 +10593,7 @@ public class SavannaStructures
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,1, 0, 1, 1}, 
@@ -10629,7 +10601,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -10646,12 +10618,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
     		
@@ -10670,7 +10642,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -10847,7 +10819,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -10870,7 +10841,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -10889,7 +10860,7 @@ public class SavannaStructures
             	{5,1,2}, {5,3,2}, {5,1,4}, {5,3,4}, {5,1,3}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, biomeLogVertBlock, biomeLogVertMeta, uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeLogVertState, uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
             
@@ -10906,7 +10877,7 @@ public class SavannaStructures
             	{5,3,3}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, biomeLogHorAlongBlock, biomeLogHorAlongMeta, uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeLogHorAlongState, uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
             
@@ -10923,17 +10894,17 @@ public class SavannaStructures
             	{5,2,2}, {5,2,4}, 
             	})
             {
-            	this.placeBlockAtCurrentPosition(world, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeLogHorAcrossState, uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
             
             // Wood with bark on all sides
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	{2,1,3, 2,1,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
@@ -10942,12 +10913,12 @@ public class SavannaStructures
             	// Interior
             	{3,3,4, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Floor
             	{2,0,2, 4,0,4}, {3,0,1, 3,0,1}, 
@@ -10957,12 +10928,12 @@ public class SavannaStructures
             	{2,5,2, 4,5,4}, {3,6,3, 3,6,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -10985,7 +10956,7 @@ public class SavannaStructures
         		{2,1,2, 2}, {2,1,4, 3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -10996,7 +10967,7 @@ public class SavannaStructures
         		{5,2,3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -11023,7 +10994,7 @@ public class SavannaStructures
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,1, 0, 1, 0}, 
@@ -11031,7 +11002,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -11044,12 +11015,12 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
     		
@@ -11068,7 +11039,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -11245,7 +11216,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -11268,7 +11238,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -11287,12 +11257,12 @@ public class SavannaStructures
             	{5,1,2, 5,3,2}, {5,1,4, 5,3,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
             // Wood with bark on all sides
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	// Walls
             	// Front wall
@@ -11309,7 +11279,7 @@ public class SavannaStructures
             	{4,1,3, 4,1,3},  
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
@@ -11320,12 +11290,12 @@ public class SavannaStructures
             	// Interior
             	{4,2,3, -1}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Wall tops
             	{1,4,1, 5,4,1}, {1,4,2, 1,4,4}, {1,4,5, 5,4,5}, {5,4,2, 5,4,4}, 
@@ -11333,12 +11303,12 @@ public class SavannaStructures
             	{2,5,2, 4,5,4}, {3,6,3, 3,6,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -11361,7 +11331,7 @@ public class SavannaStructures
         		{4,1,2, 2}, {4,1,4, 3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -11372,7 +11342,7 @@ public class SavannaStructures
         		{5,2,3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -11382,9 +11352,8 @@ public class SavannaStructures
         	int chestV = 1;
         	int chestW = 2;
         	int chestO = 1; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, chestU, chestV, chestW, structureBB);
-            world.setBlockMetadataWithNotify(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW), StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode), 2);
-        	TileEntity te = world.getTileEntity(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
+            world.setBlockState(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)), Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	TileEntity te = world.getTileEntity(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)));
         	if (te instanceof IInventory)
         	{
             	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_savanna_house");
@@ -11415,7 +11384,7 @@ public class SavannaStructures
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,1, 2, 1, 1}, 
@@ -11423,7 +11392,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -11440,23 +11409,23 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{3,0,0}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
             
@@ -11474,7 +11443,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -11650,7 +11619,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -11673,7 +11641,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -11694,7 +11662,7 @@ public class SavannaStructures
             	{3,0,2, 3,0,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -11705,7 +11673,7 @@ public class SavannaStructures
             	{2,0,2, 2,0,3}, {4,0,2, 4,0,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
         	
         	
@@ -11726,8 +11694,8 @@ public class SavannaStructures
         		{2,3,4, 4,3,4, GeneralConfig.useVillageColors ? this.townColor  : 4}, // Yellow
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
@@ -11738,12 +11706,12 @@ public class SavannaStructures
             	// Interior
             	{3,3,2, 0}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Wall tops
             	{1,4,1, 5,4,1}, {1,4,2, 1,4,3}, {1,4,4, 5,4,4}, {5,4,2, 5,4,3}, 
@@ -11751,12 +11719,12 @@ public class SavannaStructures
             	{2,5,2, 4,5,3},  
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -11775,7 +11743,7 @@ public class SavannaStructures
         		{4,1,2, 0}, {4,1,3, 0}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -11784,7 +11752,7 @@ public class SavannaStructures
         		{3,2,4}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
             
@@ -11811,7 +11779,7 @@ public class SavannaStructures
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{3,1,1, 0, 1, 0}, 
@@ -11819,7 +11787,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -11839,7 +11807,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -12016,7 +11984,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -12039,7 +12006,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -12052,7 +12019,7 @@ public class SavannaStructures
             	{3,0,3, 5,0,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -12063,7 +12030,7 @@ public class SavannaStructures
             	{4,0,2, 4,0,2}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -12074,7 +12041,7 @@ public class SavannaStructures
             	{2,0,3, 2,0,4}, {6,0,3, 6,0,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
         	
         	
@@ -12090,8 +12057,8 @@ public class SavannaStructures
         		{2,1,5, 6,3,5, GeneralConfig.useVillageColors ? this.townColor  : 4}, // Yellow
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
@@ -12102,12 +12069,12 @@ public class SavannaStructures
             	// Interior
             	{4,3,3, 0}, {4,3,4, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Wall tops
             	{2,4,2, 6,4,2}, {1,4,3, 1,4,4}, {7,4,3, 7,4,4}, {2,4,5, 6,4,5}, 
@@ -12117,12 +12084,12 @@ public class SavannaStructures
             	{3,3,0, 3,3,0}, {5,3,0, 5,3,0}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -12139,30 +12106,30 @@ public class SavannaStructures
         		{7,5,3, 1}, {7,5,4, 1}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Awning
             	{3,1,0, 3,2,0}, {5,1,0, 5,2,0}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
             // Wooden slabs (Top)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 8, this.materialType, this.biome); Block biomeWoodSlabTopBlock = (Block)blockObject[0]; int biomeWoodSlabTopMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(8), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	{3,3,1, 3,3,1}, 
             	{4,3,0, 4,3,0}, 
             	{5,3,1, 5,3,1}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
             }
         	
         	
@@ -12206,7 +12173,7 @@ public class SavannaStructures
         		{3,2,5}, {5,2,5}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
         	
@@ -12216,7 +12183,7 @@ public class SavannaStructures
         		{6,1,4}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.cauldron, 3, uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+        		this.setBlockState(world, Blocks.cauldron.getStateFromMeta(3), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
         	
         	
@@ -12226,9 +12193,8 @@ public class SavannaStructures
         	int chestV = 1;
         	int chestW = 4;
         	int chestO = 1; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, chestU, chestV, chestW, structureBB);
-            world.setBlockMetadataWithNotify(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW), StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode), 2);
-        	TileEntity te = world.getTileEntity(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
+            world.setBlockState(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)), Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	TileEntity te = world.getTileEntity(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)));
         	if (te instanceof IInventory)
         	{
             	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_tannery");
@@ -12237,17 +12203,17 @@ public class SavannaStructures
         	
         	
         	// Smooth Stone Block
-        	blockObject = ModObjects.chooseModSmoothStoneBlock(); Block smoothStoneBlock = (Block)blockObject[0]; int smoothStoneMeta = (Integer)blockObject[1];
+        	IBlockState smoothStoneState = ModObjects.chooseModSmoothStoneBlockState();
             for (int[] uuvvww : new int[][]{
             	{2,1,3, 2,1,3},
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], smoothStoneBlock, smoothStoneMeta, smoothStoneBlock, smoothStoneMeta, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], smoothStoneState, smoothStoneState, false);
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{4,1,2, 0, 1, 0}, 
@@ -12255,7 +12221,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -12266,7 +12232,7 @@ public class SavannaStructures
             	{5,0,-1}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, biomeGrassState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
         	
@@ -12285,24 +12251,24 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{0,0,-1}, {1,0,-1}, {2,0,-1}, {3,0,-1}, 
             	{6,0,-1}, {7,0,-1}, {8,0,-1}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
             
@@ -12320,7 +12286,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -12496,7 +12462,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -12519,7 +12484,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -12538,7 +12503,7 @@ public class SavannaStructures
             	{7,1,8, 7,4,8}, {7,1,9, 7,1,9}, {7,1,10, 7,4,10}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -12553,7 +12518,7 @@ public class SavannaStructures
             	{7,4,9, 7,4,9}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -12564,12 +12529,12 @@ public class SavannaStructures
             	{3,4,11, 3,4,11}, {5,4,11, 5,4,11}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
             // Wood with bark on all sides
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	// Table
             	{6,1,9, 6,1,9}, 
@@ -12577,7 +12542,7 @@ public class SavannaStructures
             	{2,1,8, 2,1,10}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
         	
         	
@@ -12597,8 +12562,8 @@ public class SavannaStructures
             		{8,3,4, 8,3,4, GeneralConfig.useVillageColors ? this.townColor  : 4}, // Yellow
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
@@ -12608,12 +12573,12 @@ public class SavannaStructures
             	{4,3,8, 0}, 
             	{3,4,10, 2}, {5,4,10, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Wall tops
             	{1,5,7, 7,5,7}, {1,5,11, 7,5,11}, {1,5,8, 1,5,10}, {7,5,8, 7,5,10}, 
@@ -12623,12 +12588,12 @@ public class SavannaStructures
             	{2,0,8, 6,0,10}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Roof
         		// Front
@@ -12647,7 +12612,7 @@ public class SavannaStructures
         		{6,1,8, 0}, {6,1,10, 0}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -12663,7 +12628,7 @@ public class SavannaStructures
             {
         		for (int i=0; i<2; i++)
         		{
-        			this.placeBlockAtCurrentPosition(world, Blocks.stained_glass_pane,
+        			this.setBlockState(world, Blocks.stained_glass_pane,
         					i==1 
         						? (GeneralConfig.useVillageColors? this.townColor  : 4)  // Yellow (Top pane)
         						: (GeneralConfig.useVillageColors? this.townColor2 : 1), // Orange (Bottom pane)
@@ -12680,7 +12645,7 @@ public class SavannaStructures
         		{6,2,9, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.carpet, uvwm[3], uvwm[0], uvwm[1], uvwm[2], structureBB); 
+        		this.setBlockState(world, Blocks.carpet.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB); 
             }
             
         	
@@ -12689,12 +12654,12 @@ public class SavannaStructures
         		{2,2,10}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.brewing_stand, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.brewing_stand.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{4,1,7, 0, 1, 1}, 
@@ -12702,7 +12667,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -12776,25 +12741,25 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{3,0,3}, {3,0,4}, {3,0,5}, 
             	{4,0,0}, {4,0,1}, {4,0,2}, {4,0,3}, {4,0,5}, {4,0,6}, 
             	{5,0,3}, {5,0,4}, {5,0,5}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
             
@@ -12812,7 +12777,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -12982,7 +12947,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -13005,7 +12969,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -13024,7 +12988,7 @@ public class SavannaStructures
             	{7,1,2, 7,3,2}, {7,1,4, 7,3,4}, {5,5,2, 5,5,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -13039,7 +13003,7 @@ public class SavannaStructures
             	{7,1,3, 7,1,3}, {7,3,3, 7,3,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -13054,7 +13018,7 @@ public class SavannaStructures
             	{2,0,2, 3,0,4}, {5,0,2, 6,0,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
         	
         	
@@ -13077,8 +13041,8 @@ public class SavannaStructures
             	{3,4,2, 3,4,2, GeneralConfig.useVillageColors ? this.townColor  : 4}, // Yellow
         		})
             {
-        		this.fillWithMetadataBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
-        				Blocks.stained_hardened_clay, uuvvwwc[6], Blocks.stained_hardened_clay, uuvvwwc[6], false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwc[0], uuvvwwc[1], uuvvwwc[2], uuvvwwc[3], uuvvwwc[4], uuvvwwc[5], 
+        				Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), Blocks.stained_hardened_clay.getStateFromMeta(uuvvwwc[6]), false);
             }
             
             
@@ -13090,12 +13054,12 @@ public class SavannaStructures
             	{3,2,2, 0}, {5,2,2, 0}, 
             	{4,2,4, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Left roof
             	{1,4,1, 2,4,5}, 
@@ -13105,12 +13069,12 @@ public class SavannaStructures
             	{6,4,1, 7,4,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Left roof
         		// Front
@@ -13142,7 +13106,7 @@ public class SavannaStructures
         		{6,1,2, 0}, {6,1,3, 0}, {6,1,4, 0}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
@@ -13151,7 +13115,7 @@ public class SavannaStructures
         		{1,2,3}, {3,2,5}, {5,2,5}, {7,2,3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
         	
@@ -13160,12 +13124,12 @@ public class SavannaStructures
         		{2,1,3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.brewing_stand, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.brewing_stand.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{4,1,1, 0, 1, 0}, 
@@ -13173,19 +13137,19 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{4,0,0},  
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
             
@@ -13203,7 +13167,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -13373,7 +13337,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -13396,7 +13359,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -13415,7 +13378,7 @@ public class SavannaStructures
             	{3,1,2, 3,3,2}, {3,1,4, 3,3,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -13428,7 +13391,7 @@ public class SavannaStructures
             	{3,3,3, 3,3,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongBlock, biomeLogHorAlongMeta, biomeLogHorAlongBlock, biomeLogHorAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
             }
             
             
@@ -13441,7 +13404,7 @@ public class SavannaStructures
             	{5,3,5, 5,3,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
@@ -13452,12 +13415,12 @@ public class SavannaStructures
             	// Interior
             	{5,3,4, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Floor
             	{5,0,1, 5,0,1}, {4,0,2, 6,0,2}, {3,0,3, 7,0,3}, {4,0,4, 6,0,4}, 
@@ -13470,12 +13433,12 @@ public class SavannaStructures
             	{4,5,2, 6,5,4}, {5,6,3, 5,6,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Front
         		{3,4,0, 3}, {4,4,0, 3}, {5,4,0, 3}, {6,4,0, 3}, {7,4,0, 3}, 
@@ -13495,22 +13458,22 @@ public class SavannaStructures
         		{4,1,4, 3}, {6,1,4, 3}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Wooden slabs (Top)
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab, 8, this.materialType, this.biome); Block biomeWoodSlabTopBlock = (Block)blockObject[0]; int biomeWoodSlabTopMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_slab.getStateFromMeta(8), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	{2,4,3, 2,4,3}, {8,4,3, 8,4,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, biomeWoodSlabTopBlock, biomeWoodSlabTopMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Awning
             	// Left
@@ -13519,7 +13482,7 @@ public class SavannaStructures
             	{9,1,2, 9,3,2}, {9,1,4, 9,3,4}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
         	
         	
@@ -13586,22 +13549,22 @@ public class SavannaStructures
         		{5,2,5}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
             
             // Smithing table
-        	blockObject = ModObjects.chooseModSmithingTable(); Block smithingTableBlock = (Block) blockObject[0]; int smithingTableMeta = (Integer) blockObject[1];
+        	IBlockState smithingTableBlockState = ModObjects.chooseModSmithingTable();
         	for (int[] uvw : new int[][]{
         		{5,1,4}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, smithingTableBlock, smithingTableMeta, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, smithingTableBlockState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{5,1,1, 0, 1, 0}, 
@@ -13611,7 +13574,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -13634,23 +13597,23 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{5,0,0},  
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
             
@@ -13668,7 +13631,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -13839,7 +13802,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -13862,7 +13824,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -13881,7 +13843,7 @@ public class SavannaStructures
             	{7,1,4, 7,3,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertBlock, biomeLogVertMeta, biomeLogVertBlock, biomeLogVertMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
             }
             
             
@@ -13894,23 +13856,23 @@ public class SavannaStructures
             	{3,3,6, 3,3,6}, {5,3,6, 5,3,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
             
             
         	// TODO - stripped wood
         	// Stripped Log (Vertical)
-        	Block biomeStrippedLogVerticBlock = biomeLogVertBlock; int biomeStrippedLogVerticMeta = biomeLogVertMeta;
+        	IBlockState biomeStrippedLogVertState = biomeLogVertState;
         	// Try to see if stripped logs exist
-        	if (biomeStrippedLogVerticBlock==Blocks.log || biomeStrippedLogVerticBlock==Blocks.log2)
+        	if (biomeStrippedLogVertState.getBlock()==Blocks.log || biomeStrippedLogVertState.getBlock()==Blocks.log2)
         	{
-            	if (biomeLogVertBlock == Blocks.log)
+            	if (biomeLogVertState.getBlock() == Blocks.log)
             	{
-            		blockObject = ModObjects.chooseModStrippedLog(biomeLogVertMeta, 0); biomeStrippedLogVerticBlock = (Block)blockObject[0]; biomeStrippedLogVerticMeta = (Integer)blockObject[1];
+            		biomeStrippedLogVertState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
             	}
-            	else if (biomeLogVertBlock == Blocks.log2)
+            	else if (biomeLogVertState.getBlock() == Blocks.log2)
             	{
-            		blockObject = ModObjects.chooseModStrippedLog(biomeLogVertMeta+4, 0); biomeStrippedLogVerticBlock = (Block)blockObject[0]; biomeStrippedLogVerticMeta = (Integer)blockObject[1];
+            		biomeStrippedLogVertState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -13920,7 +13882,7 @@ public class SavannaStructures
             	{6,0,4, 6,0,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogVerticBlock, biomeStrippedLogVerticMeta, biomeStrippedLogVerticBlock, biomeStrippedLogVerticMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogVertState, biomeStrippedLogVertState, false);	
             }
             
         	// Stripped Log (Along)
@@ -13929,13 +13891,13 @@ public class SavannaStructures
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAlongBlock==Blocks.log || biomeStrippedLogHorizAlongBlock==Blocks.log2)
         	{
-            	if (biomeLogVertBlock == Blocks.log)
+            	if (biomeLogVertState.getBlock() == Blocks.log)
             	{
-            		blockObject = ModObjects.chooseModStrippedLog(biomeLogVertMeta, 1+(this.coordBaseMode.getHorizontalIndex()%2==0? 1:0)); biomeStrippedLogHorizAlongBlock = (Block)blockObject[0]; biomeStrippedLogHorizAlongMeta = (Integer)blockObject[1];
+            		blockObject = ModObjects.chooseModStrippedLogState(biomeLogVertMeta, 1+(this.coordBaseMode.getHorizontalIndex()%2==0? 1:0)); biomeStrippedLogHorizAlongBlock = (Block)blockObject[0]; biomeStrippedLogHorizAlongMeta = (Integer)blockObject[1];
             	}
-            	else if (biomeLogVertBlock == Blocks.log2)
+            	else if (biomeLogVertState.getBlock() == Blocks.log2)
             	{
-            		blockObject = ModObjects.chooseModStrippedLog(biomeLogVertMeta+4, 1+(this.coordBaseMode.getHorizontalIndex()%2==0? 1:0)); biomeStrippedLogHorizAlongBlock = (Block)blockObject[0]; biomeStrippedLogHorizAlongMeta = (Integer)blockObject[1];
+            		blockObject = ModObjects.chooseModStrippedLogState(biomeLogVertMeta+4, 1+(this.coordBaseMode.getHorizontalIndex()%2==0? 1:0)); biomeStrippedLogHorizAlongBlock = (Block)blockObject[0]; biomeStrippedLogHorizAlongMeta = (Integer)blockObject[1];
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -13944,7 +13906,7 @@ public class SavannaStructures
             	{5,0,4, 5,0,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAlongBlock, biomeStrippedLogHorizAlongMeta, biomeStrippedLogHorizAlongBlock, biomeStrippedLogHorizAlongMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAlongBlock, biomeStrippedLogHorizAlongMeta, biomeStrippedLogHorizAlongBlock, biomeStrippedLogHorizAlongMeta, false);	
             }
         	
             
@@ -13955,12 +13917,12 @@ public class SavannaStructures
             	// Interior
             	{5,3,5, 2}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Wall tops
             	{1,4,3, 7,4,3}, {1,4,4, 1,4,5}, {1,4,6, 7,4,6}, {7,4,4, 7,4,5}, 
@@ -13968,12 +13930,12 @@ public class SavannaStructures
             	{2,5,4, 6,5,5}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Front
         		{1,4,2, 3}, {2,4,2, 3}, {3,4,2, 3}, {4,4,2, 3}, {5,4,2, 3}, {6,4,2, 3}, {7,4,2, 3}, 
@@ -13991,12 +13953,12 @@ public class SavannaStructures
         		{6,1,4, 0}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Front fence
             	{2,1,0, 2,1,2}, {6,1,0, 6,1,2}, 
@@ -14005,7 +13967,7 @@ public class SavannaStructures
             	{6,1,5, 6,1,5}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
             
             
@@ -14015,7 +13977,7 @@ public class SavannaStructures
         		{6,2,5, (GeneralConfig.useVillageColors ? this.townColor5 : 0)}, // White
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.carpet, uvwm[3], uvwm[0], uvwm[1], uvwm[2], structureBB); 
+        		this.setBlockState(world, Blocks.carpet.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB); 
             }
         	
         	
@@ -14059,7 +14021,7 @@ public class SavannaStructures
         		{3,2,6}, {5,2,6}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -14072,12 +14034,12 @@ public class SavannaStructures
         		// Generate the blockObject here so that we have the correct meta on hand
         		blockObject = ModObjects.chooseModGrindstone(uvwo[3], this.coordBaseMode); Block biomeGrindstonethis.coordBaseMode.getHorizontalIndex());Object[0]; int biomeGrindstoneMeta = (Integer)blockObject[1];
             	
-        		this.placeBlockAtCurrentPosition(world, biomeGrindstoneBlock, biomeGrindstoneMeta, uvwo[0], uvwo[1], uvwo[2], structureBB);
+        		this.setBlockState(world, biomeGrindstoneState, uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{4,1,3, 0, 1, 0}, 
@@ -14085,7 +14047,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -14102,25 +14064,25 @@ public class SavannaStructures
             {
     			if (uvwg[3]==0) // Short grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.tallgrass, 1, uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.tallgrass.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
     			}
     			else // Tall grass
     			{
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 2, uvwg[0], uvwg[1], uvwg[2], structureBB);
-    				this.placeBlockAtCurrentPosition(world, Blocks.double_plant, 11, uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				this.setBlockState(world, Blocks.double_plant.getStateFromMeta(11), uvwg[0], uvwg[1]+1, uvwg[2], structureBB);
     			}
             }
             
             
         	// Grass path
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{4,0,0}, 
             	{4,0,1}, 
             	{4,0,2}, 
             	})
             {
-    			this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
             
@@ -14138,7 +14100,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -14310,7 +14272,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -14333,7 +14294,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -14341,7 +14302,7 @@ public class SavannaStructures
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertBlock, biomeLogVertMeta); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
+        	blockObject = ModObjects.chooseModWoodBlock(biomeLogVertState); Block biomeWoodBlock = (Block)blockObject[0]; int biomeWoodMeta = (Integer)blockObject[1];
             for (int[] uw : new int[][]{
             	{1,1,5, 1,2,5}, {1,1,6, 1,4,6}, 
             	{2,1,7, 10,4,7}, 
@@ -14352,7 +14313,7 @@ public class SavannaStructures
             	{5,1,4, 5,2,4}, 
            	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
@@ -14362,7 +14323,7 @@ public class SavannaStructures
             	{6,4,4, 6,4,4}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, biomeLogHorAcrossBlock, biomeLogHorAcrossMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
             }
         	
             
@@ -14373,7 +14334,7 @@ public class SavannaStructures
             	// Interior
             	{4,4,6, 2}, {8,4,6, 2}, {9,4,2, 0}, 
             	}) {
-            	this.placeBlockAtCurrentPosition(world, Blocks.torch, StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -14383,12 +14344,12 @@ public class SavannaStructures
             	{10,1,1, 10,4,1}, 
            	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeWoodBlock, biomeWoodMeta, biomeWoodBlock, biomeWoodMeta, false);
             }
             
             
             // Planks
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks, 0, this.materialType, this.biome); Block biomePlankBlock = (Block)blockObject[0]; int biomePlankMeta = (Integer)blockObject[1];
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
             for(int[] uuvvww : new int[][]{
             	// Wall tops
             	{1,5,6, 1,5,7}, {2,5,7, 10,5,7}, {11,5,1, 11,5,7}, {9,5,1, 10,5,1}, {8,5,1, 8,5,4}, {6,5,4, 7,5,4}, 
@@ -14398,12 +14359,12 @@ public class SavannaStructures
             	{5,1,5, 10,1,6}, {8,1,4, 10,1,4}, {9,1,2, 10,1,3}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankBlock, biomePlankMeta, biomePlankBlock, biomePlankMeta, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
         	
         	
             // Wood stairs
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs, 0, this.materialType, this.biome); Block biomeWoodStairsBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_stairs.getStateFromMeta(0), this.materialType, this.biome);
         	for (int[] uvwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 3:backward, 2:forward
         		// Front
         		{8,5,0, 3}, {9,5,0, 3}, {10,5,0, 3}, {11,5,0, 3}, 
@@ -14425,28 +14386,28 @@ public class SavannaStructures
         		{8,2,6, 1}, {10,2,6, 0}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodStairsBlock, this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4, uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(this.getMetadataWithOffset(Blocks.oak_stairs, uvwo[3]%4)+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
             }
             
             
             // Fences
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.fence, 0, this.materialType, this.biome); Block biomeFenceBlock = (Block)blockObject[0];
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uuvvww : new int[][]{
             	// Table
             	{9,2,6, 9,2,6}, 
         		})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceBlock, 0, biomeFenceBlock, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
         	
         	
             // Wooden pressure plate
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_pressure_plate, 0, this.materialType, this.biome); Block biomeWoodPressurePlateBlock = (Block)blockObject[0]; int biomeWoodPressurePlateMeta = (Integer)blockObject[1];
+        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_pressure_plate.getDefaultState(), this.materialType, this.biome);
         	for (int[] uvw : new int[][]{
         		{9,3,6}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, biomeWoodPressurePlateBlock, biomeWoodPressurePlateMeta, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -14456,12 +14417,12 @@ public class SavannaStructures
         		{11,3,4}, 
         		})
             {
-        		this.placeBlockAtCurrentPosition(world, Blocks.glass_pane, 0, uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.glass_pane.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
         	// Smooth Stone Block
-        	blockObject = ModObjects.chooseModSmoothStoneBlock(); Block smoothStoneBlock = (Block)blockObject[0]; int smoothStoneMeta = (Integer)blockObject[1];
+        	IBlockState smoothStoneState = ModObjects.chooseModSmoothStoneBlockState();
             for (int[] uuvvww : new int[][]{
             	// Entryway
             	{5,1,1, 7,1,3}, 
@@ -14473,7 +14434,7 @@ public class SavannaStructures
             	{2,1,5, 4,1,6}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], smoothStoneBlock, smoothStoneMeta, smoothStoneBlock, smoothStoneMeta, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], smoothStoneState, smoothStoneState, false);
             }
             
             
@@ -14486,12 +14447,12 @@ public class SavannaStructures
             	{4,1,0, 8,1,0}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.stone_slab, 0, Blocks.stone_slab, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.stone_slab.getStateFromMeta(0), Blocks.stone_slab.getStateFromMeta(0), false);
             }
         	
         	
         	// Lava
-            this.fillWithMetadataBlocks(world, structureBB, 3,2,3, 3,2,3, Blocks.lava, 0, Blocks.lava, 0, false);
+            this.fillWithBlocks(world, structureBB, 3,2,3, 3,2,3, Blocks.lava.getDefaultState(), Blocks.lava.getDefaultState(), false);
         	
             
             // Iron bars
@@ -14499,7 +14460,7 @@ public class SavannaStructures
             	{2,3,2, 2,4,3}, {3,3,2, 4,4,2}, 
             	})
             {
-            	this.fillWithMetadataBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.iron_bars, 0, Blocks.iron_bars, 0, false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.iron_bars.getDefaultState(), Blocks.iron_bars.getDefaultState(), false);
             }
             
             
@@ -14511,9 +14472,9 @@ public class SavannaStructures
         		})
             {
         		// Generate the blockObject here so that we have the correct meta on hand
-        		blockObject = ModObjects.chooseModGrindstone(uvwo[3], this.coordBaseMode); Block biomeGrindstoneBlock = (Block)blockObject[0]; int biomeGrindstoneMeta = (Integer)blockObject[1];
+        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.coordBaseMode);
             	
-        		this.placeBlockAtCurrentPosition(world, biomeGrindstoneBlock, biomeGrindstoneMeta, uvwo[0], uvwo[1], uvwo[2], structureBB);
+        		this.setBlockState(world, biomeGrindstoneState, uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	
@@ -14523,9 +14484,8 @@ public class SavannaStructures
         	int chestV = 2;
         	int chestW = 2;
         	int chestO = 0; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, chestU, chestV, chestW, structureBB);
-            world.setBlockMetadataWithNotify(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW), StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode), 2);
-        	TileEntity te = world.getTileEntity(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
+            world.setBlockState(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)), Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	TileEntity te = world.getTileEntity(new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW)));
         	if (te instanceof IInventory)
         	{
             	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_weaponsmith");
@@ -14534,7 +14494,7 @@ public class SavannaStructures
             
             
             // Doors
-        	blockObject = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_door, 0, this.materialType, this.biome); Block biomeWoodDoorBlock = (Block)blockObject[0];
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
             	// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             	{6,2,4, 0, 1, 1}, 
@@ -14542,7 +14502,7 @@ public class SavannaStructures
             {
             	for (int height=0; height<=1; height++)
             	{
-            		this.placeBlockAtCurrentPosition(world, biomeWoodDoorBlock, StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height],
+            		this.setBlockState(world, biomeWoodDoorState.getBlock().getStateFromMeta(StructureVillageVN.getDoorMetas(uvwoor[3], this.coordBaseMode, uvwoor[4]==1, uvwoor[5]==1)[height]),
             				uvwoor[0], uvwoor[1]+height, uvwoor[2], structureBB);
             	}
             }
@@ -14566,7 +14526,7 @@ public class SavannaStructures
             	/*// Place dirt if the block to be set as path is empty
             	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
             	{
-                	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, pathU, pathV-1, pathW, structureBB);
+                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
             	}*/
             	
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
@@ -14786,7 +14746,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	/*
@@ -14796,7 +14755,7 @@ public class SavannaStructures
             	// Make dirt foundation
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             	// top with grass
-            	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+            	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             }}
             
             // Make foundation with blanks as empty air and F as foundation spaces
@@ -14807,7 +14766,7 @@ public class SavannaStructures
             		{
             			// If dirt, add dirt foundation and then cap with grass:
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-            			this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+            			this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -14841,7 +14800,7 @@ public class SavannaStructures
             	
             	uvw[2] = decorDepth;
             	
-            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
+            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.boundingBox.minY;
             	
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], decorHeightY+1, uvw[2], structureBB);
@@ -14867,12 +14826,12 @@ public class SavannaStructures
             	for (BlueprintData b : decorBlueprint)
             	{
             		// Place block indicated by blueprint
-            		this.placeBlockAtCurrentPosition(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
             		
             		// Fill below if flagged
             		if ((b.getfillFlag()&1)!=0)
             		{
-            			this.replaceAirAndLiquidDownwards(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
             		}
             		
             		// Clear above if flagged
@@ -14883,14 +14842,14 @@ public class SavannaStructures
             	}
             	
             	// Grass base
-            	if (!world.getBlock(
+            	if (!world.getBlockState(
             			this.getXWithOffset(uvw[0], uvw[2]),
             			this.getYWithOffset(decorHeightY-1),
             			this.getZWithOffset(uvw[0], uvw[2])
             			).isNormalCube()
             			|| decorDepth < 0 // If it's in the center of the road, make sure the base is grass so it doesn't become path -> dirt
             			) {
-            		this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], decorHeightY-1, uvw[2], structureBB);
+            		this.setBlockState(world, biomeGrassState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	}
             }
             
@@ -15055,7 +15014,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -15078,14 +15036,14 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
         	
         	
         	// Grass Path to buttress water blocks
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{2,0,-1}, {9,0,-1},
             	{3,this.otherSideOffset,-Reference.STREET_WIDTH-0}, 
@@ -15094,7 +15052,7 @@ public class SavannaStructures
             	// Dirt foundation
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
             	// Grass path
-            	this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB); 
             	// Clear above
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], uvw[1]+1, uvw[2], structureBB);
             }
@@ -15123,8 +15081,8 @@ public class SavannaStructures
             	})
             {
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvwpmc[0], uvwpmc[1]-1, uvwpmc[2], structureBB);
-            	this.placeBlockAtCurrentPosition(world, uvwpmc[5]==1?Blocks.melon_stem:Blocks.wheat, uvwpmc[3], uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, Blocks.farmland, uvwpmc[4], uvwpmc[0], uvwpmc[1], uvwpmc[2], structureBB); 
+            	this.setBlockState(world, uvwpmc[5]==1?Blocks.melon_stem:Blocks.wheat, uvwpmc[3], uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB); 
+            	this.setBlockState(world, Blocks.farmland, uvwpmc[4], uvwpmc[0], uvwpmc[1], uvwpmc[2], structureBB); 
             }
             
             
@@ -15140,7 +15098,7 @@ public class SavannaStructures
             	})
             {
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
@@ -15166,7 +15124,7 @@ public class SavannaStructures
         							)
             			);
 
-            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
+            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.boundingBox.minY;
             	
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], decorHeightY+1, uvw[2], structureBB);
@@ -15194,12 +15152,12 @@ public class SavannaStructures
             	for (BlueprintData b : decorBlueprint)
             	{
             		// Place block indicated by blueprint
-            		this.placeBlockAtCurrentPosition(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
             		
             		// Fill below if flagged
             		if ((b.getfillFlag()&1)!=0)
             		{
-            			this.replaceAirAndLiquidDownwards(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
             		}
             		
             		// Clear above if flagged
@@ -15210,14 +15168,14 @@ public class SavannaStructures
             	}
             	
             	// Grass base
-            	if (!world.getBlock(
+            	if (!world.getBlockState(
             			this.getXWithOffset(uvw[0], uvw[2]),
             			this.getYWithOffset(decorHeightY-1),
             			this.getZWithOffset(uvw[0], uvw[2])
             			).isNormalCube()
             			|| uvw[2] < 0 // If it's in the center of the road, make sure the base is grass so it doesn't become path -> dirt
             			) {
-            		this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], decorHeightY-1, uvw[2], structureBB);
+            		this.setBlockState(world, biomeGrassState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	}
             }
             
@@ -15384,7 +15342,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -15407,7 +15364,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -15419,12 +15376,12 @@ public class SavannaStructures
             	})
             {
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
-            	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, biomeGrassState, uvw[0], uvw[1], uvw[2], structureBB); 
             }
         	
         	
         	// Grass Path to buttress water blocks
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{2,0,-1}, 
             	{6,this.otherSideOffset,-Reference.STREET_WIDTH-0}, 
@@ -15434,7 +15391,7 @@ public class SavannaStructures
             	// Dirt foundation
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
             	// Grass path
-            	this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB); 
             	// Clear above
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], uvw[1]+1, uvw[2], structureBB);
             }
@@ -15472,8 +15429,8 @@ public class SavannaStructures
             	})
             {
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvwpmc[0], uvwpmc[1]-1, uvwpmc[2], structureBB);
-            	this.placeBlockAtCurrentPosition(world, uvwpmc[5]==1?Blocks.melon_stem:Blocks.wheat, uvwpmc[3], uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, Blocks.farmland, uvwpmc[4], uvwpmc[0], uvwpmc[1], uvwpmc[2], structureBB); 
+            	this.setBlockState(world, uvwpmc[5]==1?Blocks.melon_stem:Blocks.wheat, uvwpmc[3], uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB); 
+            	this.setBlockState(world, Blocks.farmland, uvwpmc[4], uvwpmc[0], uvwpmc[1], uvwpmc[2], structureBB); 
             }
             
             
@@ -15491,7 +15448,7 @@ public class SavannaStructures
             	})
             {
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
@@ -15517,7 +15474,7 @@ public class SavannaStructures
         							)
             			);
 
-            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
+            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.boundingBox.minY;
             	
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], decorHeightY+1, uvw[2], structureBB);
@@ -15545,12 +15502,12 @@ public class SavannaStructures
             	for (BlueprintData b : decorBlueprint)
             	{
             		// Place block indicated by blueprint
-            		this.placeBlockAtCurrentPosition(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
+            		this.setBlockState(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos(), uvw[2]+b.getWPos(), structureBB);
             		
             		// Fill below if flagged
             		if ((b.getfillFlag()&1)!=0)
             		{
-            			this.replaceAirAndLiquidDownwards(world, b.getBlock(), b.getMeta(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
+            			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), uvw[0]+b.getUPos(), decorHeightY+b.getVPos()-1, uvw[2]+b.getWPos(), structureBB);
             		}
             		
             		// Clear above if flagged
@@ -15564,14 +15521,14 @@ public class SavannaStructures
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], decorHeightY-2, uvw[2], structureBB);
             	
             	// Grass base
-            	if (!world.getBlock(
+            	if (!world.getBlockState(
             			this.getXWithOffset(uvw[0], uvw[2]),
             			this.getYWithOffset(decorHeightY-1),
             			this.getZWithOffset(uvw[0], uvw[2])
             			).isNormalCube()
             			|| uvw[2] < 0 // If it's in the center of the road, make sure the base is grass so it doesn't become path -> dirt
             			) {
-            		this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, uvw[0], decorHeightY-1, uvw[2], structureBB);
+            		this.setBlockState(world, biomeGrassState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	}
             }
             
@@ -15741,7 +15698,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -15764,7 +15720,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -15783,8 +15739,8 @@ public class SavannaStructures
             {
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvwpmc[0], uvwpmc[1]-1, uvwpmc[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB);
-            	this.placeBlockAtCurrentPosition(world, uvwpmc[5]==1?Blocks.melon_stem:Blocks.wheat, uvwpmc[3], uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB); 
-            	this.placeBlockAtCurrentPosition(world, Blocks.farmland, uvwpmc[4], uvwpmc[0], uvwpmc[1], uvwpmc[2], structureBB); 
+            	this.setBlockState(world, uvwpmc[5]==1?Blocks.melon_stem:Blocks.wheat, uvwpmc[3], uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB); 
+            	this.setBlockState(world, Blocks.farmland, uvwpmc[4], uvwpmc[0], uvwpmc[1], uvwpmc[2], structureBB); 
             }
             
             
@@ -15796,7 +15752,7 @@ public class SavannaStructures
             {
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], uvw[1]+1, uvw[2], structureBB);
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             
@@ -15958,7 +15914,6 @@ public class SavannaStructures
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-            Object[] blockObject;
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
         	
@@ -15981,7 +15936,7 @@ public class SavannaStructures
             			// If marked with F or if this is biome-style dirt: fill with dirt foundation
             			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
                     	// Top with grass
-                    	this.placeBlockAtCurrentPosition(world, biomeGrassBlock, biomeGrassMeta, u, GROUND_LEVEL-1, w, structureBB);
+                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             		}
                 }
             }
@@ -16009,13 +15964,13 @@ public class SavannaStructures
             	})
             {
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvwpmc[0], uvwpmc[1]-1, uvwpmc[2], structureBB);
-            	if (uvwpmc[5]!=-1) {this.placeBlockAtCurrentPosition(world, uvwpmc[5]==1?Blocks.melon_stem:Blocks.wheat, uvwpmc[3], uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB);} 
-            	this.placeBlockAtCurrentPosition(world, Blocks.farmland, uvwpmc[4], uvwpmc[0], uvwpmc[1], uvwpmc[2], structureBB); 
+            	if (uvwpmc[5]!=-1) {this.setBlockState(world, uvwpmc[5]==1?Blocks.melon_stem:Blocks.wheat, uvwpmc[3], uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB);} 
+            	this.setBlockState(world, Blocks.farmland, uvwpmc[4], uvwpmc[0], uvwpmc[1], uvwpmc[2], structureBB); 
             }
         	
         	
         	// Grass Path to buttress water blocks
-        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), this.materialType, this.biome); 
+        	IBlockState grassPathState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModPathState(), this.materialType, this.biome); 
             for(int[] uvw : new int[][]{
             	{8,0,-1}, 
             	})
@@ -16023,7 +15978,7 @@ public class SavannaStructures
             	// Dirt foundation
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
             	// Grass path
-            	this.placeBlockAtCurrentPosition(world, grassPathBlock, grassPathMeta, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, grassPathState, uvw[0], uvw[1], uvw[2], structureBB); 
             	// Clear above
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], uvw[1]+1, uvw[2], structureBB);
             }
@@ -16042,7 +15997,7 @@ public class SavannaStructures
             	})
             {
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
-            	this.placeBlockAtCurrentPosition(world, Blocks.flowing_water, 0, uvw[0], uvw[1], uvw[2], structureBB); 
+            	this.setBlockState(world, Blocks.flowing_water.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB); 
             }
             
             

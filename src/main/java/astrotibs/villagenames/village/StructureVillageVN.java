@@ -540,6 +540,7 @@ public class StructureVillageVN
         	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
+        	if (block == Blocks.double_stone_slab && meta==9)  {return Blocks.planks.getStateFromMeta(woodMeta);} // Smooth sandstone into planks
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
@@ -575,6 +576,7 @@ public class StructureVillageVN
         	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
+        	if (block == Blocks.double_stone_slab && meta==9)  {return Blocks.planks.getStateFromMeta(woodMeta);} // Smooth sandstone into planks
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
@@ -602,6 +604,7 @@ public class StructureVillageVN
         	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
+        	if (block == Blocks.double_stone_slab && meta==9)  {return Blocks.planks.getStateFromMeta(woodMeta);} // Smooth sandstone into planks
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
@@ -639,6 +642,7 @@ public class StructureVillageVN
         	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
+        	if (block == Blocks.double_stone_slab && meta==9)  {return Blocks.planks.getStateFromMeta(woodMeta);} // Smooth sandstone into planks
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
@@ -669,6 +673,7 @@ public class StructureVillageVN
         	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
+        	if (block == Blocks.double_stone_slab && meta==9)  {return Blocks.planks.getStateFromMeta(woodMeta);} // Smooth sandstone into planks
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
@@ -699,6 +704,7 @@ public class StructureVillageVN
         	if (block == Blocks.sandstone && meta==1)          {return Blocks.cobblestone.getStateFromMeta(3);} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getStateFromMeta(0);}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
+        	if (block == Blocks.double_stone_slab && meta==9)  {return Blocks.planks.getStateFromMeta(woodMeta);} // Smooth sandstone into planks
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
@@ -796,6 +802,7 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {return new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1};}
         	if (block == Blocks.sandstone)                     {return Blocks.cobblestone.getDefaultState();}
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
+        	if (block == Blocks.double_stone_slab && meta==9)  {return Blocks.planks.getStateFromMeta(woodMeta);} // Smooth sandstone into planks
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.sapling)                       {return Blocks.sapling.getStateFromMeta(woodMeta);}
@@ -812,6 +819,7 @@ public class StructureVillageVN
         	if (block == Blocks.sandstone && meta==1)          {return Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
         	if (block == Blocks.sandstone)                     {return Blocks.brown_mushroom_block.getStateFromMeta(14);} // Cap on all six sides
         	if (block == Blocks.stone_slab)                    {return Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta);}
+        	if (block == Blocks.double_stone_slab && meta==9)  {return Blocks.brown_mushroom_block.getStateFromMeta(0);} // Smooth sandstone into pores on all six sides
         	if (block == Blocks.double_stone_slab)             {return Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta);}
         	if (block == Blocks.sandstone_stairs)              {return Blocks.stone_stairs.getStateFromMeta(meta);}
         	if (block == Blocks.sapling)                       {return Blocks.brown_mushroom.getStateFromMeta(0);}
@@ -911,7 +919,7 @@ public class StructureVillageVN
     	if (materialType==null) {materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, posX, posZ);}
     	if (biome==null) {biome = world.getBiomeGenForCoords(new BlockPos(posX, 0, posZ));}
     	
-    	IBlockState grassPath = getBiomeSpecificBlock(ModObjects.chooseModPathBlock(), materialType, biome); // TODO - use native block in 1.9+
+    	IBlockState grassPath = getBiomeSpecificBlock(ModObjects.chooseModPathState(), materialType, biome); // TODO - use native block in 1.9+
     	IBlockState planks = getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), materialType, biome);
     	IBlockState gravel = getBiomeSpecificBlock(Blocks.gravel.getDefaultState(), materialType, biome);
     	IBlockState cobblestone = getBiomeSpecificBlock(Blocks.cobblestone.getStateFromMeta(0), materialType, biome);
@@ -2348,6 +2356,60 @@ public class StructureVillageVN
 
         return metaIn;
     }
+    
+    /**
+	 * furnaceOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 * -X: returns the value X - used for things like upright barrels
+	 */
+	public static int chooseFurnaceMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		if (orientation<0) {return -orientation;}
+		return FURNACE_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+    /**
+	 * buttonOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int chooseButtonMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		return BUTTON_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+    /**
+	 * anvilOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int chooseAnvilMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		return ANVIL_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+    /**
+	 * terracottaOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int chooseGlazedTerracottaMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		return GLAZED_TERRACOTTA_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+	
+    /**
+     * Returns meta values for lower and upper halves of a door
+     * 
+	 * orientation - Direction the outside of the door faces when closed:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 * 
+	 * isShut - doors are "shut" by default when placed by a player
+	 * rightHandRule - whether the door opens counterclockwise when viewed from above. This is default state when placed by a player
+	 */
+	public static int[] getDoorMetas(int orientation, EnumFacing coordBaseMode, boolean isShut, boolean isRightHanded)
+	{
+		int horizIndex = coordBaseMode.getHorizontalIndex();
+		
+		return new int[] {
+				DOOR_META_ARRAY[1][isRightHanded?1:0][isShut?1:0][orientation][horizIndex],
+				DOOR_META_ARRAY[0][isRightHanded?1:0][isShut?1:0][orientation][horizIndex]
+						};
+	}
 
 	/**
 	 * Returns a random animal from the /structures/village/common/animals folder, not including cats
@@ -2366,6 +2428,154 @@ public class StructureVillageVN
 		
 		return animal;
 	}
+	
+		
+	/**
+	 * relativeOrientation
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int getBedOrientationMeta(int relativeOrientation, EnumFacing coordBaseMode, boolean isHead)
+	{
+		int horizIndex = coordBaseMode.getHorizontalIndex();
+		
+		switch (relativeOrientation)
+		{
+		case 0: // Facing away
+			return new int[]{2,3,0,1}[horizIndex] + (isHead ? 8:0);
+		case 1: // Facing right
+			return new int[]{1,2,1,2}[horizIndex] + (isHead ? 8:0);
+		case 2: // Facing you
+			return new int[]{0,1,2,3}[horizIndex] + (isHead ? 8:0);
+		case 3: // Facing left
+			return new int[]{3,0,3,0}[horizIndex] + (isHead ? 8:0);
+		}
+		return 0 + (isHead ? 8:0);
+	}
+	
+	
+	/**
+	 * relativeOrientation
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int getTrapdoorMeta(int relativeOrientation, EnumFacing coordBaseMode, boolean isTop, boolean isVertical)
+	{
+		int meta = 0;
+		
+		switch (relativeOrientation)
+		{
+		case 0: // Facing away
+			meta = (new int[]{1, 2, 0, 3})[coordBaseMode.getHorizontalIndex()]; break;
+		case 1: // Facing right
+			meta = coordBaseMode.getHorizontalIndex()%2==0 ? 3 : 1; break;
+		default:
+		case 2: // Facing you
+			meta = (new int[]{0, 3, 1, 2})[coordBaseMode.getHorizontalIndex()]; break;
+		case 3: // Facing left
+			meta = coordBaseMode.getHorizontalIndex()%2==0 ? 2 : 0; break;
+		}
+		
+		meta += (isVertical?4:0);
+		meta += (isTop?8:0);
+		
+		return meta;
+	}
+	
+	
+	/**
+	 * Used to select crops. Returns a two-element array that are either two different harvestcraft/JAFFA crops, or the same vanilla/beetroot crop twice.
+	 */
+	public static Block[] chooseCropPair(Random random)
+	{
+		Block[] cropblocks = new Block[]{Blocks.wheat, Blocks.wheat}; // What ultimately to return
+		ArrayList<Block> cropArray = new ArrayList(); // The array from which to choose crops
+		
+		// TODO - Substitute with other mod versions
+		
+		if (random.nextDouble() < GeneralConfig.harvestcraftCropFarmRate)
+		{
+			Block tryModCrop;
+			
+			tryModCrop = Block.getBlockFromName(ModObjects.cropBambooHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropSesameseedHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropBlackberryHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropOnionHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropTealeafHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropCucumberHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropScallionHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropCornHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropRhubarbHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropTomatoHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropCottonHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropPeanutHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropSweetpotatoHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropBeetHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropPineappleHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropStrawberryHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropArtichokeHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropOkraHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropRutabegaHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropParsnipHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropCandleberryHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropCantaloupeHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropWintersquashHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropRaspberryHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropCoffeebeanHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropSoybeanHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropSpiceleafHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropCeleryHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropBellpepperHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropBeanHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropCabbageHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropZucchiniHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropLeekHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropLettuceHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropBrusselsproutHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropCauliflowerHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropPeasHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropKiwiHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropRyeHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropChilipepperHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropRadishHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropCurryleafHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropGrapeHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropMustardseedHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropEggplantHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropGarlicHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropBarleyHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropBroccoliHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropSpinachHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropAsparagusHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropGingerHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropOatsHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropBlueberryHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropTurnipHC); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+			tryModCrop = Block.getBlockFromName(ModObjects.cropKaleJAFFA); if (tryModCrop != null) {cropArray.add(tryModCrop);}
+		}
+		
+		// If there are any modded crops added, return them.
+		if (cropArray.size()>0)
+		{
+			for (int i=0; i<2; i++) {cropblocks[i] = cropArray.get(random.nextInt(cropArray.size()));}
+			return cropblocks;
+		}
+		
+		// If you've reached this stage, you will be returning vanilla crops
+		cropArray.add(Blocks.wheat); cropArray.add(Blocks.wheat); cropArray.add(Blocks.wheat); cropArray.add(Blocks.wheat); cropArray.add(Blocks.wheat);
+		cropArray.add(Blocks.carrots); cropArray.add(Blocks.carrots);
+		cropArray.add(Blocks.potatoes); cropArray.add(Blocks.potatoes);
+		
+		// Add backported blocks
+		Block tryBeetroot = ModObjects.chooseModBeetrootCropBlock();
+		if (tryBeetroot != null) {cropArray.add(tryBeetroot);}
+		
+		// If the array is empty, either because harvestcraft crops were not used or were not selected, then choose a vanilla crop
+		Block cropblock = cropArray.get(random.nextInt(cropArray.size()));
+		cropblocks[0] = cropblock;
+		cropblocks[1] = cropblock;
+		
+		return cropblocks;
+	}
+	
 	
 	/**
 	 * Inputs an int array of colors being used in a village, and returns one that is not in use

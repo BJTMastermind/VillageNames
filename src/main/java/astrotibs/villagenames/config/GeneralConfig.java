@@ -79,6 +79,8 @@ public class GeneralConfig {
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
 	
+	public static float harvestcraftCropFarmRate;
+	
 	public static void init(File configFile)
 	{
 		if (config == null)
@@ -374,6 +376,8 @@ public class GeneralConfig {
 		
 		
 		//--------------Mod Integration-----------------//
+		
+		harvestcraftCropFarmRate = config.getFloat("Crop rate: Harvestcraft", "Mod Integration", 0.25F, 0F, 1F, "Generate Harvestcraft crops in farms. Only used with Village Generator. Set to 0 for no HC crops.");
 		
 		// Mapping for modded structures, and the creatures that can name them
 		modStructureNames = config.getStringList("Mod Structures", "Mod Integration", new String[]{
