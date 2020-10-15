@@ -68,6 +68,96 @@ public class ModObjects {
 	// Campfire
 	public static final String campfireFMC = "futuremc:campfire";
 	// Future Versions's Campfire sucks
+ 	
+ 	
+	// Crops
+	public static final String cropArtichokeHC = "harvestcraft:pamartichokecrop";
+	public static final String cropAsparagusHC = "harvestcraft:pamasparaguscrop";
+	public static final String cropBambooHC = "harvestcraft:pambambooshootcrop";
+	public static final String cropBarleyHC = "harvestcraft:pambarleycrop";
+	public static final String cropBeanHC = "harvestcraft:pambeancrop";
+	public static final String cropBeetHC = "harvestcraft:pambeetcrop";
+	public static final String cropBellpepperHC = "harvestcraft:pambellpeppercrop";
+	public static final String cropBlackberryHC = "harvestcraft:pamblackberrycrop";
+	public static final String cropBlueberryHC = "harvestcraft:pamblueberrycrop";
+	public static final String cropBroccoliHC = "harvestcraft:pambroccolicrop";
+	public static final String cropBrusselsproutHC = "harvestcraft:pambrusselsproutcrop";
+	public static final String cropCabbageHC = "harvestcraft:pamcabbagecrop";
+	public static final String cropCactusfruitHC = "harvestcraft:pamcactusfruitcrop"; // Planted on sand
+	public static final String cropCandleberryHC = "harvestcraft:pamcandleberrycrop";
+	public static final String cropCantaloupeHC = "harvestcraft:pamcantaloupecrop";
+	public static final String cropCauliflowerHC = "harvestcraft:pamcauliflowercrop";
+	public static final String cropCeleryHC = "harvestcraft:pamcelerycrop";
+	public static final String cropChilipepperHC = "harvestcraft:pamchilipeppercrop";
+	public static final String cropCoffeebeanHC = "harvestcraft:pamcoffeebeancrop";
+	public static final String cropCornHC = "harvestcraft:pamcorncrop";
+	public static final String cropCottonHC = "harvestcraft:pamcottoncrop";
+	public static final String cropCranberryHC = "harvestcraft:pamcranberrycrop"; // Planted on water
+	public static final String cropCucumberHC = "harvestcraft:pamcucumbercrop";
+	public static final String cropCurryleafHC = "harvestcraft:pamcurryleafcrop";
+	public static final String cropEggplantHC = "harvestcraft:pameggplantcrop";
+	public static final String cropGarlicHC = "harvestcraft:pamgarliccrop";
+	public static final String cropGingerHC = "harvestcraft:pamgingercrop";
+	public static final String cropGrapeHC = "harvestcraft:pamgrapecrop";
+	public static final String cropKiwiHC = "harvestcraft:pamkiwicrop";
+	public static final String cropLeekHC = "harvestcraft:pamleekcrop";
+	public static final String cropLettuceHC = "harvestcraft:pamlettucecrop";
+	public static final String cropMustardseedHC = "harvestcraft:pammustardseedscrop";
+	public static final String cropOatsHC = "harvestcraft:pamoatscrop";
+	public static final String cropOkraHC = "harvestcraft:pamokracrop";
+	public static final String cropOnionHC = "harvestcraft:pamonioncrop";
+	public static final String cropParsnipHC = "harvestcraft:pamparsnipcrop";
+	public static final String cropPeanutHC = "harvestcraft:pampeanutcrop";
+	public static final String cropPeasHC = "harvestcraft:pampeascrop";
+	public static final String cropPineappleHC = "harvestcraft:pampineapplecrop";
+	public static final String cropRadishHC = "harvestcraft:pamradishcrop";
+	public static final String cropRaspberryHC = "harvestcraft:pamraspberrycrop";
+	public static final String cropRhubarbHC = "harvestcraft:pamrhubarbcrop";
+	public static final String cropRiceHC = "harvestcraft:pamricecrop"; // Planted on water
+	public static final String cropRutabegaHC = "harvestcraft:pamrutabagacrop";
+	public static final String cropRyeHC = "harvestcraft:pamryecrop";
+	public static final String cropScallionHC = "harvestcraft:pamscallioncrop";
+	public static final String cropSeaweedHC = "harvestcraft:pamseaweedcrop"; // Planted on water
+	public static final String cropSesameseedHC = "harvestcraft:pamsesameseedscrop";
+	public static final String cropSoybeanHC = "harvestcraft:pamsoybeancrop";
+	public static final String cropSpiceleafHC = "harvestcraft:pamspiceleafcrop";
+	public static final String cropSpinachHC = "harvestcraft:pamspinachcrop";
+	public static final String cropStrawberryHC = "harvestcraft:pamstrawberrycrop";
+	public static final String cropSweetpotatoHC = "harvestcraft:pamsweetpotatocrop";
+	public static final String cropTealeafHC = "harvestcraft:pamtealeafcrop";
+	public static final String cropTomatoHC = "harvestcraft:pamtomatocrop";
+	public static final String cropTurnipHC = "harvestcraft:pamturnipcrop";
+	public static final String cropWaterchestnutHC = "harvestcraft:pamwaterchestnutcrop"; // Planted on water
+	public static final String cropWhitemushroomHC = "harvestcraft:pamwhitemushroomcrop"; // Planted on log
+	public static final String cropWintersquashHC = "harvestcraft:pamwintersquashcrop";
+	public static final String cropZucchiniHC = "harvestcraft:pamzucchinicrop";
+	// The following were added to Harvestcraft in 1.12
+	public static final String cropAgaveHC = "harvestcraft:pamagavecrop";
+	public static final String cropAmaranthHC = "harvestcraft:pamamaranthcrop";
+	public static final String cropArrowrootHC = "harvestcraft:pamarrowrootcrop";
+	public static final String cropCassavaHC = "harvestcraft:pamcassavacrop";
+	public static final String cropChickpeaHC = "harvestcraft:pamchickpeacrop";
+	public static final String cropElderberryHC = "harvestcraft:pamelderberrycrop";
+	public static final String cropFlaxHC = "harvestcraft:pamflaxcrop";
+	public static final String cropGigapickleHC = "harvestcraft:pamgigapicklecrop";
+	public static final String cropGreengrapeHC = "harvestcraft:pamgreengrapecrop";
+	public static final String cropHuckleberryHC = "harvestcraft:pamhuckleberrycrop";
+	public static final String cropJicamaHC = "harvestcraft:pamjicamacrop";
+	public static final String cropJuniperHC = "harvestcraft:pamjuniperberrycrop";
+	public static final String cropJuteHC = "harvestcraft:pamjutecrop";
+	public static final String cropKaleHC = "harvestcraft:pamkalecrop";
+	public static final String cropKenafHC = "harvestcraft:pamkenafcrop";
+	public static final String cropKohlrabiHC = "harvestcraft:pamkohlrabicrop";
+	public static final String cropLentilHC = "harvestcraft:pamlentilcrop";
+	public static final String cropMilletHC = "harvestcraft:pammilletcrop";
+	public static final String cropMulberryHC = "harvestcraft:pammulberrycrop";
+	public static final String cropQuinoaHC = "harvestcraft:pamquinoacrop";
+	public static final String cropSisalHC = "harvestcraft:pamsisalcrop";
+	public static final String cropTaroHC = "harvestcraft:pamtarocrop";
+	public static final String cropTomatilloHC = "harvestcraft:pamtomatillocrop";
+	
+	// Desk
+	public static final String deskBC = "bibliocraft:desk";
 	
 	// Dye
 	public static final String dyeBlueBOP = "biomesoplenty:blue_dye";

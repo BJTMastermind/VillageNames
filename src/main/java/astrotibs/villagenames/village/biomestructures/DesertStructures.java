@@ -2,6 +2,7 @@ package astrotibs.villagenames.village.biomestructures;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import astrotibs.villagenames.banner.BannerGenerator;
@@ -112,7 +113,10 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
         	
         	if (this.averageGroundLvl < 0)
             {
@@ -144,26 +148,53 @@ public class DesertStructures
         	if (this.namePrefix.equals("")) {this.namePrefix = villageNBTtag.getString("namePrefix");}
         	if (this.nameRoot.equals("")) {this.nameRoot = villageNBTtag.getString("nameRoot");}
         	if (this.nameSuffix.equals("")) {this.nameSuffix = villageNBTtag.getString("nameSuffix");}
-        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
-        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+
+        	BiomeProvider biomeProvider = world.getBiomeProvider();
+        	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+            Biome biome = biomeProvider.getBiome(new BlockPos(posX, 64, posZ));
+			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+            
+			if (this.villageType==null || this.materialType==null)
+			{
+				try {
+	            	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
+	            	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, posX, posZ);}
+	            	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+	            	}
+				catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, posX, posZ);}
+				
+				try {
+	            	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
+	            	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, posX, posZ);}
+	            	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+	            	}
+				catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, posX, posZ);}
+				
+				try {
+	            	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
+	            	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+	            	else {this.disallowModSubs = false;}
+	            	}
+				catch (Exception e) {this.disallowModSubs = false;}
+			}
         	
         	// Set sandstone ground and clear area above
-        	this.fillWithBlocks(world, structureBB, 3, 0, 0, 9, 0, 8, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 3, 0, 0, 9, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int x = 3; x <= 9; ++x) {for (int z = 0; z <= 8; ++z)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), x, -1, z, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
         	}}
-        	this.fillWithBlocks(world, structureBB, 1, 0, 1, 2, 0, 7, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 1, 0, 1, 2, 0, 7, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int x = 1; x <= 2; ++x) {for (int z = 1; z <= 7; ++z)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), x, -1, z, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
         	}}
-        	this.fillWithBlocks(world, structureBB, 0, 0, 3, 0, 0, 5, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 0, 0, 3, 0, 0, 5, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int x = 0; x <= 0; ++x) {for (int z = 3; z <= 5; ++z)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), x, -1, z, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
         	}}
         	
@@ -176,7 +207,7 @@ public class DesertStructures
         	}
         	else
         	{
-        		this.fillWithBlocks(world, structureBB, 2, 1, 2, 6, 1, 6, Blocks.SANDSTONE.getStateFromMeta(2), Blocks.SANDSTONE.getStateFromMeta(2), false);
+        		this.fillWithBlocks(world, structureBB, 2, 1, 2, 6, 1, 6, biomeLogVertState, biomeLogVertState, false);
         	}
         	// Air in the corners
             this.setBlockState(world, Blocks.AIR.getDefaultState(), 2, 1, 2, structureBB);
@@ -185,16 +216,16 @@ public class DesertStructures
             this.setBlockState(world, Blocks.AIR.getDefaultState(), 6, 1, 2, structureBB);
             
             // Sand underneath the rim
-            this.fillWithBlocks(world, structureBB, 3, 0, 2, 5, 0, 2, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false);
-            this.fillWithBlocks(world, structureBB, 3, 0, 6, 5, 0, 6, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false);
-            this.fillWithBlocks(world, structureBB, 2, 0, 3, 2, 0, 5, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false);
-            this.fillWithBlocks(world, structureBB, 6, 0, 3, 6, 0, 5, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false);
+            this.fillWithBlocks(world, structureBB, 3, 0, 2, 5, 0, 2, biomeDirtState, biomeDirtState, false);
+            this.fillWithBlocks(world, structureBB, 3, 0, 6, 5, 0, 6, biomeDirtState, biomeDirtState, false);
+            this.fillWithBlocks(world, structureBB, 2, 0, 3, 2, 0, 5, biomeDirtState, biomeDirtState, false);
+            this.fillWithBlocks(world, structureBB, 6, 0, 3, 6, 0, 5, biomeDirtState, biomeDirtState, false);
             
             // Water in the fountain
             this.fillWithBlocks(world, structureBB, 3, 1, 3, 5, 1, 5, Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
             
             // Spout
-            this.fillWithBlocks(world, structureBB, 4, 1, 4, 4, 3, 4, Blocks.SANDSTONE.getStateFromMeta(2), Blocks.SANDSTONE.getStateFromMeta(2), false);
+            this.fillWithBlocks(world, structureBB, 4, 1, 4, 4, 3, 4, biomeLogVertState, biomeLogVertState, false);
             if (GeneralConfig.useVillageColors)
         	{
         		/*Object[] tryConcrete = ModObjects.chooseModConcrete(townColor2);
@@ -267,13 +298,15 @@ public class DesertStructures
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
                 
                 // Place a foundation
-                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-                this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), bannerXBB, bannerYBB-3, bannerZBB, structureBB);
+                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+                this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
                 // Clear space upward
                 this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
                 
+                BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
+                
             	// Set the banner and its orientation
-				world.setBlockState(new BlockPos(bannerX, bannerY, bannerZ), Blocks.STANDING_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.getCoordBaseMode().getHorizontalIndex(), false)));
+				world.setBlockState(bannerPos, Blocks.STANDING_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.getCoordBaseMode().getHorizontalIndex(), false)));
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -281,7 +314,7 @@ public class DesertStructures
 				
     			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
         		
-        		world.setTileEntity(new BlockPos(bannerX, bannerY, bannerZ), tilebanner);
+        		world.setTileEntity(bannerPos, tilebanner);
     		}
         	
     		
@@ -378,7 +411,10 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
         	
         	if (this.averageGroundLvl < 0)
             {
@@ -410,50 +446,77 @@ public class DesertStructures
         	if (this.namePrefix.equals("")) {this.namePrefix = villageNBTtag.getString("namePrefix");}
         	if (this.nameRoot.equals("")) {this.nameRoot = villageNBTtag.getString("nameRoot");}
         	if (this.nameSuffix.equals("")) {this.nameSuffix = villageNBTtag.getString("nameSuffix");}
-        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
-        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+
+        	BiomeProvider biomeProvider = world.getBiomeProvider();
+        	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+            Biome biome = biomeProvider.getBiome(new BlockPos(posX, 64, posZ));
+			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+            
+			if (this.villageType==null || this.materialType==null)
+			{
+				try {
+	            	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
+	            	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, posX, posZ);}
+	            	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+	            	}
+				catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, posX, posZ);}
+				
+				try {
+	            	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
+	            	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, posX, posZ);}
+	            	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+	            	}
+				catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, posX, posZ);}
+				
+				try {
+	            	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
+	            	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+	            	else {this.disallowModSubs = false;}
+	            	}
+				catch (Exception e) {this.disallowModSubs = false;}
+			}
         	
         	// Set sandstone ground and clear area above
-        	this.fillWithBlocks(world, structureBB, 1, 0, 1, 10, 0, 10, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 1, 0, 1, 10, 0, 10, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	
         	// Fill foundation
         	for (int x = 1; x <= 10; ++x)
             {
 	        	for (int z = 1; z <= 10; ++z)
 	            {
-	                this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), x, -1, z, structureBB); // Foundation
+	                this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
 	                this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
                 }
             }
         	
         	// Path hitches at the ends
-        	this.fillWithBlocks(world, structureBB, 0, 0, 5, 0, 0, 7, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 0, 0, 5, 0, 0, 7, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int w = 5; w <= 7; ++w)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), 0, -1, w, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, 0, -1, w, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, 0, 1, w, structureBB);
         	}
-        	this.fillWithBlocks(world, structureBB, 11, 0, 4, 11, 0, 6, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 11, 0, 4, 11, 0, 6, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int w = 4; w <= 6; ++w)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), 11, -1, w, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, 11, -1, w, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, 11, 1, w, structureBB);
         	}
-        	this.fillWithBlocks(world, structureBB, 4, 0, 0, 6, 0, 0, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 4, 0, 0, 6, 0, 0, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int w = 4; w <= 6; ++w)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), w, -1, 0, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, w, -1, 0, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, w, 1, 0, structureBB);
         	}
-        	this.fillWithBlocks(world, structureBB, 5, 0, 11, 7, 0, 11, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 5, 0, 11, 7, 0, 11, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int w = 5; w <= 7; ++w)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), w, -1, 11, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, w, -1, 11, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, w, 1, 11, structureBB);
         	}
         	
         	// Set sand underneath the fountain
-        	this.fillWithBlocks(world, structureBB, 3, 0, 3, 8, 0, 8, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 3, 0, 3, 8, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	
         	// Set well rim
         	if (GeneralConfig.useVillageColors)
@@ -465,20 +528,20 @@ public class DesertStructures
         	}
         	else
         	{
-        		this.fillWithBlocks(world, structureBB, 3, 1, 3, 8, 1, 8, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        		this.fillWithBlocks(world, structureBB, 3, 1, 3, 8, 1, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	}
         	
         	// Water in the fountain
             this.fillWithBlocks(world, structureBB, 4, 1, 4, 7, 1, 7, Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
             
             // Sandstone slab roof
-            this.fillWithBlocks(world, structureBB, 4, 4, 4, 7, 4, 7, Blocks.STONE_SLAB.getStateFromMeta(1), Blocks.STONE_SLAB.getStateFromMeta(1), false);
+            this.fillWithBlocks(world, structureBB, 4, 4, 4, 7, 4, 7, biomeSmoothSandstoneSlabBottomState, biomeSmoothSandstoneSlabBottomState, false);
             
         	// Columns
-            this.fillWithBlocks(world, structureBB, 4, 1, 4, 4, 4, 4, Blocks.SANDSTONE.getStateFromMeta(2), Blocks.SANDSTONE.getStateFromMeta(2), false);
-            this.fillWithBlocks(world, structureBB, 4, 1, 7, 4, 4, 7, Blocks.SANDSTONE.getStateFromMeta(2), Blocks.SANDSTONE.getStateFromMeta(2), false);
-            this.fillWithBlocks(world, structureBB, 7, 1, 7, 7, 4, 7, Blocks.SANDSTONE.getStateFromMeta(2), Blocks.SANDSTONE.getStateFromMeta(2), false);
-            this.fillWithBlocks(world, structureBB, 7, 1, 4, 7, 4, 4, Blocks.SANDSTONE.getStateFromMeta(2), Blocks.SANDSTONE.getStateFromMeta(2), false);
+            this.fillWithBlocks(world, structureBB, 4, 1, 4, 4, 4, 4, biomeLogVertState, biomeLogVertState, false);
+            this.fillWithBlocks(world, structureBB, 4, 1, 7, 4, 4, 7, biomeLogVertState, biomeLogVertState, false);
+            this.fillWithBlocks(world, structureBB, 7, 1, 7, 7, 4, 7, biomeLogVertState, biomeLogVertState, false);
+            this.fillWithBlocks(world, structureBB, 7, 1, 4, 7, 4, 4, biomeLogVertState, biomeLogVertState, false);
             
             // Torches
             for (int[] uvwo : new int[][]{
@@ -513,7 +576,7 @@ public class DesertStructures
             }
             else
             {
-            	this.fillWithBlocks(world, structureBB, 5, 4, 5, 6, 4, 6, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, 5, 4, 5, 6, 4, 6, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
             }
             
             
@@ -556,13 +619,15 @@ public class DesertStructures
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
                 
                 // Place a foundation
-                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-                this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), bannerXBB, bannerYBB-3, bannerZBB, structureBB);
+                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+                this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
                 // Clear space upward
                 this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
                 
+                BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
+                
             	// Set the banner and its orientation
-				world.setBlockState(new BlockPos(bannerX, bannerY, bannerZ), Blocks.STANDING_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(12, this.getCoordBaseMode().getHorizontalIndex(), false)));
+				world.setBlockState(bannerPos, Blocks.STANDING_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(12, this.getCoordBaseMode().getHorizontalIndex(), false)));
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -570,7 +635,7 @@ public class DesertStructures
 				
     			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
         		
-        		world.setTileEntity(new BlockPos(bannerX, bannerY, bannerZ), tilebanner);
+        		world.setTileEntity(bannerPos, tilebanner);
     		}
         	
     		
@@ -667,11 +732,16 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome);
-        	//IBlockState biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome); // TODO - Check for modded sandstone walls
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	//IBlockState biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs); // TODO - Check for modded sandstone walls
         	IBlockState biomeSandstoneWallState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA);
-        	if (biomeSandstoneWallState==null) {StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome);}
-        	else {biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallState, this.materialType, this.biome);}
+        	if (biomeSandstoneWallState==null) {StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);}
+        	else {biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallState, this.materialType, this.biome, this.disallowModSubs);}
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STONE_SLAB.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
         	
         	if (this.averageGroundLvl < 0)
             {
@@ -703,8 +773,35 @@ public class DesertStructures
         	if (this.namePrefix.equals("")) {this.namePrefix = villageNBTtag.getString("namePrefix");}
         	if (this.nameRoot.equals("")) {this.nameRoot = villageNBTtag.getString("nameRoot");}
         	if (this.nameSuffix.equals("")) {this.nameSuffix = villageNBTtag.getString("nameSuffix");}
-        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
-        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+
+        	BiomeProvider biomeProvider = world.getBiomeProvider();
+        	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+            Biome biome = biomeProvider.getBiome(new BlockPos(posX, 64, posZ));
+			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+            
+			if (this.villageType==null || this.materialType==null)
+			{
+				try {
+	            	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
+	            	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, posX, posZ);}
+	            	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+	            	}
+				catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, posX, posZ);}
+				
+				try {
+	            	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
+	            	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, posX, posZ);}
+	            	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+	            	}
+				catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, posX, posZ);}
+				
+				try {
+	            	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
+	            	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+	            	else {this.disallowModSubs = false;}
+	            	}
+				catch (Exception e) {this.disallowModSubs = false;}
+			}
         	
         	// Set ground and clear area above
         	int fillXmin; int fillZmin; int fillXmax; int fillZmax; int clearToHeight = 5;
@@ -737,16 +834,16 @@ public class DesertStructures
             	}}
         	}
         	// Set sandstone in certain places
-        	this.fillWithBlocks(world, structureBB, 7, 0, 0, 7, 0, 4, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 10, 0, 0, 10, 0, 3, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 8, 0, 1, 9, 0, 1, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 8, 0, 3, 9, 0, 3, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 8, 0, 4, 13, 0, 4, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 8, 0, 9, 13, 0, 9, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 8, 0, 5, 8, 0, 8, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 13, 0, 5, 13, 0, 8, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 10, 0, 6, 11, 0, 7, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 14, 0, 6, 14, 0, 8, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 7, 0, 0, 7, 0, 4, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 10, 0, 0, 10, 0, 3, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 8, 0, 1, 9, 0, 1, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 8, 0, 3, 9, 0, 3, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 8, 0, 4, 13, 0, 4, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 8, 0, 9, 13, 0, 9, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 8, 0, 5, 8, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 13, 0, 5, 13, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 10, 0, 6, 11, 0, 7, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 14, 0, 6, 14, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	
         	
         	// Fountain
@@ -772,20 +869,20 @@ public class DesertStructures
         	}
         	else
         	{
-        		this.fillWithBlocks(world, structureBB, 9, 1, 5, 12, 1, 8, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
+        		this.fillWithBlocks(world, structureBB, 9, 1, 5, 12, 1, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	}
         	
         	
         	// Corner posts
-    		this.setBlockState(world, Blocks.SANDSTONE.getStateFromMeta(2), 9, 1, 5, structureBB);
-    		this.setBlockState(world, Blocks.SANDSTONE.getStateFromMeta(2), 9, 1, 8, structureBB);
-    		this.setBlockState(world, Blocks.SANDSTONE.getStateFromMeta(2), 12, 1, 8, structureBB);
-    		this.setBlockState(world, Blocks.SANDSTONE.getStateFromMeta(2), 12, 1, 5, structureBB);
+    		this.setBlockState(world, biomeLogVertState, 9, 1, 5, structureBB);
+    		this.setBlockState(world, biomeLogVertState, 9, 1, 8, structureBB);
+    		this.setBlockState(world, biomeLogVertState, 12, 1, 8, structureBB);
+    		this.setBlockState(world, biomeLogVertState, 12, 1, 5, structureBB);
         	// Top the corners
-    		this.setBlockState(world, Blocks.STONE_SLAB.getStateFromMeta(1), 9, 2, 5, structureBB);
-    		this.setBlockState(world, Blocks.STONE_SLAB.getStateFromMeta(1), 9, 2, 8, structureBB);
-    		this.setBlockState(world, Blocks.STONE_SLAB.getStateFromMeta(1), 12, 2, 8, structureBB);
-    		this.setBlockState(world, Blocks.STONE_SLAB.getStateFromMeta(1), 12, 2, 5, structureBB);
+    		this.setBlockState(world, biomeSandstoneSlabBottomState, 9, 2, 5, structureBB);
+    		this.setBlockState(world, biomeSandstoneSlabBottomState, 9, 2, 8, structureBB);
+    		this.setBlockState(world, biomeSandstoneSlabBottomState, 12, 2, 8, structureBB);
+    		this.setBlockState(world, biomeSandstoneSlabBottomState, 12, 2, 5, structureBB);
         	
     		// Fill with water
     		this.fillWithBlocks(world, structureBB, 10, 1, 6, 11, 1, 7, Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
@@ -798,21 +895,21 @@ public class DesertStructures
     		this.fillWithBlocks(world, structureBB, 10, 1, 0, 10, 3, 0, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 10, 1, 2, 10, 3, 2, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 7, 1, 2, 7, 3, 2, biomeSandstoneWallState, biomeSandstoneWallState, false);
-    		this.fillWithBlocks(world, structureBB, 7, 4, 0, 10, 4, 2, Blocks.STONE_SLAB.getStateFromMeta(1), Blocks.STONE_SLAB.getStateFromMeta(1), false);
+    		this.fillWithBlocks(world, structureBB, 7, 4, 0, 10, 4, 2, biomeSmoothSandstoneSlabBottomState, biomeSmoothSandstoneSlabBottomState, false);
     		this.fillWithAir(world, structureBB, 8, 4, 1, 9, 4, 1);
     		
     		this.fillWithBlocks(world, structureBB, 1, 1, 5, 1, 4, 5, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 5, 1, 5, 5, 4, 5, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 5, 1, 7, 5, 4, 7, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 1, 1, 7, 1, 4, 7, biomeSandstoneWallState, biomeSandstoneWallState, false);
-    		this.fillWithBlocks(world, structureBB, 1, 5, 5, 5, 5, 7, Blocks.STONE_SLAB.getStateFromMeta(1), Blocks.STONE_SLAB.getStateFromMeta(1), false);
+    		this.fillWithBlocks(world, structureBB, 1, 5, 5, 5, 5, 7, biomeSmoothSandstoneSlabBottomState, biomeSmoothSandstoneSlabBottomState, false);
     		this.fillWithAir(world, structureBB, 2, 5, 6, 4, 5, 6);
     		
     		this.fillWithBlocks(world, structureBB, 4, 1, 11, 4, 3, 11, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 7, 1, 11, 7, 3, 11, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 7, 1, 14, 7, 3, 14, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 4, 1, 14, 4, 3, 14, biomeSandstoneWallState, biomeSandstoneWallState, false);
-    		this.fillWithBlocks(world, structureBB, 4, 4, 11, 7, 4, 14, Blocks.STONE_SLAB.getStateFromMeta(1), Blocks.STONE_SLAB.getStateFromMeta(1), false);
+    		this.fillWithBlocks(world, structureBB, 4, 4, 11, 7, 4, 14, biomeSmoothSandstoneSlabBottomState, biomeSmoothSandstoneSlabBottomState, false);
     		this.fillWithAir(world, structureBB, 5, 4, 12, 6, 4, 13);
     		
     		// Stall contents
@@ -830,7 +927,7 @@ public class DesertStructures
     		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor2:0, (3 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex()<2 ? 3 : 0))%4), 8, 1, 0, structureBB);
     		
         	// Cut stone and stairs
-        	this.fillWithBlocks(world, structureBB, 2, 1, 6, 4, 1, 6, Blocks.SANDSTONE.getStateFromMeta(2), Blocks.SANDSTONE.getStateFromMeta(2), false);
+        	this.fillWithBlocks(world, structureBB, 2, 1, 6, 4, 1, 6, biomeLogVertState, biomeLogVertState, false);
         	this.setBlockState(world, Blocks.SANDSTONE_STAIRS.getStateFromMeta(0), 1, 1, 6, structureBB);
         	this.setBlockState(world, Blocks.SANDSTONE_STAIRS.getStateFromMeta(1), 5, 1, 6, structureBB);
         	
@@ -909,7 +1006,7 @@ public class DesertStructures
             	*/
             	
         		// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.biome, this.getCoordBaseMode(), randomFromXYZ);//, townColor);
+            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);//, townColor);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -970,13 +1067,15 @@ public class DesertStructures
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
                 
                 // Place a foundation
-                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, Blocks.SANDSTONE.getDefaultState(), Blocks.SANDSTONE.getDefaultState(), false);
-                this.replaceAirAndLiquidDownwards(world, Blocks.SANDSTONE.getDefaultState(), bannerXBB, bannerYBB-3, bannerZBB, structureBB);
+                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+                this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
                 // Clear space upward
                 this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
                 
+                BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
+                
             	// Set the banner and its orientation
-				world.setBlockState(new BlockPos(bannerX, bannerY, bannerZ), Blocks.STANDING_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.getCoordBaseMode().getHorizontalIndex(), false)));
+				world.setBlockState(bannerPos, Blocks.STANDING_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.getCoordBaseMode().getHorizontalIndex(), false)));
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -984,7 +1083,7 @@ public class DesertStructures
 				
     			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
         		
-        		world.setTileEntity(new BlockPos(bannerX, bannerY, bannerZ), tilebanner);
+        		world.setTileEntity(bannerPos, tilebanner);
     		}
         	
     		
@@ -1024,19 +1123,19 @@ public class DesertStructures
 	/**
 	 * Returns a list of blocks and coordinates used to construct a decor piece
 	 */
-	public static ArrayList<BlueprintData> getRandomDesertDecorBlueprint(MaterialType materialType, Biome biome, EnumFacing coordBaseMode, Random random)//, int townColor)
+	public static ArrayList<BlueprintData> getRandomDesertDecorBlueprint(MaterialType materialType, boolean disallowModSubs, Biome biome, EnumFacing coordBaseMode, Random random)//, int townColor)
 	{
 		int decorCount = 1;
-		return getDesertDecorBlueprint(random.nextInt(decorCount), materialType, biome, coordBaseMode, random);//, townColor);
+		return getDesertDecorBlueprint(random.nextInt(decorCount), materialType, disallowModSubs, biome, coordBaseMode, random);//, townColor);
 	}
-	public static ArrayList<BlueprintData> getDesertDecorBlueprint(int decorType, MaterialType materialType, Biome biome, EnumFacing coordBaseMode, Random random)//, int townColor)
+	public static ArrayList<BlueprintData> getDesertDecorBlueprint(int decorType, MaterialType materialType, boolean disallowModSubs, Biome biome, EnumFacing coordBaseMode, Random random)//, int townColor)
 	{
 		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
 		
 		
 		// Generate per-material blocks
 		
-		IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.SANDSTONE.getStateFromMeta(2), materialType, biome);
+		IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(biomeLogVertState, materialType, biome, disallowModSubs);
 		
 		
         switch (decorType)

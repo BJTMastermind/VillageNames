@@ -57,7 +57,7 @@ public class ConfigReloader {
 		
 		CustomConfigHandler.loadConfiguration();
 		
-		VillageConfigHandler.loadConfiguration();
+		VillageGeneratorConfigHandler.loadConfiguration();
 	}
 	
 }
