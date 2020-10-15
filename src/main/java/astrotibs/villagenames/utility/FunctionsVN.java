@@ -134,6 +134,7 @@ public class FunctionsVN
 			for (BiomeDictionary.Type type : typeTags)
 			{
 				if (type==BiomeDictionary.Type.SNOWY) {isSnowy=true;}
+				if (type==BiomeDictionary.Type.WASTELAND) {isWasteland=true;}
 				if (type==BiomeDictionary.Type.DENSE || type==BiomeDictionary.Type.FOREST || type==BiomeDictionary.Type.LUSH || type==BiomeDictionary.Type.SPARSE) {isSnowy=false; isWasteland=false; break;}
 			}
 			if (isSnowy && isWasteland) {return SNOW;}
