@@ -273,7 +273,7 @@ public final class VillageNames
 	        registerVillageComponentBuilding(TaigaStructures.TaigaFisherCottage1.class, "VNTaFis1", new StructureCreationHandlers.TaigaFisherCottage1_Handler());
 	        registerVillageComponentBuilding(TaigaStructures.TaigaFletcherHouse1.class, "VNTaFle1", new StructureCreationHandlers.TaigaFletcherHouse1_Handler());
 	        registerVillageComponentBuilding(TaigaStructures.TaigaLargeFarm1.class, "VNTaLFa1", new StructureCreationHandlers.TaigaLargeFarm1_Handler());
-	        registerVillageComponentBuilding(TaigaStructures.TaigaMediumFarm1.class, "VNTaLFa2", new StructureCreationHandlers.TaigaMediumFarm1_Handler());
+	        registerVillageComponentBuilding(TaigaStructures.TaigaLargeFarm2.class, "VNTaLFa2", new StructureCreationHandlers.TaigaLargeFarm2_Handler());
 	        registerVillageComponentBuilding(TaigaStructures.TaigaLibrary1.class, "VNTaLib1", new StructureCreationHandlers.TaigaLibrary1_Handler());
 	        registerVillageComponentBuilding(TaigaStructures.TaigaMasonsHouse1.class, "VNTaMas1", new StructureCreationHandlers.TaigaMasonsHouse1_Handler());
 	        registerVillageComponentBuilding(TaigaStructures.TaigaMediumHouse1.class, "VNTaMeH1", new StructureCreationHandlers.TaigaMediumHouse1_Handler());
@@ -366,6 +366,9 @@ public final class VillageNames
 	        
 	        // Listener that interrupts old village generation with the new one
 			MinecraftForge.TERRAIN_GEN_BUS.register(new MapGenVillageVN());
+			
+			// Chest hooks
+			ChestLootHandler.modernVillageChests();
 			
 			LogHelper.info("Registered new Village generator");
 		}

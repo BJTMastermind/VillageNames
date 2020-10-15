@@ -2,6 +2,7 @@ package astrotibs.villagenames.village.biomestructures;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import astrotibs.villagenames.banner.BannerGenerator;
@@ -122,7 +123,10 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
         	
         	if (this.field_143015_k < 0)
             {
@@ -154,26 +158,53 @@ public class DesertStructures
         	if (this.namePrefix.equals("")) {this.namePrefix = villageNBTtag.getString("namePrefix");}
         	if (this.nameRoot.equals("")) {this.nameRoot = villageNBTtag.getString("nameRoot");}
         	if (this.nameSuffix.equals("")) {this.nameSuffix = villageNBTtag.getString("nameSuffix");}
-        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
-        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+
+        	WorldChunkManager chunkManager= world.getWorldChunkManager();
+        	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+            BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 64, posZ));
+			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+            
+			if (this.villageType==null || this.materialType==null)
+			{
+				try {
+	            	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+	            	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+	            	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+	            	}
+				catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+				
+				try {
+	            	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+	            	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+	            	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+	            	}
+				catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+				
+				try {
+	            	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+	            	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+	            	else {this.disallowModSubs = false;}
+	            	}
+				catch (Exception e) {this.disallowModSubs = false;}
+			}
         	
         	// Set sandstone ground and clear area above
-        	this.fillWithBlocks(world, structureBB, 3, 0, 0, 9, 0, 8, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 3, 0, 0, 9, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int x = 3; x <= 9; ++x) {for (int z = 0; z <= 8; ++z)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), x, -1, z, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
         	}}
-        	this.fillWithBlocks(world, structureBB, 1, 0, 1, 2, 0, 7, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 1, 0, 1, 2, 0, 7, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int x = 1; x <= 2; ++x) {for (int z = 1; z <= 7; ++z)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), x, -1, z, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
         	}}
-        	this.fillWithBlocks(world, structureBB, 0, 0, 3, 0, 0, 5, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 0, 0, 3, 0, 0, 5, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int x = 0; x <= 0; ++x) {for (int z = 3; z <= 5; ++z)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), x, -1, z, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
         	}}
         	
@@ -192,7 +223,7 @@ public class DesertStructures
         	}
         	else
         	{
-        		this.fillWithBlocks(world, structureBB, 2, 1, 2, 6, 1, 6, Blocks.sandstone.getStateFromMeta(2), Blocks.sandstone.getStateFromMeta(2), false);
+        		this.fillWithBlocks(world, structureBB, 2, 1, 2, 6, 1, 6, biomeLogVertState, biomeLogVertState, false);
         	}
         	// Air in the corners
             this.setBlockState(world, Blocks.air.getDefaultState(), 2, 1, 2, structureBB);
@@ -201,16 +232,16 @@ public class DesertStructures
             this.setBlockState(world, Blocks.air.getDefaultState(), 6, 1, 2, structureBB);
             
             // Sand underneath the rim
-            this.fillWithBlocks(world, structureBB, 3, 0, 2, 5, 0, 2, Blocks.sand.getDefaultState(), Blocks.sand.getDefaultState(), false);
-            this.fillWithBlocks(world, structureBB, 3, 0, 6, 5, 0, 6, Blocks.sand.getDefaultState(), Blocks.sand.getDefaultState(), false);
-            this.fillWithBlocks(world, structureBB, 2, 0, 3, 2, 0, 5, Blocks.sand.getDefaultState(), Blocks.sand.getDefaultState(), false);
-            this.fillWithBlocks(world, structureBB, 6, 0, 3, 6, 0, 5, Blocks.sand.getDefaultState(), Blocks.sand.getDefaultState(), false);
+            this.fillWithBlocks(world, structureBB, 3, 0, 2, 5, 0, 2, biomeDirtState, biomeDirtState, false);
+            this.fillWithBlocks(world, structureBB, 3, 0, 6, 5, 0, 6, biomeDirtState, biomeDirtState, false);
+            this.fillWithBlocks(world, structureBB, 2, 0, 3, 2, 0, 5, biomeDirtState, biomeDirtState, false);
+            this.fillWithBlocks(world, structureBB, 6, 0, 3, 6, 0, 5, biomeDirtState, biomeDirtState, false);
             
             // Water in the fountain
             this.fillWithBlocks(world, structureBB, 3, 1, 3, 5, 1, 5, Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);
             
             // Spout
-            this.fillWithBlocks(world, structureBB, 4, 1, 4, 4, 3, 4, Blocks.sandstone.getStateFromMeta(2), Blocks.sandstone.getStateFromMeta(2), false);
+            this.fillWithBlocks(world, structureBB, 4, 1, 4, 4, 3, 4, biomeLogVertState, biomeLogVertState, false);
             if (GeneralConfig.useVillageColors)
         	{
         		/*Object[] tryConcrete = ModObjects.chooseModConcrete(townColor2);
@@ -232,16 +263,21 @@ public class DesertStructures
             	this.setBlockState(world, Blocks.torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
-            // Cactus
-            int tileU = 5;
-            int tileV = 2;
-            int tileW = 2;
+
+            // Flower pot
+            int flowernumber = 9; // Cactus
             
-            BlockPos potPos = new BlockPos(this.getXWithOffset(tileU, tileW), this.getYWithOffset(tileV), this.getZWithOffset(tileU, tileW));
-            
-            TileEntity flowerPotWithCactus = (new BlockFlowerPot()).createNewTileEntity(world, 9); // 9 is cactus
-            world.setBlockState(potPos, Blocks.flower_pot.getDefaultState(), 2);
-            world.setTileEntity(potPos, flowerPotWithCactus);
+        	int potU = 5;
+        	int potV = 2;
+        	int potW = 2;
+        	int potX = this.getXWithOffset(potU, potW);
+        	int potY = this.getYWithOffset(potV);
+        	int potZ = this.getZWithOffset(potU, potW);
+        	
+        	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+    		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+    		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+    		world.setTileEntity(flowerPotPos, flowerPot);
             
             
             // Sign
@@ -283,13 +319,15 @@ public class DesertStructures
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
                 
                 // Place a foundation
-                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-                this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), bannerXBB, bannerYBB-3, bannerZBB, structureBB);
+                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+                this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
                 // Clear space upward
                 this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
                 
+                BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
+                
             	// Set the banner and its orientation
-				world.setBlockState(new BlockPos(bannerX, bannerY, bannerZ), Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.coordBaseMode.getHorizontalIndex(), false)));
+				world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.coordBaseMode.getHorizontalIndex(), false)));
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -297,7 +335,7 @@ public class DesertStructures
 				
     			((TileEntityBanner) tilebanner).setItemValues(villageBanner);
         		
-        		world.setTileEntity(new BlockPos(bannerX, bannerY, bannerZ), tilebanner);
+        		world.setTileEntity(bannerPos, tilebanner);
     		}
         	
     		
@@ -394,7 +432,10 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
         	
         	if (this.field_143015_k < 0)
             {
@@ -426,50 +467,77 @@ public class DesertStructures
         	if (this.namePrefix.equals("")) {this.namePrefix = villageNBTtag.getString("namePrefix");}
         	if (this.nameRoot.equals("")) {this.nameRoot = villageNBTtag.getString("nameRoot");}
         	if (this.nameSuffix.equals("")) {this.nameSuffix = villageNBTtag.getString("nameSuffix");}
-        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
-        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+
+        	WorldChunkManager chunkManager= world.getWorldChunkManager();
+        	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+            BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 64, posZ));
+			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+            
+			if (this.villageType==null || this.materialType==null)
+			{
+				try {
+	            	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+	            	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+	            	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+	            	}
+				catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+				
+				try {
+	            	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+	            	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+	            	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+	            	}
+				catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+				
+				try {
+	            	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+	            	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+	            	else {this.disallowModSubs = false;}
+	            	}
+				catch (Exception e) {this.disallowModSubs = false;}
+			}
         	
         	// Set sandstone ground and clear area above
-        	this.fillWithBlocks(world, structureBB, 1, 0, 1, 10, 0, 10, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 1, 0, 1, 10, 0, 10, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	
         	// Fill foundation
         	for (int x = 1; x <= 10; ++x)
             {
 	        	for (int z = 1; z <= 10; ++z)
 	            {
-	                this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), x, -1, z, structureBB); // Foundation
+	                this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
 	                this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
                 }
             }
         	
         	// Path hitches at the ends
-        	this.fillWithBlocks(world, structureBB, 0, 0, 5, 0, 0, 7, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 0, 0, 5, 0, 0, 7, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int w = 5; w <= 7; ++w)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), 0, -1, w, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, 0, -1, w, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, 0, 1, w, structureBB);
         	}
-        	this.fillWithBlocks(world, structureBB, 11, 0, 4, 11, 0, 6, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 11, 0, 4, 11, 0, 6, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int w = 4; w <= 6; ++w)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), 11, -1, w, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, 11, -1, w, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, 11, 1, w, structureBB);
         	}
-        	this.fillWithBlocks(world, structureBB, 4, 0, 0, 6, 0, 0, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 4, 0, 0, 6, 0, 0, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int w = 4; w <= 6; ++w)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), w, -1, 0, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, w, -1, 0, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, w, 1, 0, structureBB);
         	}
-        	this.fillWithBlocks(world, structureBB, 5, 0, 11, 7, 0, 11, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 5, 0, 11, 7, 0, 11, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	for (int w = 5; w <= 7; ++w)
         	{
-        		this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), w, -1, 11, structureBB); // Foundation
+        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, w, -1, 11, structureBB); // Foundation
         		this.clearCurrentPositionBlocksUpwards(world, w, 1, 11, structureBB);
         	}
         	
         	// Set sand underneath the fountain
-        	this.fillWithBlocks(world, structureBB, 3, 0, 3, 8, 0, 8, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 3, 0, 3, 8, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	
         	// Set well rim
         	if (GeneralConfig.useVillageColors)
@@ -486,20 +554,20 @@ public class DesertStructures
         	}
         	else
         	{
-        		this.fillWithBlocks(world, structureBB, 3, 1, 3, 8, 1, 8, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        		this.fillWithBlocks(world, structureBB, 3, 1, 3, 8, 1, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	}
         	
         	// Water in the fountain
             this.fillWithBlocks(world, structureBB, 4, 1, 4, 7, 1, 7, Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);
             
             // Sandstone slab roof
-            this.fillWithBlocks(world, structureBB, 4, 4, 4, 7, 4, 7, Blocks.stone_slab.getStateFromMeta(1), Blocks.stone_slab.getStateFromMeta(1), false);
+            this.fillWithBlocks(world, structureBB, 4, 4, 4, 7, 4, 7, biomeSmoothSandstoneSlabBottomState, biomeSmoothSandstoneSlabBottomState, false);
             
         	// Columns
-            this.fillWithBlocks(world, structureBB, 4, 1, 4, 4, 4, 4, Blocks.sandstone.getStateFromMeta(2), Blocks.sandstone.getStateFromMeta(2), false);
-            this.fillWithBlocks(world, structureBB, 4, 1, 7, 4, 4, 7, Blocks.sandstone.getStateFromMeta(2), Blocks.sandstone.getStateFromMeta(2), false);
-            this.fillWithBlocks(world, structureBB, 7, 1, 7, 7, 4, 7, Blocks.sandstone.getStateFromMeta(2), Blocks.sandstone.getStateFromMeta(2), false);
-            this.fillWithBlocks(world, structureBB, 7, 1, 4, 7, 4, 4, Blocks.sandstone.getStateFromMeta(2), Blocks.sandstone.getStateFromMeta(2), false);
+            this.fillWithBlocks(world, structureBB, 4, 1, 4, 4, 4, 4, biomeLogVertState, biomeLogVertState, false);
+            this.fillWithBlocks(world, structureBB, 4, 1, 7, 4, 4, 7, biomeLogVertState, biomeLogVertState, false);
+            this.fillWithBlocks(world, structureBB, 7, 1, 7, 7, 4, 7, biomeLogVertState, biomeLogVertState, false);
+            this.fillWithBlocks(world, structureBB, 7, 1, 4, 7, 4, 4, biomeLogVertState, biomeLogVertState, false);
             
             // Torches
             for (int[] uvwo : new int[][]{
@@ -541,7 +609,7 @@ public class DesertStructures
             }
             else
             {
-            	this.fillWithBlocks(world, structureBB, 5, 4, 5, 6, 4, 6, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, 5, 4, 5, 6, 4, 6, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
             }
             
             
@@ -584,13 +652,15 @@ public class DesertStructures
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
                 
                 // Place a foundation
-                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-                this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), bannerXBB, bannerYBB-3, bannerZBB, structureBB);
+                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+                this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
                 // Clear space upward
                 this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
                 
+                BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
+                
             	// Set the banner and its orientation
-				world.setBlockState(new BlockPos(bannerX, bannerY, bannerZ), Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(12, this.coordBaseMode.getHorizontalIndex(), false)));
+				world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(12, this.coordBaseMode.getHorizontalIndex(), false)));
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -598,7 +668,7 @@ public class DesertStructures
 				
     			((TileEntityBanner) tilebanner).setItemValues(villageBanner);
         		
-        		world.setTileEntity(new BlockPos(bannerX, bannerY, bannerZ), tilebanner);
+        		world.setTileEntity(bannerPos, tilebanner);
     		}
         	
     		
@@ -695,8 +765,13 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome); // TODO - Check for modded sandstone walls
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome, this.disallowModSubs); // TODO - Check for modded sandstone walls
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
         	
         	if (this.field_143015_k < 0)
             {
@@ -728,50 +803,83 @@ public class DesertStructures
         	if (this.namePrefix.equals("")) {this.namePrefix = villageNBTtag.getString("namePrefix");}
         	if (this.nameRoot.equals("")) {this.nameRoot = villageNBTtag.getString("nameRoot");}
         	if (this.nameSuffix.equals("")) {this.nameSuffix = villageNBTtag.getString("nameSuffix");}
-        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
-        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+
+        	WorldChunkManager chunkManager= world.getWorldChunkManager();
+        	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+            BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 64, posZ));
+			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+            
+			if (this.villageType==null || this.materialType==null)
+			{
+				try {
+	            	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+	            	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+	            	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+	            	}
+				catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+				
+				try {
+	            	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+	            	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+	            	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+	            	}
+				catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+				
+				try {
+	            	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+	            	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+	            	else {this.disallowModSubs = false;}
+	            	}
+				catch (Exception e) {this.disallowModSubs = false;}
+			}
         	
         	// Set ground and clear area above
         	int fillXmin; int fillZmin; int fillXmax; int fillZmax; int clearToHeight = 5;
         	
         	for (Object[] o : new Object[][]{
-        		// minX, maxX, minZ, maxZ, groundY, structureHeight, surfaceBlock, surfaceMeta, subsurfaceBlock, subsurfaceMeta 
-        		{0, 0, 7, 12, 0, 5, Blocks.sand, 0, Blocks.sandstone.getStateFromMeta(0)},
-        		{1, 2, 4, 12, 0, 5, Blocks.sand, 0, Blocks.sandstone.getStateFromMeta(0)},
-        		{1, 2, 14, 14, 0, 5, Blocks.sand, 0, Blocks.sandstone.getStateFromMeta(0)},
-        		{0, 2, 13, 13, -1, 5, Blocks.sandstone.getStateFromMeta(0), Blocks.sandstone.getStateFromMeta(0)},
-        		{2, 2, 3, 3, -1, 5, Blocks.sandstone.getStateFromMeta(0), Blocks.sandstone.getStateFromMeta(0)},
-        		{3, 3, 14, 14, -1, 5, Blocks.sandstone.getStateFromMeta(0), Blocks.sandstone.getStateFromMeta(0)},
-        		{3, 3, 1, 13, 0, 5, Blocks.sand, 0, Blocks.sandstone.getStateFromMeta(0)},
-        		{3, 3, 0, 0, -1, 5, Blocks.sandstone.getStateFromMeta(0), Blocks.sandstone.getStateFromMeta(0)},
-        		{4, 4, 2, 14, 0, 5, Blocks.sand, 0, Blocks.sandstone.getStateFromMeta(0)},
-        		{4, 4, 0, 1, -1, 5, Blocks.sandstone.getStateFromMeta(0), Blocks.sandstone.getStateFromMeta(0)},
-        		{5, 9, 0, 14, 0, 5, Blocks.sand, 0, Blocks.sandstone.getStateFromMeta(0)},
-        		{10, 11, 0, 13, 0, 5, Blocks.sand, 0, Blocks.sandstone.getStateFromMeta(0)},
-        		{12, 12, 1, 13, 0, 5, Blocks.sand, 0, Blocks.sandstone.getStateFromMeta(0)},
-        		{12, 12, 0, 0, -1, 5, Blocks.sandstone.getStateFromMeta(0), Blocks.sandstone.getStateFromMeta(0)},
-        		{13, 13, 0, 12, 0, 5, Blocks.sand, 0, Blocks.sandstone.getStateFromMeta(0)},
-        		{14, 14, 3, 11, 0, 5, Blocks.sand, 0, Blocks.sandstone.getStateFromMeta(0)},
+        		// minX, maxX, minZ, maxZ, structureHeight, surfaceBlockState, subsurfaceBlockState 
+        		{0, 0, 7, 12, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{1, 2, 4, 12, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{1, 2, 14, 14, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{0, 2, 13, 13, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{2, 2, 3, 3, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{3, 3, 14, 14, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{3, 3, 1, 13, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{3, 3, 0, 0, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{4, 4, 2, 14, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{4, 4, 0, 1, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{5, 9, 0, 14, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{10, 11, 0, 13, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{12, 12, 1, 13, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{12, 12, 0, 0, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{13, 13, 0, 12, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{14, 14, 3, 11, 0, biomeDirtState, biomeSmoothSandstoneState},
         	})
         	{
-        		this.fillWithBlocks(world, structureBB, (Integer)o[0], (Integer)o[4], (Integer)o[2], (Integer)o[1], (Integer)o[4], (Integer)o[3], ((Block)o[6]).getStateFromMeta((Integer)o[7]), ((Block)o[6]).getStateFromMeta((Integer)o[7]), false);
-            	for (int x = (Integer)o[0]; x <= (Integer)o[1]; ++x) {for (int z = (Integer)o[2]; z <= (Integer)o[3]; ++z)
+        		this.fillWithBlocks(world, structureBB,
+        				(Integer)o[0], (Integer)o[4], (Integer)o[2],
+        				(Integer)o[1], (Integer)o[4], (Integer)o[3],
+        				((IBlockState)o[5]),
+        				((IBlockState)o[5]),
+        				false);
+            	
+        		for (int x = (Integer)o[0]; x <= (Integer)o[1]; ++x) {for (int z = (Integer)o[2]; z <= (Integer)o[3]; ++z)
             	{
-            		this.replaceAirAndLiquidDownwards(world, ((Block)o[8]).getStateFromMeta((Integer)o[9]), x, (Integer)o[4]-1, z, structureBB); // Foundation
+            		this.replaceAirAndLiquidDownwards(world, ((IBlockState)o[6]), x, (Integer)o[4]-1, z, structureBB); // Foundation
             		this.clearCurrentPositionBlocksUpwards(world, (Integer)o[0], Math.max((Integer)o[4], 0)+1, (Integer)o[2], structureBB);
             	}}
         	}
         	// Set sandstone in certain places
-        	this.fillWithBlocks(world, structureBB, 7, 0, 0, 7, 0, 4, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 10, 0, 0, 10, 0, 3, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 8, 0, 1, 9, 0, 1, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 8, 0, 3, 9, 0, 3, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 8, 0, 4, 13, 0, 4, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 8, 0, 9, 13, 0, 9, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 8, 0, 5, 8, 0, 8, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 13, 0, 5, 13, 0, 8, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 10, 0, 6, 11, 0, 7, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-        	this.fillWithBlocks(world, structureBB, 14, 0, 6, 14, 0, 8, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        	this.fillWithBlocks(world, structureBB, 7, 0, 0, 7, 0, 4, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 10, 0, 0, 10, 0, 3, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 8, 0, 1, 9, 0, 1, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 8, 0, 3, 9, 0, 3, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 8, 0, 4, 13, 0, 4, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 8, 0, 9, 13, 0, 9, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 8, 0, 5, 8, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 13, 0, 5, 13, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 10, 0, 6, 11, 0, 7, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+        	this.fillWithBlocks(world, structureBB, 14, 0, 6, 14, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	
         	
         	// Fountain
@@ -803,15 +911,15 @@ public class DesertStructures
         	}
         	else
         	{
-        		this.fillWithBlocks(world, structureBB, 9, 1, 5, 12, 1, 8, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
+        		this.fillWithBlocks(world, structureBB, 9, 1, 5, 12, 1, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	}
         	
         	
         	// Corner posts
-    		this.setBlockState(world, Blocks.sandstone.getStateFromMeta(2), 9, 1, 5, structureBB);
-    		this.setBlockState(world, Blocks.sandstone.getStateFromMeta(2), 9, 1, 8, structureBB);
-    		this.setBlockState(world, Blocks.sandstone.getStateFromMeta(2), 12, 1, 8, structureBB);
-    		this.setBlockState(world, Blocks.sandstone.getStateFromMeta(2), 12, 1, 5, structureBB);
+    		this.setBlockState(world, biomeLogVertState, 9, 1, 5, structureBB);
+    		this.setBlockState(world, biomeLogVertState, 9, 1, 8, structureBB);
+    		this.setBlockState(world, biomeLogVertState, 12, 1, 8, structureBB);
+    		this.setBlockState(world, biomeLogVertState, 12, 1, 5, structureBB);
         	// Top the corners
     		this.setBlockState(world, Blocks.stone_slab.getStateFromMeta(1), 9, 2, 5, structureBB);
     		this.setBlockState(world, Blocks.stone_slab.getStateFromMeta(1), 9, 2, 8, structureBB);
@@ -829,21 +937,21 @@ public class DesertStructures
     		this.fillWithBlocks(world, structureBB, 10, 1, 0, 10, 3, 0, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 10, 1, 2, 10, 3, 2, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 7, 1, 2, 7, 3, 2, biomeSandstoneWallState, biomeSandstoneWallState, false);
-    		this.fillWithBlocks(world, structureBB, 7, 4, 0, 10, 4, 2, Blocks.stone_slab.getStateFromMeta(1), Blocks.stone_slab.getStateFromMeta(1), false);
+    		this.fillWithBlocks(world, structureBB, 7, 4, 0, 10, 4, 2, biomeSmoothSandstoneSlabBottomState, biomeSmoothSandstoneSlabBottomState, false);
     		this.fillWithAir(world, structureBB, 8, 4, 1, 9, 4, 1);
     		
     		this.fillWithBlocks(world, structureBB, 1, 1, 5, 1, 4, 5, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 5, 1, 5, 5, 4, 5, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 5, 1, 7, 5, 4, 7, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 1, 1, 7, 1, 4, 7, biomeSandstoneWallState, biomeSandstoneWallState, false);
-    		this.fillWithBlocks(world, structureBB, 1, 5, 5, 5, 5, 7, Blocks.stone_slab.getStateFromMeta(1), Blocks.stone_slab.getStateFromMeta(1), false);
+    		this.fillWithBlocks(world, structureBB, 1, 5, 5, 5, 5, 7, biomeSmoothSandstoneSlabBottomState, biomeSmoothSandstoneSlabBottomState, false);
     		this.fillWithAir(world, structureBB, 2, 5, 6, 4, 5, 6);
     		
     		this.fillWithBlocks(world, structureBB, 4, 1, 11, 4, 3, 11, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 7, 1, 11, 7, 3, 11, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 7, 1, 14, 7, 3, 14, biomeSandstoneWallState, biomeSandstoneWallState, false);
     		this.fillWithBlocks(world, structureBB, 4, 1, 14, 4, 3, 14, biomeSandstoneWallState, biomeSandstoneWallState, false);
-    		this.fillWithBlocks(world, structureBB, 4, 4, 11, 7, 4, 14, Blocks.stone_slab.getStateFromMeta(1), Blocks.stone_slab.getStateFromMeta(1), false);
+    		this.fillWithBlocks(world, structureBB, 4, 4, 11, 7, 4, 14, biomeSmoothSandstoneSlabBottomState, biomeSmoothSandstoneSlabBottomState, false);
     		this.fillWithAir(world, structureBB, 5, 4, 12, 6, 4, 13);
     		
     		// Stall contents
@@ -874,7 +982,7 @@ public class DesertStructures
         	}
     		
         	// Cut stone and stairs
-        	this.fillWithBlocks(world, structureBB, 2, 1, 6, 4, 1, 6, Blocks.sandstone.getStateFromMeta(2), Blocks.sandstone.getStateFromMeta(2), false);
+        	this.fillWithBlocks(world, structureBB, 2, 1, 6, 4, 1, 6, biomeLogVertState, biomeLogVertState, false);
         	this.setBlockState(world, Blocks.sandstone_stairs.getStateFromMeta(this.getMetadataWithOffset(Blocks.sandstone_stairs, 0)), 1, 1, 6, structureBB);
         	this.setBlockState(world, Blocks.sandstone_stairs.getStateFromMeta(this.getMetadataWithOffset(Blocks.sandstone_stairs, 1)), 5, 1, 6, structureBB);
         	
@@ -903,10 +1011,10 @@ public class DesertStructures
         		{4, 1, 5, 10},
         	})
         	{
-        		BlockPos potPos = new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2]));
-        		TileEntity flowerPotTE = (new BlockFlowerPot()).createNewTileEntity(world, uvwm[3]);
-                world.setBlockState(potPos, Blocks.flower_pot.getDefaultState(), 2);
-                world.setTileEntity(potPos, flowerPotTE);
+        		TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, uvwm[3]);
+        		BlockPos flowerPotPos = new BlockPos(this.getXWithOffset(uvwm[0], uvwm[2]), this.getYWithOffset(uvwm[1]), this.getZWithOffset(uvwm[0], uvwm[2]));
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
         	}
         	
         	
@@ -953,7 +1061,7 @@ public class DesertStructures
             	*/
             	
         		// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.biome, this.coordBaseMode, randomFromXYZ);//, townColor);
+            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.coordBaseMode, randomFromXYZ);//, townColor);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -1014,13 +1122,15 @@ public class DesertStructures
                 int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
                 
                 // Place a foundation
-                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, Blocks.sandstone.getDefaultState(), Blocks.sandstone.getDefaultState(), false);
-                this.replaceAirAndLiquidDownwards(world, Blocks.sandstone.getDefaultState(), bannerXBB, bannerYBB-3, bannerZBB, structureBB);
+                this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
+                this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
                 // Clear space upward
                 this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
                 
+                BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
+                
             	// Set the banner and its orientation
-				world.setBlockState(new BlockPos(bannerX, bannerY, bannerZ), Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.coordBaseMode.getHorizontalIndex(), false)));
+				world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(8, this.coordBaseMode.getHorizontalIndex(), false)));
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -1028,7 +1138,7 @@ public class DesertStructures
 				
     			((TileEntityBanner) tilebanner).setItemValues(villageBanner);
         		
-        		world.setTileEntity(new BlockPos(bannerX, bannerY, bannerZ), tilebanner);
+        		world.setTileEntity(bannerPos, tilebanner);
     		}
         	
     		
@@ -1080,6 +1190,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -1127,6 +1238,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -1202,46 +1314,79 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
         	// Sandstone wall that defaults to fence
-        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallIntoFenceState, this.materialType, this.biome);}
+        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
         	// Smooth Sandstone Block
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
         	// Smooth Sandstone Stairs
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
             
         	
         	// Grass
@@ -1326,21 +1471,21 @@ public class DesertStructures
             
             
             // Clear path for easier entry
-            int pathV = GROUND_LEVEL;
-            int pathW = -1;
-            
-            for (int pathU=4; pathU<=5; pathU++)
-            {
+            for (int[] uvw : new int[][]{
+        		{4, GROUND_LEVEL, -1}, 
+        		{5, GROUND_LEVEL, -1}, 
+           		})
+        	{
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
+                
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
             }
-            
+        	
             
             // Entities
             if (!this.entitiesGenerated)
@@ -1381,6 +1526,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -1428,6 +1574,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -1502,47 +1649,79 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
         	// Sandstone wall that defaults to fence
-        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallIntoFenceState, this.materialType, this.biome);}
+        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
         	// Smooth Sandstone Block
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
         	// Smooth Sandstone Stairs
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
             
         	
         	// Grass
@@ -1627,21 +1806,21 @@ public class DesertStructures
             
             
             // Clear path for easier entry
-            int pathV = GROUND_LEVEL;
-            int pathW = -1;
-            
-            for (int pathU=4; pathU<=5; pathU++)
-            {
+            for (int[] uvw : new int[][]{
+        		{4, GROUND_LEVEL, -1}, 
+        		{5, GROUND_LEVEL, -1}, 
+           		})
+        	{
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
+                
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
             }
-            
+        	
             
             // Entities
             if (!this.entitiesGenerated)
@@ -1682,6 +1861,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -1727,6 +1907,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -1801,52 +1982,84 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
             
         	
         	// Furnace first because we put the torches on it
         	IBlockState graniteState = Blocks.stone.getStateFromMeta(1);
         	Block graniteStairsBlock = ModObjects.chooseModGraniteStairsBlock();
-        	IBlockState graniteWallState = ModObjects.chooseModGraniteWallBlock();
+        	IBlockState graniteWallState = ModObjects.chooseModGraniteWallState();
         	if (graniteStairsBlock==null || graniteWallState==null)
         	{
         		graniteState = Blocks.cobblestone.getStateFromMeta(0);
@@ -1993,19 +2206,20 @@ public class DesertStructures
             
             
             // Clear path for easier entry
-            int pathU = 3;
-            int pathV = GROUND_LEVEL;
-            int pathW = -1;
-            
-            this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-        	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-        	/*// Place dirt if the block to be set as path is empty
-        	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
+            for (int[] uvw : new int[][]{
+        		{3, GROUND_LEVEL, -1}, 
+           		})
         	{
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
+                
+                // Clear above and set foundation below
+                this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
             	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-        	}*/
-        	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));            
-
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -2045,6 +2259,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -2091,6 +2306,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -2165,51 +2381,83 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence_gate.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	// Sandstone wall that defaults to fence
-        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallIntoFenceState, this.materialType, this.biome);}
+        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
         	IBlockState smokerState = ModObjects.chooseModSmokerState(3, this.coordBaseMode);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false); // Toward you
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true); // Perpendicular to you
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone
@@ -2359,19 +2607,20 @@ public class DesertStructures
         	
             
             // Clear path for easier entry
-            int pathU = 3;
-            int pathV = GROUND_LEVEL;
-            int pathW = -1;
-            
-            this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-        	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-        	/*// Place dirt if the block to be set as path is empty
-        	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
+            for (int[] uvw : new int[][]{
+        		{3, GROUND_LEVEL, -1}, 
+           		})
         	{
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
+                
+                // Clear above and set foundation below
+                this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
             	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-        	}*/
-        	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));            
-
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Entities
             if (!this.entitiesGenerated)
@@ -2428,6 +2677,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -2473,6 +2723,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -2547,44 +2798,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState();
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
             
         	// Smooth Sandstone
@@ -2714,33 +2997,42 @@ public class DesertStructures
         		{0,0,0}, {5,3,2}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(9), uvw[0], uvw[1], uvw[2], structureBB); // 9 is cactus
+            	// Flower pot
+                int flowernumber = 9; // Cactus
+                
+            	int potU = uvw[0];
+            	int potV = uvw[1];
+            	int potW = uvw[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
             
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{5,GROUND_LEVEL,-1}, {6,GROUND_LEVEL,-1}, 
-        		{0,GROUND_LEVEL,7}, {1,GROUND_LEVEL,7}, {2,GROUND_LEVEL,7}, 
+        		{5, GROUND_LEVEL, -1}, 
+        		{6, GROUND_LEVEL, -1}, 
+        		{0, GROUND_LEVEL, 7}, 
+        		{1, GROUND_LEVEL, 7}, 
+        		{2, GROUND_LEVEL, 7}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Entities
             if (!this.entitiesGenerated)
@@ -2783,6 +3075,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -2826,6 +3119,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -2900,40 +3194,72 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone - vertical logs (back-right building)
@@ -3010,32 +3336,25 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{0,GROUND_LEVEL,-1}, 
-        		{1,GROUND_LEVEL,-1}, 
-        		{2,GROUND_LEVEL,-1}, 
-        		{3,GROUND_LEVEL,-1}, 
-        		{4,GROUND_LEVEL,-1}, 
-        		{5,GROUND_LEVEL,-1}, 
-        		{6,GROUND_LEVEL,-1}, 
+        		{0, GROUND_LEVEL, -1}, 
+        		{1, GROUND_LEVEL, -1}, 
+        		{2, GROUND_LEVEL, -1}, 
+        		{3, GROUND_LEVEL, -1}, 
+        		{4, GROUND_LEVEL, -1}, 
+        		{5, GROUND_LEVEL, -1}, 
+        		{6, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Entities
             if (!this.entitiesGenerated)
@@ -3081,6 +3400,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -3126,6 +3446,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -3200,41 +3521,73 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeTrapdoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.trapdoor.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeTrapdoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.trapdoor.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Smooth Sandstone Stairs
@@ -3350,30 +3703,25 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{0,GROUND_LEVEL,-1}, 
-        		{1,GROUND_LEVEL,-1}, 
-        		{2,GROUND_LEVEL,-1}, 
-        		{3,GROUND_LEVEL,-1}, 
-        		{4,GROUND_LEVEL,-1}, 
-        		{5,GROUND_LEVEL,-1}, 
-        		{6,GROUND_LEVEL,-1}, 
+        		{0, GROUND_LEVEL, -1}, 
+        		{1, GROUND_LEVEL, -1}, 
+        		{2, GROUND_LEVEL, -1}, 
+        		{3, GROUND_LEVEL, -1}, 
+        		{4, GROUND_LEVEL, -1}, 
+        		{5, GROUND_LEVEL, -1}, 
+        		{6, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Entities
             if (!this.entitiesGenerated)
@@ -3419,6 +3767,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -3438,9 +3787,9 @@ public class DesertStructures
         		"FFFFFFFFFF ",
         		"FFFFFFFFFF ",
         		"FFFFFFFFFF ",
-        		"FFFFFFFFFF ",
-        		"FFFFFF  F  ",
-        		"FFFFFFFF FF",
+        		"FFFFFFFPFF ",
+        		"FFFFF  PF  ",
+        		"FFFFFFFP FF",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -3465,6 +3814,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -3539,44 +3889,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone
@@ -3725,31 +4107,39 @@ public class DesertStructures
         		{5,1,0, 10}, {6,1,2, 9}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	// Flower pot
+                int flowernumber = uvwm[3];
+                
+            	int potU = uvwm[0];
+            	int potV = uvwm[1];
+            	int potW = uvwm[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
         	
         	
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{7,GROUND_LEVEL,-1}, 
+        		{7, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Entities
             if (!this.entitiesGenerated)
@@ -3795,6 +4185,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -3814,7 +4205,7 @@ public class DesertStructures
         		"FFFFFFFFFFFF",
         		"FFFFFFFFFFFF",
         		"FFFFFFFFF   ",
-        		"   F        ",
+        		"   P        ",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -3839,6 +4230,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -3913,47 +4305,79 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSandstoneWallIntoCobblestoneState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoCobblestoneState==null) {biomeSandstoneWallIntoCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.cobblestone.getStateFromMeta(0), this.materialType, this.biome);} else {biomeSandstoneWallIntoCobblestoneState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallIntoCobblestoneState, this.materialType, this.biome);}
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneWallIntoCobblestoneState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoCobblestoneState==null) {biomeSandstoneWallIntoCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.cobblestone.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoCobblestoneState, this.materialType, this.biome, this.disallowModSubs);}
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState();
-        	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlock(Blocks.ladder.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.ladder.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone - using logs
@@ -4098,31 +4522,39 @@ public class DesertStructures
         		{0,2,3, 9}, {6,2,1, 9}, {4,2,5, 9}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	// Flower pot
+                int flowernumber = uvwm[3];
+                
+            	int potU = uvwm[0];
+            	int potV = uvwm[1];
+            	int potW = uvwm[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
         	
         	
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{3,GROUND_LEVEL,-1}, 
+        		{3, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Entities
             if (!this.entitiesGenerated)
@@ -4162,6 +4594,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -4211,6 +4644,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -4285,40 +4719,72 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
             
         	// Sand via Dirt
@@ -4527,6 +4993,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -4570,6 +5037,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -4644,47 +5112,79 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false); // Toward you
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true); // Perpendicular to you
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone - using logs
@@ -4757,8 +5257,21 @@ public class DesertStructures
         		{2,2,0}, {6,2,0}, {2,2,4}, {6,2,4}, 
             	})
             {
-        		// Cactus
-        		this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(9), uvw[0], uvw[1], uvw[2], structureBB);
+            	// Flower pot
+                int flowernumber = 9; // cactus
+                
+            	int potU = uvw[0];
+            	int potV = uvw[1];
+            	int potW = uvw[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
+        		
         		// Sandstone slab
         		this.setBlockState(world, biomeSandstoneSlabTopState, uvw[0], uvw[1]+1, uvw[2], structureBB);	
             }
@@ -4774,7 +5287,7 @@ public class DesertStructures
         	
         	
         	// Lecterns
-        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlock(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
             for (int[] uvwo : new int[][]{ // u, v, w, orientation, color meta
             	// Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
             	{7,1,2, 3},
@@ -4828,21 +5341,16 @@ public class DesertStructures
         		{4, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Entities
             if (!this.entitiesGenerated)
@@ -4882,6 +5390,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -4901,8 +5410,8 @@ public class DesertStructures
         		"FFFFFFFF",
         		"FFFFFFFF",
         		"FFFFFFFF",
-        		"   FF   ",
-        		"  FFFF  ",
+        		"   PP   ",
+        		"  FPPF  ",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -4927,6 +5436,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -5001,44 +5511,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true); // Perpendicular to you
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallIntoFenceState, this.materialType, this.biome);}
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone - using logs
@@ -5177,21 +5719,16 @@ public class DesertStructures
         		{4, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Entities
             if (!this.entitiesGenerated)
@@ -5231,6 +5768,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -5275,6 +5813,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -5349,45 +5888,77 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true); // Perpendicular to you
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome);
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone - using logs
@@ -5509,7 +6080,20 @@ public class DesertStructures
         		{1,1,0}, {3,2,4},  
             	})
             {
-        		this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(9), uvw[0], uvw[1], uvw[2], structureBB); // Cactus
+            	// Flower pot
+                int flowernumber = 9; // Cactus
+                
+            	int potU = uvw[0];
+            	int potV = uvw[1];
+            	int potW = uvw[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
         	
         	
@@ -5556,21 +6140,16 @@ public class DesertStructures
         		{4, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -5619,6 +6198,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -5639,7 +6219,7 @@ public class DesertStructures
         		"FFFFFFFFFFF",
         		"FFFFFFFFFFF",
         		"FFFFFFFFFFF",
-        		"FFFFFFFFFFF",
+        		"FFFFFFPFFFF",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -5664,6 +6244,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -5738,44 +6319,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_button.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlock(Blocks.ladder.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.wooden_button.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.ladder.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
             
         	// Smooth Sandstone, Part 1
@@ -5891,7 +6504,20 @@ public class DesertStructures
         		{6,4,2}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(9), uvw[0], uvw[1], uvw[2], structureBB); // 9 is cactus
+            	// Flower pot
+                int flowernumber = 9; // Cactus
+                
+            	int potU = uvw[0];
+            	int potV = uvw[1];
+            	int potW = uvw[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
             
         	
@@ -5957,26 +6583,19 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{6,GROUND_LEVEL,-1}, 
+        		{6, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -6025,6 +6644,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -6068,6 +6688,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -6142,46 +6763,78 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome);
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallIntoFenceState, this.materialType, this.biome);}
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
         	IBlockState loomState = ModObjects.chooseModLoom();
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone - using logs
@@ -6315,7 +6968,20 @@ public class DesertStructures
             	{4,2,0}, {8,2,0}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(9), uvw[0], uvw[1], uvw[2], structureBB); // 9 is cactus
+            	// Flower pot
+                int flowernumber = 9; // Cactus
+                
+            	int potU = uvw[0];
+            	int potV = uvw[1];
+            	int potW = uvw[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
             
             
@@ -6349,26 +7015,19 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{6,GROUND_LEVEL,-1}, 
+        		{6, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Entities
             if (!this.entitiesGenerated)
@@ -6424,6 +7083,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -6443,7 +7103,7 @@ public class DesertStructures
         		"FFFFF",
         		"FFFFF",
         		"FFFFF",
-        		"  F  ",
+        		"  P  ",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -6468,6 +7128,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -6542,44 +7203,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
             
         	// Smooth Sandstone
@@ -6659,12 +7352,22 @@ public class DesertStructures
         		{2,2,5}, 
         		})
             {
-        		for (int i=0; i<2; i++)
-        		{
-        			this.setBlockState(world,
-        					new IBlockState[]{Blocks.flower_pot.getStateFromMeta(9), biomeSandstoneSlabTopState}[i],
-        					uvw[0], uvw[1]+i, uvw[2], structureBB);
-        		}
+            	// Flower pot
+                int flowernumber = 9; // Cactus
+                
+            	int potU = uvw[0];
+            	int potV = uvw[1];
+            	int potW = uvw[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
+        		
+        		this.setBlockState(world, biomeSandstoneSlabTopState, potU, potV+1, potW, structureBB);
             }
         	
         	
@@ -6700,26 +7403,19 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{2,GROUND_LEVEL,-1}, 
+        		{2, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -6767,6 +7463,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -6786,8 +7483,8 @@ public class DesertStructures
         		"FFFFF",
         		"FFFFF",
         		"FFFFF",
-        		" FF  ",
-        		"F FFF",
+        		" FP  ",
+        		"F PFF",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -6812,6 +7509,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -6886,48 +7584,80 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false); // Toward you
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true); // Perpendicular to you
-        	IBlockState biomeChiseledSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(1), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallIntoFenceState, this.materialType, this.biome);}
+        	IBlockState biomeChiseledSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
             
         	// Smooth Sandstone, part 1
@@ -7057,18 +7787,28 @@ public class DesertStructures
         	
         	
             // Windows
-        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome);
+        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uvw : new int[][]{
         		// Back wall
         		{2,2,6}, 
         		})
             {
-        		for (int i=0; i<2; i++)
-        		{
-        			this.setBlockState(world,
-        					new IBlockState[]{Blocks.flower_pot.getStateFromMeta(9), biomeSandstoneSlabTopState}[i],
-        					uvw[0], uvw[1]+i, uvw[2], structureBB);
-        		}
+            	// Flower pot
+                int flowernumber = 9; // Cactus
+                
+            	int potU = uvw[0];
+            	int potV = uvw[1];
+            	int potW = uvw[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
+        		
+        		this.setBlockState(world, biomeSandstoneSlabTopState, potU, potV+1, potW, structureBB);
             }
         	
         	
@@ -7104,26 +7844,19 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{2,GROUND_LEVEL,-1}, 
+        		{2, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -7171,6 +7904,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -7190,7 +7924,7 @@ public class DesertStructures
         		"FFFFF",
         		"FFFFF",
         		"FFFFF",
-        		"FFFFF",
+        		"FFPFF",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -7215,6 +7949,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -7289,46 +8024,78 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_button.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.wooden_button.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone - using logs
@@ -7451,7 +8218,20 @@ public class DesertStructures
         		{1,2,3, 10}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	// Flower pot
+                int flowernumber = uvwm[3];
+                
+            	int potU = uvwm[0];
+            	int potV = uvwm[1];
+            	int potW = uvwm[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
         	
             
@@ -7477,26 +8257,19 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{2,GROUND_LEVEL,-1}, 
+        		{2, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -7544,6 +8317,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -7587,6 +8361,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -7661,43 +8436,75 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone - using logs
@@ -7825,26 +8632,19 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{2,GROUND_LEVEL,-1}, 
+        		{2, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -7892,6 +8692,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -7911,7 +8712,7 @@ public class DesertStructures
         		"FFFFF",
         		"FFFFF",
         		"FFFFF",
-        		"FFFFF",
+        		"FFPFF",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -7936,6 +8737,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -8010,43 +8812,75 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_button.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.wooden_button.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone - using logs
@@ -8131,7 +8965,20 @@ public class DesertStructures
         		{3,1,0, 9}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	// Flower pot
+                int flowernumber = uvwm[3];
+                
+            	int potU = uvwm[0];
+            	int potV = uvwm[1];
+            	int potW = uvwm[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
             
         	
@@ -8179,26 +9026,19 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{2,GROUND_LEVEL,-1}, 
+        		{2, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -8246,6 +9086,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -8265,7 +9106,7 @@ public class DesertStructures
         		"FFFFF",
         		"FFFFF",
         		"FFFFF",
-        		"FFFFF",
+        		"FFPFF",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -8290,6 +9131,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -8364,44 +9206,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true); // Perpendicular to you
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
         	
         	// Cut sandstone - using logs
@@ -8671,26 +9545,19 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{2,GROUND_LEVEL,-1}, 
+        		{2, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -8738,6 +9605,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -8756,10 +9624,10 @@ public class DesertStructures
         		"FFFFFFF",
         		"FFFFFFF",
         		"FFFFFFF",
-        		"FFF   F",
-        		"FFF F F",
-        		"FFF   F",
-        		"FFFFFFF",
+        		"FPF   F",
+        		"FPF F F",
+        		"FPF   F",
+        		"FPFFFFF",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -8784,6 +9652,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -8858,44 +9727,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallIntoFenceState, this.materialType, this.biome);}
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_fence.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
             
         	// Sandstone Wall
@@ -9001,7 +9902,20 @@ public class DesertStructures
         		{6,2,2, 10}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	// Flower pot
+                int flowernumber = uvwm[3];
+                
+            	int potU = uvwm[0];
+            	int potV = uvwm[1];
+            	int potW = uvwm[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
         	
             
@@ -9041,26 +9955,19 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{1,GROUND_LEVEL,-1}, 
+        		{1, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -9108,6 +10015,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -9151,6 +10059,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -9225,44 +10134,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome);
-        	IBlockState biomeSandstoneStairsState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone_stairs.getDefaultState(), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneStairsState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone_stairs.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGreenCoralOrPottedCactusState = ModObjects.chooseGreenCoralOrPottedCactus();
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
             
         	// Smooth Sandstone
@@ -9390,26 +10331,19 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{2,GROUND_LEVEL,-1}, 
+        		{2, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -9457,6 +10391,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -9501,6 +10436,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -9575,46 +10511,78 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false); // Toward you
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true); // Perpendicular to you
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	
             
         	// Logs
@@ -9749,7 +10717,20 @@ public class DesertStructures
         		{5,5,1, 9}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	// Flower pot
+                int flowernumber = uvwm[3];
+                
+            	int potU = uvwm[0];
+            	int potV = uvwm[1];
+            	int potW = uvwm[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
             
         	
@@ -9780,32 +10761,25 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{0,GROUND_LEVEL,-1}, 
-        		{1,GROUND_LEVEL,-1}, 
-        		{2,GROUND_LEVEL,-1}, 
-        		{3,GROUND_LEVEL,-1}, 
-        		{4,GROUND_LEVEL,-1},
-        		{5,GROUND_LEVEL,-1}, 
-        		{6,GROUND_LEVEL,-1}, 
+        		{0, GROUND_LEVEL, -1}, 
+        		{1, GROUND_LEVEL, -1}, 
+        		{2, GROUND_LEVEL, -1}, 
+        		{3, GROUND_LEVEL, -1}, 
+        		{4, GROUND_LEVEL, -1},
+        		{5, GROUND_LEVEL, -1}, 
+        		{6, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -9846,6 +10820,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -9895,6 +10870,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -9969,44 +10945,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
             
         	
         	// Smooth Sandstone, part 1
@@ -10121,12 +11129,22 @@ public class DesertStructures
         		{1,2,0}, {8,2,0}, {9,2,1}, {9,2,9}, {8,2,10}, {1,2,10}, {0,2,9}, {0,2,1}, 
         		})
             {
-        		for (int i=0; i<2; i++)
-        		{
-        			this.setBlockState(world,
-        					new IBlockState[] {Blocks.flower_pot.getStateFromMeta(9), biomeSandstoneSlabTopState}[i],
-        					uvw[0], uvw[1]+i, uvw[2], structureBB);
-        		}
+        		// Flower pot
+                int flowernumber = 9; // Cactus
+                
+            	int potU = uvw[0];
+            	int potV = uvw[1];
+            	int potW = uvw[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
+        		
+        		this.setBlockState(world, biomeSandstoneSlabTopState, potU, potV+1, potW, structureBB);
             }
             
         	
@@ -10187,32 +11205,25 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{0,GROUND_LEVEL,-1}, 
-        		{1,GROUND_LEVEL,-1}, 
-        		{2,GROUND_LEVEL,-1}, 
-        		{3,GROUND_LEVEL,-1}, 
-        		{4,GROUND_LEVEL,-1},
-        		{5,GROUND_LEVEL,-1}, 
-        		{6,GROUND_LEVEL,-1}, 
+        		{0, GROUND_LEVEL, -1}, 
+        		{1, GROUND_LEVEL, -1}, 
+        		{2, GROUND_LEVEL, -1}, 
+        		{3, GROUND_LEVEL, -1}, 
+        		{4, GROUND_LEVEL, -1},
+        		{5, GROUND_LEVEL, -1}, 
+        		{6, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -10253,6 +11264,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -10301,6 +11313,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -10375,44 +11388,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
             
         	
         	// Smooth Sandstone, part 1
@@ -10514,7 +11559,20 @@ public class DesertStructures
         		{9,1,0, 9}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	// Flower pot
+                int flowernumber = uvwm[3]; // Cactus
+                
+            	int potU = uvwm[0];
+            	int potV = uvwm[1];
+            	int potW = uvwm[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
         	
         	
@@ -10568,37 +11626,30 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{0,GROUND_LEVEL,-1}, 
-        		{1,GROUND_LEVEL,-1}, 
-        		{2,GROUND_LEVEL,-1}, 
-        		{3,GROUND_LEVEL,-1}, 
-        		{4,GROUND_LEVEL,-1},
-        		{5,GROUND_LEVEL,-1}, 
-        		{6,GROUND_LEVEL,-1}, 
-        		{7,GROUND_LEVEL,-1}, 
-        		{8,GROUND_LEVEL,-1}, 
-        		{9,GROUND_LEVEL,-1}, 
-        		{10,GROUND_LEVEL,-1}, 
-        		{11,GROUND_LEVEL,-1}, 
+        		{0, GROUND_LEVEL, -1}, 
+        		{1, GROUND_LEVEL, -1}, 
+        		{2, GROUND_LEVEL, -1}, 
+        		{3, GROUND_LEVEL, -1}, 
+        		{4, GROUND_LEVEL, -1},
+        		{5, GROUND_LEVEL, -1}, 
+        		{6, GROUND_LEVEL, -1}, 
+        		{7, GROUND_LEVEL, -1}, 
+        		{8, GROUND_LEVEL, -1}, 
+        		{9, GROUND_LEVEL, -1}, 
+        		{10, GROUND_LEVEL, -1}, 
+        		{11, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -10639,6 +11690,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -10659,9 +11711,9 @@ public class DesertStructures
         		"FFFFFFFFF",
         		"FFFFFFFFF",
         		"FFFFFFFFF",
-        		"FFFFF F F",
-        		"FFFFF FF ",
-        		"FFFFFFF  ",
+        		"FFFFF P F",
+        		"FFFFF PF ",
+        		"FFFFFFP  ",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -10686,6 +11738,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -10760,44 +11813,76 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome); 
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlock(Blocks.wooden_button.getDefaultState(), this.materialType, this.biome);
-        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlock(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.wooden_button.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
             
         	
         	// Smooth Sandstone
@@ -10921,7 +12006,20 @@ public class DesertStructures
         		{8,3,2, 9}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	// Flower pot
+                int flowernumber = uvwm[3]; // Cactus
+                
+            	int potU = uvwm[0];
+            	int potV = uvwm[1];
+            	int potW = uvwm[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
             
         	
@@ -11009,32 +12107,25 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{0,GROUND_LEVEL,-1}, 
-        		{1,GROUND_LEVEL,-1}, 
-        		{2,GROUND_LEVEL,-1}, 
-        		{3,GROUND_LEVEL,-1}, 
-        		{4,GROUND_LEVEL,-1},
-        		{5,GROUND_LEVEL,-1}, 
-        		{6,GROUND_LEVEL,-1}, 
+        		{0, GROUND_LEVEL, -1}, 
+        		{1, GROUND_LEVEL, -1}, 
+        		{2, GROUND_LEVEL, -1}, 
+        		{3, GROUND_LEVEL, -1}, 
+        		{4, GROUND_LEVEL, -1},
+        		{5, GROUND_LEVEL, -1}, 
+        		{6, GROUND_LEVEL, -1}, 
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -11082,6 +12173,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -11127,6 +12219,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -11201,48 +12294,80 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome);
-        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.log.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_slab.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false); // Toward you
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true); // Perpendicular to you
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome).getBlock();
-        	IBlockState biomeSandstoneWallIntoCobblestoneWallState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoCobblestoneWallState==null) {biomeSandstoneWallIntoCobblestoneWallState = Blocks.cobblestone_wall.getStateFromMeta(0);} else {biomeSandstoneWallIntoCobblestoneWallState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallIntoCobblestoneWallState, this.materialType, this.biome);}
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSandstoneWallIntoCobblestoneWallState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoCobblestoneWallState==null) {biomeSandstoneWallIntoCobblestoneWallState = Blocks.cobblestone_wall.getStateFromMeta(0);} else {biomeSandstoneWallIntoCobblestoneWallState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoCobblestoneWallState, this.materialType, this.biome, this.disallowModSubs);}
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
+        	// Follow the blueprint to set up the starting foundation
         	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-            		if (
-            				(foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase().equals("F"))
-            				|| (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            				)
-            		{
-            			// If marked with F or if this is biome-style dirt: fill with dirt foundation
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-                    	// Top with grass
-                    	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
             
         	
         	// Cut Sandstone
@@ -11397,7 +12522,20 @@ public class DesertStructures
         		{0,2,2, 9}, 
            		})
         	{
-            	this.setBlockState(world, Blocks.flower_pot.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	// Flower pot
+                int flowernumber = uvwm[3]; // Cactus
+                
+            	int potU = uvwm[0];
+            	int potV = uvwm[1];
+            	int potW = uvwm[2];
+            	int potX = this.getXWithOffset(potU, potW);
+            	int potY = this.getYWithOffset(potV);
+            	int potZ = this.getZWithOffset(potU, potW);
+            	
+            	TileEntity flowerPot = (new BlockFlowerPot()).createNewTileEntity(world, flowernumber);
+        		BlockPos flowerPotPos = new BlockPos(potX, potY, potZ);
+        		world.setBlockState(flowerPotPos, Blocks.flower_pot.getDefaultState());
+        		world.setTileEntity(flowerPotPos, flowerPot);
             }
             
             
@@ -11430,28 +12568,21 @@ public class DesertStructures
             
             // Clear path for easier entry
             for (int[] uvw : new int[][]{
-        		{2,GROUND_LEVEL,-1}, 
-        		{3,GROUND_LEVEL,-1}, 
-        		{4,GROUND_LEVEL,-1},
+        		{2, GROUND_LEVEL, -1}, 
+        		{3, GROUND_LEVEL, -1}, 
+        		{4, GROUND_LEVEL, -1},
            		})
         	{
-            	int pathU = uvw[0];
-                int pathV = uvw[1];
-                int pathW = uvw[2];
+            	int pathU = uvw[0]; int pathV = uvw[1]; int pathW = uvw[2];
                 
+                // Clear above and set foundation below
                 this.clearCurrentPositionBlocksUpwards(world, pathU, pathV, pathW, structureBB);
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-1, pathW, structureBB);
-            	/*// Place dirt if the block to be set as path is empty
-            	if (world.isAirBlock(this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW)))
-            	{
-                	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
-            	}*/
-            	
-            	// Only add path blocks in the front. Otherwise add "regular" grass
-            	if (pathW==-1) {StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW));}
-            	else {this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);}
-        	}
-            
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, pathU, pathV-2, pathW, structureBB);
+            	// Top is grass which is converted to path
+            	this.setBlockState(world, biomeGrassState, pathU, pathV-1, pathW, structureBB);
+            	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
+            }
+        	
             
     		// Villagers
             if (!this.entitiesGenerated)
@@ -11509,6 +12640,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -11544,6 +12676,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -11618,36 +12751,74 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	/*
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
             	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
             	// top with grass
             	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
-        	for (int w=0; w < STRUCTURE_DEPTH; w++) {for (int u=0; u < STRUCTURE_WIDTH; u++) {
+        	// Follow the blueprint to set up the starting foundation
+        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-        			if (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            		{
-            			// If dirt, add dirt foundation and then cap with grass:
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-            			this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
             */
             
             // Decor
@@ -11678,7 +12849,35 @@ public class DesertStructures
             	
             	uvw[2] = decorDepth;
             	
-            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.boundingBox.minY;
+            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.getYWithOffset(0);
+
+            	// If the decor is ON the road, do a surround check to make sure it isn't sunken into the ground
+            	if (decorDepth<0)
+            	{
+	            	int nonairSurrounding = 0;
+	            	int decorY = this.getYWithOffset(decorHeightY);
+	            	for (int i=0; i<8; i++)
+	            	{
+	            		int[][] surroundpos = new int[][]{
+	            			{0,0},
+	            			{0,1},
+	            			{0,2},
+	            			{1,2},
+	            			{2,2},
+	            			{2,1},
+	            			{2,0},
+	            			{1,0},
+	            		};
+	            		int u = surroundpos[i][0]; int w = surroundpos[i][0];
+	            		int x = this.getXWithOffset(u, w);
+	            		int z = this.getZWithOffset(u, w);
+	            		BlockPos pos = new BlockPos(x, decorY, z);
+	            		if (world.getBlockState(pos).getBlock()!=Blocks.air)
+	            		{
+	            			if (++nonairSurrounding >=4) {decorHeightY++; break;}
+	            		}
+	            	}
+            	}
             	
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], decorHeightY+1, uvw[2], structureBB);
@@ -11699,7 +12898,7 @@ public class DesertStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.biome, this.coordBaseMode, randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.coordBaseMode, randomFromXYZ);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -11753,6 +12952,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -11789,6 +12989,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -11807,7 +13008,7 @@ public class DesertStructures
         {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, STRUCTURE_WIDTH, STRUCTURE_HEIGHT, STRUCTURE_DEPTH, coordBaseMode);
             // Structure on the other side of the street
-            StructureBoundingBox structureBBOtherSide = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, -Reference.STREET_WIDTH-1-STRUCTURE_DEPTH, STRUCTURE_WIDTH, STRUCTURE_HEIGHT, -Reference.STREET_WIDTH-1, coordBaseMode);
+            StructureBoundingBox structureBBOtherSide = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, -16, -Reference.STREET_WIDTH-1-STRUCTURE_DEPTH, STRUCTURE_WIDTH, STRUCTURE_HEIGHT+16, -Reference.STREET_WIDTH-1, coordBaseMode);
             
             return canVillageGoDeeper(structureboundingbox)
             		&& StructureComponent.findIntersecting(pieces, structureboundingbox) == null
@@ -11868,36 +13069,74 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	/*
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
             	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
             	// top with grass
             	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
-        	for (int w=0; w < STRUCTURE_DEPTH; w++) {for (int u=0; u < STRUCTURE_WIDTH; u++) {
+        	// Follow the blueprint to set up the starting foundation
+        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-        			if (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            		{
-            			// If dirt, add dirt foundation and then cap with grass:
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-            			this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
             */
         	// Setting terracotta into ground level
         	for (int[] uw : new int[][]{
@@ -11934,7 +13173,7 @@ public class DesertStructures
         		// Make foundation
         		this.replaceAirAndLiquidDownwards(world, biomeDirtState, uw[0], groundV-1, uw[1], structureBB);
         		// Set the block
-        		StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(uw[0], uw[1]), groundY, this.getZWithOffset(uw[0], uw[1]));
+        		StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(uw[0], uw[1]), groundY, this.getZWithOffset(uw[0], uw[1]), true);
         		// Clear upwards
         		this.clearCurrentPositionBlocksUpwards(world, uw[0], groundV+1, uw[1], structureBB);
         	}
@@ -11961,7 +13200,7 @@ public class DesertStructures
     							this.getZWithOffset(uvw[0], uvw[2]))
     							);
             	
-            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.boundingBox.minY;
+            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.getYWithOffset(0);
             	
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], decorHeightY+1, uvw[2], structureBB);
@@ -11982,7 +13221,7 @@ public class DesertStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.biome, this.coordBaseMode, randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.coordBaseMode, randomFromXYZ);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -12036,6 +13275,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -12071,6 +13311,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -12089,7 +13330,7 @@ public class DesertStructures
         {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, STRUCTURE_WIDTH, STRUCTURE_HEIGHT, STRUCTURE_DEPTH, coordBaseMode);
             // Structure on the other side of the street
-            StructureBoundingBox structureBBOtherSide = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, -Reference.STREET_WIDTH-1-STRUCTURE_DEPTH, STRUCTURE_WIDTH, STRUCTURE_HEIGHT, -Reference.STREET_WIDTH-1, coordBaseMode);
+            StructureBoundingBox structureBBOtherSide = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, -16, -Reference.STREET_WIDTH-1-STRUCTURE_DEPTH, STRUCTURE_WIDTH, STRUCTURE_HEIGHT+16, -Reference.STREET_WIDTH-1, coordBaseMode);
             
             return canVillageGoDeeper(structureboundingbox)
             		&& StructureComponent.findIntersecting(pieces, structureboundingbox) == null
@@ -12150,36 +13391,74 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	/*
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
             	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
             	// top with grass
             	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
-        	for (int w=0; w < STRUCTURE_DEPTH; w++) {for (int u=0; u < STRUCTURE_WIDTH; u++) {
+        	// Follow the blueprint to set up the starting foundation
+        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-        			if (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            		{
-            			// If dirt, add dirt foundation and then cap with grass:
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-            			this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	 */
         	// Setting path into the ground
         	for (int[] uw : new int[][]{
@@ -12197,7 +13476,7 @@ public class DesertStructures
         		// Make foundation
         		this.replaceAirAndLiquidDownwards(world, biomeDirtState, uw[0], groundV-1, uw[1], structureBB);
         		// Set the block
-        		StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(uw[0], uw[1]), groundY, this.getZWithOffset(uw[0], uw[1]));
+        		StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(uw[0], uw[1]), groundY, this.getZWithOffset(uw[0], uw[1]), true);
         		// Clear upwards
         		this.clearCurrentPositionBlocksUpwards(world, uw[0], groundV+1, uw[1], structureBB);
         	}
@@ -12242,7 +13521,7 @@ public class DesertStructures
             	// Get coordinates
             	int[] uvw = decorUVW[j];
             	
-            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.boundingBox.minY;
+            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.getYWithOffset(0);
             	
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], decorHeightY+1, uvw[2], structureBB);
@@ -12263,7 +13542,7 @@ public class DesertStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.biome, this.coordBaseMode, randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.coordBaseMode, randomFromXYZ);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -12317,6 +13596,7 @@ public class DesertStructures
     	public ArrayList<Integer> decorHeightY = new ArrayList();
     	public FunctionsVN.VillageType villageType=null;
     	public FunctionsVN.MaterialType materialType=null;
+    	public boolean disallowModSubs=false;
     	public int townColor=-1;
     	public int townColor2=-1;
     	public int townColor3=-1;
@@ -12353,6 +13633,7 @@ public class DesertStructures
             {
             	this.villageType=start.villageType;
             	this.materialType=start.materialType;
+            	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
             	this.townColor2=start.townColor2;
             	this.townColor3=start.townColor3;
@@ -12371,7 +13652,7 @@ public class DesertStructures
         {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, STRUCTURE_WIDTH, STRUCTURE_HEIGHT, STRUCTURE_DEPTH, coordBaseMode);
             // Structure on the other side of the street
-            StructureBoundingBox structureBBOtherSide = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, -Reference.STREET_WIDTH-1-STRUCTURE_DEPTH, STRUCTURE_WIDTH, STRUCTURE_HEIGHT, -Reference.STREET_WIDTH-1, coordBaseMode);
+            StructureBoundingBox structureBBOtherSide = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, -16, -Reference.STREET_WIDTH-1-STRUCTURE_DEPTH, STRUCTURE_WIDTH, STRUCTURE_HEIGHT+16, -Reference.STREET_WIDTH-1, coordBaseMode);
             
             return canVillageGoDeeper(structureboundingbox)
             		&& StructureComponent.findIntersecting(pieces, structureboundingbox) == null
@@ -12432,36 +13713,74 @@ public class DesertStructures
             	this.namePrefix = villageNBTtag.getString("namePrefix");
             	this.nameRoot = villageNBTtag.getString("nameRoot");
             	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(villageNBTtag.getString("villageType"), FunctionsVN.VillageType.getVillageTypeFromBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
-            	this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(villageNBTtag.getString("materialType"), FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, (this.boundingBox.minX+this.boundingBox.maxX)/2, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));
+            	
+            	WorldChunkManager chunkManager= world.getWorldChunkManager();
+            	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
+                BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
+    			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+                
+    			try {
+                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
+                	}
+    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
+                	}
+    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(chunkManager, posX, posZ);}
+    			
+    			try {
+                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
+                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
+                	else {this.disallowModSubs = false;}
+                	}
+    			catch (Exception e) {this.disallowModSubs = false;}
             }
         	// Reestablish biome if start was null or something
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
         	
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.dirt.getStateFromMeta(0), this.materialType, this.biome);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.grass.getStateFromMeta(0), this.materialType, this.biome);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	/*
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
             	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
             	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
+            	this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
             	// top with grass
             	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
             }}
             
-            // Make foundation with blanks as empty air and F as foundation spaces
-            
-        	for (int w=0; w < STRUCTURE_DEPTH; w++) {for (int u=0; u < STRUCTURE_WIDTH; u++) {
+        	// Follow the blueprint to set up the starting foundation
+        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
         		
-        			if (world.getBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(GROUND_LEVEL-1), this.getZWithOffset(u, w)))==biomeDirtState)
-            		{
-            			// If dirt, add dirt foundation and then cap with grass:
-            			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-2, w, structureBB);
-            			this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            		}
-                }
-            }
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ))==Blocks.air?0:-1), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
         	*/
         	// Setting path into the ground
         	for (int[] uw : new int[][]{
@@ -12478,7 +13797,7 @@ public class DesertStructures
         		// Make foundation
         		this.replaceAirAndLiquidDownwards(world, biomeDirtState, uw[0], groundV-1, uw[1], structureBB);
         		// Set the block
-        		StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, 0, this.getXWithOffset(uw[0], uw[1]), groundY, this.getZWithOffset(uw[0], uw[1]));
+        		StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(uw[0], uw[1]), groundY, this.getZWithOffset(uw[0], uw[1]), true);
         		// Clear upwards
         		this.clearCurrentPositionBlocksUpwards(world, uw[0], groundV+1, uw[1], structureBB);
         	}
@@ -12493,7 +13812,7 @@ public class DesertStructures
             	// Get coordinates
             	int[] uvw = decorUVW[j];
             	
-            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.boundingBox.minY;
+            	int decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), 64, this.getZWithOffset(uvw[0], uvw[2]))).getY()-this.getYWithOffset(0);
             	
             	this.replaceAirAndLiquidDownwards(world, biomeDirtState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], decorHeightY+1, uvw[2], structureBB);
@@ -12514,7 +13833,7 @@ public class DesertStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.biome, this.coordBaseMode, random);
+            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.coordBaseMode, random);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -12565,19 +13884,19 @@ public class DesertStructures
 	/**
 	 * Returns a list of blocks and coordinates used to construct a decor piece
 	 */
-	public static ArrayList<BlueprintData> getRandomDesertDecorBlueprint(MaterialType materialType, BiomeGenBase biome, EnumFacing coordBaseMode, Random random)//, int townColor)
+	public static ArrayList<BlueprintData> getRandomDesertDecorBlueprint(MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, EnumFacing coordBaseMode, Random random)//, int townColor)
 	{
 		int decorCount = 1;
-		return getDesertDecorBlueprint(random.nextInt(decorCount), materialType, biome, coordBaseMode, random);//, townColor);
+		return getDesertDecorBlueprint(random.nextInt(decorCount), materialType, disallowModSubs, biome, coordBaseMode, random);//, townColor);
 	}
-	public static ArrayList<BlueprintData> getDesertDecorBlueprint(int decorType, MaterialType materialType, BiomeGenBase biome, EnumFacing coordBaseMode, Random random)//, int townColor)
+	public static ArrayList<BlueprintData> getDesertDecorBlueprint(int decorType, MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, EnumFacing coordBaseMode, Random random)//, int townColor)
 	{
 		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
 		
 		
 		// Generate per-material blocks
 		
-		IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(Blocks.sandstone.getStateFromMeta(2), materialType, biome);
+		IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.sandstone.getStateFromMeta(2), materialType, biome, disallowModSubs);
 		
 		
         switch (decorType)

@@ -236,6 +236,15 @@ public class ModObjects {
 	}
 	
 	
+	// Blue Ice
+	// Added in 1.13
+    public static IBlockState chooseModBlueIceBlockState()
+    {
+    	// None are found, so return ordinary packed ice
+    	return Blocks.packed_ice.getDefaultState();
+    }
+	
+	
 	// Concrete
 	public static IBlockState chooseModConcreteState(int color)
 	{
@@ -258,7 +267,7 @@ public class ModObjects {
      * STANDING:
      * 0=fore-facing (away from you); 4=right-facing; 8=back-facing (toward you); 12=left-facing
      */
-	public static IBlockState chooseModCampfireBlockState(int relativeOrientation, int horizIndex)
+	public static IBlockState chooseModCampfireBlockState(int relativeOrientation, EnumFacing coordBaseMode)
 	{
 		// No mod campfires exist. Return an upright torch.
 		return Blocks.torch.getDefaultState();
@@ -298,7 +307,7 @@ public class ModObjects {
 		// TODO - Botania available in 1.10
 		return null;
 	}
-	public static IBlockState chooseModDioriteWallBlock()
+	public static IBlockState chooseModDioriteWallState()
 	{
 		// TODO - Botania available in 1.10
 		return null;
@@ -332,7 +341,7 @@ public class ModObjects {
 		// TODO - Botania available in 1.10
 		return null;
 	}
-	public static IBlockState chooseModGraniteWallBlock()
+	public static IBlockState chooseModGraniteWallState()
 	{
 		// TODO - Botania available in 1.10
 		return null;
@@ -581,5 +590,18 @@ public class ModObjects {
 	public static ItemStack chooseModSweetBerriesItem()
 	{
 		return null;
+	}
+	
+	// Wood block (has bark on all surfaces)
+	// Added as craftable in 1.13
+	public static IBlockState chooseModWoodBlock(IBlockState blockstate)
+	{
+		Block block = blockstate.getBlock();
+		int meta = block.getMetaFromState(blockstate);
+		
+		// Pass the original block if it's not a vanilla log
+		if (block!=Blocks.log && block!=Blocks.log2) {return blockstate;}
+		
+		return block.getStateFromMeta(meta+12);
 	}
 }

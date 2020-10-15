@@ -729,15 +729,13 @@ public class WellDecorateEvent {
 											iblockstate = event.world.getBlockState( potPos );
 											blocktoscan = iblockstate.getBlock();
 											
-											if (blocktoscan == Blocks.flower_pot) {
-												
+											if (blocktoscan == Blocks.flower_pot)
+											{
 												//potmeta = event.world.getblockstate;
 												potmeta = blocktoscan.getMetaFromState(iblockstate);
 												
-												if (potmeta != 7 ) { // This is blue wool at y=64
-													
-													// Replace the wool block
-													
+												if (potmeta != 7 )
+												{
 													TileEntity flowerPotWithRedMushroom = (new BlockFlowerPot()).createNewTileEntity(event.world, 7);
 													
 													event.world.setBlockState(potPos, Blocks.flower_pot.getDefaultState());
@@ -750,7 +748,6 @@ public class WellDecorateEvent {
 													structureData.setDirty(true);
 													
 													return;
-													
 												}
 											}
 										}
