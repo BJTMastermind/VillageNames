@@ -78,6 +78,8 @@ public class GeneralConfig {
 	
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
+
+	public static float harvestcraftCropFarmRate;
 	
 	public static void init(File configFile)
 	{
@@ -364,7 +366,9 @@ public class GeneralConfig {
 								);
 		
 		
-		//--------------Mod Naming-----------------//
+		//--------------Mod Integration-----------------//
+
+		harvestcraftCropFarmRate = config.getFloat("Crop rate: Harvestcraft", "Mod Integration", 0.25F, 0F, 1F, "Generate Harvestcraft crops in farms. Only used with Village Generator. Set to 0 for no HC crops.");
 		
 		// Mapping for modded structures, and the creatures that can name them
 		modStructureNames = config.getStringList("Mod Structures", "Mod Integration", new String[]{
@@ -378,8 +382,8 @@ public class GeneralConfig {
 				"alienvillage|FronosVillage|Fronos Village|Fronos|fronosvillage|stevekung.mods.moreplanets.module.planets.fronos.entities.EntityFronosVillager",
 				"alienvillage|KoentusVillage|Koentus Village|Koentus|koentusvillage|stevekung.mods.moreplanets.moons.koentus.entities.EntityKoentusianVillager",
 				"alienvillage|KoentusVillage|Koentus Village|Koentus|koentusvillage|stevekung.mods.moreplanets.module.moons.koentus.entities.EntityKoentusianVillager",
-				"alienvillage|NibiruVillage|Nibiru Village|The Nether|nibiruvillage|stevekung.mods.moreplanets.planets.nibiru.entity.EntityNibiruVillager",
-				"alienvillage|NibiruVillage|Nibiru Village|The Nether|nibiruvillage|stevekung.mods.moreplanets.module.planets.nibiru.entity.EntityNibiruVillager",
+				"alienvillage|NibiruVillage|Nibiru Village|Nibiru|nibiruvillage|stevekung.mods.moreplanets.planets.nibiru.entity.EntityNibiruVillager",
+				"alienvillage|NibiruVillage|Nibiru Village|Nibiru|nibiruvillage|stevekung.mods.moreplanets.module.planets.nibiru.entity.EntityNibiruVillager",
 				
 				// Hardcore Ender Expansion
 				"endcity|hardcoreenderdragon_EndTower|Dungeon Tower|The End|endcity|",

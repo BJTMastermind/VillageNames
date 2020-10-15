@@ -19,9 +19,26 @@ public class Reference
     public static final String ELDER_GUARDIAN_CLASS = "net.minecraft.entity.monster.EntityElderGuardian";
     public static final String VILLAGER_CLASS = "net.minecraft.entity.passive.EntityVillager"; // v3.2.4
     public static final int STREET_WIDTH = 3;
-    
+	
+	// Vanilla village component class paths
+	public static final String House4Garden_CLASS = "net.minecraft.world.gen.structure.StructureVillagePieces$House4Garden";
+	public static final String Church_CLASS = "net.minecraft.world.gen.structure.StructureVillagePieces$Church";
+	public static final String House1_CLASS = "net.minecraft.world.gen.structure.StructureVillagePieces$House1";
+	public static final String WoodHut_CLASS = "net.minecraft.world.gen.structure.StructureVillagePieces$WoodHut";
+	public static final String Hall_CLASS = "net.minecraft.world.gen.structure.StructureVillagePieces$Hall";
+	public static final String Field1_CLASS = "net.minecraft.world.gen.structure.StructureVillagePieces$Field1";
+	public static final String Field2_CLASS = "net.minecraft.world.gen.structure.StructureVillagePieces$Field2";
+	public static final String House2_CLASS = "net.minecraft.world.gen.structure.StructureVillagePieces$House2";
+	public static final String House3_CLASS = "net.minecraft.world.gen.structure.StructureVillagePieces$House3";
+	
     // Config values
     public static final String FOLDER_NAMEPIECES = "namepieces";
     public static final String FOLDER_NEWVILLAGES = "newvillages";
     public static final String CATEGORY_VILLAGE_GENERATOR = "Village Generator";
+    public static final String VN_BUILDING_CLASSPATH_STUB = "astrotibs.villagenames.village.biomestructures.";
+    public static final String PLAINS_BUILDING_STUB =  "PlainsStructures$Plains";
+    public static final String DESERT_BUILDING_STUB =  "DesertStructures$Desert";
+    public static final String TAIGA_BUILDING_STUB =   "TaigaStructures$Taiga";
+    public static final String SAVANNA_BUILDING_STUB = "SavannaStructures$Savanna";
+    public static final String SNOWY_BUILDING_STUB =   "SnowyStructures$Snowy";
 }
