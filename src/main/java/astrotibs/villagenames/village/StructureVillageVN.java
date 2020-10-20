@@ -27,8 +27,11 @@ import astrotibs.villagenames.village.biomestructures.SnowyStructures;
 import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockGrass;
+import net.minecraft.block.BlockIce;
+import net.minecraft.block.BlockPackedIce;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
@@ -484,7 +487,7 @@ public class StructureVillageVN
 					&& material != Material.vine
 					&& material != Material.air
     				&& !block.isFoliage(world, blockpos1))
-            		&& block.isOpaqueCube()
+            		&& block.isNormalCube()
             		// If the block is liquid, return the value above it
             		|| material.isLiquid()
             		)
@@ -967,10 +970,6 @@ public class StructureVillageVN
     	if (materialType==null) {materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, posX, posZ);}
     	if (biome==null) {biome = world.getBiomeGenForCoords(new BlockPos(posX, 0, posZ));}
     	
-    	IBlockState grassPath = getBiomeSpecificBlockState(ModObjects.chooseModPathState(), materialType, biome, disallowModSubs);
-    	IBlockState planks = getBiomeSpecificBlockState(Blocks.planks.getStateFromMeta(0), materialType, biome, disallowModSubs);
-    	IBlockState gravel = getBiomeSpecificBlockState(Blocks.gravel.getDefaultState(), materialType, biome, disallowModSubs);
-    	IBlockState cobblestone = getBiomeSpecificBlockState(Blocks.cobblestone.getStateFromMeta(0), materialType, biome, disallowModSubs);
     	
     	// Top block level
     	int surfaceY = searchDownward ? StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(posX, 0, posZ)).down().getY() : posY;
@@ -980,38 +979,58 @@ public class StructureVillageVN
     	
     	do
     	{
-    		Block surfaceBlock = world.getBlockState(new BlockPos(posX, surfaceY, posZ)).getBlock();
-    		BlockPos pos = new BlockPos(posX, Math.max(surfaceY, posY), posZ);
+    		BlockPos pos = new BlockPos(posX, surfaceY, posZ);
+    		Block surfaceBlock = world.getBlockState(pos).getBlock();
     		
     		// Replace grass with grass path
     		
-    		if (surfaceBlock instanceof BlockGrass && world.isAirBlock(new BlockPos(posX, Math.max(surfaceY, posY), posZ).up()))
+    		if ((surfaceBlock instanceof BlockGrass || surfaceBlock instanceof BlockDirt) && world.isAirBlock(new BlockPos(posX, surfaceY, posZ).up()))
     		{
+    	    	IBlockState grassPath = getBiomeSpecificBlockState(ModObjects.chooseModPathState(), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, grassPath, 2);
-    			return Math.max(surfaceY, posY);
+    			return surfaceY;
     		}
     		
     		// Replace sand with gravel supported by cobblestone
     		if (surfaceBlock instanceof BlockSand)
     		{
+    	    	IBlockState gravel = getBiomeSpecificBlockState(Blocks.gravel.getDefaultState(), materialType, biome, disallowModSubs);
+    	    	IBlockState cobblestone = getBiomeSpecificBlockState(Blocks.cobblestone.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, gravel, 2);
     			world.setBlockState(pos.down(), cobblestone, 2);
-    			return Math.max(surfaceY, posY);
+    			return surfaceY;
     		}
     		
     		// Replace lava with two-layer cobblestone
     		if (surfaceBlock==Blocks.lava || surfaceBlock==Blocks.flowing_lava)
     		{
+    	    	IBlockState cobblestone = getBiomeSpecificBlockState(Blocks.cobblestone.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, cobblestone, 2);
     			world.setBlockState(pos.down(), cobblestone, 2);
-    			return Math.max(surfaceY, posY);
+    			return surfaceY;
     		}
     		
-    		// Replace other liquid with planks
-    		if (surfaceBlock.getMaterial().isLiquid())
+    		// Replace other liquid or ice with planks
+    		if (surfaceBlock.getMaterial().isLiquid() 
+    				|| surfaceBlock instanceof BlockIce || surfaceBlock instanceof BlockPackedIce 
+    				|| surfaceBlock.getClass().toString().substring(6).equals(ModObjects.mudBOP_classPath)
+    				|| surfaceBlock.getClass().toString().substring(6).equals(ModObjects.quicksandBOP_classPath)
+    				)
     		{
+    	    	IBlockState planks = getBiomeSpecificBlockState(Blocks.planks.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, planks, 2);
-    			return Math.max(surfaceY, posY);
+    			
+    			int yDownScan = surfaceY;
+    			if (MathHelper.abs_int(posX)%2==0 && MathHelper.abs_int(posZ)%2==0)
+    			{
+    				IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), materialType, biome, disallowModSubs);
+    				while(world.getBlockState(new BlockPos(posX, --yDownScan, posZ)).getBlock().getMaterial().isLiquid() && yDownScan>0)
+    				{
+    					world.setBlockState(new BlockPos(posX, yDownScan, posZ), biomeLogVertState, 2);
+    				}
+    			}
+    			
+    			return surfaceY;
     		}
     		
     		surfaceY -=1;
@@ -1521,94 +1540,118 @@ public class StructureVillageVN
      */
     public static EntityVillager makeVillagerWithProfession(World world, Random random, int profession, int career, int age)
     {
-		EntityVillager entityvillager = new EntityVillager(world);
-		
-		// Set profession
-		if (profession==-1)
-		{
-			// Modded villagers aren't a thing in 1.8
-			/*
-			if (GeneralConfig.spawnModdedVillagers)
+    	EntityVillager entityvillager;
+    	int careerVanilla = career;
+    	
+    	while(true)
+    	{
+			entityvillager = new EntityVillager(world);
+			Method populateBuyingList_m = ReflectionHelper.findMethod(EntityVillager.class, entityvillager, new String[]{"populateBuyingList", "func_175554_cu"});
+			ExtendedVillager ieep = ExtendedVillager.get(entityvillager);
+			
+			// Set profession
+			if (profession==-1)
 			{
-				VillagerRegistry.setRandomProfession(entityvillager, random);
+				// Modded villagers aren't a thing in 1.8
+				/*
+				if (GeneralConfig.spawnModdedVillagers)
+				{
+					VillagerRegistry.setRandomProfession(entityvillager, random);
+				}
+				else
+				{
+					entityvillager.setProfession(GeneralConfig.enableNitwit ? random.nextInt(6) : random.nextInt(5));
+				}
+				*/
+				VillagerRegistry.setRandomProfession(entityvillager, entityvillager.worldObj.rand);
+				
+				// Equally weight career subdivisions
+				if (entityvillager.getProfession()>=0 && entityvillager.getProfession()<=4)
+				{
+					switch(random.nextInt(GeneralConfig.modernVillagerTrades ? 13 : 12))
+					{
+						default:
+						case 0: // Farmer | Farmer
+							profession = 0; careerVanilla = career = 1; break;
+						case 1: // Farmer | Fisherman
+							profession = 0; careerVanilla = career = 2; break;
+						case 2: // Farmer | Shepherd
+							profession = 0; careerVanilla = career = 3; break;
+						case 3: // Farmer | Fletcher
+							profession = 0; careerVanilla = career = 4; break;
+						case 4: // Librarian | Librarian
+							profession = 1; careerVanilla = career = 1; break;
+						case 5: // Librarian | Cartographer
+							profession = 1; careerVanilla = 1; career = 2; break;
+						case 6: // Priest | Cleric
+							profession = 2; careerVanilla = career = 1; break;
+						case 7: // Blacksmith | Armorer
+							profession = 3; careerVanilla = career = 1; break;
+						case 8: // Blacksmith | Weaponsmith
+							profession = 3; careerVanilla = career = 2; break;
+						case 9: // Blacksmith | Toolsmith
+							profession = 3; careerVanilla = career = 3; break;
+						case 10: // Butcher | Butcher
+							profession = 4; careerVanilla = career = 1; break;
+						case 11: // Butcher | Leatherworker
+							profession = 4; careerVanilla = career = 2; break;
+						case 12: // Blacksmith | Mason
+							profession = 3; careerVanilla = 3; career = 4; break;
+					}
+					entityvillager.setProfession(profession);
+				}
 			}
 			else
 			{
-				entityvillager.setProfession(GeneralConfig.enableNitwit ? random.nextInt(6) : random.nextInt(5));
+				entityvillager.setProfession(profession);
+				
+				// Set career
+				if (career > 0)
+				{
+					// Cartographer
+					if (profession==1 && career>1)
+					{
+						if (GeneralConfig.modernVillagerTrades) {careerVanilla = 1;}
+						else {career = careerVanilla = 1;}
+					}
+					// Mason
+					else if (profession==3 && career>3)
+					{
+						if (GeneralConfig.modernVillagerTrades) {careerVanilla = 3;}
+						else {career = careerVanilla = 1+random.nextInt(3);}
+					}
+				}
+			}
+			ReflectionHelper.setPrivateValue(EntityVillager.class, entityvillager, careerVanilla, new String[]{"careerId", "field_175563_bv"});
+			ieep.setCareer(careerVanilla);
+			ieep.setCareerVN(career);
+			
+			// Populate the villager's buying list
+			try {populateBuyingList_m.invoke(entityvillager);} catch (Exception e) {if (GeneralConfig.debugMessages) {LogHelper.warn("Could not invoke EntityVillager.populateBuyingList method");} break;}
+			/*
+			// If you're not using modernVillagerTrades, you can just escape out here
+			if (!GeneralConfig.modernVillagerTrades)
+			{
+				LogHelper.info("NoModernTrades Villager career: " + ExtendedVillager.get(entityvillager).getCareer() + " Villager careerVN: " + ExtendedVillager.get(entityvillager).getCareerVN());
+				break;
 			}
 			*/
-			VillagerRegistry.setRandomProfession(entityvillager, entityvillager.worldObj.rand);
-			
-			int careerVN=0;
-			
-			// Equally weight career subdivisions
-			if (entityvillager.getProfession()>=0 && entityvillager.getProfession()<=4)
+			// Otherwise, make sure this villager has the stats you requested
+			if (
+					entityvillager.getProfession() == profession
+					&& (Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, entityvillager, new String[]{"careerId", "field_175563_bv"}) == careerVanilla
+					&& ExtendedVillager.get(entityvillager).getCareerVN() == career
+					)
 			{
-				ExtendedVillager ieep = ExtendedVillager.get(entityvillager);
-				
-				switch(random.nextInt(GeneralConfig.modernVillagerTrades ? 13 : 12))
-				{
-					default:
-					case 0: // Farmer | Farmer
-						profession = 0; career = careerVN = 1; break;
-					case 1: // Farmer | Fisherman
-						profession = 0; career = careerVN = 2; break;
-					case 2: // Farmer | Shepherd
-						profession = 0; career = careerVN = 3; break;
-					case 3: // Farmer | Fletcher
-						profession = 0; career = careerVN = 4; break;
-					case 4: // Librarian | Librarian
-						profession = 1; career = careerVN = 1; break;
-					case 5: // Librarian | Cartographer
-						profession = 1; career = 1; careerVN = 2; break;
-					case 6: // Priest | Cleric
-						profession = 2; career = careerVN = 1; break;
-					case 7: // Blacksmith | Armorer
-						profession = 3; career = careerVN = 1; break;
-					case 8: // Blacksmith | Weaponsmith
-						profession = 3; career = careerVN = 2; break;
-					case 9: // Blacksmith | Toolsmith
-						profession = 3; career = careerVN = 3; break;
-					case 10: // Butcher | Butcher
-						profession = 4; career = careerVN = 1; break;
-					case 11: // Butcher | Leatherworker
-						profession = 4; career = careerVN = 2; break;
-					case 12: // Blacksmith | Mason
-						profession = 3; career = 3; careerVN = 4; break;
-				}
-				entityvillager.setProfession(profession);
-				ReflectionHelper.setPrivateValue(EntityVillager.class, entityvillager, career, new String[]{"careerId", "field_175563_bv"});
-				ieep.setCareer(career);
-				ieep.setCareerVN(careerVN);
+				LogHelper.info(
+						"Villager Profession: " + entityvillager.getProfession()
+						+ ", Villager Career: " + ExtendedVillager.get(entityvillager).getCareer()
+						+ ", Villager careerVN: " + ExtendedVillager.get(entityvillager).getCareerVN()
+						);
+				break;
 			}
-		}
-		else
-		{
-			entityvillager.setProfession(profession);
-			
-			// Set career
-			if (career > 0)
-			{
-				ExtendedVillager ieep = ExtendedVillager.get(entityvillager);
-				int careerVN = career;
-				
-				// Cartographer
-				if (profession==1 && career!=1)
-				{
-					career = 1;
-				}
-				// Mason
-				else if (profession==3 && career>3)
-				{
-					career = 3;
-				}
-				
-				ReflectionHelper.setPrivateValue(EntityVillager.class, entityvillager, career, new String[]{"careerId", "field_175563_bv"});
-				ieep.setCareer(career);
-				ieep.setCareerVN(careerVN);
-			}
-		}
-		
+    	}
+    	
 		// Set age
 		entityvillager.setGrowingAge(age);
 		
@@ -1655,8 +1698,6 @@ public class StructureVillageVN
             BiomeGenBase biome = chunkManager.getBiomeGenerator(new BlockPos(posX, 0, posZ));
 			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
             
-			
-			
 			try {
             	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.biomeName));
             	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(chunkManager, posX, posZ);}
@@ -1878,29 +1919,6 @@ public class StructureVillageVN
 			// Top with grass
         	this.setBlockState(world, biomeGrassState, 1, -1, 1, structureBB);
             
-        	/*
-            if (this.field_143015_k < 0)
-            {
-                this.field_143015_k = this.getAverageGroundLevel(world, structureBB);
-                
-                if (this.field_143015_k < 0)
-                {
-                    return true;
-                }
-                
-                this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 4 - 1, 0);
-            }
-            
-            this.fillWithBlocks(world, structureBB, 0, 0, 0, 2, 3, 1, Blocks.air, Blocks.air, false);
-            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 0, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 1, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 2, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.log,   0, 1, 3, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 0, 3, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 1, 3, 1, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 2, 3, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 1, 3, -1, structureBB);
-            */
         	// Decor
             int[][] decorUVW = new int[][]{
             	{1, 0, 1},

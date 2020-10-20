@@ -57,7 +57,7 @@ public class MapGenVillageVN extends MapGenVillage
         }
 	}
 	
-    private int terrainType;
+    private int terrainType;   // Actually village "size" integer
     private int field_82665_g; // Maximum distance between villages
     private int field_82666_h; // Minimum distance between villages
     
@@ -186,7 +186,7 @@ public class MapGenVillageVN extends MapGenVillage
             
             // My modified version, which allows the user to disable each building
             List list = StructureVillageVN.getStructureVillageWeightedPieceList(random, villageSize, startVillageType);
-
+            
             // Print out the list of components for player use
             if (GeneralConfig.debugMessages)
             {

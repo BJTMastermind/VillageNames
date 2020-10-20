@@ -129,6 +129,12 @@ public class ModObjects {
 	public static final String cropWintersquashHC = "harvestcraft:pamwintersquashCrop";
 	public static final String cropZucchiniHC = "harvestcraft:pamzucchiniCrop";
 	public static final String cropKaleJAFFA = "jaffa:kaleCrop";
+	
+	// Mud
+	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
+	
+	// Quicksand
+	public static final String quicksandBOP_classPath = "biomesoplenty.common.block.BlockBOPSand";
  	
 	
 	
@@ -481,14 +487,8 @@ public class ModObjects {
 	 */
 	public static IBlockState chooseModSmoothSandstoneSlab(boolean upper, boolean isred)
 	{
-		if (isred)
-		{
-			return Blocks.stone_slab2.getStateFromMeta(upper?8:0); // Sandstone slab
-		}
-		else
-		{
-			return Blocks.stone_slab.getStateFromMeta(upper?9:1); // Red sandstone slab
-		}
+		if (isred) {return Blocks.stone_slab2.getStateFromMeta(upper?8:0);} // Sandstone slab
+		else {return Blocks.stone_slab.getStateFromMeta(upper?9:1);} // Red sandstone slab
 	}
 	
 	
@@ -594,7 +594,7 @@ public class ModObjects {
 	
 	// Wood block (has bark on all surfaces)
 	// Added as craftable in 1.13
-	public static IBlockState chooseModWoodBlock(IBlockState blockstate)
+	public static IBlockState chooseModWoodBlockState(IBlockState blockstate)
 	{
 		Block block = blockstate.getBlock();
 		int meta = block.getMetaFromState(blockstate);

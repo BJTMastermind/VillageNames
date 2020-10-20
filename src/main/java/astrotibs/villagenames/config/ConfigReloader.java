@@ -26,10 +26,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class ConfigReloader {
 	
 	@SubscribeEvent
-	public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if (event.modID.equalsIgnoreCase(Reference.MOD_ID)) {
+	public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
+	{
+		if (event.modID.equalsIgnoreCase(Reference.MOD_ID))
+		{
 			this.reloadConfigs();
-			
 		}
 	}
 		
