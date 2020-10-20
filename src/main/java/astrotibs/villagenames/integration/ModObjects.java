@@ -2,6 +2,7 @@ package astrotibs.villagenames.integration;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 
 /**
  * A holder for string names for various mod items/blocks/etc for easy access
@@ -122,6 +123,9 @@ public class ModObjects {
 	public static final String cropZucchiniHC = "harvestcraft:pamzucchinicrop";
 	public static final String cropKaleJAFFA = "jaffa:kalecrop";
 	
+	// Mud
+	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
+	
 	
 	// --- Items --- //
 	
@@ -168,7 +172,7 @@ public class ModObjects {
      * STANDING:
      * 0=fore-facing (away from you); 4=right-facing; 8=back-facing (toward you); 12=left-facing
      */
-	public static IBlockState chooseModCampfireBlockState(int relativeOrientation, int horizIndex)
+	public static IBlockState chooseModCampfireBlockState(int relativeOrientation, EnumFacing coordBaseMode)
 	{
 		// No mod campfires exist. Return an upright torch.
 		return Blocks.TORCH.getDefaultState();
@@ -186,7 +190,7 @@ public class ModObjects {
 	 * Materials are: 0=oak, 1=spruce, 2=birch, 3=jungle, 4=acacia, 5=darkoak
 	 * Orientations are: 0=vertical, 1=east-west, 2=north-south
 	 */
-	public static IBlockState chooseModStrippedLog(int materialMeta, int orientation)
+	public static IBlockState chooseModStrippedLogState(int materialMeta, int orientation)
 	{
 		/*
 		Block logBlock=null;
@@ -211,7 +215,7 @@ public class ModObjects {
 	 * Materials are: 0=oak, 1=spruce, 2=birch, 3=jungle, 4=acacia, 5=darkoak
 	 * Orientations are: 0=vertical, 1=east-west, 2=north-south
 	 */
-	public static IBlockState chooseModStrippedWood(int materialMeta, int orientation)
+	public static IBlockState chooseModStrippedWoodState(int materialMeta, int orientation)
 	{
 		/*
 		Block logBlock=null;
