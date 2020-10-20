@@ -111,7 +111,7 @@ public class VillageGeneratorConfigHandler
 	public static String componentModernTaigaFisherCottage1_string; public static ArrayList<Double> componentModernTaigaFisherCottage1_vals;
 	public static String componentModernTaigaFletcherHouse1_string; public static ArrayList<Double> componentModernTaigaFletcherHouse1_vals;
 	public static String componentModernTaigaLargeFarm1_string; public static ArrayList<Double> componentModernTaigaLargeFarm1_vals;
-	public static String componentModernTaigaMediumFarm1_string; public static ArrayList<Double> componentModernTaigaMediumFarm1_vals;
+	public static String componentModernTaigaLargeFarm2_string; public static ArrayList<Double> componentModernTaigaLargeFarm2_vals;
 	public static String componentModernTaigaLibrary1_string; public static ArrayList<Double> componentModernTaigaLibrary1_vals;
 	public static String componentModernTaigaMasonsHouse1_string; public static ArrayList<Double> componentModernTaigaMasonsHouse1_vals;
 	public static String componentModernTaigaMediumHouse1_string; public static ArrayList<Double> componentModernTaigaMediumHouse1_vals;
@@ -203,7 +203,6 @@ public class VillageGeneratorConfigHandler
 
 	// Misc new village stuff
 	public static String[] componentVillageTypes;
-	public static boolean useModdedWoodenDoors;
 	public static boolean spawnModdedVillagers;
 	public static boolean spawnVillagersInResidences;
 	public static boolean spawnVillagersInTownCenters;
@@ -556,8 +555,8 @@ public class VillageGeneratorConfigHandler
 		componentModernTaigaLargeFarm1_string = config.getString(componentModern+"Taiga Large Farm", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+taigaVillages);
 		componentModernTaigaLargeFarm1_vals = parseDoubleArray(componentModernTaigaLargeFarm1_string, modernDefaults);
 		
-		componentModernTaigaMediumFarm1_string = config.getString(componentModern+"Taiga Medium Farm", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+taigaVillages);
-		componentModernTaigaMediumFarm1_vals = parseDoubleArray(componentModernTaigaMediumFarm1_string, modernDefaults);
+		componentModernTaigaLargeFarm2_string = config.getString(componentModern+"Taiga Medium Farm", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+taigaVillages);
+		componentModernTaigaLargeFarm2_vals = parseDoubleArray(componentModernTaigaLargeFarm2_string, modernDefaults);
 		
 		componentModernTaigaLibrary1_string = config.getString(componentModern+"Taiga Library", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+taigaVillages);
 		componentModernTaigaLibrary1_vals = parseDoubleArray(componentModernTaigaLibrary1_string, modernDefaults);
@@ -1015,7 +1014,6 @@ public class VillageGeneratorConfigHandler
 		
 		
 		// Misc
-		useModdedWoodenDoors = config.getBoolean("Use modded wooden doors in mod structures", Reference.CATEGORY_VILLAGE_GENERATOR, true, "Set this to false to use the vanilla 1.7 wooden doors, even if supported mod doors are found. Some villagers have trouble opening some modded doors.");
 		spawnModdedVillagers = config.getBoolean("Spawn Extra Villagers with mod professions", Reference.CATEGORY_VILLAGE_GENERATOR, false, "Villagers spawned in town centers or residential houses can have non-vanilla professions.");
 		spawnVillagersInResidences = config.getBoolean("Spawn Extra Villagers in Residences", Reference.CATEGORY_VILLAGE_GENERATOR, false, "Spawn villagers with random professions and ages in non-job-specific residential houses.");
 		spawnVillagersInTownCenters = config.getBoolean("Spawn Extra Villagers in Town Centers", Reference.CATEGORY_VILLAGE_GENERATOR, true, "Spawn villagers with random professions and ages in the town center.");
@@ -1025,28 +1023,21 @@ public class VillageGeneratorConfigHandler
 						// Vanilla
 						"Plains",
 						"Desert",
-						"Extreme Hills",
 						"Forest",
 						"Taiga",
 						"Swampland",
 						"Ice Plains",
 						"MushroomIsland",
-						"ForestHills",
-						"TaigaHills",
 						"Jungle",
-						"JungleHills",
 						"Birch Forest",
-						"Birch Forest Hills",
 						"Roofed Forest",
 						"Cold Taiga",
 						"Mega Taiga",
-						"Mega Taiga Hills",
 						"Savanna",
 						"Mesa",
 						"Sunflower Plains",
 						"Flower Forest",
 						"Mega Spruce Taiga",
-						"Mega Spruce Taiga Hill",
 						// Biomes o' Plenty
 						"Bamboo Forest",
 						"Bayou",
@@ -1066,7 +1057,7 @@ public class VillageGeneratorConfigHandler
 						"Garden",
 						"Grassland",
 						"Grove",
-						"Heathland",
+						"Heathland|savanna|oak",
 						"Highland",
 						"Lavender Fields",
 						"Lush Swamp",
@@ -1099,8 +1090,6 @@ public class VillageGeneratorConfigHandler
 						"Rocky Steppe",
 						// ExtrabiomeXL
 						"Autumn Woods",
-						"Forested Hills",
-						"Green Hills",
 						"Mini Jungle",
 						"Mountain Taiga",
 						"Pine Forest",
@@ -1111,7 +1100,6 @@ public class VillageGeneratorConfigHandler
 						// Highlands
 						"Autumn Forest",
 						"Badlands",
-						"Birch Hills",
 						"Highlands",
 						"Lowlands",
 						"Outback",
@@ -1119,10 +1107,15 @@ public class VillageGeneratorConfigHandler
 						"Sahel",
 						"Tall Pine Forest",
 						"Tropics",
-						},
-				"Names of biomes which can spawn villages. Only used with Village Generator, and only applies to Overworld. Note that this list is EXCLUSIVE: other mod configs won't override this. You have to paste all biome names here.");
-		
-		
+					},
+			"Names of biomes which can spawn villages. Only used with Village Generator, and only applies to Overworld. Note that this list is EXCLUSIVE: other mod configs won't override this. You have to paste all biome names here."
+					+ "Format is: biomeName|villageType|materialType|disallowModSub OR simply: biomeName \n"
+					+ "biomeName: the registered string name of the biome\n"
+					+ "villageType: the type of component structures. Leave this blank to automatically determine. Options: plains, desert, taiga, savanna, snowy\n"
+					+ "materialType: the building materials used to make the components. Leave this blank to automatically determine. Set as oak if you want to allow mods to override materials. Options: oak, spruce, birch, jungle, acacia, dark_oak, sand, mesa, snow, mushroom\n"
+					+ "disallowModSub: enter \"nosub\" in the last field if you want to disallow other mods from substituting blocks during village generation. Blank, or anything else, allows substitution. This only works for " + Reference.MOD_NAME + " buildings.\n"
+					+ "Printing just the biome name with no pipes is equivalent to biomeName||, which will automatically determine both villageType and materialType."
+				);
 		
 		if (config.hasChanged()) config.save();
 	}
@@ -1213,15 +1206,16 @@ public class VillageGeneratorConfigHandler
 	
 
 	/**
-	 * Loads the (classPath|villageType) string lists from general.cfg
+	 * Loads the (classPath|villageType) string lists from newvillages/village_gen.cfg
 	 * and assigns them to this instance's variables.
 	 */
-	public static Map<String, ArrayList> unpackComponentVillageTypes(String[] inputList) {
-		
+	public static Map<String, ArrayList> unpackComponentVillageTypes(String[] inputList)
+	{
 		ArrayList<String> componentClassPaths = new ArrayList<String>();
 		ArrayList<String> componentVillageTypes = new ArrayList<String>();
 		
-		for (String entry : inputList) {
+		for (String entry : inputList)
+		{
 			// Remove parentheses
 			entry.replaceAll("\\)", "");
 			entry.replaceAll("\\(", "");
@@ -1233,10 +1227,10 @@ public class VillageGeneratorConfigHandler
 			String componentVillageType="";
 			
 			// Place entries into variables
-			try {componentClassPath = splitEntry[0].trim();}       catch (Exception e) {componentClassPath="";}
-			try {componentVillageType = splitEntry[1].trim();}  catch (Exception e) {componentVillageType="FAILSAFE";}
+			try {componentClassPath = splitEntry[0].trim();}   catch (Exception e) {componentClassPath="FAILSAFE";}
+			try {componentVillageType = splitEntry[1].trim();} catch (Exception e) {componentVillageType="plains desert taiga savanna snowy";}
 			
-			if( !componentClassPath.equals("") && !componentVillageType.equals("") ) { // Something was actually assigned in the try block
+			if( !componentClassPath.equals("")) { // Something was actually assigned in the try block
 				componentClassPaths.add(componentClassPath);
 				componentVillageTypes.add(componentVillageType);
 				}
@@ -1245,6 +1239,55 @@ public class VillageGeneratorConfigHandler
 		Map<String,ArrayList> map =new HashMap();
 		map.put("ClassPaths",componentClassPaths);
 		map.put("VillageTypes",componentVillageTypes);
+		
+		return map;
+	}
+	
+
+	/**
+	 * Loads the (biomeName|villageType|materialType|blockModSub) string lists from newvillages/village_gen.cfg
+	 * and assigns them to this instance's variables.
+	 */
+	public static Map<String, ArrayList<String>> unpackBiomes(String[] inputList)
+	{
+		ArrayList<String> biomeNames = new ArrayList<String>();
+		ArrayList<String> villageTypes = new ArrayList<String>();
+		ArrayList<String> materialTypes = new ArrayList<String>();
+		ArrayList<String> disallowModSubs = new ArrayList<String>();
+		
+		for (String entry : inputList)
+		{
+			// Remove parentheses
+			entry.replaceAll("\\)", "");
+			entry.replaceAll("\\(", "");
+			// Split by pipe
+			String[] splitEntry = entry.split("\\|");
+			
+			// Initialize temp fields
+			String biomeName="";
+			String villageType="";
+			String materialType="";
+			String disallowModSub="";
+			
+			// Place entries into variables
+			try {biomeName = splitEntry[0].trim();}      catch (Exception e) {biomeName="";}
+			try {villageType = splitEntry[1].trim();}    catch (Exception e) {villageType="";}
+			try {materialType = splitEntry[2].trim();}   catch (Exception e) {materialType="";}
+			try {disallowModSub = splitEntry[3].trim();} catch (Exception e) {disallowModSub="";}
+			
+			if( !biomeName.equals("")) { // Something was actually assigned in the try block
+				biomeNames.add(biomeName);
+				villageTypes.add(villageType);
+				materialTypes.add(materialType);
+				disallowModSubs.add(disallowModSub);
+				}
+		}
+
+		Map<String,ArrayList<String>> map =new HashMap();
+		map.put("BiomeNames",biomeNames);
+		map.put("VillageTypes",villageTypes);
+		map.put("MaterialTypes",materialTypes);
+		map.put("DisallowModSubs",disallowModSubs);
 		
 		return map;
 	}

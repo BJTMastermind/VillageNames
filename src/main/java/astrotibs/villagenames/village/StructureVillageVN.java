@@ -27,7 +27,10 @@ import astrotibs.villagenames.village.biomestructures.SavannaStructures;
 import astrotibs.villagenames.village.biomestructures.SnowyStructures;
 import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGrass;
+import net.minecraft.block.BlockIce;
+import net.minecraft.block.BlockPackedIce;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
@@ -359,7 +362,7 @@ public class StructureVillageVN
 					&& material != Material.VINE
 					&& material != Material.AIR
     				&& !block.isFoliage(world, blockpos1))
-            		&& blockstate.isOpaqueCube()
+            		&& blockstate.isNormalCube()
             		// If the block is liquid, return the value above it
             		|| material.isLiquid()
             		)
@@ -375,7 +378,16 @@ public class StructureVillageVN
     /**
      * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox.
      * (An ACTUAL median of all the levels in the BB's horizontal rectangle).
+     * 
      * Use outlineOnly if you'd like to tally only the boundary values.
+     * 
+     * If outlineOnly is true, use sideFlag to specify which boundaries:
+     * +1: front
+     * +2: left (wrt coordbase 0 or 1)
+     * +4: back
+     * +8: right (wrt coordbase 0 or 1)
+     * 
+     * horizIndex is the integer that represents the orientation of the structure.
      */
     public static int getMedianGroundLevel(World world, StructureBoundingBox boundingBox, boolean outlineOnly, byte sideFlag, int horizIndex)
     {
@@ -410,7 +422,7 @@ public class StructureVillageVN
     /**
      * Biome-specific block replacement
      */
-    public static IBlockState getBiomeSpecificBlock(IBlockState blockstate, MaterialType materialType, Biome biome, boolean disallowModSubs)
+    public static IBlockState getBiomeSpecificBlockState(IBlockState blockstate, MaterialType materialType, Biome biome, boolean disallowModSubs)
     {
     	if (materialType==null || biome==null) {return blockstate;}
     	
@@ -998,10 +1010,6 @@ public class StructureVillageVN
     	if (materialType==null) {materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, posX, posZ);}
     	if (biome==null) {biome = world.getBiome(new BlockPos(posX, 0, posZ));}
     	
-    	IBlockState grassPath = getBiomeSpecificBlock(Blocks.GRASS_PATH.getDefaultState(), materialType, biome, disallowModSubs);
-    	IBlockState planks = getBiomeSpecificBlock(Blocks.PLANKS.getStateFromMeta(0), materialType, biome, disallowModSubs);
-    	IBlockState gravel = getBiomeSpecificBlock(Blocks.GRAVEL.getDefaultState(), materialType, biome, disallowModSubs);
-    	IBlockState cobblestone = getBiomeSpecificBlock(Blocks.COBBLESTONE.getStateFromMeta(0), materialType, biome, disallowModSubs);
     	
     	// Top block level
     	int surfaceY = searchDownward ? StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(posX, 0, posZ)).down().getY() : posY;
@@ -1011,38 +1019,57 @@ public class StructureVillageVN
     	
     	do
     	{
-    		Block surfaceBlock = world.getBlockState(new BlockPos(posX, surfaceY, posZ)).getBlock();
-    		BlockPos pos = new BlockPos(posX, Math.max(surfaceY, posY), posZ);
+    		BlockPos pos = new BlockPos(posX, surfaceY, posZ);
+    		Block surfaceBlock = world.getBlockState(pos).getBlock();
     		
     		// Replace grass with grass path
     		
-    		if (surfaceBlock instanceof BlockGrass && world.isAirBlock(new BlockPos(posX, Math.max(surfaceY, posY), posZ).up()))
+    		if ((surfaceBlock instanceof BlockGrass || surfaceBlock instanceof BlockDirt) && world.isAirBlock(new BlockPos(posX, surfaceY, posZ).up()))
     		{
+    	    	IBlockState grassPath = getBiomeSpecificBlockState(Blocks.GRASS_PATH.getDefaultState(), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, grassPath, 2);
-    			return Math.max(surfaceY, posY);
+    			return surfaceY;
     		}
     		
     		// Replace sand with GRAVEL supported by COBBLESTONE
     		if (surfaceBlock instanceof BlockSand)
     		{
+    	    	IBlockState gravel = getBiomeSpecificBlockState(Blocks.GRAVEL.getDefaultState(), materialType, biome, disallowModSubs);
+    	    	IBlockState cobblestone = getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, gravel, 2);
     			world.setBlockState(pos.down(), cobblestone, 2);
-    			return Math.max(surfaceY, posY);
+    			return surfaceY;
     		}
     		
     		// Replace lava with two-layer COBBLESTONE
     		if (surfaceBlock==Blocks.LAVA || surfaceBlock==Blocks.FLOWING_LAVA)
     		{
+    	    	IBlockState cobblestone = getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, cobblestone, 2);
     			world.setBlockState(pos.down(), cobblestone, 2);
-    			return Math.max(surfaceY, posY);
+    			return surfaceY;
     		}
     		
-    		// Replace other liquid with planks
-    		if (surfaceBlock.getDefaultState().getMaterial().isLiquid())
+    		// Replace other liquid or ice with planks
+    		if (surfaceBlock.getDefaultState().getMaterial().isLiquid() 
+    				|| surfaceBlock instanceof BlockIce || surfaceBlock instanceof BlockPackedIce 
+    				|| surfaceBlock.getClass().toString().substring(6).equals(ModObjects.mudBOP_classPath)
+    				)
     		{
+    	    	IBlockState planks = getBiomeSpecificBlockState(Blocks.PLANKS.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, planks, 2);
-    			return Math.max(surfaceY, posY);
+    			
+    			int yDownScan = surfaceY;
+    			if (MathHelper.abs_int(posX)%2==0 && MathHelper.abs_int(posZ)%2==0)
+    			{
+    				IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), materialType, biome, disallowModSubs);
+    				while(world.getBlockState(new BlockPos(posX, --yDownScan, posZ)).getMaterial().isLiquid() && yDownScan>0)
+    				{
+    					world.setBlockState(new BlockPos(posX, yDownScan, posZ), biomeLogVertState, 2);
+    				}
+    			}
+    			
+    			return surfaceY;
     		}
     		
     		surfaceY -=1;
@@ -1877,37 +1904,14 @@ public class StructureVillageVN
             if (this.biome==null) {this.biome = world.getBiome(new BlockPos(
             		(this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
 
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Make dirt foundation
 			this.replaceAirAndLiquidDownwards(world, biomeDirtState, 1, -2, 1, structureBB);
 			// Top with grass
         	this.setBlockState(world, biomeGrassState, 1, -1, 1, structureBB);
             
-        	/*
-            if (this.field_143015_k < 0)
-            {
-                this.field_143015_k = this.getAverageGroundLevel(world, structureBB);
-                
-                if (this.field_143015_k < 0)
-                {
-                    return true;
-                }
-                
-                this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 4 - 1, 0);
-            }
-            
-            this.fillWithBlocks(world, structureBB, 0, 0, 0, 2, 3, 1, Blocks.air, Blocks.air, false);
-            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 0, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 1, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 2, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.log,   0, 1, 3, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 0, 3, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 1, 3, 1, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 2, 3, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 1, 3, -1, structureBB);
-            */
         	// Decor
             int[][] decorUVW = new int[][]{
             	{1, 0, 1},
