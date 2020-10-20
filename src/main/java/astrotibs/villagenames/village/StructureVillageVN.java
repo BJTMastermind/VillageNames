@@ -27,11 +27,23 @@ import astrotibs.villagenames.village.biomestructures.SavannaStructures;
 import astrotibs.villagenames.village.biomestructures.SnowyStructures;
 import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockGrass;
+import net.minecraft.block.BlockIce;
+import net.minecraft.block.BlockPackedIce;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -62,6 +74,43 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 public class StructureVillageVN
 {
 	public static final int VILLAGE_RADIUS_BUFFER = 112;
+
+	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	public static final int[] LADDER_META_ARRAY = new int[]{2,5,3,4};
+	
+	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	public static final int[][] FURNACE_META_ARRAY = new int[][]{
+		{3,4,2,5},
+		{5,3,5,3},
+		{2,5,3,4},
+		{4,2,4,2},
+	};
+	
+	// Array of meta values for buyttons indexed by [orientation][horizIndex]
+	public static final int[] BUTTON_META_ARRAY = new int[]{4,1,3,2};
+	
+	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	public static final int[][] ANVIL_META_ARRAY = new int[][]{
+		{1,2,3,0},
+		{0,1,0,1},
+		{3,0,1,2},
+		{2,3,2,3},
+	};
+	
+	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	public static final int[][] GLAZED_TERRACOTTA_META_ARRAY = new int[][]{
+		{1,2,2,3},
+		{0,1,3,0},
+		{3,0,0,1},
+		{2,3,1,2},
+	};
+	
+	// Array of meta values for door indexed by [isShut][orientation]
+	public static final int[] DOOR_META_ARRAY = new int[]
+	// --- LOWER HALF --- //
+	// Shut
+	{1,2,3,0};
+	
 	
     public static List getStructureVillageWeightedPieceList(Random random, int villageSize, FunctionsVN.VillageType villageType)
     {
@@ -173,7 +222,30 @@ public class StructureVillageVN
             if (VillageGeneratorConfigHandler.componentLegacyField2_vals.get(0)<=0 && pw.villagePieceClass.toString().substring(6).equals(Reference.Field2_CLASS)) {iterator.remove(); continue;}
             if (VillageGeneratorConfigHandler.componentLegacyHouse2_vals.get(0)<=0 && pw.villagePieceClass.toString().substring(6).equals(Reference.House2_CLASS)) {iterator.remove(); continue;}
             if (VillageGeneratorConfigHandler.componentLegacyHouse3_vals.get(0)<=0 && pw.villagePieceClass.toString().substring(6).equals(Reference.House3_CLASS)) {iterator.remove(); continue;}
+
+            // Remove buildings that aren't appropriate for the current biome
             
+			String villageTypeToCompare = "";
+			
+			switch (villageType)
+			{
+				default:
+				case PLAINS: villageTypeToCompare = "plains"; break;
+				case DESERT: villageTypeToCompare = "desert"; break;
+				case TAIGA: villageTypeToCompare = "taiga"; break;
+				case SAVANNA: villageTypeToCompare = "savanna"; break;
+				case SNOWY: villageTypeToCompare = "snowy"; break;
+			}
+			
+			int classPathListIndex = mappedComponentVillageTypes.get("ClassPaths").indexOf(pw.villagePieceClass.toString().substring(6));
+			
+			if (
+					classPathListIndex!=-1 &&
+					!((String) ((mappedComponentVillageTypes.get("VillageTypes")).get(classPathListIndex))).trim().toLowerCase().contains(villageTypeToCompare)
+            		)
+            {
+            	iterator.remove(); continue;
+            }
             
         }
 
@@ -359,7 +431,7 @@ public class StructureVillageVN
 					&& material != Material.VINE
 					&& material != Material.AIR
     				&& !block.isFoliage(world, blockpos1))
-            		&& blockstate.isOpaqueCube()
+            		&& blockstate.isNormalCube()
             		// If the block is liquid, return the value above it
             		|| material.isLiquid()
             		)
@@ -419,7 +491,7 @@ public class StructureVillageVN
     /**
      * Biome-specific block replacement
      */
-    public static IBlockState getBiomeSpecificBlock(IBlockState blockstate, MaterialType materialType, Biome biome, boolean disallowModSubs)
+    public static IBlockState getBiomeSpecificBlockState(IBlockState blockstate, MaterialType materialType, Biome biome, boolean disallowModSubs)
     {
     	if (materialType==null || biome==null) {return blockstate;}
     	
@@ -970,13 +1042,13 @@ public class StructureVillageVN
 		switch (relativeOrientation)
 		{
 		case 0: // Facing away
-			return new int[]{3,2,4,1}[coordBaseMode];
+			return 4;//new int[]{3,2,4,1}[coordBaseMode];
 		case 1: // Facing right
-			return new int[]{1,3,1,3}[coordBaseMode];
+			return 1;//new int[]{1,3,1,3}[coordBaseMode];
 		case 2: // Facing you
-			return new int[]{4,1,3,2}[coordBaseMode];
+			return 3;//new int[]{4,1,3,2}[coordBaseMode];
 		case 3: // Facing left
-			return new int[]{2,4,2,4}[coordBaseMode];
+			return 2;//new int[]{2,4,2,4}[coordBaseMode];
 		}
     	return 0; // Torch will be standing upright, hopefully
     }
@@ -1007,10 +1079,6 @@ public class StructureVillageVN
     	if (materialType==null) {materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, posX, posZ);}
     	if (biome==null) {biome = world.getBiomeGenForCoords(new BlockPos(posX, 0, posZ));}
     	
-    	IBlockState grassPath = getBiomeSpecificBlock(Blocks.GRASS_PATH.getDefaultState(), materialType, biome, disallowModSubs);
-    	IBlockState planks = getBiomeSpecificBlock(Blocks.PLANKS.getStateFromMeta(0), materialType, biome, disallowModSubs);
-    	IBlockState gravel = getBiomeSpecificBlock(Blocks.GRAVEL.getDefaultState(), materialType, biome, disallowModSubs);
-    	IBlockState cobblestone = getBiomeSpecificBlock(Blocks.COBBLESTONE.getStateFromMeta(0), materialType, biome, disallowModSubs);
     	
     	// Top block level
     	int surfaceY = searchDownward ? StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(posX, 0, posZ)).down().getY() : posY;
@@ -1020,38 +1088,57 @@ public class StructureVillageVN
     	
     	do
     	{
-    		Block surfaceBlock = world.getBlockState(new BlockPos(posX, surfaceY, posZ)).getBlock();
-    		BlockPos pos = new BlockPos(posX, Math.max(surfaceY, posY), posZ);
+    		BlockPos pos = new BlockPos(posX, surfaceY, posZ);
+    		Block surfaceBlock = world.getBlockState(pos).getBlock();
     		
     		// Replace grass with grass path
     		
-    		if (surfaceBlock instanceof BlockGrass && world.isAirBlock(new BlockPos(posX, Math.max(surfaceY, posY), posZ).up()))
+    		if ((surfaceBlock instanceof BlockGrass || surfaceBlock instanceof BlockDirt) && world.isAirBlock(new BlockPos(posX, surfaceY, posZ).up()))
     		{
+    	    	IBlockState grassPath = getBiomeSpecificBlockState(Blocks.GRASS_PATH.getDefaultState(), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, grassPath, 2);
-    			return Math.max(surfaceY, posY);
+    			return surfaceY;
     		}
     		
     		// Replace sand with GRAVEL supported by COBBLESTONE
     		if (surfaceBlock instanceof BlockSand)
     		{
+    	    	IBlockState gravel = getBiomeSpecificBlockState(Blocks.GRAVEL.getDefaultState(), materialType, biome, disallowModSubs);
+    	    	IBlockState cobblestone = getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, gravel, 2);
     			world.setBlockState(pos.down(), cobblestone, 2);
-    			return Math.max(surfaceY, posY);
+    			return surfaceY;
     		}
     		
     		// Replace lava with two-layer COBBLESTONE
     		if (surfaceBlock==Blocks.LAVA || surfaceBlock==Blocks.FLOWING_LAVA)
     		{
+    	    	IBlockState cobblestone = getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, cobblestone, 2);
     			world.setBlockState(pos.down(), cobblestone, 2);
-    			return Math.max(surfaceY, posY);
+    			return surfaceY;
     		}
     		
-    		// Replace other liquid with planks
-    		if (surfaceBlock.getDefaultState().getMaterial().isLiquid())
+    		// Replace other liquid or ice with planks
+    		if (surfaceBlock.getDefaultState().getMaterial().isLiquid() 
+    				|| surfaceBlock instanceof BlockIce || surfaceBlock instanceof BlockPackedIce 
+    				|| surfaceBlock.getClass().toString().substring(6).equals(ModObjects.mudBOP_classPath)
+    				)
     		{
+    	    	IBlockState planks = getBiomeSpecificBlockState(Blocks.PLANKS.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, planks, 2);
-    			return Math.max(surfaceY, posY);
+    			
+    			int yDownScan = surfaceY;
+    			if (MathHelper.abs_int(posX)%2==0 && MathHelper.abs_int(posZ)%2==0)
+    			{
+    				IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), materialType, biome, disallowModSubs);
+    				while(world.getBlockState(new BlockPos(posX, --yDownScan, posZ)).getMaterial().isLiquid() && yDownScan>0)
+    				{
+    					world.setBlockState(new BlockPos(posX, yDownScan, posZ), biomeLogVertState, 2);
+    				}
+    			}
+    			
+    			return surfaceY;
     		}
     		
     		surfaceY -=1;
@@ -1886,37 +1973,14 @@ public class StructureVillageVN
             if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos(
             		(this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
 
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlock(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Make dirt foundation
 			this.replaceAirAndLiquidDownwards(world, biomeDirtState, 1, -2, 1, structureBB);
 			// Top with grass
         	this.setBlockState(world, biomeGrassState, 1, -1, 1, structureBB);
             
-        	/*
-            if (this.field_143015_k < 0)
-            {
-                this.field_143015_k = this.getAverageGroundLevel(world, structureBB);
-                
-                if (this.field_143015_k < 0)
-                {
-                    return true;
-                }
-                
-                this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.maxY + 4 - 1, 0);
-            }
-            
-            this.fillWithBlocks(world, structureBB, 0, 0, 0, 2, 3, 1, Blocks.air, Blocks.air, false);
-            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 0, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 1, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.fence, 0, 1, 2, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.log,   0, 1, 3, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 0, 3, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 1, 3, 1, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 2, 3, 0, structureBB);
-            this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 1, 3, -1, structureBB);
-            */
         	// Decor
             int[][] decorUVW = new int[][]{
             	{1, 0, 1},
@@ -2145,6 +2209,486 @@ public class StructureVillageVN
             return true;
         }
     }
+    
+    
+    
+    /**
+     * Returns the direction-shifted metadata for blocks that require orientation, e.g. doors, stairs, ladders.
+     */
+    public static int getMetadataWithOffset(Block blockIn, int metaIn, EnumFacing enumFacing)
+    {
+    	return getMetadataWithOffset(blockIn, metaIn, enumFacing.getHorizontalIndex());
+    }
+    public static int getMetadataWithOffset(Block blockIn, int metaIn, int horizIndex)
+    {
+        if (blockIn == Blocks.RAIL)
+        {
+            if (horizIndex == EnumFacing.WEST.getHorizontalIndex() || horizIndex == EnumFacing.EAST.getHorizontalIndex())
+            {
+                if (metaIn == 1)
+                {
+                    return 0;
+                }
+
+                return 1;
+            }
+        }
+        else if (blockIn instanceof BlockDoor)
+        {
+            if (horizIndex == EnumFacing.SOUTH.getHorizontalIndex())
+            {
+                if (metaIn == 0)
+                {
+                    return 2;
+                }
+
+                if (metaIn == 2)
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                if (horizIndex == EnumFacing.WEST.getHorizontalIndex())
+                {
+                    return metaIn + 1 & 3;
+                }
+
+                if (horizIndex == EnumFacing.EAST.getHorizontalIndex())
+                {
+                    return metaIn + 3 & 3;
+                }
+            }
+        }
+        else if (blockIn != Blocks.STONE_STAIRS && blockIn != Blocks.OAK_STAIRS && blockIn != Blocks.NETHER_BRICK_STAIRS && blockIn != Blocks.STONE_BRICK_STAIRS && blockIn != Blocks.SANDSTONE_STAIRS)
+        {
+            if (blockIn == Blocks.LADDER)
+            {
+                if (horizIndex == EnumFacing.SOUTH.getHorizontalIndex())
+                {
+                    if (metaIn == EnumFacing.NORTH.getIndex())
+                    {
+                        return EnumFacing.SOUTH.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.SOUTH.getIndex())
+                    {
+                        return EnumFacing.NORTH.getIndex();
+                    }
+                }
+                else if (horizIndex == EnumFacing.WEST.getHorizontalIndex())
+                {
+                    if (metaIn == EnumFacing.NORTH.getIndex())
+                    {
+                        return EnumFacing.WEST.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.SOUTH.getIndex())
+                    {
+                        return EnumFacing.EAST.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.WEST.getIndex())
+                    {
+                        return EnumFacing.NORTH.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.EAST.getIndex())
+                    {
+                        return EnumFacing.SOUTH.getIndex();
+                    }
+                }
+                else if (horizIndex == EnumFacing.EAST.getHorizontalIndex())
+                {
+                    if (metaIn == EnumFacing.NORTH.getIndex())
+                    {
+                        return EnumFacing.EAST.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.SOUTH.getIndex())
+                    {
+                        return EnumFacing.WEST.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.WEST.getIndex())
+                    {
+                        return EnumFacing.NORTH.getIndex();
+                    }
+
+                    if (metaIn == EnumFacing.EAST.getIndex())
+                    {
+                        return EnumFacing.SOUTH.getIndex();
+                    }
+                }
+            }
+            else if (blockIn == Blocks.STONE_BUTTON)
+            {
+                if (horizIndex == EnumFacing.SOUTH.getHorizontalIndex())
+                {
+                    if (metaIn == 3)
+                    {
+                        return 4;
+                    }
+
+                    if (metaIn == 4)
+                    {
+                        return 3;
+                    }
+                }
+                else if (horizIndex == EnumFacing.WEST.getHorizontalIndex())
+                {
+                    if (metaIn == 3)
+                    {
+                        return 1;
+                    }
+
+                    if (metaIn == 4)
+                    {
+                        return 2;
+                    }
+
+                    if (metaIn == 2)
+                    {
+                        return 3;
+                    }
+
+                    if (metaIn == 1)
+                    {
+                        return 4;
+                    }
+                }
+                else if (horizIndex == EnumFacing.EAST.getHorizontalIndex())
+                {
+                    if (metaIn == 3)
+                    {
+                        return 2;
+                    }
+
+                    if (metaIn == 4)
+                    {
+                        return 1;
+                    }
+
+                    if (metaIn == 2)
+                    {
+                        return 3;
+                    }
+
+                    if (metaIn == 1)
+                    {
+                        return 4;
+                    }
+                }
+            }
+            else if (blockIn != Blocks.TRIPWIRE_HOOK && !(blockIn instanceof BlockDirectional))
+            {
+                if (blockIn == Blocks.PISTON || blockIn == Blocks.STICKY_PISTON || blockIn == Blocks.LEVER || blockIn == Blocks.DISPENSER)
+                {
+                    if (horizIndex == EnumFacing.SOUTH.getHorizontalIndex())
+                    {
+                        if (metaIn == EnumFacing.NORTH.getIndex() || metaIn == EnumFacing.SOUTH.getIndex())
+                        {
+                            return EnumFacing.getFront(metaIn).getOpposite().getIndex();
+                        }
+                    }
+                    else if (horizIndex == EnumFacing.WEST.getHorizontalIndex())
+                    {
+                        if (metaIn == EnumFacing.NORTH.getIndex())
+                        {
+                            return EnumFacing.WEST.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.SOUTH.getIndex())
+                        {
+                            return EnumFacing.EAST.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.WEST.getIndex())
+                        {
+                            return EnumFacing.NORTH.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.EAST.getIndex())
+                        {
+                            return EnumFacing.SOUTH.getIndex();
+                        }
+                    }
+                    else if (horizIndex == EnumFacing.EAST.getHorizontalIndex())
+                    {
+                        if (metaIn == EnumFacing.NORTH.getIndex())
+                        {
+                            return EnumFacing.EAST.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.SOUTH.getIndex())
+                        {
+                            return EnumFacing.WEST.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.WEST.getIndex())
+                        {
+                            return EnumFacing.NORTH.getIndex();
+                        }
+
+                        if (metaIn == EnumFacing.EAST.getIndex())
+                        {
+                            return EnumFacing.SOUTH.getIndex();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                EnumFacing enumfacing = EnumFacing.getHorizontal(metaIn);
+
+                if (horizIndex == EnumFacing.SOUTH.getHorizontalIndex())
+                {
+                    if (enumfacing == EnumFacing.SOUTH || enumfacing == EnumFacing.NORTH)
+                    {
+                        return enumfacing.getOpposite().getHorizontalIndex();
+                    }
+                }
+                else if (horizIndex == EnumFacing.WEST.getHorizontalIndex())
+                {
+                    if (enumfacing == EnumFacing.NORTH)
+                    {
+                        return EnumFacing.WEST.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.SOUTH)
+                    {
+                        return EnumFacing.EAST.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.WEST)
+                    {
+                        return EnumFacing.NORTH.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.EAST)
+                    {
+                        return EnumFacing.SOUTH.getHorizontalIndex();
+                    }
+                }
+                else if (horizIndex == EnumFacing.EAST.getHorizontalIndex())
+                {
+                    if (enumfacing == EnumFacing.NORTH)
+                    {
+                        return EnumFacing.EAST.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.SOUTH)
+                    {
+                        return EnumFacing.WEST.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.WEST)
+                    {
+                        return EnumFacing.NORTH.getHorizontalIndex();
+                    }
+
+                    if (enumfacing == EnumFacing.EAST)
+                    {
+                        return EnumFacing.SOUTH.getHorizontalIndex();
+                    }
+                }
+            }
+        }
+        else if (horizIndex == EnumFacing.SOUTH.getHorizontalIndex())
+        {
+            if (metaIn == 2)
+            {
+                return 3;
+            }
+
+            if (metaIn == 3)
+            {
+                return 2;
+            }
+        }
+        else if (horizIndex == EnumFacing.WEST.getHorizontalIndex())
+        {
+            if (metaIn == 0)
+            {
+                return 2;
+            }
+
+            if (metaIn == 1)
+            {
+                return 3;
+            }
+
+            if (metaIn == 2)
+            {
+                return 0;
+            }
+
+            if (metaIn == 3)
+            {
+                return 1;
+            }
+        }
+        else if (horizIndex == EnumFacing.EAST.getHorizontalIndex())
+        {
+            if (metaIn == 0)
+            {
+                return 2;
+            }
+
+            if (metaIn == 1)
+            {
+                return 3;
+            }
+
+            if (metaIn == 2)
+            {
+                return 1;
+            }
+
+            if (metaIn == 3)
+            {
+                return 0;
+            }
+        }
+
+        return metaIn;
+    }
+    
+    
+    /**
+	 * furnaceOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 * -X: returns the value X - used for things like upright barrels
+	 */
+	public static int chooseLadderMeta(int orientation)
+	{
+		if (orientation<0) {return -orientation;}
+		return LADDER_META_ARRAY[orientation];
+	}
+    /**
+	 * furnaceOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 * -X: returns the value X - used for things like upright barrels
+	 */
+	public static int chooseFurnaceMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		if (orientation<0) {return -orientation;}
+		return FURNACE_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+    /**
+	 * buttonOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int chooseButtonMeta(int orientation)
+	{
+		return BUTTON_META_ARRAY[orientation];
+	}
+    /**
+	 * anvilOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int chooseAnvilMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		return ANVIL_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+    /**
+	 * terracottaOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int chooseGlazedTerracottaMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		return GLAZED_TERRACOTTA_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+	
+    /**
+     * Returns meta values for lower and upper halves of a door
+     * 
+	 * orientation - Direction the outside of the door faces when closed:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 * 
+	 * isShut - doors are "shut" by default when placed by a player
+	 * rightHandRule - whether the door opens counterclockwise when viewed from above. This is default state when placed by a player
+	 */
+	public static int[] getDoorMetas(int orientation, EnumFacing coordBaseMode, boolean isShut, boolean isRightHanded)
+	{
+		int horizIndex = coordBaseMode.getHorizontalIndex();
+		
+		return new int[] {
+				//DOOR_META_ARRAY[isRightHanded?1:0][isShut?1:0][orientation],
+				DOOR_META_ARRAY[orientation] + (isShut?0:4),
+				horizIndex < 2 ? (isRightHanded ? 9 : 8) : (isRightHanded ? 8 : 9)
+						};
+	}
+
+	/**
+	 * Returns a random animal from the /structures/village/common/animals folder, not including cats
+	 */
+	public static EntityLiving getVillageAnimal(World world, BlockPos pos, Random random, boolean includeHorses, boolean mooshroomsInsteadOfCows)
+	{
+		EntityLiving animal;
+		int animalIndex = random.nextInt(4 + (includeHorses ? 5 : 0));
+		
+		if (animalIndex==0)      {animal = mooshroomsInsteadOfCows ? new EntityMooshroom(world) : new EntityCow(world);}
+		else if (animalIndex==1) {animal = new EntityPig(world);}
+		else if (animalIndex<=3) {animal = new EntitySheep(world);}
+		else                     {animal = new EntityHorse(world);}
+		
+		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(pos), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+		
+		return animal;
+	}
+	
+		
+	/**
+	 * relativeOrientation
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int getBedOrientationMeta(int relativeOrientation, EnumFacing coordBaseMode, boolean isHead)
+	{
+		int horizIndex = coordBaseMode.getHorizontalIndex();
+		
+		switch (relativeOrientation)
+		{
+		case 0: // Facing away
+			return new int[]{2,3,0,1}[horizIndex] + (isHead ? 8:0);
+		case 1: // Facing right
+			return new int[]{1,2,1,2}[horizIndex] + (isHead ? 8:0);
+		case 2: // Facing you
+			return new int[]{0,1,2,3}[horizIndex] + (isHead ? 8:0);
+		case 3: // Facing left
+			return new int[]{3,0,3,0}[horizIndex] + (isHead ? 8:0);
+		}
+		return 0 + (isHead ? 8:0);
+	}
+	
+	
+	/**
+	 * relativeOrientation
+	 * Updated for 1.9+ because all objects are assumed to be at coordBaseMode=NORTH (horizIndex=2)
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int getTrapdoorMeta(int relativeOrientation, boolean isTop, boolean isVertical)
+	{
+		int meta = 0;
+		
+		switch (relativeOrientation)
+		{
+		case 0: // Facing away
+			meta = 0; break;
+		case 1: // Facing right
+			meta = 3; break;
+		default:
+		case 2: // Facing you
+			meta = 1; break;
+		case 3: // Facing left
+			meta = 2; break;
+		}
+		
+		meta += (isVertical?4:0);
+		meta += (isTop?8:0);
+		
+		return meta;
+	}
 	
 	
 	/**

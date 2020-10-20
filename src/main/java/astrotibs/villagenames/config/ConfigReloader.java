@@ -17,6 +17,7 @@ import astrotibs.villagenames.config.pieces.StrongholdConfigHandler;
 import astrotibs.villagenames.config.pieces.TempleConfigHandler;
 import astrotibs.villagenames.config.pieces.VillageConfigHandler;
 import astrotibs.villagenames.config.pieces.VillagerConfigHandler;
+import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

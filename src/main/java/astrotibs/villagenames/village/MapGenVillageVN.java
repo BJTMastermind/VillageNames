@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
 import astrotibs.villagenames.utility.FunctionsVN;
+import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.biomestructures.DesertStructures;
 import astrotibs.villagenames.village.biomestructures.PlainsStructures;
 import astrotibs.villagenames.village.biomestructures.SavannaStructures;
@@ -23,6 +25,8 @@ import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.world.gen.structure.StructureVillagePieces;
+import net.minecraft.world.gen.structure.StructureVillagePieces.PieceWeight;
 import net.minecraft.world.gen.structure.StructureVillagePieces.Road;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.event.terraingen.InitMapGenEvent;
@@ -47,19 +51,19 @@ public class MapGenVillageVN extends MapGenVillage
         }
 	}
 	
-    private int terrainType;
-    private int field_82665_g; // Maximum distance between villages
-    private int field_82666_h; // Minimum distance between villages
+    private int size;
+    private int distance; // Maximum distance between villages
+    private int minTownSeparation; // Minimum distance between villages
     
     public MapGenVillageVN()
     {
-    	this.terrainType = VillageGeneratorConfigHandler.newVillageSize-1; // Because vanilla is "0" and default provided value is 1
+    	this.size = VillageGeneratorConfigHandler.newVillageSize-1; // Because vanilla is "0" and default provided value is 1
     	
     	// Set spacings
-    	this.field_82666_h = VillageGeneratorConfigHandler.newVillageSpacingMedian - VillageGeneratorConfigHandler.newVillageSpacingSpread;
-    	if (this.field_82666_h<1) {this.field_82666_h=1;}
+    	this.minTownSeparation = VillageGeneratorConfigHandler.newVillageSpacingMedian - VillageGeneratorConfigHandler.newVillageSpacingSpread;
+    	if (this.minTownSeparation<1) {this.minTownSeparation=1;}
     	
-        this.field_82665_g = VillageGeneratorConfigHandler.newVillageSpacingMedian + VillageGeneratorConfigHandler.newVillageSpacingSpread;
+        this.distance = VillageGeneratorConfigHandler.newVillageSpacingMedian + VillageGeneratorConfigHandler.newVillageSpacingSpread;
         
     }
     
@@ -75,11 +79,11 @@ public class MapGenVillageVN extends MapGenVillage
 
             if (((String)entry.getKey()).equals("size"))
             {
-                this.terrainType = MathHelper.parseIntWithDefaultAndMax((String)entry.getValue(), this.terrainType, 0);
+                this.size = MathHelper.parseIntWithDefaultAndMax((String)entry.getValue(), this.size, 0);
             }
             else if (((String)entry.getKey()).equals("distance"))
             {
-                this.field_82665_g = MathHelper.parseIntWithDefaultAndMax((String)entry.getValue(), this.field_82665_g, this.field_82666_h + 1);
+                this.distance = MathHelper.parseIntWithDefaultAndMax((String)entry.getValue(), this.distance, this.minTownSeparation + 1);
             }
         }
     }
@@ -97,23 +101,23 @@ public class MapGenVillageVN extends MapGenVillage
         int chunkZ = chunkZin;
         
         // Handle negative chunk values
-        if (chunkXin < 0) {chunkXin -= this.field_82665_g - 1;}
-        if (chunkZin < 0) {chunkZin -= this.field_82665_g - 1;}
+        if (chunkXin < 0) {chunkXin -= this.distance - 1;}
+        if (chunkZin < 0) {chunkZin -= this.distance - 1;}
         
         // The (floor) number of [max Village chunk distance]s this chunk is
-        int chunkXModulated = chunkXin / this.field_82665_g;
-        int chunkZModulated = chunkZin / this.field_82665_g;
+        int chunkXModulated = chunkXin / this.distance;
+        int chunkZModulated = chunkZin / this.distance;
         
         // Set the random seed based on number of X, Z spacings
         Random random = this.worldObj.setRandomSeed(chunkXModulated, chunkZModulated, 10387312); // Idk the significance of this number. May be unique to "Village" structures?
         
         // Get the chunk X and Z, floored by the number of max village spacings
-        chunkXModulated *= this.field_82665_g;
-        chunkZModulated *= this.field_82665_g;
+        chunkXModulated *= this.distance;
+        chunkZModulated *= this.distance;
         
         // Add random offset based on village spacing min and max values
-        chunkXModulated += random.nextInt(this.field_82665_g - this.field_82666_h);
-        chunkZModulated += random.nextInt(this.field_82665_g - this.field_82666_h);
+        chunkXModulated += random.nextInt(this.distance - this.minTownSeparation);
+        chunkZModulated += random.nextInt(this.distance - this.minTownSeparation);
         
         // Return "true" if this chunk X & Z is flagged for village construction AND the biome is allowed as per the config
         if (chunkX == chunkXModulated && chunkZ == chunkZModulated)
@@ -141,7 +145,7 @@ public class MapGenVillageVN extends MapGenVillage
     @Override
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
-        return new MapGenVillageVN.Start(this.worldObj, this.rand, chunkX, chunkZ, this.terrainType);
+        return new MapGenVillageVN.Start(this.worldObj, this.rand, chunkX, chunkZ, this.size);
     }
     
     // Copied from vanilla
@@ -176,6 +180,32 @@ public class MapGenVillageVN extends MapGenVillage
             
             // My modified version, which allows the user to disable each building
             List list = StructureVillageVN.getStructureVillageWeightedPieceList(random, villageSize, startVillageType);
+
+            // Print out the list of components for player use
+            if (GeneralConfig.debugMessages)
+            {
+            	Map<String, ArrayList> mappedComponentVillageTypes = VillageGeneratorConfigHandler.unpackComponentVillageTypes(VillageGeneratorConfigHandler.componentVillageTypes);
+            	
+            	Iterator iterator = list.iterator();
+            	
+            	int unmappedComponent=0; // Counts how many structure components try to generate. If none, no text is printed.
+            	
+                while (iterator.hasNext())
+                {
+                	PieceWeight pw = (StructureVillagePieces.PieceWeight)iterator.next();
+                	
+                	if (!mappedComponentVillageTypes.get("ClassPaths").contains(pw.villagePieceClass.toString().substring(6)))
+                	{
+                		LogHelper.info("Weight " + pw.villagePieceWeight + ", Limit " + pw.villagePiecesLimit + ": " + pw.villagePieceClass.toString().substring(6));
+                		unmappedComponent++;
+                	}
+                }
+                
+                if (unmappedComponent>0)
+                {
+                	LogHelper.info("The above village candidate components for " + startVillageType.toString().toLowerCase() + " village at x=" + ((chunkX << 4) + 2) + ", z=" + ((chunkZ << 4) + 2) + " are not currently listed in the Component Village Types config entry.");
+                }
+            }
             
             // Generate the "start" component and add it to the list
             StructureVillageVN.StartVN start = null;

@@ -113,7 +113,6 @@ public class GeneralConfig {
 	    
 	    // --------------Professions-----------------//
 	    enableCartographer = config.getBoolean("Cartographer Villager", "villager professions", true, "Enable Cartographer career for Librarian villager. The higher-level trades will be " + Reference.MOD_NAME + " trades instead of treasure maps. Ordinary Librarians will get high-level treasure trades, too.");
-	    //enableNitwit = config.getBoolean("Nitwit Villager", "villager professions", true, "Enable 1.11 NitWit Villagers");
 	    treasureTrades = config.getBoolean("Treasure Trades", "villager professions", true, "High-level Librarians and Cartographers will offer enchanted books and treasures in exchange for " + Reference.MOD_NAME + " items.");
 	    writtenBookTrade = config.getBoolean("Written Book Trade", "villager professions", true, "Change the vanilla Librarian trade to require a single written book instead of two identical written books");
 

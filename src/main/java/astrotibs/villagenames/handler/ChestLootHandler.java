@@ -68,6 +68,9 @@ public class ChestLootHandler {
 			lootCategory = event.getTable().getPool("main");
 			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 20, 0, new LootFunction[] {new SetCount(new LootCondition[0], new RandomValueRange(1,4))}, new LootCondition[0], Reference.MOD_ID + ":codex")); }
 		
+		
+		// Modern village chests
+		//LootTableList.register(new ResourceLocation(Reference.MOD_ID.toLowerCase(), "chests/test_chest_loot"));
 	}
 	
 }
