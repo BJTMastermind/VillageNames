@@ -43,27 +43,41 @@ public class DesertStructures
 	
 	public static class DesertMeetingPoint1 extends StartVN
     {
+        // Make foundation with blanks as empty air and F as foundation spaces
+        private static final String[] foundationPattern = new String[]{
+            	"   PPPPPPP",
+            	" PPPPPPPPP",
+            	" PPFFFPPPP",
+            	"PPFFFFFPPP",
+            	"PPFFFFFPPP",
+            	"PPFFFFFPPP",
+            	" PPFFFPPPP",
+            	" PPPPPPPPP",
+            	"   PPPPPPP",
+        };
+    	// Here are values to assign to the bounding box
+    	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
+    	public static final int STRUCTURE_DEPTH = foundationPattern.length;
+    	public static final int STRUCTURE_HEIGHT = 6;
+    	// Values for lining things up
+    	public static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
+    	
     	public DesertMeetingPoint1() {}
     	
     	public DesertMeetingPoint1(BiomeProvider chunkManager, int componentType, Random random, int posX, int posZ, List components, int terrainType)
     	{
     		super(chunkManager, componentType, random, posX, posZ, components, terrainType);
-
-    		int width = 9;
-    		int depth = 8;
-    		int height = 5;
     		
-		    // Establish orientation
-            this.setCoordBaseMode(EnumFacing.Plane.HORIZONTAL.random(random));
-    		
+		    // Establish orientation and bounding box
+    		this.setCoordBaseMode(EnumFacing.Plane.HORIZONTAL.random(random));
             switch (this.getCoordBaseMode())
             {
-            	case NORTH:
-            	case SOUTH:
-                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + width, 64+height, posZ + depth);
+	            case NORTH: // North
+	            case SOUTH: // South
+                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + STRUCTURE_WIDTH-1, 64 + STRUCTURE_HEIGHT-1, posZ + STRUCTURE_DEPTH-1);
                     break;
-            	default:
-                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + depth, 64+height, posZ + width);
+                default: // 1: East; 3: West
+                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + STRUCTURE_DEPTH-1, 64 + STRUCTURE_HEIGHT-1, posZ + STRUCTURE_WIDTH-1);
             }
     	}
 
@@ -113,24 +127,62 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
-        	
         	if (this.averageGroundLvl < 0)
             {
-        		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
-        				new StructureBoundingBox(
-        						this.boundingBox.minX+1, this.boundingBox.minZ+1,
-        						this.boundingBox.maxX-1, this.boundingBox.maxZ-1), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
-        		
-                if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+            	if (this.averageGroundLvl < 0)
+                {
+            		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+            				// Set the bounding box version as this bounding box but with Y going from 0 to 512
+            				new StructureBoundingBox(
+            						// Modified to center onto front of house
+            						this.boundingBox.minX, this.boundingBox.minZ,
+            						this.boundingBox.maxX, this.boundingBox.maxZ),
+            				true, (byte)7, this.getCoordBaseMode().getHorizontalIndex());
+            		
+                    if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
 
-                this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY -1, 0);
+                    this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+                }
             }
-            
+        	
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
+
+        	// Clear space above
+            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
+            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
+            }}
+        	
+        	// Follow the blueprint to set up the starting foundation
+        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
+        		
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
+        	
         	// Generate or otherwise obtain village name and banner and colors
         	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world,
         			this.getXWithOffset(6, 4),
@@ -179,24 +231,9 @@ public class DesertStructures
 			}
         	
         	// Set sandstone ground and clear area above
-        	this.fillWithBlocks(world, structureBB, 3, 0, 0, 9, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
-        	for (int x = 3; x <= 9; ++x) {for (int z = 0; z <= 8; ++z)
-        	{
-        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
-        		this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
-        	}}
+			this.fillWithBlocks(world, structureBB, 3, 0, 0, 9, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	this.fillWithBlocks(world, structureBB, 1, 0, 1, 2, 0, 7, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
-        	for (int x = 1; x <= 2; ++x) {for (int z = 1; z <= 7; ++z)
-        	{
-        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
-        		this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
-        	}}
         	this.fillWithBlocks(world, structureBB, 0, 0, 3, 0, 0, 5, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
-        	for (int x = 0; x <= 0; ++x) {for (int z = 3; z <= 5; ++z)
-        	{
-        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
-        		this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
-        	}}
         	
         	// Set well rim
         	if (GeneralConfig.useVillageColors)
@@ -300,9 +337,7 @@ public class DesertStructures
                 // Place a foundation
                 this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
                 this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
-                // Clear space upward
-                this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
-                
+// Line the well with cobblestone                
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
@@ -337,9 +372,7 @@ public class DesertStructures
 	        			if (random.nextInt(3)==0) {entityvillager.setProfession(5);}
 	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
 	        			
-	        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
-	        			
-	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)this.getYWithOffset(ia[1]) + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
 	                    		random.nextFloat()*360F, 0.0F);
 	                    world.spawnEntity(entityvillager);
 	        		}
@@ -355,27 +388,44 @@ public class DesertStructures
 	
 	public static class DesertMeetingPoint2 extends StartVN
     {
+        // Make foundation with blanks as empty air and F as foundation spaces
+        private static final String[] foundationPattern = new String[]{
+            	"     PPP    ",
+            	" PPPPPPPPPP ",
+            	" PPPPPPPPPP ",
+            	" PPFFFFFFPP ",
+            	"PPPFFFFFFPP ",
+            	"PPPFFFFFFPPP",
+            	"PPPFFFFFFPPP",
+            	" PPFFFFFFPPP",
+            	" PPFFFFFFPP ",
+            	" PPPPPPPPPP ",
+            	" PPPPPPPPPP ",
+            	"    PPP     ",
+        };
+    	// Here are values to assign to the bounding box
+    	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
+    	public static final int STRUCTURE_DEPTH = foundationPattern.length;
+    	public static final int STRUCTURE_HEIGHT = 6;
+    	// Values for lining things up
+    	public static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
+    	
     	public DesertMeetingPoint2() {}
     	
     	public DesertMeetingPoint2(BiomeProvider chunkManager, int componentType, Random random, int posX, int posZ, List components, int terrainType)
     	{
     		super(chunkManager, componentType, random, posX, posZ, components, terrainType);
-
-    		int width = 11;
-    		int depth = 11;
-    		int height = 5;
     		
-		    // Establish orientation
+		    // Establish orientation and bounding box
     		this.setCoordBaseMode(EnumFacing.Plane.HORIZONTAL.random(random));
-    		
             switch (this.getCoordBaseMode())
             {
-	        	case NORTH:
-	        	case SOUTH:
-                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + width, 64+height, posZ + depth);
+	            case NORTH: // North
+	            case SOUTH: // South
+                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + STRUCTURE_WIDTH-1, 64 + STRUCTURE_HEIGHT-1, posZ + STRUCTURE_DEPTH-1);
                     break;
-                default:
-                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + depth, 64+height, posZ + width);
+                default: // 1: East; 3: West
+                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + STRUCTURE_DEPTH-1, 64 + STRUCTURE_HEIGHT-1, posZ + STRUCTURE_WIDTH-1);
             }
     	}
 
@@ -411,24 +461,63 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
-        	
         	if (this.averageGroundLvl < 0)
             {
-        		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
-        				new StructureBoundingBox(
-        						this.boundingBox.minX+1, this.boundingBox.minZ+1,
-        						this.boundingBox.maxX-1, this.boundingBox.maxZ-1), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
-        		
-                if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+            	if (this.averageGroundLvl < 0)
+                {
+            		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+            				// Set the bounding box version as this bounding box but with Y going from 0 to 512
+            				new StructureBoundingBox(
+            						// Modified to center onto front of house
+            						this.boundingBox.minX, this.boundingBox.minZ,
+            						this.boundingBox.maxX, this.boundingBox.maxZ),
+            				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
+            		
+                    if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
 
-                this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY -1, 0);
+                    this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+                }
             }
-            
+        	
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+
+        	// Clear space above
+            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
+            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
+            }}
+        	
+        	// Follow the blueprint to set up the starting foundation
+        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
+        		
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
+        	
         	// Generate or otherwise obtain village name and banner and colors
         	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world,
         			this.getXWithOffset(8, 1),
@@ -476,44 +565,8 @@ public class DesertStructures
 				catch (Exception e) {this.disallowModSubs = false;}
 			}
         	
-        	// Set sandstone ground and clear area above
+        	// Set sandstone ground
         	this.fillWithBlocks(world, structureBB, 1, 0, 1, 10, 0, 10, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
-        	
-        	// Fill foundation
-        	for (int x = 1; x <= 10; ++x)
-            {
-	        	for (int z = 1; z <= 10; ++z)
-	            {
-	                this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, x, -1, z, structureBB); // Foundation
-	                this.clearCurrentPositionBlocksUpwards(world, x, 1, z, structureBB);
-                }
-            }
-        	
-        	// Path hitches at the ends
-        	this.fillWithBlocks(world, structureBB, 0, 0, 5, 0, 0, 7, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
-        	for (int w = 5; w <= 7; ++w)
-        	{
-        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, 0, -1, w, structureBB); // Foundation
-        		this.clearCurrentPositionBlocksUpwards(world, 0, 1, w, structureBB);
-        	}
-        	this.fillWithBlocks(world, structureBB, 11, 0, 4, 11, 0, 6, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
-        	for (int w = 4; w <= 6; ++w)
-        	{
-        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, 11, -1, w, structureBB); // Foundation
-        		this.clearCurrentPositionBlocksUpwards(world, 11, 1, w, structureBB);
-        	}
-        	this.fillWithBlocks(world, structureBB, 4, 0, 0, 6, 0, 0, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
-        	for (int w = 4; w <= 6; ++w)
-        	{
-        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, w, -1, 0, structureBB); // Foundation
-        		this.clearCurrentPositionBlocksUpwards(world, w, 1, 0, structureBB);
-        	}
-        	this.fillWithBlocks(world, structureBB, 5, 0, 11, 7, 0, 11, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
-        	for (int w = 5; w <= 7; ++w)
-        	{
-        		this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, w, -1, 11, structureBB); // Foundation
-        		this.clearCurrentPositionBlocksUpwards(world, w, 1, 11, structureBB);
-        	}
         	
         	// Set sand underneath the fountain
         	this.fillWithBlocks(world, structureBB, 3, 0, 3, 8, 0, 8, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
@@ -621,9 +674,7 @@ public class DesertStructures
                 // Place a foundation
                 this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
                 this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
-                // Clear space upward
-                this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
-                
+// Line the well with cobblestone                
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
@@ -658,9 +709,7 @@ public class DesertStructures
 	        			if (random.nextInt(3)==0) {entityvillager.setProfession(5);}
 	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
 	        			
-	        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
-	        			
-	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)this.getYWithOffset(ia[1]) + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
 	                    		random.nextFloat()*360F, 0.0F);
 	                    world.spawnEntity(entityvillager);
 	        		}
@@ -676,27 +725,47 @@ public class DesertStructures
 
 	public static class DesertMeetingPoint3 extends StartVN
     {
+        // Make foundation with blanks as empty air and F as foundation spaces
+        private static final String[] foundationPattern = new String[]{
+            	" FF FFFFFF     ",
+            	"   FFFFFFFFFF  ",
+            	"FFFFFFFFFFFFFF ",
+            	"FFFFFFFFFFFFFFF",
+            	"FFFFFFFFFFFFFFF",
+            	"FFFFFFFFPPPPPPF",
+            	"FFFFFFFFPFFFFPP",
+            	"FFFFFFFFPFPPFPP",
+            	" FFFFFFFPFPPFPP",
+            	" FFFFFFFPFFFFPF",
+            	" FFFFFFPPPPPPPF",
+            	"   FFFFPPPPFFFF",
+            	"   FFFFPFFPFFF ",
+            	"   F FFPPPPFFF ",
+            	"     FFPFFPF F ",
+        };
+    	// Here are values to assign to the bounding box
+    	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
+    	public static final int STRUCTURE_DEPTH = foundationPattern.length;
+    	public static final int STRUCTURE_HEIGHT = 6;
+    	// Values for lining things up
+    	public static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
+    	
     	public DesertMeetingPoint3() {}
     	
     	public DesertMeetingPoint3(BiomeProvider chunkManager, int componentType, Random random, int posX, int posZ, List components, int terrainType)
     	{
     		super(chunkManager, componentType, random, posX, posZ, components, terrainType);
-
-    		int width = 14;
-    		int depth = 14;
-    		int height = 5;
     		
-		    // Establish orientation
+		    // Establish orientation and bounding box
     		this.setCoordBaseMode(EnumFacing.Plane.HORIZONTAL.random(random));
-    		
             switch (this.getCoordBaseMode())
             {
-	        	case NORTH:
-	        	case SOUTH:
-                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + width, 64+height, posZ + depth);
+	            case NORTH: // North
+	            case SOUTH: // South
+                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + STRUCTURE_WIDTH-1, 64 + STRUCTURE_HEIGHT-1, posZ + STRUCTURE_DEPTH-1);
                     break;
-                default:
-                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + depth, 64+height, posZ + width);
+                default: // 1: East; 3: West
+                    this.boundingBox = new StructureBoundingBox(posX, 64, posZ, posX + STRUCTURE_DEPTH-1, 64 + STRUCTURE_HEIGHT-1, posZ + STRUCTURE_WIDTH-1);
             }
     	}
 
@@ -732,30 +801,68 @@ public class DesertStructures
     	@Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	//IBlockState biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs); // TODO - Check for modded sandstone walls
-        	IBlockState biomeSandstoneWallState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA);
-        	if (biomeSandstoneWallState==null) {StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);}
-        	else {biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(biomeSandstoneWallState, this.materialType, this.biome, this.disallowModSubs);}
-        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlock(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlock(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlock(Blocks.STONE_SLAB.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
-        	
         	if (this.averageGroundLvl < 0)
             {
-        		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
-        				new StructureBoundingBox(
-        						this.boundingBox.minX+2, this.boundingBox.minZ+2,
-        						this.boundingBox.maxX-2, this.boundingBox.maxZ-2), // Set the bounding box version as this bounding box but with Y going from 0 to 512
-        				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
-        		
-                if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+            	if (this.averageGroundLvl < 0)
+                {
+            		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+            				// Set the bounding box version as this bounding box but with Y going from 0 to 512
+            				new StructureBoundingBox(
+            						// Modified to center onto front of house
+            						this.boundingBox.minX, this.boundingBox.minZ,
+            						this.boundingBox.maxX, this.boundingBox.maxZ),
+            				true, (byte)14, this.getCoordBaseMode().getHorizontalIndex());
+            		
+                    if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
 
-                this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY -1, 0);
+                    this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+                }
             }
-            
+        	
+        	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	//IBlockState biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlock(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs); // TODO - Check for modded sandstone walls
+        	IBlockState biomeSandstoneWallState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA);
+        	if (biomeSandstoneWallState==null) {StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);}
+        	else {biomeSandstoneWallState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallState, this.materialType, this.biome, this.disallowModSubs);}
+        	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneState(false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
+
+        	// Clear space above
+            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
+            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
+            }}
+        	
+        	// Follow the blueprint to set up the starting foundation
+        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
+        		
+        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
+    			int posX = this.getXWithOffset(u, w);
+    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
+    			int posZ = this.getZWithOffset(u, w);
+    					
+        		if (unitLetter.equals("F"))
+        		{
+        			// If marked with F: fill with dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+        		else if (unitLetter.equals("P"))
+        		{
+        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
+        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
+        		}
+        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeDirtState.getBlock())
+        		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
+        			this.replaceAirAndLiquidDownwards(world, biomeDirtState, u, GROUND_LEVEL-1, w, structureBB);
+        			this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
+        		}
+            }}
+        	
         	// Generate or otherwise obtain village name and banner and colors
         	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world,
         			this.getXWithOffset(8, 2),
@@ -808,30 +915,31 @@ public class DesertStructures
         	
         	for (Object[] o : new Object[][]{
         		// minX, maxX, minZ, maxZ, groundY, structureHeight, surfaceBlock, surfaceMeta, subsurfaceBlock, subsurfaceMeta 
-        		{0, 0, 7, 12, 0, 5, Blocks.SAND, 0, Blocks.SANDSTONE, 0},
-        		{1, 2, 4, 12, 0, 5, Blocks.SAND, 0, Blocks.SANDSTONE, 0},
-        		{1, 2, 14, 14, 0, 5, Blocks.SAND, 0, Blocks.SANDSTONE, 0},
-        		{0, 2, 13, 13, -1, 5, Blocks.SANDSTONE, 0, Blocks.SANDSTONE, 0},
-        		{2, 2, 3, 3, -1, 5, Blocks.SANDSTONE, 0, Blocks.SANDSTONE, 0},
-        		{3, 3, 14, 14, -1, 5, Blocks.SANDSTONE, 0, Blocks.SANDSTONE, 0},
-        		{3, 3, 1, 13, 0, 5, Blocks.SAND, 0, Blocks.SANDSTONE, 0},
-        		{3, 3, 0, 0, -1, 5, Blocks.SANDSTONE, 0, Blocks.SANDSTONE, 0},
-        		{4, 4, 2, 14, 0, 5, Blocks.SAND, 0, Blocks.SANDSTONE, 0},
-        		{4, 4, 0, 1, -1, 5, Blocks.SANDSTONE, 0, Blocks.SANDSTONE, 0},
-        		{5, 9, 0, 14, 0, 5, Blocks.SAND, 0, Blocks.SANDSTONE, 0},
-        		{10, 11, 0, 13, 0, 5, Blocks.SAND, 0, Blocks.SANDSTONE, 0},
-        		{12, 12, 1, 13, 0, 5, Blocks.SAND, 0, Blocks.SANDSTONE, 0},
-        		{12, 12, 0, 0, -1, 5, Blocks.SANDSTONE, 0, Blocks.SANDSTONE, 0},
-        		{13, 13, 0, 12, 0, 5, Blocks.SAND, 0, Blocks.SANDSTONE, 0},
-        		{14, 14, 3, 11, 0, 5, Blocks.SAND, 0, Blocks.SANDSTONE, 0},
+        		{0, 0, 7, 12, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{1, 2, 4, 12, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{1, 2, 14, 14, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{0, 2, 13, 13, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{2, 2, 3, 3, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{3, 3, 14, 14, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{3, 3, 1, 13, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{3, 3, 0, 0, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{4, 4, 2, 14, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{4, 4, 0, 1, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{5, 9, 0, 14, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{10, 11, 0, 13, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{12, 12, 1, 13, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{12, 12, 0, 0, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
+        		{13, 13, 0, 12, 0, biomeDirtState, biomeSmoothSandstoneState},
+        		{14, 14, 3, 11, 0, biomeDirtState, biomeSmoothSandstoneState},
         	})
         	{
         		this.fillWithBlocks(world, structureBB, (Integer)o[0], (Integer)o[4], (Integer)o[2], (Integer)o[1], (Integer)o[4], (Integer)o[3], ((Block)o[6]).getStateFromMeta((Integer)o[7]), ((Block)o[6]).getStateFromMeta((Integer)o[7]), false);
-            	for (int x = (Integer)o[0]; x <= (Integer)o[1]; ++x) {for (int z = (Integer)o[2]; z <= (Integer)o[3]; ++z)
+            	/*
+        		for (int x = (Integer)o[0]; x <= (Integer)o[1]; ++x) {for (int z = (Integer)o[2]; z <= (Integer)o[3]; ++z)
             	{
             		this.replaceAirAndLiquidDownwards(world, ((Block)o[8]).getStateFromMeta((Integer)o[9]), x, (Integer)o[4]-1, z, structureBB); // Foundation
             		this.clearCurrentPositionBlocksUpwards(world, (Integer)o[0], Math.max((Integer)o[4], 0)+1, (Integer)o[2], structureBB);
-            	}}
+            	}}*/
         	}
         	// Set sandstone in certain places
         	this.fillWithBlocks(world, structureBB, 7, 0, 0, 7, 0, 4, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
@@ -1069,9 +1177,7 @@ public class DesertStructures
                 // Place a foundation
                 this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
                 this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
-                // Clear space upward
-                this.clearCurrentPositionBlocksUpwards(world, bannerXBB, bannerYBB, bannerZBB, structureBB);
-                
+// Line the well with cobblestone                
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
@@ -1106,9 +1212,7 @@ public class DesertStructures
 	        			if (random.nextInt(3)==0) {entityvillager.setProfession(5);}
 	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
 	        			
-	        			int villagerY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(this.getXWithOffset(ia[0], ia[2]), 0, this.getZWithOffset(ia[0], ia[2]))).getY();
-	        			
-	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)villagerY + 1.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
+	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)this.getYWithOffset(ia[1]) + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
 	                    		random.nextFloat()*360F, 0.0F);
 	                    world.spawnEntity(entityvillager);
 	        		}
@@ -1131,18 +1235,18 @@ public class DesertStructures
 	public static ArrayList<BlueprintData> getDesertDecorBlueprint(int decorType, MaterialType materialType, boolean disallowModSubs, Biome biome, EnumFacing coordBaseMode, Random random)//, int townColor)
 	{
 		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
-		
+
 		
 		// Generate per-material blocks
 		
-		IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlock(biomeLogVertState, materialType, biome, disallowModSubs);
+    	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), materialType, biome, disallowModSubs);
 		
 		
         switch (decorType)
         {
     	case 0: // Torch on stained terracotta and cut sandstone
     		
-    		BlueprintData.addFillWithBlocks(blueprint, 0, 0, 0, 0, 1, 0, biomeCutSandstoneState);
+    		BlueprintData.addFillWithBlocks(blueprint, 0, 0, 0, 0, 1, 0, biomeLogVertState);
     		//BlueprintData.addPlaceBlock(blueprint, 0, 2, 0, GeneralConfig.decorateVillageCenter ? Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(townColor) : Blocks.HARDENED_CLAY.getDefaultState());
     		BlueprintData.addPlaceBlock(blueprint, 0, 2, 0, Blocks.HARDENED_CLAY.getDefaultState());
     		BlueprintData.addPlaceBlock(blueprint, 0, 3, 0, Blocks.TORCH.getStateFromMeta(0));

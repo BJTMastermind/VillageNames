@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -176,6 +177,9 @@ public class ModObjects {
 	// Lantern
 	public static final String lanternFMC = "futuremc:lantern";
 	
+	// Mud
+	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
+	
 	// Sandstone walls
 	public static final String sandstoneWallQu = "quark:sandstone_wall";
 	public static final String redSandstoneWallQu = "quark:red_sandstone_wall";
@@ -253,8 +257,10 @@ public class ModObjects {
      * HANGING:
      * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
      */
-	public static IBlockState chooseModCampfireBlock(int relativeOrientation, int horizIndex)
+	public static IBlockState chooseModCampfireBlock(int relativeOrientation, EnumFacing coordBaseMode)
 	{
+		int horizIndex = coordBaseMode.getHorizontalIndex();
+		
 		Block tryCampfire = Block.getBlockFromName(ModObjects.campfireFMC);
 		
 		int campfireMeta=0;
@@ -445,7 +451,7 @@ public class ModObjects {
 	 * Materials are: 0=oak, 1=spruce, 2=birch, 3=jungle, 4=acacia, 5=darkoak
 	 * Orientations are: 0=vertical, 1=east-west, 2=north-south
 	 */
-	public static IBlockState chooseModStrippedLog(int materialMeta, int orientation)
+	public static IBlockState chooseModStrippedLogState(int materialMeta, int orientation)
 	{
 		Block logBlock=null;
 		
@@ -469,7 +475,7 @@ public class ModObjects {
 	 * Materials are: 0=oak, 1=spruce, 2=birch, 3=jungle, 4=acacia, 5=darkoak
 	 * Orientations are: 0=vertical, 1=east-west, 2=north-south
 	 */
-	public static IBlockState chooseModStrippedWood(int materialMeta, int orientation)
+	public static IBlockState chooseModStrippedWoodState(int materialMeta, int orientation)
 	{
 		Block logBlock=null;
 		
