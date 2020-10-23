@@ -1,8 +1,19 @@
 package astrotibs.villagenames.integration;
 
+import astrotibs.villagenames.block.ModBlocksVN;
+import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.utility.FunctionsVN;
+import astrotibs.villagenames.village.StructureVillageVN;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 /**
  * A holder for string names for various mod items/blocks/etc for easy access
@@ -59,7 +70,12 @@ public class ModObjects {
 
 	// --- Blocks ---//
  	
- 	
+	// Bark
+	public static final String barkQu = "quark:bark";
+	
+	// Colored Bed
+	public static final String coloredBedBlock_root_Qu = "quark:colored_bed_";
+	
 	// Crops
 	public static final String cropArtichokeHC = "harvestcraft:pamartichokecrop";
 	public static final String cropAsparagusHC = "harvestcraft:pamasparaguscrop";
@@ -125,6 +141,34 @@ public class ModObjects {
 	
 	// Mud
 	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
+
+	// Smooth Sandstone
+	public static final String smoothSandstoneQu = "quark:sandstone_new";
+	
+	// Smooth Sandstone Slab
+	public static final String smoothSandstoneSlabQu = "quark:sandstone_smooth_slab";
+	public static final String smoothRedSandstoneSlabQu = "quark:red_sandstone_smooth_slab";
+	
+	// Smooth Stone 
+	public static final String smoothStoneQu = "quark:polished_stone";
+	
+	// Stairs
+	public static final String dioriteStairs_Qu = "quark:stone_diorite_stairs";
+	public static final String graniteStairs_Qu = "quark:stone_granite_stairs";
+	
+	// Trapdoor
+	public static final String trapdoorSpruceQu = "quark:spruce_trapdoor";
+	public static final String trapdoorBirchQu = "quark:birch_trapdoor";
+	public static final String trapdoorJungleQu = "quark:jungle_trapdoor";
+	public static final String trapdoorAcaciaQu = "quark:acacia_trapdoor";
+	public static final String trapdoorDarkOakQu = "quark:dark_oak_trapdoor";
+	
+	// Walls
+	public static final String sandstoneWall_white_Qu = "quark:sandstone_wall"; 
+	public static final String sandstoneWall_red_Qu = "quark:red_sandstone_wall"; 
+	public static final String dioriteWall_Qu = "quark:stone_diorite_wall";
+	public static final String graniteWall_Qu = "quark:stone_granite_wall";
+	
 	
 	
 	// --- Items --- //
@@ -148,17 +192,103 @@ public class ModObjects {
 	// --------------------------- //
 	// --- Generator Functions --- //
 	// --------------------------- //
-
-	// Bark
-	public static IBlockState chooseModBark(IBlockState blockstate)
+	
+	
+	// Barrel
+	public static ItemStack chooseModBarrelItem()
 	{
-		if (blockstate.getBlock()==Blocks.LOG || blockstate.getBlock()==Blocks.LOG2)
+		return null;
+	}
+	// Uses furnace metas. 1 is vertical, and horizontal are 2, 3, 4, 5. 0 is inverted
+	public static IBlockState chooseModBarrelBlockState()
+	{
+		return null;
+	}
+	
+	
+	// Bark
+	public static IBlockState chooseModBarkState(IBlockState blockstate)
+	{
+		Block tryBark;
+		boolean returnVanilla = false;
+		
+		if (blockstate.getBlock()==Blocks.LOG)
 		{
-			return blockstate.getBlock().getStateFromMeta(12 + blockstate.getBlock().getMetaFromState(blockstate)%4);
+			tryBark = Block.getBlockFromName(ModObjects.barkQu);
+			if (tryBark != null) {return tryBark.getStateFromMeta(blockstate.getBlock().getMetaFromState(blockstate)%4);}
+			else {returnVanilla = true;}
 		}
+		else if (blockstate.getBlock()==Blocks.LOG2)
+		{
+			tryBark = Block.getBlockFromName(ModObjects.barkQu);
+			if (tryBark != null) {return tryBark.getStateFromMeta(blockstate.getBlock().getMetaFromState(blockstate)%4 + 4);}
+			else {returnVanilla = true;}
+		}
+		
+		
+		if (returnVanilla) {return blockstate.getBlock().getStateFromMeta(12 + blockstate.getBlock().getMetaFromState(blockstate)%4);}
 		
 		return blockstate;
 	}
+	
+	
+	// Bed
+	public static void setModBedBlock(World world, int x, int y, int z, int orientationMeta, int colorMeta)
+	{
+		BlockPos pos = new BlockPos(x, y, z);
+		Block modblock=null;
+		boolean setTE = false; // Flagged as true if you need to set a tile entity
+		
+		String quarkBedColorSuffix = "";
+		switch(colorMeta)
+		{
+		case 0: quarkBedColorSuffix = "white"; break; // white
+		case 1: quarkBedColorSuffix = "orange"; break;
+		case 2: quarkBedColorSuffix = "magenta"; break;
+		case 3: quarkBedColorSuffix = "light_blue"; break;
+		case 4: quarkBedColorSuffix = "yellow"; break;
+		case 5: quarkBedColorSuffix = "lime"; break; // lime
+		case 6: quarkBedColorSuffix = "pink"; break;
+		case 7: quarkBedColorSuffix = "gray"; break;
+		case 8: quarkBedColorSuffix = "silver"; break;
+		case 9: quarkBedColorSuffix = "cyan"; break;
+		case 10: quarkBedColorSuffix = "purple"; break;
+		case 11: quarkBedColorSuffix = "blue"; break;
+		case 12: quarkBedColorSuffix = "brown"; break;
+		case 13: quarkBedColorSuffix = "green"; break;
+		case 15: quarkBedColorSuffix = "black"; break;
+		}
+		
+		modblock = Block.getBlockFromName(ModObjects.coloredBedBlock_root_Qu+quarkBedColorSuffix);
+		if (modblock == null) {modblock = Blocks.BED;}
+		
+		// Set the bed block and metadata here
+		world.setBlockState(pos, modblock.getStateFromMeta(orientationMeta), 2);
+	}
+	
+	
+	// Blast Furnace
+	/**
+	 * furnaceOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static IBlockState chooseModBlastFurnaceState(int furnaceOrientation, EnumFacing coordBaseMode)
+	{
+		Block modblock = Blocks.FURNACE;
+		int meta = StructureVillageVN.chooseFurnaceMeta(furnaceOrientation, coordBaseMode);
+		
+		return modblock.getStateFromMeta(meta);
+	}
+	
+	
+	// Blue Ice
+	// Added in 1.13
+    public static IBlockState chooseModBlueIceBlockState()
+    {
+    	// None are found, so return ordinary packed ice
+    	return Blocks.PACKED_ICE.getDefaultState();
+    }
+	
 	
 	// Campfire
 	/**
@@ -178,12 +308,275 @@ public class ModObjects {
 		return Blocks.TORCH.getDefaultState();
 	}
 	
+	
+	// Cartography Table
+	/**
+	 * furnaceOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static IBlockState chooseModCartographyTableState()
+	{
+		return Blocks.CRAFTING_TABLE.getDefaultState();
+	}
+	
+	
+	// Composter
+	public static IBlockState chooseModComposterState()
+	{
+		return null;
+	}
+	
+	
+	// Concrete
+	public static IBlockState chooseModConcrete(int color)
+	{
+		if (GeneralConfig.addConcrete)
+		{
+			return ModBlocksVN.CONCRETE.getStateFromMeta(color);
+		}
+		return null;
+	}
+	
+	
+	// Coral
+	public static IBlockState chooseGreenCoralOrPottedCactus()
+	{
+		return Blocks.FLOWER_POT.getStateFromMeta(9);
+	}
+	
+	
+	/**
+	 * Select a diorite stairs block from a mod; returns null otherwise
+	 */
+	// Diorite Stairs
+	// Added in 1.14
+	public static Block chooseModDioriteStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.dioriteStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		// TODO - Botania available in 1.10
+		return null;
+	}
+	public static IBlockState chooseModDioriteWallState()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.dioriteWall_Qu);
+		if (modblock != null) {return modblock.getDefaultState();}
+		
+		// TODO - Botania available in 1.10
+		return null;
+	}
+	
+	
+	// Fletching Table
+	public static IBlockState chooseModFletchingTableState()
+	{
+		return Blocks.CRAFTING_TABLE.getDefaultState();
+	}
+	
+	
+	// Glazed Terracotta
+	public static IBlockState chooseModGlazedTerracottaState(int colorMeta, int facingMeta)
+	{
+		if (GeneralConfig.addConcrete)
+		{
+			return FunctionsVN.getGlazedTerracotaFromMetas(colorMeta, facingMeta);
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * Select a granite stairs block from a mod; returns null otherwise
+	 */
+	// Granite Stairs
+	// Added in 1.14
+	public static Block chooseModGraniteStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.graniteStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		// TODO - Botania available in 1.10
+		return null;
+	}
+	public static IBlockState chooseModGraniteWallState()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.graniteWall_Qu);
+		if (modblock != null) {return modblock.getDefaultState();}
+		
+		// TODO - Botania available in 1.10
+		return null;
+	}
+	
+	
+	// Grindstone
+	public static IBlockState chooseModGrindstone(int orientation, EnumFacing coordBaseMode)
+	{
+		return Blocks.ANVIL.getStateFromMeta(StructureVillageVN.chooseAnvilMeta(orientation, coordBaseMode));
+	}
+	
+	
 	// Lantern
     public static IBlockState chooseModLanternBlockState(boolean isHanging)
     {
     	// No mod lanterns exist. Return a glowstone block.
     	return Blocks.GLOWSTONE.getDefaultState();
     }
+	
+	
+	// Lectern
+	public static void setModLecternState(World world, int x, int y, int z, int orientation, EnumFacing coordBaseMode, int woodMeta)
+	{
+		Block modblock=null;
+		boolean setTE = false; // Flagged as true if you need to set a tile entity
+		
+		modblock = Block.getBlockFromName(ModObjects.deskBC);
+		if (modblock != null)
+		{
+			setTE = true;
+		}
+		else
+		{
+			modblock = Blocks.BOOKSHELF;
+		}
+		
+		if (setTE)
+		{
+			world.setBlockState(new BlockPos(x, y, z), modblock.getStateFromMeta(woodMeta), 2);
+			
+			// Set the tile entity so that you can assign the orientation via NBT 
+			NBTTagCompound nbtCompound = new NBTTagCompound();
+        	TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
+        	tileentity.writeToNBT(nbtCompound);
+        	nbtCompound.setInteger("angle", StructureVillageVN.chooseBibliocraftDeskMeta(orientation, coordBaseMode));
+        	tileentity.readFromNBT(nbtCompound);
+        	world.setTileEntity(new BlockPos(x, y, z), tileentity);
+		}
+		else
+		{
+			world.setBlockState(new BlockPos(x, y, z), modblock.getDefaultState());
+		}
+	}
+	
+	
+	// Loom
+	public static IBlockState chooseModLoom()
+	{
+		return Blocks.CRAFTING_TABLE.getDefaultState();
+	}
+	
+	
+	// Sign - Added in 1.14
+	public static ItemStack chooseModWoodenSignItem(int materialMeta)
+	{
+		// If all else fails, grab the vanilla version
+		return new ItemStack(Items.SIGN, 1);
+	}
+	
+	
+	// Smithing Table
+	public static IBlockState chooseModSmithingTable()
+	{
+		return Blocks.CRAFTING_TABLE.getDefaultState();
+	}
+	
+	
+	// Smoker
+	/**
+	 * furnaceOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static IBlockState chooseModSmokerState(int furnaceOrientation, EnumFacing coordBaseMode)
+	{
+		return Blocks.FURNACE.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(furnaceOrientation, coordBaseMode));
+	}
+	
+	
+	// Smooth Sandstone - Added in 1.14
+	public static IBlockState chooseModSmoothSandstoneBlockState(boolean isRed)
+	{
+		Block modblock = Block.getBlockFromName(ModObjects.smoothSandstoneQu);
+		if (modblock != null) {return modblock.getStateFromMeta(isRed?2:0);}
+		else {return (isRed?Blocks.DOUBLE_STONE_SLAB2:Blocks.DOUBLE_STONE_SLAB).getStateFromMeta(9);}
+	}
+	
+	
+	// Smooth Sandstone Slab - Added in 1.14
+	/**
+	 * Returns regular sandstone slab on a failure
+	 */
+	public static IBlockState chooseModSmoothSandstoneSlab(boolean upper, boolean isred)
+	{
+		Block modblock;
+		
+		if (isred)
+		{
+			modblock = Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu);
+			if (modblock != null) {return modblock.getStateFromMeta(upper?8:0);}
+			else {return Blocks.STONE_SLAB2.getStateFromMeta(upper?8:0);}
+		}
+		else
+		{
+			modblock = Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu);
+			if (modblock != null) {return modblock.getStateFromMeta(upper?8:0);}
+			else {return Blocks.STONE_SLAB.getStateFromMeta(upper?9:1);}
+		}
+	}
+	
+	
+	/**
+	 * Added in 1.14
+	 * Returns non-smooth stair versions on failure
+	 */
+	public static Block chooseModSmoothSandstoneStairsBlock(boolean isRed)
+	{
+		return isRed ? Blocks.RED_SANDSTONE_STAIRS : Blocks.SANDSTONE_STAIRS;
+	}
+	
+	
+	// Sandstone Wall - Added in 1.14
+	public static IBlockState chooseModSandstoneWall(boolean isRed)
+	{
+		// TODO - Railcraft is 1.10
+		Block modblock=null;
+
+		if (isRed) {modblock = Block.getBlockFromName(ModObjects.sandstoneWall_red_Qu);}
+		else {modblock = Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu);}
+		if (modblock != null) {return modblock.getDefaultState();}
+		
+		return null;
+	}
+	
+	
+	// Smooth Stone - Added in 1.14
+	public static IBlockState chooseModSmoothStoneBlockState()
+	{
+		Block modblock=null;
+		modblock = Block.getBlockFromName(ModObjects.smoothStoneQu);
+		if (modblock != null) {return modblock.getDefaultState();}
+		
+		return Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(8);
+	}
+	
+	
+	// Stonecutter
+	/**
+	 * Orientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static IBlockState chooseModStonecutterState(int orientation)
+	{
+		return Blocks.CRAFTING_TABLE.getDefaultState();
+	}
+	
 	
 	// Stripped log
 	/**
@@ -232,5 +625,44 @@ public class ModObjects {
 		if (logBlock != null) {return logBlock.getStateFromMeta(orientation%3*4);}
 		*/
 		return (materialMeta<4 ? Blocks.LOG : Blocks.LOG2).getStateFromMeta(orientation*4+materialMeta%4);
+	}
+	
+	
+	// Sweet Berries - Added in 1.14
+	public static ItemStack chooseModSweetBerriesItem()
+	{
+		return null;
+	}
+	
+	
+	// Trapdoor
+	public static Block chooseModWoodenTrapdoor(int materialMeta)
+	{
+		Block modblock=null;
+		
+		switch (materialMeta)
+		{
+			case 1: modblock = Block.getBlockFromName(ModObjects.trapdoorSpruceQu); break;
+			case 2: modblock = Block.getBlockFromName(ModObjects.trapdoorBirchQu); break;
+			case 3: modblock = Block.getBlockFromName(ModObjects.trapdoorJungleQu); break;
+			case 4: modblock = Block.getBlockFromName(ModObjects.trapdoorAcaciaQu); break;
+			case 5: modblock = Block.getBlockFromName(ModObjects.trapdoorDarkOakQu); break;
+		}
+		if (modblock != null) {return modblock;}
+		
+		// If all else fails, grab the vanilla version
+		return Blocks.TRAPDOOR;
+	}
+	
+	
+	// Wood block (has bark on all surfaces)
+	// Added as craftable in 1.13
+	public static IBlockState chooseModWoodBlockState(IBlockState blockstate)
+	{
+		Block block = blockstate.getBlock();
+		
+		// Pass the original block if it's not a vanilla log
+		if (block!=Blocks.LOG && block!=Blocks.LOG2) {return blockstate;}
+		return chooseModBarkState(blockstate);
 	}
 }
