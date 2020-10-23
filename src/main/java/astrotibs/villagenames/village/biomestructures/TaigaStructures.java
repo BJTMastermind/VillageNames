@@ -9,12 +9,15 @@ import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
+import astrotibs.villagenames.handler.ChestLootHandler;
 import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
+import astrotibs.villagenames.village.chestloot.ChestGenHooks;
+import astrotibs.villagenames.village.chestloot.WeightedRandomChestContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.state.IBlockState;
@@ -29,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBanner;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
@@ -648,7 +652,7 @@ public class TaigaStructures
         		{6, 5, 7, 0},
         	})
         	{
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         	}
             
             
@@ -1008,11 +1012,11 @@ public class TaigaStructures
             
         	// Fence Gate
         	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE_GATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for(int[] uvw : new int[][]{
-            	{6,1,1}, 
+        	for (int[] uvwos : new int[][]{
+            	{6,1,1, 2, 0},
             	})
             {
-        		this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeFenceGateState.getBlock(), biomeFenceGateState.getBlock().getMetaFromState(biomeFenceGateState), this.getCoordBaseMode())), uvw[0], uvw[1], uvw[2], structureBB);
+            	this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.chooseFenceGateMeta(uvwos[3], uvwos[4]==1)), uvwos[0], uvwos[1], uvwos[2], structureBB);
             }
             
             
@@ -1031,7 +1035,7 @@ public class TaigaStructures
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
             	{6,4,1, -1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -1363,7 +1367,7 @@ public class TaigaStructures
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
             	{3,4,1, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
             
@@ -1787,7 +1791,7 @@ public class TaigaStructures
             	{3,3,0, 2}, {3,3,2, 0}, 
             	{3,3,7, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -2159,7 +2163,7 @@ public class TaigaStructures
             	// Yard
             	{9,3,2, -1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -2760,7 +2764,7 @@ public class TaigaStructures
             	// Second floor
             	{3,6,3, 0}, {3,6,5, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -2928,8 +2932,8 @@ public class TaigaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_cartographer");
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_cartographer");
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
             
@@ -3306,7 +3310,7 @@ public class TaigaStructures
             	// Interior
             	{3,3,3, 0}, {5,3,3, 0}, {4,5,5, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -3918,7 +3922,7 @@ public class TaigaStructures
             	// Back wall
             	{3,3,7, 2}, {7,3,7, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -4122,8 +4126,8 @@ public class TaigaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_fletcher");
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_fletcher");
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
             
@@ -4380,7 +4384,7 @@ public class TaigaStructures
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
             	{8,4,1, -1}, {2,4,8, -1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
                         
@@ -4451,7 +4455,7 @@ public class TaigaStructures
             
             
             // Attempt to add GardenCore Compost Bins. If this fails, place a pumpkin instead.
-            IBlockState compostBinState = ModObjects.chooseModCompostBinState();
+            IBlockState compostBinState = ModObjects.chooseModComposter();
             for(int[] uvw : new int[][]{
             	{3,1,2}, 
             	})
@@ -4780,7 +4784,7 @@ public class TaigaStructures
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
             	{6,3,0, -1}, {1,3,2, -1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
                         
@@ -4833,7 +4837,7 @@ public class TaigaStructures
             
             
             // Attempt to add GardenCore Compost Bins. If this fails, place a pumpkin instead.
-            IBlockState compostBinState = ModObjects.chooseModCompostBinState();
+            IBlockState compostBinState = ModObjects.chooseModComposter();
             for(int[] uvw : new int[][]{
             	{5,1,0}, 
             	})
@@ -5291,7 +5295,7 @@ public class TaigaStructures
             	{3,6,4, 1}, {7,6,4, 3}, 
             	{5,7,3, 0}, {5,7,5, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -5828,7 +5832,7 @@ public class TaigaStructures
             	// Interior
             	{4,4,5, 2},  
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -6393,7 +6397,7 @@ public class TaigaStructures
             	// Interior
             	{3,8,2, 0}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -6501,8 +6505,8 @@ public class TaigaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
             
@@ -6794,7 +6798,7 @@ public class TaigaStructures
             	// Lower antechamber
             	{3,3,2, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -6830,7 +6834,7 @@ public class TaigaStructures
             	// Floor 2 interior
             	{2,9,4, 1}, {2,9,5, 1}, {4,9,4, 3}, {4,9,5, 3}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -6958,8 +6962,8 @@ public class TaigaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
             
@@ -7271,7 +7275,7 @@ public class TaigaStructures
             	// Interior
             	{3,3,2, 0}, {6,3,4, 0}, {9,3,2, 0}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -7455,8 +7459,8 @@ public class TaigaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
 
@@ -7895,7 +7899,7 @@ public class TaigaStructures
             	// Chimney
             	{4,2,3, 2}, {3,2,4, 3}, {5,2,4, 1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -8365,7 +8369,7 @@ public class TaigaStructures
             	// Yard
             	{2,3,9, -1}, {8,3,9, -1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -8910,7 +8914,7 @@ public class TaigaStructures
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
             	{2,3,0, -1}, {4,3,0, -1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
                         
@@ -8979,7 +8983,7 @@ public class TaigaStructures
             
             
             // Attempt to add GardenCore Compost Bins. If this fails, place a pumpkin instead.
-            IBlockState compostBinState = ModObjects.chooseModCompostBinState();
+            IBlockState compostBinState = ModObjects.chooseModComposter();
             for(int[] uvw : new int[][]{
             	{2,2,3}, 
             	})
@@ -9286,7 +9290,7 @@ public class TaigaStructures
             	// Interior
             	{3,5,3, 0}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -9721,7 +9725,7 @@ public class TaigaStructures
             	// Interior
             	{4,3,3, -1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -10198,7 +10202,7 @@ public class TaigaStructures
             	// Interior
             	{4,4,2, 0}, {4,4,4, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -10311,8 +10315,8 @@ public class TaigaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
             
@@ -10653,7 +10657,7 @@ public class TaigaStructures
             	{3,4,4, 0}, 
             	{3,4,5, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
             
@@ -11111,7 +11115,7 @@ public class TaigaStructures
             	{3,4,3, 0}, 
             	{3,4,5, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
             
@@ -11202,8 +11206,8 @@ public class TaigaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
 
@@ -11513,7 +11517,7 @@ public class TaigaStructures
             	{4,4,3, 2}, 
             	{4,4,6, 0}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -11577,8 +11581,8 @@ public class TaigaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_tannery");
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_tannery");
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
             
@@ -11933,7 +11937,7 @@ public class TaigaStructures
             	{7,3,5, 1}, 
             	{6,4,4, 3}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -11995,7 +11999,7 @@ public class TaigaStructures
             	{7,10,6, 1}, 
             	{9,10,6, 3}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
         	
@@ -12550,7 +12554,7 @@ public class TaigaStructures
             	{2,4,4, 1}, {2,4,5, 1}, 
             	{8,4,4, 3}, {8,4,5, 3}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -12643,8 +12647,8 @@ public class TaigaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_toolsmith");
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_toolsmith");
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
             
@@ -13031,7 +13035,7 @@ public class TaigaStructures
             	// Interior
             	{3,5,4, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -13147,8 +13151,8 @@ public class TaigaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_weaponsmith");
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_weaponsmith");
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
 
@@ -13584,7 +13588,7 @@ public class TaigaStructures
             	// Posts
             	{1,2,1, -1}, {5,2,1, -1},  
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -14000,7 +14004,6 @@ public class TaigaStructures
 	public static ArrayList<BlueprintData> getTaigaDecorBlueprint(int decorType, MaterialType materialType, boolean disallowModSubs, Biome biome, EnumFacing coordBaseMode, Random random)
 	{
 		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
-		int horizIndex = coordBaseMode.getHorizontalIndex();
 		
 		// Generate per-material blocks
 		IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getDefaultState(), materialType, biome, disallowModSubs);
@@ -14028,7 +14031,45 @@ public class TaigaStructures
     			}
     			
     			// Left
+    			BlueprintData.addFillWithBlocks(blueprint, -1, 0, -2+(shift?1:0), -1, 0, 1+(shift?1:0), biomeTrapdoorState.getBlock().getStateFromMeta(6));
+    			// Right
+    			BlueprintData.addFillWithBlocks(blueprint, 1, 0, -2+(shift?1:0), 1, 0, 1+(shift?1:0), biomeTrapdoorState.getBlock().getStateFromMeta(7));
+    			// Front
+    			BlueprintData.addFillWithBlocks(blueprint, 0, 0, -3+(shift?1:0), 0, 0, -3+(shift?1:0), biomeTrapdoorState.getBlock().getStateFromMeta(5));
+    			// Back
+    			BlueprintData.addFillWithBlocks(blueprint, 0, 0, 2+(shift?1:0), 0, 0, 2+(shift?1:0), biomeTrapdoorState.getBlock().getStateFromMeta(4));
+    			
+    			break;
+    			
+    		case 1:
+    			// Base
+    			BlueprintData.addFillWithBlocks(blueprint, -2+(shift?1:0), -1, 0, 1+(shift?1:0), -1, 0, biomePlankState);
+    			// Foundation
+    			for (int i=-2 ; i<=1; i++) {BlueprintData.addPlaceBlock(blueprint, i+(shift?1:0), -2, 0, biomeDirtState);}
+    			
+    			// Left
+    			BlueprintData.addFillWithBlocks(blueprint, -3+(shift?1:0), 0, 0, -3+(shift?1:0), 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(6));
+    			// Right
+    			BlueprintData.addFillWithBlocks(blueprint, 2+(shift?1:0), 0, 0, 2+(shift?1:0), 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(7));
+    			// Front
+    			BlueprintData.addFillWithBlocks(blueprint, -2+(shift?1:0), 0, -1, 1+(shift?1:0), 0, -1, biomeTrapdoorState.getBlock().getStateFromMeta(5));
+    			// Back
+    			BlueprintData.addFillWithBlocks(blueprint, -2+(shift?1:0), 0, 1, 1+(shift?1:0), 0, 1, biomeTrapdoorState.getBlock().getStateFromMeta(4));
+    			break;
+    		}
+    		/*{
+    		case 0:
+    			
+    			// Base and foundation
+    			for (int i=-2 ; i<=1; i++)
+    			{
+    				BlueprintData.addPlaceBlockAndClearAbove(blueprint, 0, -1, i+(shift?1:0), biomePlankState);
+    				BlueprintData.addFillBelowTo(blueprint, 0, -2, i+(shift?1:0), biomeDirtState);
+    			}
+    			
+    			// Left
     			BlueprintData.addFillWithBlocks(blueprint, -1, 0, -2+(shift?1:0), -1, 0, 1+(shift?1:0), biomeTrapdoorState.getBlock().getStateFromMeta(horizIndex%2==0 ? 6 : 4));
+    			StructureVillageVN.getTrapdoorMeta(uuvvww[3], true, true)
     			// Right
     			BlueprintData.addFillWithBlocks(blueprint, 1, 0, -2+(shift?1:0), 1, 0, 1+(shift?1:0), biomeTrapdoorState.getBlock().getStateFromMeta(horizIndex%2==0 ? 7 : 5));
     			// Front
@@ -14053,7 +14094,7 @@ public class TaigaStructures
     			// Back
     			BlueprintData.addFillWithBlocks(blueprint, -2+(shift?1:0), 0, 1, 1+(shift?1:0), 0, 1, biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{5, 6, 4, 7})[horizIndex]));
     			break;
-    		}
+    		}*/
     		break;
     		
     	case 1: // Large boulder
@@ -14066,41 +14107,41 @@ public class TaigaStructures
     		case 0: // Facing you
     			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, biomeCobblestoneState);
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeDirtState); // Foundation
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(3));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeDirtState); // Foundation
-    			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3, coordBaseMode)));
-    			BlueprintData.addPlaceBlock(blueprint, 0, 1, 1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2, coordBaseMode)));
-    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(3));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 1, 1, biomeStoneStairsState.getBlock().getStateFromMeta(2));
+    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(1));
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, 1, biomeDirtState); // Foundation
     			break;
     		case 1: // Facing left
     			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, biomeCobblestoneState);
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeDirtState); // Foundation
-    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(0));
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeDirtState); // Foundation
-    			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0, coordBaseMode)));
-    			BlueprintData.addPlaceBlock(blueprint, 1, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1, coordBaseMode)));
-    			BlueprintData.addPlaceBlock(blueprint, 1, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(0));
+    			BlueprintData.addPlaceBlock(blueprint, 1, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(1));
+    			BlueprintData.addPlaceBlock(blueprint, 1, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(3));
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, -1, biomeDirtState); // Foundation
     			break;
     		case 2: // Facing away
     			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, biomeCobblestoneState);
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeDirtState); // Foundation
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(2));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeDirtState); // Foundation
-    			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2, coordBaseMode)));
-    			BlueprintData.addPlaceBlock(blueprint, 0, 1, -1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3, coordBaseMode)));
-    			BlueprintData.addPlaceBlock(blueprint, -1, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(2));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 1, -1, biomeStoneStairsState.getBlock().getStateFromMeta(3));
+    			BlueprintData.addPlaceBlock(blueprint, -1, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(0));
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, 1, biomeDirtState); // Foundation
     			break;
     		case 3: // Facing right
     			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, biomeCobblestoneState);
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeDirtState); // Foundation
-    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(1));
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeDirtState); // Foundation
-    			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1, coordBaseMode)));
-    			BlueprintData.addPlaceBlock(blueprint, -1, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0, coordBaseMode)));
-    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(1));
+    			BlueprintData.addPlaceBlock(blueprint, -1, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(0));
+    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(2));
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, 1, biomeDirtState); // Foundation
     			break;
     		}
@@ -14145,7 +14186,7 @@ public class TaigaStructures
     		{
     			// Put stairs on top of the boulder
     			boulderTopperBlock = biomeStoneStairsState.getBlock();
-    			boulderTopperMeta = StructureVillageVN.getMetadataWithOffset(boulderTopperBlock, (new int[]{3,0,2,1})[boulderOrientation], coordBaseMode);
+    			boulderTopperMeta = (new int[]{3,0,2,1})[boulderOrientation];
     		}
     		
     		BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, boulderTopperBlock.getStateFromMeta(boulderTopperMeta));
@@ -14153,19 +14194,19 @@ public class TaigaStructures
     		switch(boulderOrientation)
     		{
     		case 0:
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(2));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeDirtState);
     			break;
     		case 1:
-    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(1));
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeDirtState);
     			break;
     		case 2:
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(3));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeDirtState);
     			break;
     		case 3:
-    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0, coordBaseMode)));
+    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(0));
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeDirtState);
     			break;
     		}
@@ -14186,6 +14227,15 @@ public class TaigaStructures
     		//}}}
     		
 			// Left
+			BlueprintData.addPlaceBlockAndClearAbove(blueprint, -1, 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(6));
+			// Right
+			BlueprintData.addPlaceBlockAndClearAbove(blueprint, 1, 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(7));
+			// Front
+			BlueprintData.addPlaceBlockAndClearAbove(blueprint, 0, 0, -1, biomeTrapdoorState.getBlock().getStateFromMeta(5));
+			// Back
+			BlueprintData.addPlaceBlockAndClearAbove(blueprint, 0, 0, 1, biomeTrapdoorState.getBlock().getStateFromMeta(4));
+    		/*
+			// Left
 			BlueprintData.addPlaceBlockAndClearAbove(blueprint, -1, 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(horizIndex%2==0 ? 6 : 4));
 			// Right
 			BlueprintData.addPlaceBlockAndClearAbove(blueprint, 1, 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(horizIndex%2==0 ? 7 : 5));
@@ -14193,7 +14243,7 @@ public class TaigaStructures
 			BlueprintData.addPlaceBlockAndClearAbove(blueprint, 0, 0, -1, biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{4, 7, 5, 6})[horizIndex]));
 			// Back
 			BlueprintData.addPlaceBlockAndClearAbove(blueprint, 0, 0, 1, biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{5, 6, 4, 7})[horizIndex]));
-    		
+    		*/
 			BlueprintData.addPlaceBlockAndClearAbove(blueprint, 0, 0, 0, Blocks.HAY_BLOCK.getStateFromMeta(0));
 			
 			// Campfire

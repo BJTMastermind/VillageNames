@@ -957,6 +957,8 @@ public class NameGenerator {
 		"zhp", "fzhp", "lzzhp", "trzf", "mmvw", "zfvw", "zbz", "jbj",
 		"rrc",
 		"ffvc", "lffvc", "qrffvc", "erffvc", "frffvc",
+		// any haha
+		"lan", "nunu"
 	};
 	
 	/**

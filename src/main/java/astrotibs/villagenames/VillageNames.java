@@ -10,6 +10,7 @@ import astrotibs.villagenames.command.CommandName;
 import astrotibs.villagenames.config.ConfigInit;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
+import astrotibs.villagenames.handler.ChestLootHandler;
 import astrotibs.villagenames.handler.DevVersionWarning;
 import astrotibs.villagenames.handler.EntityMonitorHandler;
 import astrotibs.villagenames.handler.ReputationHandler;
@@ -352,6 +353,9 @@ public final class VillageNames
 	        // Listener that interrupts old village generation with the new one
 			MinecraftForge.TERRAIN_GEN_BUS.register(new MapGenVillageVN());
 			
+			// Chest hooks
+			ChestLootHandler.modernVillageChests();
+			
 			LogHelper.info("Registered new Village generator");
 		}
 		
@@ -370,9 +374,6 @@ public final class VillageNames
 		
                 
 		PROXY.preInit(event);
-
-
-		// Reworked in v3.1: new network channel stuff
 		
 		// Establish the channel
         VNNetworkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_CHANNEL);
@@ -384,11 +385,6 @@ public final class VillageNames
         VNNetworkWrapper.registerMessage(NetworkHelper.ZombieVillagerProfessionHandler.class, MessageZombieVillagerProfession.class, messageID++, Side.CLIENT);
         VNNetworkWrapper.registerMessage(NetworkHelper.VillageGuardHandler.class, MessageVillageGuard.class, messageID++, Side.CLIENT);
         VNNetworkWrapper.registerMessage(NetworkHelper.ModernVillagerSkinHandler.class, MessageModernVillagerSkin.class, messageID++, Side.CLIENT);
-		
-        
-        
-		// Worldgen stuff
-		// set up key bindings
 		
 		/**
 		 * The following overrides the mcmod.info file!
@@ -489,15 +485,14 @@ public final class VillageNames
            LogHelper.info("Registered Nitwit villager");
        	}
        */
-       
 	}
     
 	
 	
     
 	@EventHandler
-	public void load(FMLInitializationEvent event) {
-		
+	public void load(FMLInitializationEvent event)
+	{
 		// register crafting recipes
 		Recipes.init();
 		
@@ -506,17 +501,11 @@ public final class VillageNames
 			InventoryRender.init();
 		}
 		
-		// package registering
+		// To prevent torches from melting snow blocks
+		Blocks.SNOW.setTickRandomly(false);
 		
-		// general event handlers
-		
-		// Renderers
-		//EventRegister.register();
 		PROXY.init(event);
 		
-		// key handling
-		
-        
 		// Register the Nitwit
 		/*
 		if (GeneralConfigHandler.enableNitwit) {
@@ -558,17 +547,11 @@ public final class VillageNames
                 		);
             }
         }
-		
-        
 	}
 	
 	// POST-INIT
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		PROXY.postInit(event);
-		// cover your ass here
-		// e.g. get list of all blocks added into game from other mods
-	}
+	public void postInit(FMLPostInitializationEvent event) {}
 	
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event)
@@ -577,7 +560,7 @@ public final class VillageNames
 		event.registerServerCommand(new CommandName());
 		event.registerServerCommand(new CommandBanner()); // Added in v3.1.1
 	}
-
+	
 	/**
 	 * For streamlining structure registry of component buildings (not village centers)
 	 * @param structureClass - The class of the building

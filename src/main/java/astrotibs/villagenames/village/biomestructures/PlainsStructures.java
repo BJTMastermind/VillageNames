@@ -9,12 +9,15 @@ import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.block.ModBlocksVN;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
+import astrotibs.villagenames.handler.ChestLootHandler;
 import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
+import astrotibs.villagenames.village.chestloot.ChestGenHooks;
+import astrotibs.villagenames.village.chestloot.WeightedRandomChestContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockSapling;
@@ -29,6 +32,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBanner;
+import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -236,7 +240,7 @@ public class PlainsStructures
             	{6, 1, 6, -1},
             	}) 
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             if (GeneralConfig.useVillageColors)
@@ -662,7 +666,7 @@ public class PlainsStructures
             	{6, 6, 6, -1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -964,7 +968,7 @@ public class PlainsStructures
             	{7, 2, 1, -1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	this.fillWithBlocks(world, structureBB, 2, 1, 5, 2, 1, 8, biomePlankState, biomePlankState, false);
@@ -985,7 +989,7 @@ public class PlainsStructures
             	{2, 2, 8, -1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	this.fillWithBlocks(world, structureBB, 4, 1, 13, 7, 1, 13, biomePlankState, biomePlankState, false);
@@ -1006,7 +1010,7 @@ public class PlainsStructures
             	{7, 2, 13, -1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	        	        	
@@ -1366,7 +1370,7 @@ public class PlainsStructures
             	{6, 3, 5, 1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
                     	        	
             // Posts
@@ -1877,7 +1881,13 @@ public class PlainsStructures
         	
             // Fence gate
         	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE_GATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-            this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeFenceGateState.getBlock(), biomeFenceGateState.getBlock().getMetaFromState(biomeFenceGateState), this.getCoordBaseMode())), 2, 1, 0, structureBB);
+        	for (int[] uvwos : new int[][]{
+            	{2,1,0, 2, 0},
+            	})
+            {
+            	this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.chooseFenceGateMeta(uvwos[3], uvwos[4]==1)), uvwos[0], uvwos[1], uvwos[2], structureBB);
+            }
+                        
             
             // Grass and flower in random places
             ArrayList<Integer> weedpositions = new ArrayList<Integer>();
@@ -2138,7 +2148,12 @@ public class PlainsStructures
         	
             // Fence gate
         	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE_GATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-            this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeFenceGateState.getBlock(), biomeFenceGateState.getBlock().getMetaFromState(biomeFenceGateState), this.getCoordBaseMode())), 5, 1, 0, structureBB);
+        	for (int[] uvwos : new int[][]{
+            	{5,1,0, 2, 0},
+            	})
+            {
+            	this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.chooseFenceGateMeta(uvwos[3], uvwos[4]==1)), uvwos[0], uvwos[1], uvwos[2], structureBB);
+            }
             
             // Hay block
             this.setBlockState(world, Blocks.HAY_BLOCK.getStateFromMeta(0), 7, 1, 3, structureBB);
@@ -2471,7 +2486,12 @@ public class PlainsStructures
             
             // Fence gate
         	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE_GATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-            this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeFenceGateState.getBlock(), biomeFenceGateState.getBlock().getMetaFromState(biomeFenceGateState), this.getCoordBaseMode())), 5, 1, 0, structureBB);
+        	for (int[] uvwos : new int[][]{
+            	{5,1,0, 2, 0},
+            	})
+            {
+            	this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.chooseFenceGateMeta(uvwos[3], uvwos[4]==1)), uvwos[0], uvwos[1], uvwos[2], structureBB);
+            }
             
             // Torches
             for (int i : new int[]{0,2})
@@ -2851,11 +2871,11 @@ public class PlainsStructures
             
             // Torches
             for (int i : new int[]{2,5}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(2, this.getCoordBaseMode().getHorizontalIndex())), i, 2, 0, structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(2)), i, 2, 0, structureBB);
             }
-            this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(1, this.getCoordBaseMode().getHorizontalIndex())), 2, 2, 4, structureBB);
+            this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(1)), 2, 2, 4, structureBB);
             for (int i : new int[]{2,6}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(3, this.getCoordBaseMode().getHorizontalIndex())), 5, 4, i, structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(3)), 5, 4, i, structureBB);
             }
             
             // Counter
@@ -3281,7 +3301,7 @@ public class PlainsStructures
             	{5,6,4,2},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwm[3], this.getCoordBaseMode().getHorizontalIndex())), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwm[3])), uvwm[0], uvwm[1], uvwm[2], structureBB);
             }
             
             
@@ -3319,8 +3339,8 @@ public class PlainsStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
     		// Villagers
@@ -3682,7 +3702,7 @@ public class PlainsStructures
             	{11,2,3,-1}, {11,2,9,-1}, // Animal pen
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwm[3], this.getCoordBaseMode().getHorizontalIndex())), uvwm[0], uvwm[1], uvwm[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwm[3])), uvwm[0], uvwm[1], uvwm[2], structureBB);
             }
             
             
@@ -4226,7 +4246,7 @@ public class PlainsStructures
             	{3,7,7,2},
             	{3,7,5,0},
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             // Counter
@@ -4612,7 +4632,7 @@ public class PlainsStructures
             	{3,4,1,2}, {3,4,3,0}, // Front wall
             	{3,4,7,2}, // Back wall
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -4661,8 +4681,8 @@ public class PlainsStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_cartographer");
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_cartographer");
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
             // Trapdoor rim
@@ -5019,7 +5039,7 @@ public class PlainsStructures
             	{5,5,0,2},
             	{5,5,6,0},
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             // Doors
@@ -5057,8 +5077,8 @@ public class PlainsStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_fisher");
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_fisher");
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
         	
@@ -5504,7 +5524,7 @@ public class PlainsStructures
             	{5,3,1,2}, {5,3,3,0}, // Front door
             	{4,4,6,2}, {6,4,6,2}, {4,2,8,0}, {6,2,8,0}, // Back wall
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             // Doors
@@ -5981,7 +6001,7 @@ public class PlainsStructures
             }
             */
             // Attempt to add GardenCore Compost Bins. If this fails, do nothing
-            IBlockState compostBinState = ModObjects.chooseModCompostBinState();
+            IBlockState compostBinState = ModObjects.chooseModComposter();
             if (compostBinState != null)
             {
             	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 1, 1, 1, structureBB); this.setBlockState(world, Blocks.DIRT.getDefaultState(), 1, 0, 1, structureBB);
@@ -6353,7 +6373,7 @@ public class PlainsStructures
             	{6,3,6,0}, {10,3,6,0}, // Floor separation
             	{2,5,6,1}, {14,5,6,3}, // Upper interior walls
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	// Interior
@@ -6839,7 +6859,7 @@ public class PlainsStructures
             	// Interior
             	{4,2,3,0}, {4,4,5,2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	// Interior
@@ -7274,7 +7294,7 @@ public class PlainsStructures
             	{4,2,0,-1}, {7,2,0,-1},
             	{4,4,3,0}, {4,4,5,2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	// Interior
@@ -7586,14 +7606,14 @@ public class PlainsStructures
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
             		biomeStrippedLogVertState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-            		biomeStrippedLogHorAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 0:1));
-            		biomeStrippedLogHorAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 1:0));
+            		biomeStrippedLogHorAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1);
+            		biomeStrippedLogHorAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 2);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
             		biomeStrippedLogVertState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-            		biomeStrippedLogHorAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 0:1));
-            		biomeStrippedLogHorAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 1:0));
+            		biomeStrippedLogHorAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1);
+            		biomeStrippedLogHorAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 2);
             	}
         	}
         	
@@ -7818,7 +7838,7 @@ public class PlainsStructures
             	// Interior
             	{3,4,2,0}, {8,4,6,3}, {6,3,10,2},
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	// Interior
@@ -8334,7 +8354,7 @@ public class PlainsStructures
             	// Interior
             	{5,2,4,2}, {7,2,4,2},
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	// Interior
@@ -8397,8 +8417,8 @@ public class PlainsStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
         	
@@ -8908,7 +8928,7 @@ public class PlainsStructures
             	// Right stall
             	{13,2,2,-1}, {13,2,5,-1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
 
@@ -9353,7 +9373,7 @@ public class PlainsStructures
             	// Back stall
             	{5,4,5,2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -9667,7 +9687,7 @@ public class PlainsStructures
             	// Interior
             	{2,3,3, 1}, {2,3,4, 1}, {10,3,3, 3}, {10,3,4, 3}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             // Doors
@@ -10136,7 +10156,7 @@ public class PlainsStructures
             }
             */
             // Attempt to add GardenCore Compost Bins. If this fails, do nothing
-            IBlockState compostBinState = ModObjects.chooseModCompostBinState();
+            IBlockState compostBinState = ModObjects.chooseModComposter();
             if (compostBinState != null)
             {
             	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), STRUCTURE_WIDTH-2, 1, STRUCTURE_DEPTH-2, structureBB);
@@ -10499,7 +10519,7 @@ public class PlainsStructures
             	{2,2,0,2}, {4,2,0,2}, // Front wall
             	{3,3,4,2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -10908,7 +10928,7 @@ public class PlainsStructures
             	{3,3,0,2}, // Front wall
             	{3,3,4,2}, // Interior
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -11325,7 +11345,7 @@ public class PlainsStructures
             	{3,3,0,2}, // Front wall
             	{3,3,4,2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -11737,7 +11757,7 @@ public class PlainsStructures
             	{3,3,0,2}, // Front wall
             	{3,3,4,2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -12235,7 +12255,7 @@ public class PlainsStructures
             	{3,3,2,0}, {5,3,2,0}, 
             	{4,7,6,2}, {4,7,4,0}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -12600,7 +12620,7 @@ public class PlainsStructures
             // Bed table with torch
         	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.PLANKS.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
             this.setBlockState(world, biomePlankState, 2, 1, 4, structureBB);
-            this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(-1, this.getCoordBaseMode().getHorizontalIndex())), 2,2,4, structureBB);
+            this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(-1)), 2,2,4, structureBB);
             
             // Planks
             for(int[] uuvvww : new int[][]{
@@ -12664,7 +12684,7 @@ public class PlainsStructures
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
             	{3,3,1,2}, // Front wall
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -13103,7 +13123,7 @@ public class PlainsStructures
             	{2,2,0, 2}, {5,2,0, 2}, 
             	{3,3,2, 0}, {4,3,2, 0}, // Interior
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -13135,8 +13155,8 @@ public class PlainsStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestLootHandler.getGenericLootForVillageType(this.villageType));
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
             
@@ -13528,7 +13548,7 @@ public class PlainsStructures
             	// Interior
             	{4,6,4, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -14037,7 +14057,7 @@ public class PlainsStructures
             	{0,2,0, -1}, {5,2,0, -1}, 
             	{0,2,8, -1}, {5,2,8, -1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -14468,7 +14488,7 @@ public class PlainsStructures
             	{4,3,3, 3}, {6,3,3, 1}, 
             	{10,3,2, 0}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -14498,7 +14518,7 @@ public class PlainsStructures
         		{9,1,4}, 
         		})
             {
-        		this.setBlockState(world, Blocks.HAY_BLOCK.getStateFromMeta(4+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 0:4)), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.HAY_BLOCK.getStateFromMeta(4), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -14905,7 +14925,7 @@ public class PlainsStructures
             	{7,3,3, 0}, 
             	{2,3,4, 1}, {2,3,5, 1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -14961,8 +14981,8 @@ public class PlainsStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_tannery");
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_tannery");
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
             
@@ -15252,7 +15272,7 @@ public class PlainsStructures
             	{1,1,0, -1}, {5,1,0, -1}, 
             	{3,4,2, 0}, {3,4,8, 2}, {3,4,10, 0}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -15710,7 +15730,7 @@ public class PlainsStructures
             	// Rooftop torches
             	{3,6,7, -1}, {3,10,3, -1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -16142,7 +16162,7 @@ public class PlainsStructures
             	// Interior
             	{4,3,6, 2}, {7,3,6, 2}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -16545,7 +16565,7 @@ public class PlainsStructures
             	{8,2,6, 2}, 
             	{3,5,4, -1}, 
             	}) {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -16558,9 +16578,9 @@ public class PlainsStructures
             {
             	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
             }
-            this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(1, this.getCoordBaseMode().getHorizontalIndex())), 10, 2, 4, structureBB);
+            this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(1)), 10, 2, 4, structureBB);
             // This torch is manually added by me because I don't want zombies spawning int the attic
-            this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(3, this.getCoordBaseMode().getHorizontalIndex())), 8, 5, 4, structureBB);
+            this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(3)), 8, 5, 4, structureBB);
             
             
             // Logs
@@ -16657,7 +16677,7 @@ public class PlainsStructures
             
             // Grindstone
         	for (int[] uvwo : new int[][]{
-        		{1,1,2, 3}, // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+        		{1,1,2, 2}, // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
         		})
             {
         		// Generate the blockObject here so that we have the correct meta on hand
@@ -16689,8 +16709,8 @@ public class PlainsStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	//ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_weaponsmith");
-            	//WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_weaponsmith");
+            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
             
@@ -17166,7 +17186,7 @@ public class PlainsStructures
     			{0,-1,2},
     			{0,1,0}
     			}) {
-    			BlueprintData.addPlaceBlock(blueprint, lamp_uwm[0], 3, lamp_uwm[1], Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(lamp_uwm[2], coordBaseMode.getHorizontalIndex())));
+    			BlueprintData.addPlaceBlock(blueprint, lamp_uwm[0], 3, lamp_uwm[1], Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(lamp_uwm[2])));
     		}
     		
     		break;

@@ -292,7 +292,8 @@ public class EntityInteractHandler {
 						
 						LogHelper.info("Profession: " + targetProfession 
 								+ ", ProfessionForge: " + villager.getProfessionForge().getRegistryName().toString() // Changed in v3.2 - profession IDs are deprecated
-								+ ", Career: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getCareer()
+								+ ", Career: " + (ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}))
+								+ ", CareerVN: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getCareer()
 								+ (GeneralConfig.modernVillagerSkins ? ", BiomeType: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getBiomeType() // Added in v3.1
 										: "")
 								+ (GeneralConfig.modernVillagerSkins ? ", Profession Level: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getProfessionLevel() // Added in v3.1

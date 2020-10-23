@@ -46,9 +46,7 @@ public class CommonProxy {
 		registerCapabilities();
 	}
 	
-	public void postInit(FMLPostInitializationEvent e)  {
-		
-	}
+	public void postInit(FMLPostInitializationEvent e) {}
 	
 	protected void registerAchievements() {
 		
