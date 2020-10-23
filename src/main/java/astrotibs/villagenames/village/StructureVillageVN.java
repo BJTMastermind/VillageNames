@@ -74,7 +74,7 @@ public class StructureVillageVN
 {
 	public static final int VILLAGE_RADIUS_BUFFER = 112;
 	
-	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	// Indexed by [orientation][horizIndex]
 	public static final int[][] FURNACE_META_ARRAY = new int[][]{
 		{3,4,2,5},
 		{5,3,5,3},
@@ -82,7 +82,7 @@ public class StructureVillageVN
 		{4,2,4,2},
 	};
 	
-	// Array of meta values for buyttons indexed by [orientation][horizIndex]
+	// Indexed by [orientation][horizIndex]
 	public static final int[][] BUTTON_META_ARRAY = new int[][]{
 		{3,2,4,1},
 		{1,3,1,3},
@@ -90,15 +90,15 @@ public class StructureVillageVN
 		{2,4,2,4},
 	};
 	
-	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	// Indexed by [orientation][horizIndex]
 	public static final int[][] ANVIL_META_ARRAY = new int[][]{
-		{1,2,3,0},
-		{0,1,0,1},
 		{3,0,1,2},
 		{2,3,2,3},
+		{1,2,3,0},
+		{0,1,0,1},
 	};
 	
-	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	// Indexed by [orientation][horizIndex]
 	public static final int[][] GLAZED_TERRACOTTA_META_ARRAY = new int[][]{
 		{1,2,2,3},
 		{0,1,3,0},
@@ -106,7 +106,7 @@ public class StructureVillageVN
 		{2,3,1,2},
 	};
 	
-	// Array of meta values for door indexed by [isLower][isRightHanded][isShut][orientation][horizIndex]
+	// Indexed by [isLower][isRightHanded][isShut][orientation][horizIndex]
 	public static final int[][][][][] DOOR_META_ARRAY = new int[][][][][]
 	{
 		// --- UPPER HALF --- //
@@ -764,11 +764,11 @@ public class StructureVillageVN
 															   {blockstate=Blocks.jungle_fence_gate.getDefaultState(); break;}
         	if (block == Blocks.oak_stairs)                    {blockstate=Blocks.jungle_stairs.getStateFromMeta(meta); break;}
         	if (block == Blocks.stone_stairs)                  {blockstate=Blocks.sandstone_stairs.getStateFromMeta(meta); break;}
-        	//if (block == Blocks.cobblestone_wall)              {
-			//										        		block = Block.getBlockFromName(ModObjects.sandstoneWallUTD);
-			//										        		if (block==null) {block = Blocks.sandstone;}
-			//										        		return new Object[]{block, 0};
-			//												   } // Sandstone wall
+        	if (block == Blocks.cobblestone_wall)              {
+																	IBlockState tryBlockstate=ModObjects.chooseModSandstoneWall(false);
+													        		if (tryBlockstate!=null) {blockstate=tryBlockstate;}
+													        		break;
+															   } // Sandstone wall
         	if (block == Blocks.gravel)                        {blockstate=Blocks.sandstone.getStateFromMeta(0); break;}
         	if (block == Blocks.dirt)                          {blockstate=Blocks.sand.getStateFromMeta(0); break;}
         	if (block == Blocks.grass)                         {blockstate=Blocks.sand.getStateFromMeta(0); break;}
@@ -803,13 +803,12 @@ public class StructureVillageVN
         	if (block == Blocks.gravel)                        {blockstate=Blocks.hardened_clay.getDefaultState(); break;}
         	if (block == Blocks.stone_slab)                    {blockstate=Blocks.stone_slab.getStateFromMeta(meta==3? 4: meta==11? 12 : meta); break;} // Brick slab
         	if (block == Blocks.double_stone_slab)             {blockstate=Blocks.double_stone_slab.getStateFromMeta(1); break;} // Sandstone double slab
-        	//if (block == Blocks.cobblestone_wall)              {
-			//										        		block = Block.getBlockFromName(ModObjects.brickWallUTD);
-			//										        		if (block==null) {block = Blocks.brick_block;}
-			//										        		return new Object[]{block, 0};
-			//												   } // Brick wall
+        	if (block == Blocks.cobblestone_wall)              {
+																	IBlockState tryBlockstate=ModObjects.chooseModSandstoneWall(true);
+													        		if (tryBlockstate!=null) {blockstate=tryBlockstate;}
+													        		break;
+															   } // Sandstone wall
         	if (block == Blocks.sand)                          {blockstate=Blocks.sand.getStateFromMeta(1); break;} // Red Sand
-			if (block == Blocks.cobblestone_wall)              {blockstate=Blocks.red_sandstone.getDefaultState(); break;}
 			if (block == Blocks.sandstone)                     {blockstate=Blocks.red_sandstone.getDefaultState(); break;}
 			if (block == Blocks.stone_slab)                    {blockstate=Blocks.stone_slab2.getStateFromMeta(meta>=8? 8:0); break;}
 			if (block == Blocks.double_stone_slab)             {blockstate=Blocks.double_stone_slab2.getDefaultState(); break;}
@@ -1542,6 +1541,7 @@ public class StructureVillageVN
     {
     	EntityVillager entityvillager;
     	int careerVanilla = career;
+    	int tries = 100;
     	
     	while(true)
     	{
@@ -1600,6 +1600,7 @@ public class StructureVillageVN
 					}
 					entityvillager.setProfession(profession);
 				}
+				else {break;} // Non-vanilla profession value
 			}
 			else
 			{
@@ -1636,20 +1637,22 @@ public class StructureVillageVN
 				break;
 			}
 			*/
-			// Otherwise, make sure this villager has the stats you requested
+			// Make sure this villager has the stats you requested
 			if (
-					entityvillager.getProfession() == profession
+					(entityvillager.getProfession() == profession
 					&& (Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, entityvillager, new String[]{"careerId", "field_175563_bv"}) == careerVanilla
-					&& ExtendedVillager.get(entityvillager).getCareerVN() == career
+					&& ExtendedVillager.get(entityvillager).getCareerVN() == career)
+					|| tries-- <= 0 // Just give up and accept what we've got
 					)
 			{
-				LogHelper.info(
+				/*LogHelper.info(
 						"Villager Profession: " + entityvillager.getProfession()
 						+ ", Villager Career: " + ExtendedVillager.get(entityvillager).getCareer()
 						+ ", Villager careerVN: " + ExtendedVillager.get(entityvillager).getCareerVN()
-						);
+						);*/
 				break;
 			}
+			else {entityvillager.setDead();}
     	}
     	
 		// Set age

@@ -39,7 +39,7 @@ public class ChestLootHandler {
 		// Other mods
 		if ( Loader.isModLoaded("Mariculture") ) ChestGenHooks.addItem("oceanFloorChest", new WeightedRandomChestContent(new ItemStack(ModItems.codex), 1, 1, 20)); // Mariculture
 		if ( Loader.isModLoaded("Artifacts") )   ChestGenHooks.addItem("A_WIZARD_DID_IT", new WeightedRandomChestContent(new ItemStack(ModItems.codex), 1, 4, 20)); // Dragon Artifacts
-
+		
 		// Modern village buildings
 		if (VillageGeneratorConfigHandler.newVillageGenerator)
 		{

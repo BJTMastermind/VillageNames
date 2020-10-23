@@ -290,8 +290,8 @@ public class ModObjects {
 	}
 	
 	
-	// Compost Bin
-	public static IBlockState chooseModCompostBinState()
+	// Composter
+	public static IBlockState chooseModComposterState()
 	{
 		return null;
 	}
@@ -597,11 +597,9 @@ public class ModObjects {
 	public static IBlockState chooseModWoodBlockState(IBlockState blockstate)
 	{
 		Block block = blockstate.getBlock();
-		int meta = block.getMetaFromState(blockstate);
 		
 		// Pass the original block if it's not a vanilla log
 		if (block!=Blocks.log && block!=Blocks.log2) {return blockstate;}
-		
-		return block.getStateFromMeta(meta+12);
+		return chooseModBarkState(blockstate);
 	}
 }

@@ -39,6 +39,7 @@ import astrotibs.villagenames.village.biomestructures.SavannaStructures;
 import astrotibs.villagenames.village.biomestructures.SnowyStructures;
 import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
@@ -127,7 +128,6 @@ public final class VillageNames
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		
 		configDirectory = new File(event.getModConfigurationDirectory(), currentConfigFolder);
 		ConfigInit.init(configDirectory);
 		
@@ -389,27 +389,16 @@ public final class VillageNames
         
 		PROXY.preInit(event);
 		
-
-		// Reworked in v3.1: new network channel stuff
-		
 		// Establish the channel
         VNNetworkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_CHANNEL);
         
         // Register different messages here
-        
         int messageID = 0;
 		
         VNNetworkWrapper.registerMessage(NetworkHelper.ZombieVillagerProfessionHandler.class, MessageZombieVillagerProfession.class, messageID++, Side.CLIENT);
         VNNetworkWrapper.registerMessage(NetworkHelper.VillageGuardHandler.class, MessageVillageGuard.class, messageID++, Side.CLIENT);
         VNNetworkWrapper.registerMessage(NetworkHelper.ModernVillagerSkinHandler.class, MessageModernVillagerSkin.class, messageID++, Side.CLIENT);
 		
-		
-        
-		// Worldgen stuff
-		// set up key bindings
-		
-		//LogHelper.info("Pre-initialization complete!"); // Print a success message.
-
 		/**
 		 * The following overrides the mcmod.info file!
 		 * Adapted from Jabelar's Magic Beans:
@@ -476,7 +465,6 @@ public final class VillageNames
     	   //librarian.getCareer(1).addTrade(1, new VillagerTradeHandler());
        }
        */
-      
 	}
         
     
@@ -486,26 +474,22 @@ public final class VillageNames
      */
 	// NEED THIS to do Well work
 	@EventHandler
-	public void load(FMLInitializationEvent event) {
-
+	public void load(FMLInitializationEvent event)
+	{
 		// register crafting recipes
 		Recipes.init();
+		
+		// Turn off Trapdoor stinky validation yuck
+		BlockTrapDoor.disableValidation = true;
+		// To prevent torches from melting snow blocks
+		Blocks.snow.setTickRandomly(false);
 		
 		//If this code runs on the server, you will get a crash.
 		if (event.getSide()== Side.CLIENT) {
 			InventoryRender.init();
 		}
-
-		// package registering
 		
-		// general event handlers
-		
-		// Renderers
-		//EventRegister.register();
 		PROXY.init(event);
-
-		// key handling
-		
 		
 		// Register the Nitwit
 		/*
@@ -549,17 +533,11 @@ public final class VillageNames
                 		);
             }
         }
-        
-        
 	}
 	
 	// POST-INIT
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		PROXY.postInit(event);
-		// cover your ass here
-		// e.g. get list of all blocks added into game from other mods
-	}
+	public void postInit(FMLPostInitializationEvent event) {}
 	
 	
 	@EventHandler
