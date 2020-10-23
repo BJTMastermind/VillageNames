@@ -75,6 +75,8 @@ public class GeneralConfig {
 	public static boolean swampHutMushroomPot;
 	
 	public static String[] modDye;
+	public static String[] modSandstone;
+	public static String[] modSmoothStone;
 	
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
@@ -381,8 +383,20 @@ public class GeneralConfig {
  				"Priority order for referencing dye for villager trade offers. The version highest on the list and registered in your game will be used."
  				);
 	    
-		
-		
+	    modSandstone = config.getStringList("Mod Priority: Sandstone", "Mod Integration", new String[]{
+ 				"quark",
+	    		"futuremc",
+ 				},
+ 				"Priority order for referencing sandstone variations for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modSmoothStone = config.getStringList("Mod Priority: Sandstone", "Mod Integration", new String[]{
+ 				"quark",
+	    		"futuremc",
+ 				},
+ 				"Priority order for referencing smooth stone for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
 		// Mapping for modded structures, and the creatures that can name them
 		modStructureNames = config.getStringList("Mod Structures", "Mod Integration", new String[]{
 				

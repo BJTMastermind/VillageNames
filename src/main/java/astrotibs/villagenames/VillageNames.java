@@ -38,6 +38,7 @@ import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -192,25 +193,15 @@ public final class VillageNames
         if (GeneralConfig.versionChecker) {MinecraftForge.EVENT_BUS.register(versionChecker);}
         if ((Reference.VERSION).contains("DEV")) {MinecraftForge.EVENT_BUS.register(new DevVersionWarning());}
 
-        //PROXY.preInit(event);
-
-
-		// Reworked in v3.1: new network channel stuff
-		
 		// Establish the channel
         VNNetworkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_CHANNEL);
         
         // Register different messages here
-        
         int messageID = 0;
 		
         VNNetworkWrapper.registerMessage(NetworkHelper.ZombieVillagerProfessionHandler.class, MessageZombieVillagerProfession.class, messageID++, Side.CLIENT);
         VNNetworkWrapper.registerMessage(NetworkHelper.VillageGuardHandler.class, MessageVillageGuard.class, messageID++, Side.CLIENT);
         VNNetworkWrapper.registerMessage(NetworkHelper.ModernVillagerSkinHandler.class, MessageModernVillagerSkin.class, messageID++, Side.CLIENT);
-		
-		
-		// Worldgen stuff
-		// set up key bindings
 		
 		/**
 		 * The following overrides the mcmod.info file!
@@ -283,38 +274,26 @@ public final class VillageNames
     	   carMason.addTrade(4, (new VillagerTradeHandler()).new MasonExpert() );
     	   carMason.addTrade(5, (new VillagerTradeHandler()).new MasonMaster() );
        }
-       
 	}
         
     
 	
 	
 	@EventHandler
-	public void load(FMLInitializationEvent event) {
+	public void load(FMLInitializationEvent event)
+	{
 		MinecraftForge.EVENT_BUS.register(this);//For the populating event
-		// set up GUI handler
-		// set up TileEntity and entity
-		// register crafting recipes
-
-		// register crafting recipes
-		//Recipes.init();
-
+		
 		//If this code runs on the server, you will get a crash.
 		if (event.getSide()== Side.CLIENT) {
 			InventoryRender.init();
 		}
-		// rendering
-		// package registering
-		// general event handlers
-		/*
-		MinecraftForge.EVENT_BUS.register(new ItemEventHandler()); // Relocated because of 1.12
-		MinecraftForge.EVENT_BUS.register(new WellDecorateEvent()); // Relocated because of 1.12
-		MinecraftForge.EVENT_BUS.register(new ConfigReloader()); // Relocated because of 1.12
-		if (GeneralConfigHandler.chestLoot) new ChestLootHandler(); // Relocated because of 1.12
-		*/
 		
 		// Register the Advancements listeners
 		ModTriggers.registerTriggers();
+		
+		// To prevent torches from melting snow blocks
+		Blocks.SNOW.setTickRandomly(false);
 		
 		PROXY.init(event);
 		
@@ -345,10 +324,7 @@ public final class VillageNames
 	
 	// POST-INIT
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		// cover your ass here
-		// e.g. get list of all blocks added into game from other mods
-	}
+	public void postInit(FMLPostInitializationEvent event) {}
 	
 	@EventHandler
 	public void serverLoad(FMLServerStartingEvent event)
@@ -357,33 +333,4 @@ public final class VillageNames
 		event.registerServerCommand(new CommandName());
 		event.registerServerCommand(new CommandBanner()); // Added in v3.1.1
 	}
-	
-	/*
-	// Way to convert from color meta int into string formatting (for e.g. signs)
-	public static String mapColorMetaToStringFormat(int colorMeta) {
-		HashMap<Integer, String> signColorToFormat = new HashMap<Integer, String>();//new HashMap();
-		// This hashmap translates the town's name color on the sign to a color meta value.
-		// This meta should be universal through e.g. wool, clay, etc
-		signColorToFormat.put(0, "\u00a7f"); //white
-		signColorToFormat.put(1, "\u00a76"); //gold
-		signColorToFormat.put(2, "\u00a7d"); //light_purple
-		signColorToFormat.put(3, "\u00a79"); //blue
-		signColorToFormat.put(4, "\u00a7e"); //yellow
-		signColorToFormat.put(5, "\u00a7a"); //green
-		signColorToFormat.put(6, "\u00a7c"); //red
-		signColorToFormat.put(7, "\u00a78"); //dark_gray
-		signColorToFormat.put(8, "\u00a77"); //gray
-		//signColorToFormat.put(9, "\u00a7b"); //aqua
-		signColorToFormat.put(9, "\u00a73"); //dark_aqua
-		signColorToFormat.put(10, "\u00a75"); //dark_purple
-		signColorToFormat.put(11, "\u00a71"); //dark_blue
-		signColorToFormat.put(12, "\u00a70"); //black
-		signColorToFormat.put(13, "\u00a72"); //dark_green
-		signColorToFormat.put(14, "\u00a74"); //dark_red
-		signColorToFormat.put(15, "\u00a70"); //black
-		
-		// Return a "town color" string
-		return signColorToFormat.get(colorMeta);
-	}
-	*/
 }

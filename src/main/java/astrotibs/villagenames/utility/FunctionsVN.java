@@ -1861,8 +1861,8 @@ public class FunctionsVN
 										
 										// Slot 4
 										merchantRecipeArray = new ArrayList<MerchantRecipe>();
-										// TODO - Bell (Added in 1.14)
-	    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.CHAINMAIL_BOOTS, 1 ), 0, 3) );
+										moditem = FunctionsVN.getItemFromName(ModObjects.bellFMC); if (moditem != null) {merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 36 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 3) );} // Bell
+										merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.CHAINMAIL_BOOTS, 1 ), 0, 3) );
 	    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 3 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.CHAINMAIL_LEGGINGS, 1 ), 0, 3) );
 	    								buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
 
@@ -2086,7 +2086,11 @@ public class FunctionsVN
 												));
 										
 										// Slot 6
-										// TODO - Bell (Added in 1.14)
+										moditem = FunctionsVN.getItemFromName(ModObjects.bellFMC);
+										if (moditem != null) {
+											buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), new MerchantRecipe(
+													new ItemStack( Items.EMERALD, 36 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 2
+													));}
 										
 										// Erase the old block...
 										eraseTrades(buyingList, addToSlot, cbs);
@@ -2209,7 +2213,11 @@ public class FunctionsVN
 												));
 										
 										// Slot 4
-										// TODO - Bell (Added in 1.14)
+										moditem = FunctionsVN.getItemFromName(ModObjects.bellFMC);
+										if (moditem != null) {
+											buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), new MerchantRecipe(
+													new ItemStack( Items.EMERALD, 36 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 2
+													));}
 										
 										// Erase the old block...
 										eraseTrades(buyingList, addToSlot, cbs);

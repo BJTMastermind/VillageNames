@@ -35,6 +35,13 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -66,6 +73,79 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 public class StructureVillageVN
 {
 	public static final int VILLAGE_RADIUS_BUFFER = 112;
+
+	// Indexed by [orientation]
+	public static final int[] LADDER_META_ARRAY = new int[]{2,5,3,4};
+	
+	// Indexed by [orientation][horizIndex]
+	public static final int[][] FURNACE_META_ARRAY = new int[][]{
+		{3,4,2,5},
+		{5,3,5,3},
+		{2,5,3,4},
+		{4,2,4,2},
+	};
+
+	// Indexed by [orientation][horizIndex]
+	public static final int[] BUTTON_META_ARRAY = new int[]{4,1,3,2};
+	
+	// Indexed by [orientation][horizIndex]
+	public static final int[][] BLAST_FURNACE_META_ARRAY = new int[][]{
+		{0,1,2,3},
+		{3,0,3,0},
+		{2,3,0,1},
+		{1,2,1,2},
+	};
+	
+	// Indexed by [orientation][horizIndex]
+	public static final int[][] HANGING_GRINDSTONE_META_ARRAY = new int[][]{
+		{6,7,4,5},
+		{5,6,5,6},
+		{4,5,6,7},
+		{7,4,7,4},
+	};
+	
+	// Indexed by [orientation][horizIndex]
+	public static final int[][] CARTOGRAPHY_TABLE_META_ARRAY = new int[][]{
+		{2,5,3,4},
+		{4,2,4,2},
+		{3,4,2,5},
+		{5,3,5,3},
+	};
+	
+	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	public static final int[][] ANVIL_META_ARRAY = new int[][]{
+		{3,3,1,1}, // Facing forward
+		{2,2,2,2}, // Facing right
+		{1,1,3,3}, // Facing you
+		{0,0,0,0}, // Facing left
+	};
+	
+	// Indexed by [orientation][horizIndex]
+	public static final int[][] GLAZED_TERRACOTTA_META_ARRAY = new int[][]{
+		{1,2,2,3},
+		{0,1,3,0},
+		{3,0,0,1},
+		{2,3,1,2},
+	};
+	
+	// Indexed by [orientation]
+	public static final int[] DOOR_META_ARRAY = new int[]
+	// --- LOWER HALF --- //
+	// Shut
+	{1,2,3,0};
+	
+	// Array of meta values for furnaces indexed by [orientation][horizIndex]
+	public static final int[][] BIBLIOCRAFT_DESK_META_ARRAY = new int[][]{
+		{3,0,1,2}, 
+		{2,3,2,3}, 
+		{1,2,3,0}, 
+		{0,1,0,1}, 
+	};
+
+	// Indexed by [orientation]
+	public static final int[] FENCE_GATE_META_ARRAY = new int[]
+	{0,1,2,3,};
+	
 	
     public static List getStructureVillageWeightedPieceList(Random random, int villageSize, FunctionsVN.VillageType villageType)
     {
@@ -177,7 +257,30 @@ public class StructureVillageVN
             if (VillageGeneratorConfigHandler.componentLegacyField2_vals.get(0)<=0 && pw.villagePieceClass.toString().substring(6).equals(Reference.Field2_CLASS)) {iterator.remove(); continue;}
             if (VillageGeneratorConfigHandler.componentLegacyHouse2_vals.get(0)<=0 && pw.villagePieceClass.toString().substring(6).equals(Reference.House2_CLASS)) {iterator.remove(); continue;}
             if (VillageGeneratorConfigHandler.componentLegacyHouse3_vals.get(0)<=0 && pw.villagePieceClass.toString().substring(6).equals(Reference.House3_CLASS)) {iterator.remove(); continue;}
+
+            // Remove buildings that aren't appropriate for the current biome
             
+			String villageTypeToCompare = "";
+			
+			switch (villageType)
+			{
+				default:
+				case PLAINS: villageTypeToCompare = "plains"; break;
+				case DESERT: villageTypeToCompare = "desert"; break;
+				case TAIGA: villageTypeToCompare = "taiga"; break;
+				case SAVANNA: villageTypeToCompare = "savanna"; break;
+				case SNOWY: villageTypeToCompare = "snowy"; break;
+			}
+			
+			int classPathListIndex = mappedComponentVillageTypes.get("ClassPaths").indexOf(pw.villagePieceClass.toString().substring(6));
+			
+			if (
+					classPathListIndex!=-1 &&
+					!((String) ((mappedComponentVillageTypes.get("VillageTypes")).get(classPathListIndex))).trim().toLowerCase().contains(villageTypeToCompare)
+            		)
+            {
+            	iterator.remove(); continue;
+            }
             
         }
 
@@ -463,14 +566,11 @@ public class StructureVillageVN
         	if (block == Blocks.OAK_STAIRS)                    {blockstate=Blocks.SPRUCE_STAIRS.getStateFromMeta(meta); break;}
         	if (block == Blocks.WOODEN_SLAB)                   {blockstate=Blocks.WOODEN_SLAB.getStateFromMeta(meta==0? 0 +woodMeta: meta==8? 8 +woodMeta : meta); break;}
         	if (block == Blocks.DOUBLE_WOODEN_SLAB)            {blockstate=Blocks.DOUBLE_WOODEN_SLAB.getStateFromMeta(woodMeta); break;}
-        	if (block == Blocks.ACACIA_DOOR
-        		|| block == Blocks.BIRCH_DOOR
-        		|| block == Blocks.DARK_OAK_DOOR
-        		|| block == Blocks.JUNGLE_DOOR
-        		|| block == Blocks.OAK_DOOR
-        		|| block == Blocks.SPRUCE_DOOR)
+        	if (block == Blocks.ACACIA_DOOR || block == Blocks.BIRCH_DOOR || block == Blocks.DARK_OAK_DOOR || block == Blocks.JUNGLE_DOOR || block == Blocks.OAK_DOOR || block == Blocks.SPRUCE_DOOR)
         													   {blockstate=Blocks.SPRUCE_DOOR.getStateFromMeta(meta); break;}
-        	//if (block == Blocks.trapdoor)                      {blockstate=new Object[]{ModObjects.chooseModWoodenTrapdoor(1), meta}; break;}
+        	if (block == Blocks.WOODEN_BUTTON)                 {blockstate=ModObjects.chooseWoodenButton(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.WOODEN_PRESSURE_PLATE)         {blockstate=ModObjects.chooseModPressurePlate(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
@@ -502,7 +602,9 @@ public class StructureVillageVN
         	if (block == Blocks.DOUBLE_WOODEN_SLAB)            {blockstate=Blocks.DOUBLE_WOODEN_SLAB.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.ACACIA_DOOR || block == Blocks.BIRCH_DOOR || block == Blocks.DARK_OAK_DOOR || block == Blocks.JUNGLE_DOOR || block == Blocks.OAK_DOOR || block == Blocks.SPRUCE_DOOR)
 			   												   {blockstate=Blocks.BIRCH_DOOR.getStateFromMeta(meta); break;}
-        	//if (block == Blocks.trapdoor)                      {blockstate=new Object[]{ModObjects.chooseModWoodenTrapdoor(2), meta}; break;}
+        	if (block == Blocks.WOODEN_BUTTON)                 {blockstate=ModObjects.chooseWoodenButton(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.WOODEN_PRESSURE_PLATE)         {blockstate=ModObjects.chooseModPressurePlate(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(2, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(2, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
@@ -543,7 +645,9 @@ public class StructureVillageVN
         	if (block == Blocks.DOUBLE_WOODEN_SLAB)            {blockstate=Blocks.DOUBLE_WOODEN_SLAB.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.ACACIA_DOOR || block == Blocks.BIRCH_DOOR || block == Blocks.DARK_OAK_DOOR || block == Blocks.JUNGLE_DOOR || block == Blocks.OAK_DOOR || block == Blocks.SPRUCE_DOOR)
         													   {blockstate=Blocks.JUNGLE_DOOR.getStateFromMeta(meta); break;}
-        	//if (block == Blocks.trapdoor)                      {blockstate=new Object[]{ModObjects.chooseModWoodenTrapdoor(3), meta}; break;}
+        	if (block == Blocks.WOODEN_BUTTON)                 {blockstate=ModObjects.chooseWoodenButton(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.WOODEN_PRESSURE_PLATE)         {blockstate=ModObjects.chooseModPressurePlate(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
@@ -577,7 +681,9 @@ public class StructureVillageVN
         	if (block == Blocks.DOUBLE_WOODEN_SLAB)            {blockstate=Blocks.DOUBLE_WOODEN_SLAB.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.ACACIA_DOOR || block == Blocks.BIRCH_DOOR || block == Blocks.DARK_OAK_DOOR || block == Blocks.JUNGLE_DOOR || block == Blocks.OAK_DOOR || block == Blocks.SPRUCE_DOOR)
 			   												   {blockstate=Blocks.ACACIA_DOOR.getStateFromMeta(meta); break;}
-        	//if (block == Blocks.trapdoor)                      {blockstate=new Object[]{ModObjects.chooseModWoodenTrapdoor(4), meta}; break;}
+        	if (block == Blocks.WOODEN_BUTTON)                 {blockstate=ModObjects.chooseWoodenButton(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.WOODEN_PRESSURE_PLATE)         {blockstate=ModObjects.chooseModPressurePlate(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(4, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(4, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
@@ -611,7 +717,9 @@ public class StructureVillageVN
         	if (block == Blocks.DOUBLE_WOODEN_SLAB)            {blockstate=Blocks.DOUBLE_WOODEN_SLAB.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.ACACIA_DOOR || block == Blocks.BIRCH_DOOR || block == Blocks.DARK_OAK_DOOR || block == Blocks.JUNGLE_DOOR || block == Blocks.OAK_DOOR || block == Blocks.SPRUCE_DOOR)
 			   												   {blockstate=Blocks.DARK_OAK_DOOR.getStateFromMeta(meta); break;}
-        	//if (block == Blocks.trapdoor)                      {blockstate=new Object[]{ModObjects.chooseModWoodenTrapdoor(5), meta}; break;}
+        	if (block == Blocks.WOODEN_BUTTON)                 {blockstate=ModObjects.chooseWoodenButton(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.WOODEN_PRESSURE_PLATE)         {blockstate=ModObjects.chooseModPressurePlate(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(5, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(5, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
@@ -647,11 +755,11 @@ public class StructureVillageVN
 															   {blockstate=Blocks.JUNGLE_FENCE_GATE.getDefaultState(); break;}
         	if (block == Blocks.OAK_STAIRS)                    {blockstate=Blocks.JUNGLE_STAIRS.getStateFromMeta(meta); break;}
         	if (block == Blocks.STONE_STAIRS)                  {blockstate=Blocks.SANDSTONE_STAIRS.getStateFromMeta(meta); break;}
-        	//if (block == Blocks.COBBLESTONE_WALL)              {
-			//										        		block = Block.getBlockFromName(ModObjects.SANDSTONEWallUTD);
-			//										        		if (block==null) {block = Blocks.SANDSTONE;}
-			//										        		return new Object[]{block, 0};
-			//												   } // Sandstone wall
+        	if (block == Blocks.COBBLESTONE_WALL)              {
+																	IBlockState tryBlockstate=ModObjects.chooseModSandstoneWall(false);
+													        		if (tryBlockstate!=null) {blockstate=tryBlockstate;}
+													        		break;
+															   } // Sandstone wall
         	if (block == Blocks.GRAVEL)                        {blockstate=Blocks.SANDSTONE.getStateFromMeta(0); break;}
         	if (block == Blocks.DIRT)                          {blockstate=Blocks.SAND.getStateFromMeta(0); break;}
         	if (block == Blocks.GRASS)                         {blockstate=Blocks.SAND.getStateFromMeta(0); break;}
@@ -659,7 +767,9 @@ public class StructureVillageVN
         	if (block == Blocks.DOUBLE_WOODEN_SLAB)            {blockstate=Blocks.DOUBLE_WOODEN_SLAB.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.ACACIA_DOOR || block == Blocks.BIRCH_DOOR || block == Blocks.DARK_OAK_DOOR || block == Blocks.JUNGLE_DOOR || block == Blocks.OAK_DOOR || block == Blocks.SPRUCE_DOOR)
         													   {blockstate=Blocks.JUNGLE_DOOR.getStateFromMeta(meta); break;}
-        	//if (block == Blocks.trapdoor)                      {blockstate=new Object[]{ModObjects.chooseModWoodenTrapdoor(3), meta}; break;} // Jungle trapdoor
+        	if (block == Blocks.WOODEN_BUTTON)                 {blockstate=ModObjects.chooseWoodenButton(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.WOODEN_PRESSURE_PLATE)         {blockstate=ModObjects.chooseModPressurePlate(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==3? 1: meta==11? 9 : meta); break;} // Sandstone slab
         	//if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(4); break;} // Brick double slab
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, true), meta/4}; break;}
@@ -667,7 +777,7 @@ public class StructureVillageVN
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=Blocks.SANDSTONE.getStateFromMeta(2); break;} // Cut Sandstone
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogJungleUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 3}; break;}
-        	//if (block != null && block == Block.getBlockFromName(ModObjects.barkEF)) {blockstate=new Object[]{Blocks.SANDSTONE, 2}; break;} // Cut sandstone
+        	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=Blocks.SANDSTONE.getStateFromMeta(2); break;} // Cut sandstone
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Blocks.SANDSTONE, 2}; break;} // Cut sandstone
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Blocks.SANDSTONE, 2}; break;} // Cut sandstone
         	if (block == Blocks.SAPLING)                       {blockstate=Blocks.DEADBUSH.getDefaultState(); break;}
@@ -692,11 +802,11 @@ public class StructureVillageVN
 			//										        		return new Object[]{block, 0};
 			//												   } // Brick wall
         	if (block == Blocks.SAND)                          {blockstate=Blocks.SAND.getStateFromMeta(1); break;} // Red Sand
-			if (block == Blocks.COBBLESTONE_WALL)              {
-													        		blockstate = ModObjects.chooseModSandstoneWall(true);
-													        		if (blockstate==null) {blockstate=Blocks.RED_SANDSTONE.getDefaultState(); break;}
-													        		return blockstate;
-															   }
+        	if (block == Blocks.COBBLESTONE_WALL)              {
+																	IBlockState tryBlockstate=ModObjects.chooseModSandstoneWall(true);
+													        		if (tryBlockstate!=null) {blockstate=tryBlockstate;}
+													        		break;
+															   } // Sandstone wall
 			if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.RED_SANDSTONE.getDefaultState(); break;}
 			if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB2.getStateFromMeta(meta>=8? 8:0); break;}
 			if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB2.getDefaultState(); break;}
@@ -727,7 +837,9 @@ public class StructureVillageVN
         	if (block == Blocks.DOUBLE_WOODEN_SLAB)            {blockstate=Blocks.DOUBLE_WOODEN_SLAB.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.ACACIA_DOOR || block == Blocks.BIRCH_DOOR || block == Blocks.DARK_OAK_DOOR || block == Blocks.JUNGLE_DOOR || block == Blocks.OAK_DOOR || block == Blocks.SPRUCE_DOOR)
 			   												   {blockstate=Blocks.SPRUCE_DOOR.getStateFromMeta(meta); break;}
-        	//if (block == Blocks.trapdoor)                      {blockstate=new Object[]{ModObjects.chooseModWoodenTrapdoor(1), meta}; break;}
+        	if (block == Blocks.WOODEN_BUTTON)                 {blockstate=ModObjects.chooseWoodenButton(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.WOODEN_PRESSURE_PLATE)         {blockstate=ModObjects.chooseModPressurePlate(woodMeta).getStateFromMeta(meta); break;}
+        	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	if (block == Blocks.MOSSY_COBBLESTONE)             {blockstate=Blocks.COBBLESTONE.getDefaultState(); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, false), meta}; break;}
@@ -785,169 +897,6 @@ public class StructureVillageVN
     
     
     /**
-     * Returns the direction-shifted metadata for blocks that require orientation, e.g. doors, stairs, ladders.
-     * Copied from 1.8 because 1.9 doesn't have it anymore
-     */
-    /*
-    public static int getMetadataWithOffset(Block blockIn, int meta, EnumFacing coordBaseMode)
-    {
-        if (blockIn == Blocks.RAIL)
-        {
-            if (coordBaseMode == EnumFacing.WEST || coordBaseMode == EnumFacing.EAST)
-            {
-                return meta==1 ? 0 : 1;
-            }
-        }
-        else if (blockIn instanceof BlockDoor)
-        {
-            if (coordBaseMode == EnumFacing.SOUTH)
-            {
-                if (meta == 0) {return 2;}
-                if (meta == 2) {return 0;}
-            }
-            else
-            {
-                if (coordBaseMode == EnumFacing.WEST) {return meta + 1 & 3;}
-                if (coordBaseMode == EnumFacing.EAST) {return meta + 3 & 3;}
-            }
-        }
-        else if (blockIn != Blocks.STONE_STAIRS && blockIn != Blocks.OAK_STAIRS && blockIn != Blocks.NETHER_BRICK_STAIRS && blockIn != Blocks.STONE_BRICK_STAIRS && blockIn != Blocks.SANDSTONE_STAIRS)
-        {
-            if (blockIn == Blocks.LADDER)
-            {
-                if (coordBaseMode == EnumFacing.SOUTH)
-                {
-                    if (meta == EnumFacing.NORTH.getIndex()) {return EnumFacing.SOUTH.getIndex();}
-                    if (meta == EnumFacing.SOUTH.getIndex()) {return EnumFacing.NORTH.getIndex();}
-                }
-                else if (coordBaseMode == EnumFacing.WEST)
-                {
-                    if (meta == EnumFacing.NORTH.getIndex()) {return EnumFacing.WEST.getIndex();}
-                    if (meta == EnumFacing.SOUTH.getIndex()) {return EnumFacing.EAST.getIndex();}
-                    if (meta == EnumFacing.WEST.getIndex()) {return EnumFacing.NORTH.getIndex();}
-                    if (meta == EnumFacing.EAST.getIndex()) {return EnumFacing.SOUTH.getIndex();}
-                }
-                else if (coordBaseMode == EnumFacing.EAST)
-                {
-                    if (meta == EnumFacing.NORTH.getIndex()) {return EnumFacing.EAST.getIndex();}
-                    if (meta == EnumFacing.SOUTH.getIndex()) {return EnumFacing.WEST.getIndex();}
-                    if (meta == EnumFacing.WEST.getIndex()) {return EnumFacing.NORTH.getIndex();}
-                    if (meta == EnumFacing.EAST.getIndex()) {return EnumFacing.SOUTH.getIndex();}
-                }
-            }
-            else if (blockIn == Blocks.STONE_BUTTON)
-            {
-                if (coordBaseMode == EnumFacing.SOUTH)
-                {
-                    if (meta == 3) {return 4;}
-                    if (meta == 4) {return 3;}
-                }
-                else if (coordBaseMode == EnumFacing.WEST)
-                {
-                	switch(meta)
-                	{
-        	        	case 1: return 4;
-        	        	case 2: return 3;
-        	        	case 3: return 1;
-        	        	case 4: return 2;
-                	}
-                }
-                else if (coordBaseMode == EnumFacing.EAST)
-                {
-                	switch(meta)
-                	{
-        	        	case 1: return 4;
-        	        	case 2: return 3;
-        	        	case 3: return 2;
-        	        	case 4: return 1;
-                	}
-                }
-            }
-            else if (blockIn != Blocks.TRIPWIRE_HOOK && !(blockIn instanceof BlockDirectional))
-            {
-                if (blockIn == Blocks.PISTON || blockIn == Blocks.STICKY_PISTON || blockIn == Blocks.LEVER || blockIn == Blocks.DISPENSER)
-                {
-                    if (coordBaseMode == EnumFacing.SOUTH)
-                    {
-                        if (meta == EnumFacing.NORTH.getIndex() || meta == EnumFacing.SOUTH.getIndex())
-                        {
-                            return EnumFacing.getFront(meta).getOpposite().getIndex();
-                        }
-                    }
-                    else if (coordBaseMode == EnumFacing.WEST)
-                    {
-                        if (meta == EnumFacing.NORTH.getIndex()) {return EnumFacing.WEST.getIndex();}
-                        if (meta == EnumFacing.SOUTH.getIndex()) {return EnumFacing.EAST.getIndex();}
-                        if (meta == EnumFacing.WEST.getIndex()) {return EnumFacing.NORTH.getIndex();}
-                        if (meta == EnumFacing.EAST.getIndex()) {return EnumFacing.SOUTH.getIndex();}
-                    }
-                    else if (coordBaseMode == EnumFacing.EAST)
-                    {
-                        if (meta == EnumFacing.NORTH.getIndex()) {return EnumFacing.EAST.getIndex();}
-                        if (meta == EnumFacing.SOUTH.getIndex()) {return EnumFacing.WEST.getIndex();}
-                        if (meta == EnumFacing.WEST.getIndex()) {return EnumFacing.NORTH.getIndex();}
-                        if (meta == EnumFacing.EAST.getIndex()) {return EnumFacing.SOUTH.getIndex();}
-                    }
-                }
-            }
-            else
-            {
-                EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
-
-                if (coordBaseMode == EnumFacing.SOUTH)
-                {
-                    if (enumfacing == EnumFacing.SOUTH || enumfacing == EnumFacing.NORTH)
-                    {
-                        return enumfacing.getOpposite().getHorizontalIndex();
-                    }
-                }
-                else if (coordBaseMode == EnumFacing.WEST)
-                {
-                    if (enumfacing == EnumFacing.NORTH) {return EnumFacing.WEST.getHorizontalIndex();}
-                    if (enumfacing == EnumFacing.SOUTH) {return EnumFacing.EAST.getHorizontalIndex();}
-                    if (enumfacing == EnumFacing.WEST) {return EnumFacing.NORTH.getHorizontalIndex();}
-                    if (enumfacing == EnumFacing.EAST) {return EnumFacing.SOUTH.getHorizontalIndex();}
-                }
-                else if (coordBaseMode == EnumFacing.EAST)
-                {
-                    if (enumfacing == EnumFacing.NORTH) {return EnumFacing.EAST.getHorizontalIndex();}
-                    if (enumfacing == EnumFacing.SOUTH) {return EnumFacing.WEST.getHorizontalIndex();}
-                    if (enumfacing == EnumFacing.WEST) {return EnumFacing.NORTH.getHorizontalIndex();}
-                    if (enumfacing == EnumFacing.EAST) {return EnumFacing.SOUTH.getHorizontalIndex();}
-                }
-            }
-        }
-        else if (coordBaseMode == EnumFacing.SOUTH)
-        {
-            if (meta == 2) {return 3;}
-            if (meta == 3) {return 2;}
-        }
-        else if (coordBaseMode == EnumFacing.WEST)
-        {
-        	switch(meta)
-        	{
-	        	case 0: return 2;
-	        	case 1: return 3;
-	        	case 2: return 0;
-	        	case 3: return 1;
-        	}
-        }
-        else if (coordBaseMode == EnumFacing.EAST)
-        {
-        	switch(meta)
-        	{
-	        	case 0: return 2;
-	        	case 1: return 3;
-	        	case 2: return 1;
-	        	case 3: return 0;
-        	}
-        }
-
-        return meta;
-    }
-    */
-    
-    /**
      * Give this method the orientation of a sign or banner and the base mode of the structure it's in,
      * and it'll give you back the required meta value for construction.
      * For relative orientations, use:
@@ -992,13 +941,13 @@ public class StructureVillageVN
 		switch (relativeOrientation)
 		{
 		case 0: // Facing away
-			return new int[]{3,2,4,1}[coordBaseMode];
+			return 4;
 		case 1: // Facing right
-			return new int[]{1,3,1,3}[coordBaseMode];
+			return 1;
 		case 2: // Facing you
-			return new int[]{4,1,3,2}[coordBaseMode];
+			return 3;
 		case 3: // Facing left
-			return new int[]{2,4,2,4}[coordBaseMode];
+			return 2;
 		}
     	return 0; // Torch will be standing upright, hopefully
     }
@@ -1598,72 +1547,94 @@ public class StructureVillageVN
     public static EntityVillager makeVillagerWithProfession(World world, Random random, int profession, int career, int age)
     {
 		EntityVillager entityvillager = new EntityVillager(world);
-		
-		// Set profession
-		if (profession==-1)
-		{
-			if (VillageGeneratorConfigHandler.spawnModdedVillagers)
-			{
-				net.minecraftforge.fml.common.registry.VillagerRegistry.setRandomProfession(entityvillager, random);
-			}
-			else
-			{
-				entityvillager.setProfession(random.nextInt(5)); //GeneralConfig.enableNitwit ? random.nextInt(6) : random.nextInt(5)); // TODO - Enable Nitwit setting in 1.10
-			}
+		int tries = 100;
+    	
+    	while(true)
+    	{
+        	entityvillager = new EntityVillager(world);
+        	Method populateBuyingList_m = ReflectionHelper.findMethod(EntityVillager.class, "populateBuyingList", "func_175554_cu"); // Updated 1.11 FindMethod version and changed to EntityVillagerZombie
+    		IModularSkin ims = entityvillager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
+    				
+    		// Set profession
+    		if (profession==-1)
+    		{
+    			if (VillageGeneratorConfigHandler.spawnModdedVillagers)
+    			{
+    				VillagerRegistry.setRandomProfession(entityvillager, random);
+    			}
+    			else
+    			{
+    				entityvillager.setProfession(random.nextInt(6));
+    			}
+    			
+    			VillagerRegistry.setRandomProfession(entityvillager, entityvillager.world.rand);
+    			
+    			// Equally weight career subdivisions
+    			if (entityvillager.getProfession()>=0 && entityvillager.getProfession()<=4)
+    			{
+    				switch(random.nextInt(GeneralConfig.modernVillagerTrades ? 13 : 12))
+    				{
+    					default:
+    					case 0: // Farmer | Farmer
+    						profession = 0; career = 1; break;
+    					case 1: // Farmer | Fisherman
+    						profession = 0; career = 2; break;
+    					case 2: // Farmer | Shepherd
+    						profession = 0; career = 3; break;
+    					case 3: // Farmer | Fletcher
+    						profession = 0; career = 4; break;
+    					case 4: // Librarian | Librarian
+    						profession = 1; career = 1; break;
+    					case 5: // Librarian | Cartographer
+    						profession = 1; career = 2; break;
+    					case 6: // Priest | Cleric
+    						profession = 2; career = 1; break;
+    					case 7: // Blacksmith | Armorer
+    						profession = 3; career = 1; break;
+    					case 8: // Blacksmith | Weaponsmith
+    						profession = 3; career = 2; break;
+    					case 9: // Blacksmith | Toolsmith
+    						profession = 3; career = 3; break;
+    					case 10: // Butcher | Butcher
+    						profession = 4; career = 1; break;
+    					case 11: // Butcher | Leatherworker
+    						profession = 4; career = 2; break;
+    					case 12: // Blacksmith | Mason
+    						profession = 3; career = 4; break;
+    				}
+    				entityvillager.setProfession(profession);
+    			}
+    			else {break;} // Non-vanilla profession value
+    		}
+    		else {entityvillager.setProfession(profession);}
+    		
+    		ReflectionHelper.setPrivateValue(EntityVillager.class, entityvillager, career, new String[]{"careerId", "field_175563_bv"});
+    		ims.setCareer(career);
+    		
+			// Populate the villager's buying list
+			try {populateBuyingList_m.invoke(entityvillager);} catch (Exception e) {if (GeneralConfig.debugMessages) {LogHelper.warn("Could not invoke EntityVillager.populateBuyingList method");} break;}
 			
-			VillagerRegistry.setRandomProfession(entityvillager, entityvillager.world.rand);
-			
-			// Equally weight career subdivisions
-			if (entityvillager.getProfession()>=0 && entityvillager.getProfession()<=4)
+			// Make sure this villager has the stats you requested
+			if (
+					(entityvillager.getProfession() == profession
+					&& (Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, entityvillager, new String[]{"careerId", "field_175563_bv"}) == career
+					&& ims.getCareer() == career)
+					|| tries-- <= 0 // Just give up and accept what we've got
+					)
 			{
-				IModularSkin ims = entityvillager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
-				
-				switch(random.nextInt(GeneralConfig.modernVillagerTrades ? 13 : 12))
-				{
-					default:
-					case 0: // Farmer | Farmer
-						profession = 0; career = 1; break;
-					case 1: // Farmer | Fisherman
-						profession = 0; career = 2; break;
-					case 2: // Farmer | Shepherd
-						profession = 0; career = 3; break;
-					case 3: // Farmer | Fletcher
-						profession = 0; career = 4; break;
-					case 4: // Librarian | Librarian
-						profession = 1; career = 1; break;
-					case 5: // Librarian | Cartographer
-						profession = 1; career = 2; break;
-					case 6: // Priest | Cleric
-						profession = 2; career = 1; break;
-					case 7: // Blacksmith | Armorer
-						profession = 3; career = 1; break;
-					case 8: // Blacksmith | Weaponsmith
-						profession = 3; career = 2; break;
-					case 9: // Blacksmith | Toolsmith
-						profession = 3; career = 3; break;
-					case 10: // Butcher | Butcher
-						profession = 4; career = 1; break;
-					case 11: // Butcher | Leatherworker
-						profession = 4; career = 2; break;
-					case 12: // Blacksmith | Mason
-						profession = 3; career = 4; break;
-				}
-				entityvillager.setProfession(profession);
-				ims.setCareer(career);
+				/*
+				LogHelper.info(
+		    			"Villager Profession: " + entityvillager.getProfession()
+		    			+ ", requested Profession: " + profession
+		    			+ ", Villager Career: " + ReflectionHelper.getPrivateValue(EntityVillager.class, entityvillager, new String[]{"careerId", "field_175563_bv"})
+		    			+ ", Villager CareerVN: " + ims.getCareer()
+		    			+ ", requested Career: " + career
+		    			);*/
+				break;
 			}
-		}
-		else
-		{
-			entityvillager.setProfession(profession);
-			
-			// Set career
-			if (career > 0)
-			{
-				IModularSkin ims = entityvillager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
-				ims.setCareer(career);
-			}
-		}
-		
+			else {entityvillager.setDead();}
+    	}
+    	
 		// Set age
 		entityvillager.setGrowingAge(age);
 		
@@ -2159,6 +2130,150 @@ public class StructureVillageVN
             return true;
         }
     }
+	
+    
+	public static int chooseLadderMeta(int orientation)
+	{
+		if (orientation<0) {return -orientation;}
+		return LADDER_META_ARRAY[orientation];
+	}
+	
+	public static int chooseFurnaceMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		if (orientation<0) {return -orientation;}
+		return FURNACE_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+	
+	public static int chooseButtonMeta(int orientation)
+	{
+		return BUTTON_META_ARRAY[orientation];
+	}
+	
+	public static int chooseGlazedTerracottaMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		return GLAZED_TERRACOTTA_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+	
+	public static int chooseBlastFurnaceMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		if (orientation<0) {return -orientation;}
+		return BLAST_FURNACE_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+	public static int chooseCartographyTableMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		if (orientation<0) {return -orientation;}
+		return CARTOGRAPHY_TABLE_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+	
+	public static int chooseAnvilMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		return ANVIL_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+	
+	public static int chooseGrindstoneHangingMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		if (orientation<0) {return -orientation;}
+		return HANGING_GRINDSTONE_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+
+	public static int chooseFenceGateMeta(int orientation, boolean isOpen)
+	{
+		return FENCE_GATE_META_ARRAY[orientation] + (isOpen?4:0);
+	}
+	
+	public static int chooseBibliocraftDeskMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		return (StructureVillageVN.BIBLIOCRAFT_DESK_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()])%4;
+	}
+	/**
+     * Returns meta values for lower and upper halves of a door
+     * 
+	 * orientation - Direction the outside of the door faces when closed:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 * 
+	 * isShut - doors are "shut" by default when placed by a player
+	 * rightHandRule - whether the door opens counterclockwise when viewed from above. This is default state when placed by a player
+	 */
+	public static int[] getDoorMetas(int orientation, EnumFacing coordBaseMode, boolean isShut, boolean isRightHanded)
+	{
+		int horizIndex = coordBaseMode.getHorizontalIndex();
+		
+		return new int[] {
+				DOOR_META_ARRAY[orientation] + (isShut?0:4),
+				isRightHanded ? 8 : 9
+						};
+	}
+
+
+	/**
+	 * Returns a random animal from the /structures/village/common/animals folder, not including cats
+	 */
+	public static EntityLiving getVillageAnimal(World world, BlockPos pos, Random random, boolean includeHorses, boolean mooshroomsInsteadOfCows)
+	{
+		EntityLiving animal;
+		int animalIndex = random.nextInt(4 + (includeHorses ? 5 : 0));
+		
+		if (animalIndex==0)      {animal = mooshroomsInsteadOfCows ? new EntityMooshroom(world) : new EntityCow(world);}
+		else if (animalIndex==1) {animal = new EntityPig(world);}
+		else if (animalIndex<=3) {animal = new EntitySheep(world);}
+		else                     {animal = new EntityHorse(world);}
+		
+		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(pos), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+		
+		return animal;
+	}
+	
+		
+	/**
+	 * relativeOrientation
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int getBedOrientationMeta(int relativeOrientation, EnumFacing coordBaseMode, boolean isHead)
+	{
+		int horizIndex = coordBaseMode.getHorizontalIndex();
+		
+		switch (relativeOrientation)
+		{
+		case 0: // Facing away
+			return new int[]{2,3,0,1}[horizIndex] + (isHead ? 8:0);
+		case 1: // Facing right
+			return new int[]{1,2,1,2}[horizIndex] + (isHead ? 8:0);
+		case 2: // Facing you
+			return new int[]{0,1,2,3}[horizIndex] + (isHead ? 8:0);
+		case 3: // Facing left
+			return new int[]{3,0,3,0}[horizIndex] + (isHead ? 8:0);
+		}
+		return 0 + (isHead ? 8:0);
+	}
+	
+	
+	/**
+	 * relativeOrientation
+	 * Updated for 1.9+ because all objects are assumed to be at coordBaseMode=NORTH (horizIndex=2)
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int getTrapdoorMeta(int relativeOrientation, boolean isTop, boolean isVertical)
+	{
+		int meta = 0;
+		
+		switch (relativeOrientation)
+		{
+		case 0: // Facing away
+			meta = 0; break;
+		case 1: // Facing right
+			meta = 3; break;
+		default:
+		case 2: // Facing you
+			meta = 1; break;
+		case 3: // Facing left
+			meta = 2; break;
+		}
+		
+		meta += (isVertical?4:0);
+		meta += (isTop?8:0);
+		
+		return meta;
+	}
 	
 	
 	/**
