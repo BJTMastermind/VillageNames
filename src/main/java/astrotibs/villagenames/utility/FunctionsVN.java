@@ -360,7 +360,7 @@ public class FunctionsVN
 				return 1 + random.nextInt(4);
 			
 			case 1: // LIBRARIAN
-				return 1 + random.nextInt((GeneralConfig.enableCartographer ? 2 : 1)); //TODO - see if NitWit is allowed villager type
+				return 1 + random.nextInt((GeneralConfig.enableCartographer ? 2 : 1));
 			
 			case 2: // PRIEST
 				return 1;// + this.myWorld.rand.nextInt(1);
@@ -399,6 +399,10 @@ public class FunctionsVN
      */
     public static void modernizeVillagerTrades(EntityVillager villager)
     {
+    	// Ignores this for non-vanilla villagers
+    	String villagerForgeProfessionRegistryName = villager.getProfessionForge().getRegistryName().toString();
+		if (villagerForgeProfessionRegistryName.length()<10 || !villagerForgeProfessionRegistryName.substring(0, 10).equals("minecraft:")) {return;}
+		
     	Random random = new Random(); // v3.2.1 - deactivated seed random
     	
     	IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
@@ -881,12 +885,18 @@ public class FunctionsVN
 								buyingList.add(new MerchantRecipe(
 										new ItemStack( Items.DYE, 12, new int[]{1,7,9,11,14}[random.nextInt(5)] ), (ItemStack)null, new ItemStack( Items.EMERALD, 1 ), 0, 5
 										));
-	    						
+								
 								// Slot 6
+								color1 = random.nextInt(16);
+								buyingList.add(new MerchantRecipe(
+										new ItemStack( Items.EMERALD, 3 ), (ItemStack)null, ModObjects.getModBedItemstack(color1),
+										0, 5
+										));
+								/*
 								buyingList.add(new MerchantRecipe( // TODO - colorized bed (Added in 1.12)
 										new ItemStack( Items.EMERALD, 3 ), (ItemStack)null, new ItemStack( Items.BED, 1 ), 0, 5
 										));
-								
+								*/
 								break;
 	    						
 	    					case 4: // Expert

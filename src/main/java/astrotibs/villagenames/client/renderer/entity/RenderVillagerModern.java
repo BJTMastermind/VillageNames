@@ -244,7 +244,8 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	    	// Changed in v3.2 to allow for modded skins
 			if (villager.getProfession() >= 0 && !villager.isInvisible() && !villager.isChild())
 			{
-				if (villager.getProfession() <= 4) // Changed in v3.2: there is no official Profession 5!
+				String villagerForgeProfessionRegistryName = villager.getProfessionForge().getRegistryName().toString();
+				if (villager.getProfession() <= 4 && villagerForgeProfessionRegistryName.length()>=10 && villagerForgeProfessionRegistryName.substring(0, 10).equals("minecraft:"))
 				{
 					// Profession skins
 					if (GeneralConfig.modernVillagerSkins)

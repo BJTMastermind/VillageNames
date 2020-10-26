@@ -18,6 +18,7 @@ import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
+import astrotibs.villagenames.utility.FunctionsVN.VillageType;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import astrotibs.villagenames.village.biomestructures.BlueprintData;
@@ -522,10 +523,22 @@ public class StructureVillageVN
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
         	if (block == Blocks.SANDSTONE && meta==1)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(3); break;} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;}
-        	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
-        	if (block == Blocks.DOUBLE_STONE_SLAB && meta==9)  {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
+        	if (
+        			(block == Blocks.STONE_SLAB)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu)
+        					|| block == Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu)
+        			))
+        			) {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
+        	if (
+        			(block == Blocks.DOUBLE_STONE_SLAB && meta==9)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneQu)
+        			))
+        			) {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
+        	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.OAK_FENCE.getDefaultState(); break;}
         	if (block == Blocks.SAPLING)                       {blockstate=Blocks.SAPLING.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.SNOW)                          {blockstate=Blocks.DIRT.getDefaultState(); break;}
         	if (block == Blocks.SNOW_LAYER)                    {blockstate=Blocks.AIR.getDefaultState(); break;}
@@ -560,11 +573,24 @@ public class StructureVillageVN
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
         	if (block == Blocks.SANDSTONE && meta==1)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(3); break;} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;}
-        	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
-        	if (block == Blocks.DOUBLE_STONE_SLAB && meta==9)  {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
+        	if (
+        			(block == Blocks.STONE_SLAB)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu)
+        					|| block == Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu)
+        			))
+        			) {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
+        	if (
+        			(block == Blocks.DOUBLE_STONE_SLAB && meta==9)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneQu)
+        			))
+        			) {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
+        	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.SPRUCE_FENCE.getDefaultState(); break;}
         	if (block == Blocks.SAPLING)                       {blockstate=Blocks.SAPLING.getStateFromMeta(woodMeta); break;}
+        	// No snow conversion because snow is okay in spruce biomes
         	if (block == Blocks.ICE)                           {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.PACKED_ICE)                    {blockstate=Blocks.COBBLESTONE.getDefaultState(); break;}
         	
@@ -591,10 +617,22 @@ public class StructureVillageVN
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
         	if (block == Blocks.SANDSTONE && meta==1)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(3); break;} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;}
-        	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
-        	if (block == Blocks.DOUBLE_STONE_SLAB && meta==9)  {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
+        	if (
+        			(block == Blocks.STONE_SLAB)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu)
+        					|| block == Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu)
+        			))
+        			) {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
+        	if (
+        			(block == Blocks.DOUBLE_STONE_SLAB && meta==9)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneQu)
+        			))
+        			) {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
+        	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.BIRCH_FENCE.getDefaultState(); break;}
         	if (block == Blocks.SAPLING)                       {blockstate=Blocks.SAPLING.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.SNOW)                          {blockstate=Blocks.DIRT.getDefaultState(); break;}
         	if (block == Blocks.SNOW_LAYER)                    {blockstate=Blocks.AIR.getDefaultState(); break;}
@@ -631,10 +669,22 @@ public class StructureVillageVN
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
         	if (block == Blocks.SANDSTONE && meta==1)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(3); break;} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;}
-        	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
-        	if (block == Blocks.DOUBLE_STONE_SLAB && meta==9)  {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
+        	if (
+        			(block == Blocks.STONE_SLAB)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu)
+        					|| block == Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu)
+        			))
+        			) {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
+        	if (
+        			(block == Blocks.DOUBLE_STONE_SLAB && meta==9)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneQu)
+        			))
+        			) {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
+        	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.JUNGLE_FENCE.getDefaultState(); break;}
         	if (block == Blocks.SAPLING)                       {blockstate=Blocks.SAPLING.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.SNOW)                          {blockstate=Blocks.DIRT.getDefaultState(); break;}
         	if (block == Blocks.SNOW_LAYER)                    {blockstate=Blocks.AIR.getDefaultState(); break;}
@@ -664,10 +714,22 @@ public class StructureVillageVN
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
         	if (block == Blocks.SANDSTONE && meta==1)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(3); break;} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;}
-        	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
-        	if (block == Blocks.DOUBLE_STONE_SLAB && meta==9)  {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
+        	if (
+        			(block == Blocks.STONE_SLAB)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu)
+        					|| block == Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu)
+        			))
+        			) {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
+        	if (
+        			(block == Blocks.DOUBLE_STONE_SLAB && meta==9)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneQu)
+        			))
+        			) {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
+        	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.ACACIA_FENCE.getDefaultState(); break;}
         	if (block == Blocks.SAPLING)                       {blockstate=Blocks.SAPLING.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.SNOW)                          {blockstate=Blocks.DIRT.getDefaultState(); break;}
         	if (block == Blocks.SNOW_LAYER)                    {blockstate=Blocks.AIR.getDefaultState(); break;}
@@ -697,10 +759,22 @@ public class StructureVillageVN
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
         	if (block == Blocks.SANDSTONE && meta==1)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(3); break;} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;}
-        	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
-        	if (block == Blocks.DOUBLE_STONE_SLAB && meta==9)  {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
+        	if (
+        			(block == Blocks.STONE_SLAB)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu)
+        					|| block == Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu)
+        			))
+        			) {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
+        	if (
+        			(block == Blocks.DOUBLE_STONE_SLAB && meta==9)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneQu)
+        			))
+        			) {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
+        	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.DARK_OAK_FENCE.getDefaultState(); break;}
         	if (block == Blocks.SAPLING)                       {blockstate=Blocks.SAPLING.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.SNOW)                          {blockstate=Blocks.DIRT.getDefaultState(); break;}
         	if (block == Blocks.SNOW_LAYER)                    {blockstate=Blocks.AIR.getDefaultState(); break;}
@@ -760,8 +834,6 @@ public class StructureVillageVN
         	if (block == Blocks.MOSSY_COBBLESTONE)             {blockstate=Blocks.HARDENED_CLAY.getDefaultState(); break;}
         	if (block == Blocks.STONE_STAIRS)                  {blockstate=Blocks.BRICK_STAIRS.getStateFromMeta(meta); break;}
         	if (block == Blocks.GRAVEL)                        {blockstate=Blocks.HARDENED_CLAY.getDefaultState(); break;}
-        	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==3? 4: meta==11? 12 : meta); break;} // Brick slab
-        	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(1); break;} // Sandstone double slab
         	if (block == Blocks.COBBLESTONE_WALL)              {
 																	IBlockState tryBlockstate=ModObjects.chooseModSandstoneWall(true);
 													        		if (tryBlockstate!=null) {blockstate=tryBlockstate;}
@@ -769,9 +841,15 @@ public class StructureVillageVN
 															   } // Sandstone wall
         	if (block == Blocks.SAND)                          {blockstate=Blocks.SAND.getStateFromMeta(1); break;} // Red Sand
 			if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.RED_SANDSTONE.getDefaultState(); break;}
+        	if (
+        			(block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneQu)
+        			))
+        			) {blockstate=block.getStateFromMeta(2); break;} // Smooth sandstone into planks
 			if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB2.getStateFromMeta(meta>=8? 8:0); break;}
-			if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB2.getDefaultState(); break;}
 			if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.RED_SANDSTONE_STAIRS.getStateFromMeta(meta); break;}
+        	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu) && Block.getBlockFromName(ModObjects.sandstoneWall_red_Qu)!=null)
+        													   {blockstate=Block.getBlockFromName(ModObjects.sandstoneWall_red_Qu).getDefaultState(); break;}
         	if (block == Blocks.SAPLING)                       {blockstate=Blocks.TALLGRASS.getStateFromMeta(0); break;} // Shrub
         	if (block == Blocks.SNOW)                          {blockstate=Blocks.SAND.getStateFromMeta(1); break;} // Red Sand
         	if (block == Blocks.SNOW_LAYER)                    {blockstate=Blocks.AIR.getDefaultState(); break;}
@@ -800,10 +878,22 @@ public class StructureVillageVN
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1}; break;}
         	if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.COBBLESTONE.getDefaultState(); break;}
-        	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
-        	if (block == Blocks.DOUBLE_STONE_SLAB && meta==9)  {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
+        	if (
+        			(block == Blocks.STONE_SLAB)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu)
+        					|| block == Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu)
+        			))
+        			) {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
+        	if (
+        			(block == Blocks.DOUBLE_STONE_SLAB && meta==9)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneQu)
+        			))
+        			) {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
+        	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.SPRUCE_FENCE.getDefaultState(); break;}
         	
         	break;
         	
@@ -818,10 +908,22 @@ public class StructureVillageVN
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(14); break;} // Cap on all six sides
         	if (block == Blocks.SANDSTONE && meta==1)          {blockstate=Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(14); break;} // Cap on all six sides
         	if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(14); break;} // Cap on all six sides
-        	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
-        	if (block == Blocks.DOUBLE_STONE_SLAB && meta==9)  {blockstate=Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(0); break;} // Smooth sandstone into pores on all six sides
+        	if (
+        			(block == Blocks.STONE_SLAB)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu)
+        					|| block == Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu)
+        			))
+        			) {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
+        	if (
+        			(block == Blocks.DOUBLE_STONE_SLAB && meta==9)
+        			|| (block != null && (
+        					block == Block.getBlockFromName(ModObjects.smoothSandstoneQu)
+        			))
+        			) {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
+        	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.COBBLESTONE_WALL.getDefaultState(); break;}
         	if (block == Blocks.SAPLING)                       {blockstate=Blocks.BROWN_MUSHROOM.getStateFromMeta(0); break;}
         	if (block == Blocks.GRASS)                         {blockstate=Blocks.MYCELIUM.getStateFromMeta(0); break;}
         	if (block == Blocks.SNOW)                          {blockstate=Blocks.DIRT.getDefaultState(); break;}
@@ -2348,6 +2450,30 @@ public class StructureVillageVN
 			}
 			if (matchFound) {matchFound=false; continue;}
 			else {return candidateColor;}
+		}
+	}
+	
+	/**
+	 * Pick a random decor component based off of village type
+	 * The decor will be randomly selected based on the village type, except you can specify whether to allow troughs for Taiga types
+	 */
+	public static ArrayList<BlueprintData> getRandomDecorBlueprint(VillageType villageType, MaterialType materialType, boolean disallowModSubs, Biome biome, EnumFacing coordBaseMode, Random random, boolean allowTaigaTroughs)
+	{
+		switch (villageType)
+		{
+		default:
+		case PLAINS:
+			return PlainsStructures.getRandomPlainsDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
+		case DESERT:
+			return DesertStructures.getRandomDesertDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
+		case TAIGA:
+			return allowTaigaTroughs ? 
+					TaigaStructures.getRandomTaigaDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random)
+					:TaigaStructures.getTaigaDecorBlueprint(1+random.nextInt(6), materialType, disallowModSubs, biome, coordBaseMode, random);
+		case SAVANNA:
+			return SavannaStructures.getRandomSavannaDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
+		case SNOWY:
+			return SnowyStructures.getRandomSnowyDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		}
 	}
 }

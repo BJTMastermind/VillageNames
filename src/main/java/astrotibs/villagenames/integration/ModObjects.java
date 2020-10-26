@@ -22,6 +22,11 @@ import net.minecraft.world.World;
 // Added in v3.1trades
 public class ModObjects {
 	
+	// Constantly referenced domain names
+	public static final String DOM_BIOMESOPLENTY = "biomesoplenty";
+	public static final String DOM_HARVESTCRAFT = "harvestcraft";
+	public static final String DOM_QUARK = "quark";
+	
 
     // ---------------- //
 	// --- Entities --- //
@@ -68,127 +73,130 @@ public class ModObjects {
 	// --------------------------------------------- //
 	// --- Blocks and items reference for trades --- //
 	// --------------------------------------------- //
-
+	
 	// --- Blocks ---//
 
 	// Bark
-	public static final String barkQu = "quark:bark";
+	public static final String barkQu = DOM_QUARK + ":bark";
 	
 	// Colored Bed
-	public static final String coloredBedBlock_root_Qu = "quark:colored_bed_";
+	public static final String coloredBedBlock_root_Qu = DOM_QUARK + ":colored_bed_";
 	
 	// Crops
-	public static final String cropArtichokeHC = "harvestcraft:pamartichokecrop";
-	public static final String cropAsparagusHC = "harvestcraft:pamasparaguscrop";
-	public static final String cropBambooHC = "harvestcraft:pambambooshootcrop";
-	public static final String cropBarleyHC = "harvestcraft:pambarleycrop";
-	public static final String cropBeanHC = "harvestcraft:pambeancrop";
-	public static final String cropBeetHC = "harvestcraft:pambeetcrop";
-	public static final String cropBellpepperHC = "harvestcraft:pambellpeppercrop";
-	public static final String cropBlackberryHC = "harvestcraft:pamblackberrycrop";
-	public static final String cropBlueberryHC = "harvestcraft:pamblueberrycrop";
-	public static final String cropBroccoliHC = "harvestcraft:pambroccolicrop";
-	public static final String cropBrusselsproutHC = "harvestcraft:pambrusselsproutcrop";
-	public static final String cropCabbageHC = "harvestcraft:pamcabbagecrop";
-	public static final String cropCactusfruitHC = "harvestcraft:pamcactusfruitcrop"; // Planted on sand
-	public static final String cropCandleberryHC = "harvestcraft:pamcandleberrycrop";
-	public static final String cropCantaloupeHC = "harvestcraft:pamcantaloupecrop";
-	public static final String cropCauliflowerHC = "harvestcraft:pamcauliflowercrop";
-	public static final String cropCeleryHC = "harvestcraft:pamcelerycrop";
-	public static final String cropChilipepperHC = "harvestcraft:pamchilipeppercrop";
-	public static final String cropCoffeebeanHC = "harvestcraft:pamcoffeebeancrop";
-	public static final String cropCornHC = "harvestcraft:pamcorncrop";
-	public static final String cropCottonHC = "harvestcraft:pamcottoncrop";
-	public static final String cropCranberryHC = "harvestcraft:pamcranberrycrop"; // Planted on water
-	public static final String cropCucumberHC = "harvestcraft:pamcucumbercrop";
-	public static final String cropCurryleafHC = "harvestcraft:pamcurryleafcrop";
-	public static final String cropEggplantHC = "harvestcraft:pameggplantcrop";
-	public static final String cropGarlicHC = "harvestcraft:pamgarliccrop";
-	public static final String cropGingerHC = "harvestcraft:pamgingercrop";
-	public static final String cropGrapeHC = "harvestcraft:pamgrapecrop";
-	public static final String cropKiwiHC = "harvestcraft:pamkiwicrop";
-	public static final String cropLeekHC = "harvestcraft:pamleekcrop";
-	public static final String cropLettuceHC = "harvestcraft:pamlettucecrop";
-	public static final String cropMustardseedHC = "harvestcraft:pammustardseedscrop";
-	public static final String cropOatsHC = "harvestcraft:pamoatscrop";
-	public static final String cropOkraHC = "harvestcraft:pamokracrop";
-	public static final String cropOnionHC = "harvestcraft:pamonioncrop";
-	public static final String cropParsnipHC = "harvestcraft:pamparsnipcrop";
-	public static final String cropPeanutHC = "harvestcraft:pampeanutcrop";
-	public static final String cropPeasHC = "harvestcraft:pampeascrop";
-	public static final String cropPineappleHC = "harvestcraft:pampineapplecrop";
-	public static final String cropRadishHC = "harvestcraft:pamradishcrop";
-	public static final String cropRaspberryHC = "harvestcraft:pamraspberrycrop";
-	public static final String cropRhubarbHC = "harvestcraft:pamrhubarbcrop";
-	public static final String cropRiceHC = "harvestcraft:pamricecrop"; // Planted on water
-	public static final String cropRutabegaHC = "harvestcraft:pamrutabagacrop";
-	public static final String cropRyeHC = "harvestcraft:pamryecrop";
-	public static final String cropScallionHC = "harvestcraft:pamscallioncrop";
-	public static final String cropSeaweedHC = "harvestcraft:pamseaweedcrop"; // Planted on water
-	public static final String cropSesameseedHC = "harvestcraft:pamsesameseedscrop";
-	public static final String cropSoybeanHC = "harvestcraft:pamsoybeancrop";
-	public static final String cropSpiceleafHC = "harvestcraft:pamspiceleafcrop";
-	public static final String cropSpinachHC = "harvestcraft:pamspinachcrop";
-	public static final String cropStrawberryHC = "harvestcraft:pamstrawberrycrop";
-	public static final String cropSweetpotatoHC = "harvestcraft:pamsweetpotatocrop";
-	public static final String cropTealeafHC = "harvestcraft:pamtealeafcrop";
-	public static final String cropTomatoHC = "harvestcraft:pamtomatocrop";
-	public static final String cropTurnipHC = "harvestcraft:pamturnipcrop";
-	public static final String cropWaterchestnutHC = "harvestcraft:pamwaterchestnutcrop"; // Planted on water
-	public static final String cropWhitemushroomHC = "harvestcraft:pamwhitemushroomcrop"; // Planted on log
-	public static final String cropWintersquashHC = "harvestcraft:pamwintersquashcrop";
-	public static final String cropZucchiniHC = "harvestcraft:pamzucchinicrop";
+	public static final String cropArtichokeHC = DOM_HARVESTCRAFT + ":pamartichokecrop";
+	public static final String cropAsparagusHC = DOM_HARVESTCRAFT + ":pamasparaguscrop";
+	public static final String cropBambooHC = DOM_HARVESTCRAFT + ":pambambooshootcrop";
+	public static final String cropBarleyHC = DOM_HARVESTCRAFT + ":pambarleycrop";
+	public static final String cropBeanHC = DOM_HARVESTCRAFT + ":pambeancrop";
+	public static final String cropBeetHC = DOM_HARVESTCRAFT + ":pambeetcrop";
+	public static final String cropBellpepperHC = DOM_HARVESTCRAFT + ":pambellpeppercrop";
+	public static final String cropBlackberryHC = DOM_HARVESTCRAFT + ":pamblackberrycrop";
+	public static final String cropBlueberryHC = DOM_HARVESTCRAFT + ":pamblueberrycrop";
+	public static final String cropBroccoliHC = DOM_HARVESTCRAFT + ":pambroccolicrop";
+	public static final String cropBrusselsproutHC = DOM_HARVESTCRAFT + ":pambrusselsproutcrop";
+	public static final String cropCabbageHC = DOM_HARVESTCRAFT + ":pamcabbagecrop";
+	public static final String cropCactusfruitHC = DOM_HARVESTCRAFT + ":pamcactusfruitcrop"; // Planted on sand
+	public static final String cropCandleberryHC = DOM_HARVESTCRAFT + ":pamcandleberrycrop";
+	public static final String cropCantaloupeHC = DOM_HARVESTCRAFT + ":pamcantaloupecrop";
+	public static final String cropCauliflowerHC = DOM_HARVESTCRAFT + ":pamcauliflowercrop";
+	public static final String cropCeleryHC = DOM_HARVESTCRAFT + ":pamcelerycrop";
+	public static final String cropChilipepperHC = DOM_HARVESTCRAFT + ":pamchilipeppercrop";
+	public static final String cropCoffeebeanHC = DOM_HARVESTCRAFT + ":pamcoffeebeancrop";
+	public static final String cropCornHC = DOM_HARVESTCRAFT + ":pamcorncrop";
+	public static final String cropCottonHC = DOM_HARVESTCRAFT + ":pamcottoncrop";
+	public static final String cropCranberryHC = DOM_HARVESTCRAFT + ":pamcranberrycrop"; // Planted on water
+	public static final String cropCucumberHC = DOM_HARVESTCRAFT + ":pamcucumbercrop";
+	public static final String cropCurryleafHC = DOM_HARVESTCRAFT + ":pamcurryleafcrop";
+	public static final String cropEggplantHC = DOM_HARVESTCRAFT + ":pameggplantcrop";
+	public static final String cropGarlicHC = DOM_HARVESTCRAFT + ":pamgarliccrop";
+	public static final String cropGingerHC = DOM_HARVESTCRAFT + ":pamgingercrop";
+	public static final String cropGrapeHC = DOM_HARVESTCRAFT + ":pamgrapecrop";
+	public static final String cropKiwiHC = DOM_HARVESTCRAFT + ":pamkiwicrop";
+	public static final String cropLeekHC = DOM_HARVESTCRAFT + ":pamleekcrop";
+	public static final String cropLettuceHC = DOM_HARVESTCRAFT + ":pamlettucecrop";
+	public static final String cropMustardseedHC = DOM_HARVESTCRAFT + ":pammustardseedscrop";
+	public static final String cropOatsHC = DOM_HARVESTCRAFT + ":pamoatscrop";
+	public static final String cropOkraHC = DOM_HARVESTCRAFT + ":pamokracrop";
+	public static final String cropOnionHC = DOM_HARVESTCRAFT + ":pamonioncrop";
+	public static final String cropParsnipHC = DOM_HARVESTCRAFT + ":pamparsnipcrop";
+	public static final String cropPeanutHC = DOM_HARVESTCRAFT + ":pampeanutcrop";
+	public static final String cropPeasHC = DOM_HARVESTCRAFT + ":pampeascrop";
+	public static final String cropPineappleHC = DOM_HARVESTCRAFT + ":pampineapplecrop";
+	public static final String cropRadishHC = DOM_HARVESTCRAFT + ":pamradishcrop";
+	public static final String cropRaspberryHC = DOM_HARVESTCRAFT + ":pamraspberrycrop";
+	public static final String cropRhubarbHC = DOM_HARVESTCRAFT + ":pamrhubarbcrop";
+	public static final String cropRiceHC = DOM_HARVESTCRAFT + ":pamricecrop"; // Planted on water
+	public static final String cropRutabegaHC = DOM_HARVESTCRAFT + ":pamrutabagacrop";
+	public static final String cropRyeHC = DOM_HARVESTCRAFT + ":pamryecrop";
+	public static final String cropScallionHC = DOM_HARVESTCRAFT + ":pamscallioncrop";
+	public static final String cropSeaweedHC = DOM_HARVESTCRAFT + ":pamseaweedcrop"; // Planted on water
+	public static final String cropSesameseedHC = DOM_HARVESTCRAFT + ":pamsesameseedscrop";
+	public static final String cropSoybeanHC = DOM_HARVESTCRAFT + ":pamsoybeancrop";
+	public static final String cropSpiceleafHC = DOM_HARVESTCRAFT + ":pamspiceleafcrop";
+	public static final String cropSpinachHC = DOM_HARVESTCRAFT + ":pamspinachcrop";
+	public static final String cropStrawberryHC = DOM_HARVESTCRAFT + ":pamstrawberrycrop";
+	public static final String cropSweetpotatoHC = DOM_HARVESTCRAFT + ":pamsweetpotatocrop";
+	public static final String cropTealeafHC = DOM_HARVESTCRAFT + ":pamtealeafcrop";
+	public static final String cropTomatoHC = DOM_HARVESTCRAFT + ":pamtomatocrop";
+	public static final String cropTurnipHC = DOM_HARVESTCRAFT + ":pamturnipcrop";
+	public static final String cropWaterchestnutHC = DOM_HARVESTCRAFT + ":pamwaterchestnutcrop"; // Planted on water
+	public static final String cropWhitemushroomHC = DOM_HARVESTCRAFT + ":pamwhitemushroomcrop"; // Planted on log
+	public static final String cropWintersquashHC = DOM_HARVESTCRAFT + ":pamwintersquashcrop";
+	public static final String cropZucchiniHC = DOM_HARVESTCRAFT + ":pamzucchinicrop";
 	public static final String cropKaleJAFFA = "jaffa:kaleCrop";
 	
 	// Mud
 	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
 
 	// Smooth Sandstone
-	public static final String smoothSandstoneQu = "quark:sandstone_new";
+	public static final String smoothSandstoneQu = DOM_QUARK + ":sandstone_new";
 	
 	// Smooth Sandstone Slab
-	public static final String smoothSandstoneSlabQu = "quark:sandstone_smooth_slab";
-	public static final String smoothRedSandstoneSlabQu = "quark:red_sandstone_smooth_slab";
+	public static final String smoothSandstoneSlabQu = DOM_QUARK + ":sandstone_smooth_slab";
+	public static final String smoothRedSandstoneSlabQu = DOM_QUARK + ":red_sandstone_smooth_slab";
 	
 	// Smooth Stone 
-	public static final String smoothStoneQu = "quark:polished_stone";
+	public static final String smoothStoneQu = DOM_QUARK + ":polished_stone";
 	
 	// Stairs
-	public static final String dioriteStairs_Qu = "quark:stone_diorite_stairs";
-	public static final String graniteStairs_Qu = "quark:stone_granite_stairs";
+	public static final String dioriteStairs_Qu = DOM_QUARK + ":stone_diorite_stairs";
+	public static final String graniteStairs_Qu = DOM_QUARK + ":stone_granite_stairs";
 
 	// Trapdoor
-	public static final String trapdoorSpruceQu = "quark:spruce_trapdoor";
-	public static final String trapdoorBirchQu = "quark:birch_trapdoor";
-	public static final String trapdoorJungleQu = "quark:jungle_trapdoor";
-	public static final String trapdoorAcaciaQu = "quark:acacia_trapdoor";
-	public static final String trapdoorDarkOakQu = "quark:dark_oak_trapdoor";
+	public static final String trapdoorSpruceQu = DOM_QUARK + ":spruce_trapdoor";
+	public static final String trapdoorBirchQu = DOM_QUARK + ":birch_trapdoor";
+	public static final String trapdoorJungleQu = DOM_QUARK + ":jungle_trapdoor";
+	public static final String trapdoorAcaciaQu = DOM_QUARK + ":acacia_trapdoor";
+	public static final String trapdoorDarkOakQu = DOM_QUARK + ":dark_oak_trapdoor";
 	
 	// Walls
-	public static final String sandstoneWall_white_Qu = "quark:sandstone_wall"; 
-	public static final String sandstoneWall_red_Qu = "quark:red_sandstone_wall"; 
-	public static final String dioriteWall_Qu = "quark:stone_diorite_wall";
-	public static final String graniteWall_Qu = "quark:stone_granite_wall";
+	public static final String sandstoneWall_white_Qu = DOM_QUARK + ":sandstone_wall"; 
+	public static final String sandstoneWall_red_Qu = DOM_QUARK + ":red_sandstone_wall"; 
+	public static final String dioriteWall_Qu = DOM_QUARK + ":stone_diorite_wall";
+	public static final String graniteWall_Qu = DOM_QUARK + ":stone_granite_wall";
 	
 	
 	
 	// --- Items --- //
+
+	// Bed
+	public static final String bedQu = DOM_QUARK + ":colored_bed_item";
 	
 	// Desk
 	public static final String deskBC = "bibliocraft:Desk";
 	
 	// Dye
-	public static final String dyeBlueBOP = "biomesoplenty:blue_dye";
-	public static final String dyeBrownBOP = "biomesoplenty:brown_dye";
-	public static final String dyeGreenBOP = "biomesoplenty:green_dye";
-	public static final String dyeWhiteBOP = "biomesoplenty:white_dye";
-	public static final String dyeBlackBOP = "biomesoplenty:black_dye";
+	public static final String dyeBlueBOP = DOM_BIOMESOPLENTY + ":blue_dye";
+	public static final String dyeBrownBOP = DOM_BIOMESOPLENTY + ":brown_dye";
+	public static final String dyeGreenBOP = DOM_BIOMESOPLENTY + ":green_dye";
+	public static final String dyeWhiteBOP = DOM_BIOMESOPLENTY + ":white_dye";
+	public static final String dyeBlackBOP = DOM_BIOMESOPLENTY + ":black_dye";
 	
 	// Iron Nuggets
 	public static final String nuggetRC = "railcraft:nugget"; // Iron Nugget is 0
 	
 	// Kelp and Kelp Accessories
-	public static final String kelpBOP = "biomesoplenty:seaweed";
+	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
 
 
 	
@@ -237,6 +245,14 @@ public class ModObjects {
 	
 	
 	// Bed
+	public static ItemStack getModBedItemstack(int colorMeta)
+	{
+		Item moditem=FunctionsVN.getItemFromName(ModObjects.bedQu);
+		
+		if (moditem==null || colorMeta==14) {return new ItemStack(Items.BED);}
+		else if (colorMeta==15) {colorMeta=14;} // Quark uses 14 for black because red is vanilla
+		return new ItemStack(moditem, 1, colorMeta);
+	}
 	public static void setModBedBlock(World world, int x, int y, int z, int orientationMeta, int colorMeta)
 	{
 		BlockPos pos = new BlockPos(x, y, z);
@@ -264,7 +280,7 @@ public class ModObjects {
 		}
 		
 		modblock = Block.getBlockFromName(ModObjects.coloredBedBlock_root_Qu+quarkBedColorSuffix);
-		if (modblock == null) {modblock = Blocks.BED;}
+		if (modblock == null || colorMeta==14) {modblock = Blocks.BED;}
 		
 		// Set the bed block and metadata here
 		world.setBlockState(pos, modblock.getStateFromMeta(orientationMeta), 2);
