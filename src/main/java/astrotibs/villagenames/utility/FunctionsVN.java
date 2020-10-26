@@ -399,6 +399,10 @@ public class FunctionsVN
      */
     public static void modernizeVillagerTrades(EntityVillager villager)
     {
+    	// Ignores this for non-vanilla villagers
+    	String villagerForgeProfessionRegistryName = villager.getProfessionForge().getRegistryName().toString();
+		if (villagerForgeProfessionRegistryName.length()<10 || !villagerForgeProfessionRegistryName.substring(0, 10).equals("minecraft:")) {return;}
+    	
     	Random random = new Random(); // v3.2.1 - deactivated seed random
     	
     	IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);

@@ -2580,7 +2580,7 @@ public class PlainsStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -4094,7 +4094,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -5658,7 +5658,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -7949,7 +7949,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -8830,7 +8830,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -9251,7 +9251,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -9825,7 +9825,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -12134,7 +12134,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -13920,7 +13920,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -17077,7 +17077,7 @@ public class PlainsStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, true);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
