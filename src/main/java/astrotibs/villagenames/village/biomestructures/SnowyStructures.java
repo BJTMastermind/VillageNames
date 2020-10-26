@@ -15,6 +15,8 @@ import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
+import astrotibs.villagenames.village.chestloot.ChestGenHooks;
+import astrotibs.villagenames.village.chestloot.WeightedRandomChestContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
@@ -150,9 +152,9 @@ public class SnowyStructures
         	// Try stripped wood
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
-            	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0); 
-            	biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedWoodState(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
-            	biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedWoodState(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
+            	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogState, 0); 
+            	biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedWoodState(biomeLogState, 2);
+            	biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedWoodState(biomeLogState, 1);
         	}
         	// If stripped wood does not exist, try to get stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
@@ -322,7 +324,7 @@ public class SnowyStructures
                 // Place a grass foundation
                 this.setBlockState(world, biomeGrassState, bannerXBB, bannerYBB-1, bannerZBB, structureBB);
                 this.replaceAirAndLiquidDownwards(world, biomeDirtState, bannerXBB, bannerYBB-2, bannerZBB, structureBB);
-// Line the well with cobblestone                
+                // Line the well with cobblestone                
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
@@ -379,7 +381,7 @@ public class SnowyStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSnowyDecorBlueprint(this.materialType, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -641,7 +643,7 @@ public class SnowyStructures
         		{5,4,4, -1},
         	})
         	{
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         	}
         	
         	// Rim
@@ -863,9 +865,9 @@ public class SnowyStructures
         	// Try stripped wood
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
-            	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogState.getBlock().getMetaFromState(biomeLogState), 0); 
-            	biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedWoodState(biomeLogState.getBlock().getMetaFromState(biomeLogState), 2);
-            	biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedWoodState(biomeLogState.getBlock().getMetaFromState(biomeLogState), 1);
+            	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogState, 0); 
+            	biomeStrippedWoodOrLogOrLogHorAlongState = ModObjects.chooseModStrippedWoodState(biomeLogState, 2);
+            	biomeStrippedWoodOrLogOrLogHorAcrossState = ModObjects.chooseModStrippedWoodState(biomeLogState, 1);
         	}
         	// If stripped wood does not exist, try to get stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
@@ -2594,24 +2596,18 @@ public class SnowyStructures
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogVertState;
         	
         	// Try to see if stripped wood exists
-        	if (biomeLogVertState.getBlock() == Blocks.LOG)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-        	}
-        	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-        	}
+        	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState, 0);
+        	
         	// If it doesn't exist, try stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -3100,24 +3096,18 @@ public class SnowyStructures
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogVertState;
         	
         	// Try to see if stripped wood exists
-        	if (biomeLogVertState.getBlock() == Blocks.LOG)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-        	}
-        	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-        	}
+        	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState, 0);
+        	
         	// If it doesn't exist, try stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -3309,7 +3299,14 @@ public class SnowyStructures
             	})
             {
                 //this.setBlockState(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                //world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])),
+                		smokerState.getBlock().getStateFromMeta(smokerState.getBlock() == Block.getBlockFromName(ModObjects.smokerFMC) ?
+                				StructureVillageVN.chooseBlastFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				: StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				)
+                		, 2);
             }
         	
             
@@ -3763,7 +3760,14 @@ public class SnowyStructures
             	})
             {
                 //this.setBlockState(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                //world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])),
+                		smokerState.getBlock().getStateFromMeta(smokerState.getBlock() == Block.getBlockFromName(ModObjects.smokerFMC) ?
+                				StructureVillageVN.chooseBlastFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				: StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				)
+                		, 2);
             }
             
             
@@ -4293,7 +4297,7 @@ public class SnowyStructures
             
         	
         	// Cartography Table
-        	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState();
+        	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState(2, this.getCoordBaseMode());
             for (int[] uvw : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
         		{2,2,2}, 
            		})
@@ -5527,7 +5531,7 @@ public class SnowyStructures
         	
         	
         	// Barrels
-    		IBlockState barrelState = ModObjects.chooseModBarrelBlockState();
+    		Block barrelBlock = ModObjects.chooseModBarrelBlockState();
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward
@@ -5541,9 +5545,9 @@ public class SnowyStructures
             })
             {
     			// Set the barrel, or a chest if it's not supported
-    			if (barrelState==null) {barrelState = Blocks.CHEST.getDefaultState();}
-    			this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(barrelState.getBlock()==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
+    			if (barrelBlock==null) {barrelBlock = Blocks.CHEST;}
+    			//this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelBlock.getStateFromMeta(barrelBlock==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
             }
             
             
@@ -6044,7 +6048,7 @@ public class SnowyStructures
             
             
             // Fletching Table
-        	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState();
+        	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState(2, this.getCoordBaseMode());
         	this.setBlockState(world, fletchingTableState, 3, 2, 6, structureBB);
             
             
@@ -6397,24 +6401,18 @@ public class SnowyStructures
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogVertState;
         	
         	// Try to see if stripped wood exists
-        	if (biomeLogVertState.getBlock() == Blocks.LOG)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-        	}
-        	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-        	}
+        	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState, 0);
+        	
         	// If it doesn't exist, try stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -6866,24 +6864,18 @@ public class SnowyStructures
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogVertState;
         	
         	// Try to see if stripped wood exists
-        	if (biomeLogVertState.getBlock() == Blocks.LOG)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-        	}
-        	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-        	}
+        	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState, 0);
+        	
         	// If it doesn't exist, try stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -6985,7 +6977,7 @@ public class SnowyStructures
         	
             // Stone Cutter
         	// Orientation:0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(0);
+        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(3, this.getCoordBaseMode());
             this.setBlockState(world, stonecutterState, 6, 3, 4, structureBB);
         	
         	
@@ -7338,24 +7330,18 @@ public class SnowyStructures
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogVertState;
         	
         	// Try to see if stripped wood exists
-        	if (biomeLogVertState.getBlock() == Blocks.LOG)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-        	}
-        	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-        	}
+        	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState, 0);
+        	
         	// If it doesn't exist, try stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -7547,7 +7533,7 @@ public class SnowyStructures
         	
             // Stone Cutter
         	// Orientation:0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(3);
+        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(1, this.getCoordBaseMode());
             this.setBlockState(world, stonecutterState, 2, 2, 4, structureBB);
         	
         	            
@@ -8219,24 +8205,18 @@ public class SnowyStructures
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogVertState;
         	
         	// Try to see if stripped wood exists
-        	if (biomeLogVertState.getBlock() == Blocks.LOG)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-        	}
-        	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-        	}
+        	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState, 0);
+        	
         	// If it doesn't exist, try stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -9321,7 +9301,7 @@ public class SnowyStructures
         	
         	
             // Loom
-        	IBlockState loomState = ModObjects.chooseModLoom();
+        	IBlockState loomState = ModObjects.chooseModLoom(1, this.getCoordBaseMode());
             for(int[] uvw : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
             	{2,2,5}, {2,2,6}, 
             	})
@@ -10029,24 +10009,18 @@ public class SnowyStructures
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogVertState;
         	
         	// Try to see if stripped wood exists
-        	if (biomeLogVertState.getBlock() == Blocks.LOG)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-        	}
-        	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-        	}
+        	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState, 0);
+        	
         	// If it doesn't exist, try stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -10544,24 +10518,18 @@ public class SnowyStructures
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogVertState;
         	
         	// Try to see if stripped wood exists
-        	if (biomeLogVertState.getBlock() == Blocks.LOG)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-        	}
-        	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-        	}
+        	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState, 0);
+        	
         	// If it doesn't exist, try stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -13795,24 +13763,18 @@ public class SnowyStructures
         	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogVertState;
         	
         	// Try to see if stripped wood exists
-        	if (biomeLogVertState.getBlock() == Blocks.LOG)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-        	}
-        	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
-        	{
-        		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-        	}
+        	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState, 0);
+        	
         	// If it doesn't exist, try stripped logs
         	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
+            		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -14436,7 +14398,7 @@ public class SnowyStructures
         	
             
             // Smithing table
-        	IBlockState smithingTableBlockState = ModObjects.chooseModSmithingTable();
+        	IBlockState smithingTableBlockState = ModObjects.chooseModSmithingTable(3, this.getCoordBaseMode());
         	for (int[] uvw : new int[][]{
         		{4,2,5}, 
         		})
@@ -14952,12 +14914,12 @@ public class SnowyStructures
             // Grindstones
         	for (int[] uvwo : new int[][]{
         		// 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        		{8,2,1, 2}, 
-        		{3,2,5, 2}, 
+        		{8,2,1, 2, 0}, 
+        		{3,2,5, 2, 0}, 
         		})
             {
         		// Generate the blockObject here so that we have the correct meta on hand
-        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.getCoordBaseMode());
+        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.getCoordBaseMode(), uvwo[4]==1);
             	
         		this.setBlockState(world, biomeGrindstoneState, uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
@@ -15371,7 +15333,7 @@ public class SnowyStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSnowyDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, true);
             	
             	for (BlueprintData b : decorBlueprint)
             	{

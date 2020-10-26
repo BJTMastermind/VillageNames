@@ -27,6 +27,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombieVillager;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -375,45 +376,77 @@ public class EntityInteractHandler {
 			//----------------------------------//
 			//------------ Name Tag ------------//
 			//----------------------------------//
-	    	
-			// If you're holding a name tag in your main hand 
+			
+			// If you're holding a name tag, 
 			if (
-					(
-							(
-									//event.getHand() ==  EnumHand.MAIN_HAND
-									//&& itemstackMain != null
-									   itemstackMain != null
-									&& itemstackMain.getItem() == Items.NAME_TAG
-									&& itemstackMain.hasDisplayName()
-									&& !itemstackMain.getDisplayName().equals(customName)
-									&& ( //check to see if the target is a Villager or an entry from the other mod config list.
-											(target instanceof EntityVillager && GeneralConfig.nameEntities)
-											|| (target instanceof EntityIronGolem && GeneralConfig.nameGolems && !targetPlayerCreated)
-											|| mappedNamesAutomatic.get("ClassPaths").contains(targetClassPath)
-											|| mappedNamesClickable.get("ClassPaths").contains(targetClassPath)
-											)
-									)
-							//||
-							//(
-							//		event.getHand() ==  EnumHand.OFF_HAND
-							//		&& itemstackOff  != null 
-							//		&& itemstackOff.getItem()  == Items.NAME_TAG
-							//		&& itemstackOff.hasDisplayName()
-							//		&& !itemstackOff.getDisplayName().equals(customName)
-							//		)
+					   itemstackMain != null
+					&& itemstackMain.getItem() == Items.NAME_TAG)
+			{
+				// Randomly name an unnamed pet you own using a blank name tag
+				if (
+						!itemstackMain.hasDisplayName()
+						&& target instanceof EntityTameable
+						&& ((EntityTameable)target).isTamed()
+						&& ((EntityTameable)target).isOwner(player)
+						&& !target.hasCustomName()
 						)
-					&& !player.capabilities.isCreativeMode
-					) {
-				// If all of the above conditions are met, accept the event if it's for the correct hand, and cancel it otherwise.
-				if (event.getHand() ==  EnumHand.MAIN_HAND) {
-					nameTagEvent(event, world, player);
-				}
-				else {
-					event.setCanceled(true);
+				{
+					if (event.getHand() ==  EnumHand.MAIN_HAND)
+					{
+						// Apply the name here
+						String[] petname_a = NameGenerator.newRandomName("pet", random);
+						target.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
+						
+						// Consume the blank name tag if relevant
+						if (!player.capabilities.isCreativeMode) {itemstackMain.setCount(itemstackMain.getCount()-1);}
+					}
+					else
+					{
+						event.setCanceled(true);
+					}
+					return;
 				}
 				
+				
+				// Cancel naming an entity that has special name registration
+				if (
+						(
+								(
+										//event.getHand() ==  EnumHand.MAIN_HAND
+										//&& itemstackMain != null
+										itemstackMain.hasDisplayName()
+										&& !itemstackMain.getDisplayName().equals(customName)
+										&& ( //check to see if the target is a Villager or an entry from the other mod config list.
+												(target instanceof EntityVillager && GeneralConfig.nameEntities)
+												|| (target instanceof EntityIronGolem && GeneralConfig.nameGolems && !targetPlayerCreated)
+												|| mappedNamesAutomatic.get("ClassPaths").contains(targetClassPath)
+												|| mappedNamesClickable.get("ClassPaths").contains(targetClassPath)
+												)
+										)
+								//||
+								//(
+								//		event.getHand() ==  EnumHand.OFF_HAND
+								//		&& itemstackOff  != null 
+								//		&& itemstackOff.getItem()  == Items.NAME_TAG
+								//		&& itemstackOff.hasDisplayName()
+								//		&& !itemstackOff.getDisplayName().equals(customName)
+								//		)
+							)
+						&& !player.capabilities.isCreativeMode
+						) {
+					// If all of the above conditions are met, accept the event if it's for the correct hand, and cancel it otherwise.
+					if (event.getHand() ==  EnumHand.MAIN_HAND) {
+						nameTagEvent(event, world, player);
+					}
+					else {
+						event.setCanceled(true);
+					}
+					
+				}
 			}
-
+			
+			
+			
 			//-------------------------------//
 			//------------ Poppy ------------//
 			//-------------------------------//
@@ -431,6 +464,7 @@ public class EntityInteractHandler {
 									//&& itemstackMain != null
 									itemstackMain != null
 									&& itemstackMain.getItem() == Item.getItemFromBlock(Blocks.RED_FLOWER)
+									&& itemstackMain.getMetadata() == 0
 									)
 							//||
 							//(
@@ -605,31 +639,60 @@ public class EntityInteractHandler {
 			//------------ Name Tag ------------//
 			//----------------------------------//
 	    	
-			// If you're holding a name tag in your main hand 
-			if (
-					(
-						   itemstackOff != null
-						&& itemstackOff.getItem() == Items.NAME_TAG
-						&& itemstackOff.hasDisplayName()
-						&& !itemstackOff.getDisplayName().equals(customName)
-						&& ( //check to see if the target is a Villager or an entry from the other mod config list.
-								(target instanceof EntityVillager && GeneralConfig.nameEntities)
-								|| (target instanceof EntityIronGolem && GeneralConfig.nameGolems && !targetPlayerCreated)
-								|| mappedNamesAutomatic.get("ClassPaths").contains(targetClassPath)
-								|| mappedNamesClickable.get("ClassPaths").contains(targetClassPath)
-								)
+			if (   itemstackOff != null
+				&& itemstackOff.getItem() == Items.NAME_TAG)
+			{
+				// Randomly name an unnamed pet you own using a blank name tag
+				if (
+						!itemstackOff.hasDisplayName()
+						&& target instanceof EntityTameable
+						&& ((EntityTameable)target).isTamed()
+						&& ((EntityTameable)target).isOwner(player)
+						&& !target.hasCustomName()
 						)
-					&& !player.capabilities.isCreativeMode
-					) {
-				// If all of the above conditions are met, accept the event if it's for the correct hand, and cancel it otherwise.
-				if (event.getHand() ==  EnumHand.OFF_HAND) {
-					nameTagEvent(event, world, player);
-				}
-				else {
-					event.setCanceled(true);
+				{
+					if (event.getHand() ==  EnumHand.OFF_HAND)
+					{
+						// Apply the name here
+						String[] petname_a = NameGenerator.newRandomName("pet", random);
+						target.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
+						
+						// Consume the blank name tag if relevant
+						if (!player.capabilities.isCreativeMode) {itemstackOff.setCount(itemstackOff.getCount()-1);}
+					}
+					else
+					{
+						event.setCanceled(true);
+					}
+					return;
 				}
 				
+				
+				// If you're holding a name tag in your main hand 
+				if (
+						(
+							itemstackOff.hasDisplayName()
+							&& !itemstackOff.getDisplayName().equals(customName)
+							&& ( //check to see if the target is a Villager or an entry from the other mod config list.
+									(target instanceof EntityVillager && GeneralConfig.nameEntities)
+									|| (target instanceof EntityIronGolem && GeneralConfig.nameGolems && !targetPlayerCreated)
+									|| mappedNamesAutomatic.get("ClassPaths").contains(targetClassPath)
+									|| mappedNamesClickable.get("ClassPaths").contains(targetClassPath)
+									)
+							)
+						&& !player.capabilities.isCreativeMode
+						) {
+					// If all of the above conditions are met, accept the event if it's for the correct hand, and cancel it otherwise.
+					if (event.getHand() ==  EnumHand.OFF_HAND) {
+						nameTagEvent(event, world, player);
+					}
+					else {
+						event.setCanceled(true);
+					}
+				}
 			}
+			
+			
 
 			//-------------------------------//
 			//------------ Poppy ------------//
@@ -643,6 +706,7 @@ public class EntityInteractHandler {
 					&& (
 							itemstackOff != null
 							&& itemstackOff.getItem() == Item.getItemFromBlock(Blocks.RED_FLOWER)
+							&& itemstackOff.getMetadata() == 0
 						)
 					&& target instanceof EntityIronGolem // to an Iron Golem
 					&& !targetPlayerCreated // The Golem wasn't created by you
@@ -1303,9 +1367,6 @@ public class EntityInteractHandler {
 				(population == 0 || (playerIsInVillage && population == -1)) // No Villagers in the village
 				&& reputation >= -15 // This may be redundant in the event of an empty village
 				&& thePlayer instanceof EntityPlayerMP
-				&& !thePlayer.getServer().getPlayerList().getPlayerAdvancements((EntityPlayerMP)thePlayer).getProgress(
-						thePlayer.getServer().getAdvancementManager().getAdvancement(new ResourceLocation(Reference.MOD_ID+":laputa"))
-						).isDone()
 				) {
 			EntityIronGolem ironGolemTarget = (EntityIronGolem) target;
 			EntityPlayerMP thePlayerMP = (EntityPlayerMP)thePlayer;
@@ -1313,7 +1374,7 @@ public class EntityInteractHandler {
 			// Play a confirmation sound effect
 			
 			// Consume the poppy
-			if (!player.capabilities.isCreativeMode) {player.inventory.clearMatchingItems( Item.getItemFromBlock(Blocks.RED_FLOWER), -1, 1, null );}
+			if (!player.capabilities.isCreativeMode) {player.inventory.clearMatchingItems( Item.getItemFromBlock(Blocks.RED_FLOWER), 0, 1, null );}
 			
 			// Give the golem the poppy
 			ironGolemTarget.setHoldingRose(true);
@@ -1324,12 +1385,16 @@ public class EntityInteractHandler {
 			ironGolemTarget.setPlayerCreated(true);
 			
 			// Trigger the achievement
-			//player.triggerAchievement(VillageNames.laputa);
-			//player.addStat(VillageNames.laputa);
-			ModTriggers.LAPUTA.trigger(thePlayerMP);
-			AdvancementReward.allFiveAdvancements(thePlayerMP);
+			if (!thePlayer.getServer().getPlayerList().getPlayerAdvancements((EntityPlayerMP)thePlayer).getProgress(
+					thePlayer.getServer().getAdvancementManager().getAdvancement(new ResourceLocation(Reference.MOD_ID+":laputa"))
+					).isDone())
+			{
+				//player.triggerAchievement(VillageNames.laputa);
+				//player.addStat(VillageNames.laputa);
+				ModTriggers.LAPUTA.trigger(thePlayerMP);
+				AdvancementReward.allFiveAdvancements(thePlayerMP);
+			}
 		}
-    	
     }
 	
     // Added playerRep as a parameter - v3.2.2

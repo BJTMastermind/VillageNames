@@ -16,6 +16,8 @@ import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
+import astrotibs.villagenames.village.chestloot.ChestGenHooks;
+import astrotibs.villagenames.village.chestloot.WeightedRandomChestContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.state.IBlockState;
@@ -372,7 +374,7 @@ public class SavannaStructures
             	*/
             	
         		// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSavannaDecorBlueprint(this.materialType, this.biome, this.getCoordBaseMode(), randomFromXYZ);//, townColor);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);//, townColor);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -729,7 +731,7 @@ public class SavannaStructures
         		{9,2,9, -1},
         	})
         	{
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         	}
         	
             // Sign
@@ -1068,7 +1070,7 @@ public class SavannaStructures
         		{4,5,5, -1},
         	})
         	{
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         	}
     		
         	// Sign support
@@ -1377,7 +1379,7 @@ public class SavannaStructures
         		{6,2,4, -1},
         	})
         	{
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         	}
         	
         	// Pavilion
@@ -2225,7 +2227,7 @@ public class SavannaStructures
             	//LogHelper.info("Decor spawned at: " + this.getXWithOffset(uvw[0], uvw[2]) + " " + (groundLevelY+this.boundingBox.minY) + " " + this.getZWithOffset(uvw[0], uvw[2]));
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSavannaDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -2630,7 +2632,7 @@ public class SavannaStructures
             	//LogHelper.info("Decor spawned at: " + this.getXWithOffset(uvw[0], uvw[2]) + " " + (groundLevelY+this.boundingBox.minY) + " " + this.getZWithOffset(uvw[0], uvw[2]));
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSavannaDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -3033,7 +3035,7 @@ public class SavannaStructures
         		{3,2,4, 2, GeneralConfig.useVillageColors ? this.townColor2 : 1}, // Orange
            		})
         	{
-        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		IBlockState tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -3490,7 +3492,14 @@ public class SavannaStructures
             	})
             {
                 //this.setBlockState(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                //world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])),
+                		smokerState.getBlock().getStateFromMeta(smokerState.getBlock() == Block.getBlockFromName(ModObjects.smokerFMC) ?
+                				StructureVillageVN.chooseBlastFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				: StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				)
+                		, 2);
             }
             
         	
@@ -4022,7 +4031,14 @@ public class SavannaStructures
             	})
             {
                 //this.setBlockState(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                //world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])),
+                		smokerState.getBlock().getStateFromMeta(smokerState.getBlock() == Block.getBlockFromName(ModObjects.smokerFMC) ?
+                				StructureVillageVN.chooseBlastFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				: StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				)
+                		, 2);
             }
             
             
@@ -4458,7 +4474,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Tower roof
             	{2,3,4, 2,3,4}, {6,3,5, 6,3,5}, 
@@ -4522,7 +4538,7 @@ public class SavannaStructures
             
         	
         	// Cartography Table
-        	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState();
+        	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState(1, this.getCoordBaseMode());
             for (int[] uvw : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
         		{2,3,5}, 
            		})
@@ -5083,7 +5099,7 @@ public class SavannaStructures
         	
         	
         	// Barrels
-    		IBlockState barrelState = ModObjects.chooseModBarrelBlockState();
+    		Block barrelBlock = ModObjects.chooseModBarrelBlockState();
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward
@@ -5097,9 +5113,9 @@ public class SavannaStructures
             })
             {
     			// Set the barrel, or a chest if it's not supported
-    			if (barrelState==null) {barrelState = Blocks.CHEST.getDefaultState();}
-    			this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(barrelState.getBlock()==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
+    			if (barrelBlock==null) {barrelBlock = Blocks.CHEST;}
+    			//this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelBlock.getStateFromMeta(barrelBlock==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
             }
             
             
@@ -5616,7 +5632,7 @@ public class SavannaStructures
             
             
             // Fletching Table
-        	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState();
+        	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState(2, this.getCoordBaseMode());
         	this.setBlockState(world, fletchingTableState, 5, 1, 6, structureBB);
             
             
@@ -6509,7 +6525,7 @@ public class SavannaStructures
             	//LogHelper.info("Decor spawned at: " + this.getXWithOffset(uvw[0], uvw[2]) + " " + (groundLevelY+this.boundingBox.minY) + " " + this.getZWithOffset(uvw[0], uvw[2]));
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSavannaDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -7340,7 +7356,7 @@ public class SavannaStructures
         		{7,3,2, 0, GeneralConfig.useVillageColors ? this.townColor : 4}, // Yellow
            		})
         	{
-        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		IBlockState tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -7403,7 +7419,7 @@ public class SavannaStructures
         	
             // Stone Cutter
         	// Orientation:0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(3);
+        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(1, this.getCoordBaseMode());
             this.setBlockState(world, stonecutterState, 2, 1, 4, structureBB);
         	
             
@@ -7787,7 +7803,7 @@ public class SavannaStructures
             }
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Right house platform
             	{10,1,4, 10,1,4}, 
@@ -8059,7 +8075,7 @@ public class SavannaStructures
             	//LogHelper.info("Decor spawned at: " + this.getXWithOffset(uvw[0], uvw[2]) + " " + (groundLevelY+this.boundingBox.minY) + " " + this.getZWithOffset(uvw[0], uvw[2]));
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSavannaDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -8377,7 +8393,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Left house
             	{1,1,3, 1,1,3}, {1,3,3, 1,3,3}, 
@@ -8607,7 +8623,7 @@ public class SavannaStructures
             	//LogHelper.info("Decor spawned at: " + this.getXWithOffset(uvw[0], uvw[2]) + " " + (groundLevelY+this.boundingBox.minY) + " " + this.getZWithOffset(uvw[0], uvw[2]));
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSavannaDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -9030,7 +9046,7 @@ public class SavannaStructures
         	
         	
             // Loom
-        	IBlockState loomState = ModObjects.chooseModLoom();
+        	IBlockState loomState = ModObjects.chooseModLoom(3, this.getCoordBaseMode());
             for(int[] uvw : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
             	{6,1,3}, 
             	})
@@ -9040,7 +9056,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{6,1,2, 6,1,2}, 
             	{6,1,4, 6,1,4}, 
@@ -9751,7 +9767,7 @@ public class SavannaStructures
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{2,0,2, 4,0,4}, 
             	{3,0,1, 3,0,1}, 
@@ -10180,7 +10196,7 @@ public class SavannaStructures
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{2,0,2, 4,0,4}, 
             	{3,0,1, 3,0,1}, 
@@ -10606,7 +10622,7 @@ public class SavannaStructures
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{2,0,2, 4,0,4}, 
             	{3,0,1, 3,0,1}, 
@@ -11043,7 +11059,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{6,0,1, 6,0,1}, 
             	{4,0,3, 4,0,3}, 
@@ -12066,7 +12082,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{2,1,3, 2,1,3}, 
             	})
@@ -12471,7 +12487,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Walls
             	// Front wall
@@ -13847,7 +13863,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Table
             	{6,1,9, 6,1,9}, 
@@ -14923,7 +14939,7 @@ public class SavannaStructures
         	
             
             // Smithing table
-        	IBlockState smithingTableBlockState = ModObjects.chooseModSmithingTable();
+        	IBlockState smithingTableBlockState = ModObjects.chooseModSmithingTable(1, this.getCoordBaseMode());
         	for (int[] uvw : new int[][]{
         		{5,1,4}, 
         		})
@@ -15427,11 +15443,11 @@ public class SavannaStructures
             // Grindstone
         	for (int[] uvwo : new int[][]{
         		// 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        		{2,1,5, 1}, 
+        		{2,1,5, 1, 0}, 
         		})
             {
         		// Generate the blockObject here so that we have the correct meta on hand
-        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.getCoordBaseMode());
+        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.getCoordBaseMode(), uvwo[4]==1);
             	
         		this.setBlockState(world, biomeGrindstoneState, uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
@@ -15731,7 +15747,7 @@ public class SavannaStructures
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodState = ModObjects.chooseModWoodBlockState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{1,1,5, 1,2,5}, {1,1,6, 1,4,6}, 
             	{2,1,7, 10,4,7}, 
@@ -15896,12 +15912,12 @@ public class SavannaStructures
             // Grindstones
         	for (int[] uvwo : new int[][]{
         		// 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        		{6,2,2, 2}, 
-        		{3,2,5, 0}, 
+        		{6,2,2, 2, 0}, 
+        		{3,2,5, 0, 1}, 
         		})
             {
         		// Generate the blockObject here so that we have the correct meta on hand
-        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.getCoordBaseMode());
+        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.getCoordBaseMode(), uvwo[4]==1);
             	
         		this.setBlockState(world, biomeGrindstoneState, uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
@@ -16327,7 +16343,7 @@ public class SavannaStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSavannaDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, true);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -16698,7 +16714,7 @@ public class SavannaStructures
             	//LogHelper.info("Decor spawned at: " + this.getXWithOffset(uvw[0], uvw[2]) + " " + (groundLevelY+this.boundingBox.minY) + " " + this.getZWithOffset(uvw[0], uvw[2]));
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSavannaDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, true);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -17094,7 +17110,7 @@ public class SavannaStructures
             	//LogHelper.info("Decor spawned at: " + this.getXWithOffset(uvw[0], uvw[2]) + " " + (groundLevelY+this.boundingBox.minY) + " " + this.getZWithOffset(uvw[0], uvw[2]));
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomSavannaDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, true);
             	
             	for (BlueprintData b : decorBlueprint)
             	{

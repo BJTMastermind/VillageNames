@@ -16,6 +16,8 @@ import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
+import astrotibs.villagenames.village.chestloot.ChestGenHooks;
+import astrotibs.villagenames.village.chestloot.WeightedRandomChestContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.state.IBlockState;
@@ -288,7 +290,7 @@ public class DesertStructures
             	{4, 5, 4, -1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             // Cactus
@@ -344,7 +346,7 @@ public class DesertStructures
                 // Place a foundation
                 this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
                 this.replaceAirAndLiquidDownwards(world, biomeSmoothSandstoneState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
-// Line the well with cobblestone                
+                // Line the well with cobblestone                
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
@@ -611,7 +613,7 @@ public class DesertStructures
             	{7, 5, 4, -1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -920,36 +922,6 @@ public class DesertStructures
         	// Set ground and clear area above
         	int fillXmin; int fillZmin; int fillXmax; int fillZmax; int clearToHeight = 5;
         	
-        	/*
-        	for (Object[] o : new Object[][]{
-        		// minX, maxX, minZ, maxZ, groundY, structureHeight, surfaceBlock, surfaceMeta, subsurfaceBlock, subsurfaceMeta 
-        		{0, 0, 7, 12, 0, biomeDirtState, biomeSmoothSandstoneState},
-        		{1, 2, 4, 12, 0, biomeDirtState, biomeSmoothSandstoneState},
-        		{1, 2, 14, 14, 0, biomeDirtState, biomeSmoothSandstoneState},
-        		{0, 2, 13, 13, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
-        		{2, 2, 3, 3, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
-        		{3, 3, 14, 14, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
-        		{3, 3, 1, 13, 0, biomeDirtState, biomeSmoothSandstoneState},
-        		{3, 3, 0, 0, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
-        		{4, 4, 2, 14, 0, biomeDirtState, biomeSmoothSandstoneState},
-        		{4, 4, 0, 1, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
-        		{5, 9, 0, 14, 0, biomeDirtState, biomeSmoothSandstoneState},
-        		{10, 11, 0, 13, 0, biomeDirtState, biomeSmoothSandstoneState},
-        		{12, 12, 1, 13, 0, biomeDirtState, biomeSmoothSandstoneState},
-        		{12, 12, 0, 0, -1, biomeSmoothSandstoneState, biomeSmoothSandstoneState},
-        		{13, 13, 0, 12, 0, biomeDirtState, biomeSmoothSandstoneState},
-        		{14, 14, 3, 11, 0, biomeDirtState, biomeSmoothSandstoneState},
-        	})
-        	{
-        		this.fillWithBlocks(world, structureBB, (Integer)o[0], (Integer)o[4], (Integer)o[2], (Integer)o[1], (Integer)o[4], (Integer)o[3], ((Block)o[6]).getStateFromMeta((Integer)o[7]), ((Block)o[6]).getStateFromMeta((Integer)o[7]), false);
-            	
-        		for (int x = (Integer)o[0]; x <= (Integer)o[1]; ++x) {for (int z = (Integer)o[2]; z <= (Integer)o[3]; ++z)
-            	{
-            		this.replaceAirAndLiquidDownwards(world, ((Block)o[8]).getStateFromMeta((Integer)o[9]), x, (Integer)o[4]-1, z, structureBB); // Foundation
-            		this.clearCurrentPositionBlocksUpwards(world, (Integer)o[0], Math.max((Integer)o[4], 0)+1, (Integer)o[2], structureBB);
-            	}}
-        	}*/
-        	
         	// Set sandstone in certain places
         	this.fillWithBlocks(world, structureBB, 7, 0, 0, 7, 0, 4, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
         	this.fillWithBlocks(world, structureBB, 10, 0, 0, 10, 0, 3, biomeSmoothSandstoneState, biomeSmoothSandstoneState, false);
@@ -971,18 +943,6 @@ public class DesertStructures
         		IBlockState concreteBlockstate = Blocks.CONCRETE.getStateFromMeta(townColor2);
             	
             	this.fillWithBlocks(world, structureBB, 9, 1, 5, 12, 1, 8, concreteBlockstate, concreteBlockstate, false);
-            	
-            	/*
-            	tryConcrete = ModObjects.chooseModConcrete(townColor2);
-            	concreteBlock = Blocks.stained_hardened_clay; concreteMeta = townColor2;
-            	if (tryConcrete != null) {concreteBlock = (Block) tryConcrete[0]; concreteMeta = (Integer) tryConcrete[1];}
-            	
-            	this.fillWithBlocks(world, structureBB, 8, 0, 4, 8, 0, 9, concreteBlock, concreteMeta, concreteBlock, concreteMeta, false);
-            	this.fillWithBlocks(world, structureBB, 13, 0, 4, 13, 0, 9, concreteBlock, concreteMeta, concreteBlock, concreteMeta, false);
-            	this.fillWithBlocks(world, structureBB, 9, 0, 4, 12, 0, 4, concreteBlock, concreteMeta, concreteBlock, concreteMeta, false);
-            	this.fillWithBlocks(world, structureBB, 9, 0, 9, 12, 0, 9, concreteBlock, concreteMeta, concreteBlock, concreteMeta, false);
-            	*/
-            	//this.fillWithBlocks(world, structureBB, 9, 1, 7, 10, 1, 8, concreteBlock, concreteMeta, concreteBlock, concreteMeta, false);
         	}
         	else
         	{
@@ -1123,7 +1083,7 @@ public class DesertStructures
             	*/
             	
         		// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);//, townColor);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);//, townColor);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -2703,7 +2663,14 @@ public class DesertStructures
             for (int[] uvwo : new int[][]{{1,1,3, 1}})
             {
                 //this.setBlockState(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                //world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])),
+                		smokerState.getBlock().getStateFromMeta(smokerState.getBlock() == Block.getBlockFromName(ModObjects.smokerFMC) ?
+                				StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				: StructureVillageVN.chooseBlastFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				)
+                		, 2);
             }
             // Chimney
         	for(int[] uuvvww : new int[][]{
@@ -2956,7 +2923,7 @@ public class DesertStructures
         	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState();
+        	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState(2, this.getCoordBaseMode());
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
@@ -4261,7 +4228,7 @@ public class DesertStructures
         	
         	
         	// Barrels
-    		IBlockState barrelState = ModObjects.chooseModBarrelBlockState();
+    		Block barrelBlock = ModObjects.chooseModBarrelBlockState();
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward
@@ -4276,9 +4243,9 @@ public class DesertStructures
             })
             {
     			// Set the barrel, or a chest if it's not supported
-    			if (barrelState==null) {barrelState = Blocks.CHEST.getDefaultState();}
-    			this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(barrelState.getBlock()==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
+    			if (barrelBlock==null) {barrelBlock = Blocks.CHEST;}
+    			//this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelBlock.getStateFromMeta(barrelBlock==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
             }
         	
             
@@ -4551,7 +4518,7 @@ public class DesertStructures
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneWallIntoCobblestoneState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoCobblestoneState==null) {biomeSandstoneWallIntoCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoCobblestoneState, this.materialType, this.biome, this.disallowModSubs);}
         	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
-        	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState();
+        	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState(1, this.getCoordBaseMode());
         	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LADDER.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Clear space above
@@ -5901,7 +5868,7 @@ public class DesertStructures
         	
         	// Stonecutter
         	// 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(3);
+        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(3, this.getCoordBaseMode());
         	for(int[] uvw : new int[][]{
         		{6,1,4}, 
             	})
@@ -5935,7 +5902,7 @@ public class DesertStructures
         		})
             {
         		// White
-        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(GeneralConfig.useVillageColors ? this.townColor2 : 0, StructureVillageVN.chooseGlazedTerracottaMeta(uvwo[3], this.getCoordBaseMode()));
+        		IBlockState tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors ? this.townColor2 : 0, StructureVillageVN.chooseGlazedTerracottaMeta(uvwo[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null) {this.setBlockState(world, tryGlazedTerracottaState, uvwo[0], uvwo[1], uvwo[2], structureBB);}
             	else {this.setBlockState(world, Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(GeneralConfig.useVillageColors ? this.townColor2 : 0), uvwo[0], uvwo[1], uvwo[2], structureBB);} // White
             }
@@ -7085,7 +7052,7 @@ public class DesertStructures
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
-        	IBlockState loomState = ModObjects.chooseModLoom();
+        	IBlockState loomState = ModObjects.chooseModLoom(3, this.getCoordBaseMode());
         	
         	// Clear space above
             for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
@@ -11537,20 +11504,20 @@ public class DesertStructures
         	
     		// Glazed terracotta
         	int gtColor = GeneralConfig.useVillageColors ? this.townColor2 : 0; // White
-    		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (0 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+    		IBlockState tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(gtColor, (0 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
     		
         	if (tryGlazedTerracottaState != null)
         	{
         		// Square under square awning
         		this.setBlockState(world, tryGlazedTerracottaState, 4, 0, 6, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (1 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 3 : 0))%4);
+        		tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(gtColor, (1 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 3 : 0))%4);
         		this.setBlockState(world, tryGlazedTerracottaState, 5, 0, 6, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (2 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(gtColor, (2 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
         		this.setBlockState(world, tryGlazedTerracottaState, 5, 0, 5, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (3 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 3 : 0))%4);
+        		tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(gtColor, (3 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 3 : 0))%4);
         		this.setBlockState(world, tryGlazedTerracottaState, 4, 0, 5, structureBB);
         	}
         	else
@@ -11979,20 +11946,20 @@ public class DesertStructures
         	
     		// Glazed terracotta
         	int gtColor = GeneralConfig.useVillageColors ? this.townColor : 5; // Lime
-    		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (0 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+    		IBlockState tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(gtColor, (0 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
         	
         	if (tryGlazedTerracottaState != null)
         	{
         		// Square under square awning
         		this.setBlockState(world, tryGlazedTerracottaState, 5, 0, 7, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (1 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 3 : 0))%4);
+        		tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(gtColor, (1 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 3 : 0))%4);
         		this.setBlockState(world, tryGlazedTerracottaState, 6, 0, 7, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (2 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(gtColor, (2 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
         		this.setBlockState(world, tryGlazedTerracottaState, 6, 0, 6, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (3 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 3 : 0))%4);
+        		tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(gtColor, (3 + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 3 : 0))%4);
         		this.setBlockState(world, tryGlazedTerracottaState, 5, 0, 6, structureBB);
         	}
         	else
@@ -12450,7 +12417,7 @@ public class DesertStructures
         		{2,0,7, 3, GeneralConfig.useVillageColors ? this.townColor5 : 3}, // Light Blue
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -12525,7 +12492,7 @@ public class DesertStructures
             
             
             // Smithing table
-        	IBlockState smithingTableBlockState = ModObjects.chooseModSmithingTable();
+        	IBlockState smithingTableBlockState = ModObjects.chooseModSmithingTable(1, this.getCoordBaseMode());
         	for (int[] uvw : new int[][]{
         		{1,5,6}, 
         		})
@@ -13017,11 +12984,11 @@ public class DesertStructures
             
             // Grindstone
         	for (int[] uvwo : new int[][]{
-        		{7,1,4, 2}, // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+        		{7,1,4, 2, 0}, // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
         		})
             {
         		// Generate the blockObject here so that we have the correct meta on hand
-        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.getCoordBaseMode());
+        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.getCoordBaseMode(), uvwo[4]==1);
             	
         		this.setBlockState(world, biomeGrindstoneState, uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
@@ -13388,7 +13355,7 @@ public class DesertStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, true);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -13720,7 +13687,7 @@ public class DesertStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, true);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -14050,7 +14017,7 @@ public class DesertStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomDesertDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, true);
             	
             	for (BlueprintData b : decorBlueprint)
             	{

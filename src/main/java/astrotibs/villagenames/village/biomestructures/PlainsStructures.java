@@ -15,6 +15,8 @@ import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
+import astrotibs.villagenames.village.chestloot.ChestGenHooks;
+import astrotibs.villagenames.village.chestloot.WeightedRandomChestContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockSapling;
@@ -237,7 +239,7 @@ public class PlainsStructures
             	{6, 1, 6, -1},
             	}) 
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             if (GeneralConfig.useVillageColors)
@@ -631,7 +633,7 @@ public class PlainsStructures
             	{6, 6, 6, -1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
             
             
@@ -933,7 +935,7 @@ public class PlainsStructures
             	{7, 2, 1, -1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	this.fillWithBlocks(world, structureBB, 2, 1, 5, 2, 1, 8, biomePlankState, biomePlankState, false);
@@ -954,7 +956,7 @@ public class PlainsStructures
             	{2, 2, 8, -1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	this.fillWithBlocks(world, structureBB, 4, 1, 13, 7, 1, 13, biomePlankState, biomePlankState, false);
@@ -975,7 +977,7 @@ public class PlainsStructures
             	{7, 2, 13, -1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	
         	        	        	
@@ -1335,7 +1337,7 @@ public class PlainsStructures
             	{6, 3, 5, 1},
             })
             {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
                     	        	
             // Posts
@@ -2536,7 +2538,7 @@ public class PlainsStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -3673,7 +3675,13 @@ public class PlainsStructures
             for (int[] uvwo : new int[][]{{5,1,8,2}})
             {
                 //this.setBlockState(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])),
+                		smokerState.getBlock().getStateFromMeta(smokerState.getBlock() == Block.getBlockFromName(ModObjects.smokerFMC) ?
+                				StructureVillageVN.chooseBlastFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				: StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				)
+                		, 2);
             }
             // Chimney
             this.setBlockState(world, Blocks.COBBLESTONE.getStateFromMeta(0), 5, 5, 8, structureBB);
@@ -4050,7 +4058,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -4218,7 +4226,14 @@ public class PlainsStructures
             for (int[] uvwo : new int[][]{{4,5,5,0}})
             {
                 //this.setBlockState(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                //world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])),
+                		smokerState.getBlock().getStateFromMeta(smokerState.getBlock() == Block.getBlockFromName(ModObjects.smokerFMC) ?
+                				StructureVillageVN.chooseBlastFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				: StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())
+                				)
+                		, 2);
             }
             // Roof plug
             this.setBlockState(world, Blocks.COBBLESTONE.getStateFromMeta(0), 4, 10, 5, structureBB);
@@ -4614,7 +4629,7 @@ public class PlainsStructures
         	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
             this.setBlockState(world, biomeWoodPressurePlateState, 2, 2, 3, structureBB);
             // Cartography Table
-        	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState();
+        	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState(2, this.getCoordBaseMode());
             this.setBlockState(world, cartographyTableState, 3, 1, 6, structureBB);
             // Carpet
             int[] carpetU = new int[]{2,2,2,3,4,4,4,3};
@@ -5080,7 +5095,7 @@ public class PlainsStructures
     		this.fillWithBlocks(world, structureBB, 5, 1, 6, 5, 1, 7, biomePlankState, biomePlankState, false); // Instead of fences b/c waterlogging
     		
     		// Barrels
-    		IBlockState barrelState = ModObjects.chooseModBarrelBlockState();
+    		Block barrelBlock = ModObjects.chooseModBarrelBlockState();
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward
@@ -5091,9 +5106,9 @@ public class PlainsStructures
             })
             {
     			// Set the barrel, or a chest if it's not supported
-    			if (barrelState==null) {barrelState = Blocks.CHEST.getDefaultState();}
-    			this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(barrelState.getBlock()==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
+    			if (barrelBlock==null) {barrelBlock = Blocks.CHEST;}
+    			//this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelBlock.getStateFromMeta(barrelBlock==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
                 // Dirt beneath
                 this.setBlockState(world, biomeDirtState, uvwoo[0], uvwoo[1]-1, uvwoo[2], structureBB);
             }
@@ -5532,7 +5547,7 @@ public class PlainsStructures
     		world.setTileEntity(flowerPotPos, flowerPot);
         	
             // Fletching Table
-        	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState();
+        	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState(1, this.getCoordBaseMode());
         	this.setBlockState(world, fletchingTableState, 2, 1, 6, structureBB);
             
             // Carpet
@@ -5614,7 +5629,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -7276,7 +7291,7 @@ public class PlainsStructures
         	
             // Stone Cutter
             // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(3);
+        	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(3, this.getCoordBaseMode());
             this.setBlockState(world, stonecutterState, 6, 1, 4, structureBB);
             
             // Doors
@@ -7905,7 +7920,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -8786,7 +8801,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -9207,7 +9222,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -9711,7 +9726,7 @@ public class PlainsStructures
             // --- Interior --- //
             
             // Loom
-        	IBlockState loomState = ModObjects.chooseModLoom();
+        	IBlockState loomState = ModObjects.chooseModLoom(1, this.getCoordBaseMode());
             for (int i=0; i<2; i++)
             {
             	this.setBlockState(world, loomState, 2, 1, 3+i, structureBB);
@@ -9781,7 +9796,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -12090,7 +12105,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -13876,7 +13891,7 @@ public class PlainsStructures
                 	
                 	
                 	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, false);
                 	
                 	for (BlueprintData b : decorBlueprint)
                 	{
@@ -16172,7 +16187,7 @@ public class PlainsStructures
             
             
             // Smithing table
-        	IBlockState smithingTableBlockState = ModObjects.chooseModSmithingTable();
+        	IBlockState smithingTableBlockState = ModObjects.chooseModSmithingTable(1, this.getCoordBaseMode());
         	for (int[] uvw : new int[][]{
         		{2,1,6}, 
         		})
@@ -16633,11 +16648,11 @@ public class PlainsStructures
             
             // Grindstone
         	for (int[] uvwo : new int[][]{
-        		{1,1,2, 2}, // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+        		{1,1,2, 2, 0}, // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
         		})
             {
         		// Generate the blockObject here so that we have the correct meta on hand
-        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.getCoordBaseMode());
+        		IBlockState biomeGrindstoneState = ModObjects.chooseModGrindstone(uvwo[3], this.getCoordBaseMode(), uvwo[4]==1);
             	
         		this.setBlockState(world, biomeGrindstoneState, uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
@@ -17033,7 +17048,7 @@ public class PlainsStructures
             	
             	
             	// Generate decor
-            	ArrayList<BlueprintData> decorBlueprint = getRandomPlainsDecorBlueprint(this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, true);
             	
             	for (BlueprintData b : decorBlueprint)
             	{
@@ -17108,14 +17123,8 @@ public class PlainsStructures
     	IBlockState biomeStrippedWoodOrLogOrLogVerticState = biomeLogVertState; 
 
     	// Try to see if stripped wood exists
-    	if (biomeLogVertState.getBlock() == Blocks.LOG)
-    	{
-    		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
-    	}
-    	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
-    	{
-    		biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 0);
-    	}
+    	biomeStrippedWoodOrLogOrLogVerticState = ModObjects.chooseModStrippedWoodState(biomeLogVertState, 0);
+    	
     	// If it doesn't exist, try stripped logs
     	if (biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG || biomeStrippedWoodOrLogOrLogVerticState.getBlock()==Blocks.LOG2)
     	{
