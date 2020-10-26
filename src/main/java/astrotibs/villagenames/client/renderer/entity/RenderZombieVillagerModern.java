@@ -306,7 +306,8 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombieVillager
 	    	// Changed in v3.2 to allow for modded skins
 			if (ims.getProfession() >= 0 && !zombie.isInvisible() && !zombie.isChild())
 			{
-				if (ims.getProfession() <= 5)
+				String zombieForgeProfessionRegistryName = zombie.getForgeProfession().getRegistryName().toString();
+				if (ims.getProfession() <= 5 && zombieForgeProfessionRegistryName.length()>=10 && zombieForgeProfessionRegistryName.substring(0, 10).equals("minecraft:"))
 				{
 					// Career skins
 					if (GeneralConfig.modernVillagerSkins)

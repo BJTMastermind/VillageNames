@@ -999,13 +999,8 @@ public class VillageGeneratorConfigHandler
 						Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SNOWY_BUILDING_STUB + "ToolSmith1|snowy",
 						Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SNOWY_BUILDING_STUB + "WeaponSmith1|snowy",
 						Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SNOWY_BUILDING_STUB + "StreetDecor1|snowy",
-						// TODO - Growthcraft was re-implemented in 1.11
-						"growthcraft.apples.common.village.ComponentVillageAppleFarm|plains taiga snowy",
-						"growthcraft.bamboo.common.village.ComponentVillageBambooYard|plains taiga savanna snowy",
-						"growthcraft.bees.common.village.ComponentVillageApiarist|plains savanna",
-						"growthcraft.grapes.common.village.ComponentVillageGrapeVineyard|plains taiga snowy",
-						"growthcraft.hops.common.village.ComponentVillageHopVineyard|plains taiga snowy",
-						"growthcraft.rice.common.village.ComponentVillageRiceField|plains taiga savanna snowy",
+						
+						"forestry.apiculture.worldgen.VillageApiaristHouse|plains taiga savanna",
 						},
 				"List of village components that only appear in certain village types. Format is: classPaths|villageTypes\n"
 				+ "classPaths: The class address to the specific structure component. If debugMessages is true, every time a village generates, a list of village components not yet specified on this list will be printed to the console.\n"

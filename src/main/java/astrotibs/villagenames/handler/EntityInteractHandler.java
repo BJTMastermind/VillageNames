@@ -26,6 +26,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombieVillager;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -333,46 +334,92 @@ public class EntityInteractHandler {
 			//----------------------------------//
 			//------------ Name Tag ------------//
 			//----------------------------------//
-	    	
+			
 			// If you're holding a name tag, 
 			if (
-					//itemstack != null
-					//&& itemstack.getItem() == Items.NAME_TAG
-					(
-							(
-									event.getHand() ==  EnumHand.MAIN_HAND
-									&& itemstackMain != null
-									&& itemstackMain.getItem() == Items.NAME_TAG
-									&& itemstackMain.hasDisplayName()
-									&& !itemstackMain.getDisplayName().equals(customName)
-									)
-							||
-							(
-									event.getHand() ==  EnumHand.OFF_HAND
-									&& itemstackOff  != null 
-									&& itemstackOff.getItem()  == Items.NAME_TAG
-									&& itemstackOff.hasDisplayName()
-									&& !itemstackOff.getDisplayName().equals(customName)
-									)
-						)
-					//&& itemstack.hasDisplayName()
-					//&& !itemstack.getDisplayName().equals(customName)
-					&& !player.capabilities.isCreativeMode
-					) {
-				
-				//check to see if the target is a Villager or an entry from the other mod config list.
+					(event.getHand() ==  EnumHand.MAIN_HAND
+					&& itemstackMain != null
+					&& itemstackMain.getItem() == Items.NAME_TAG)
+				||
+					(event.getHand() ==  EnumHand.OFF_HAND
+					&& itemstackOff  != null 
+					&& itemstackOff.getItem()  == Items.NAME_TAG)
+					)
+			{
+				// Randomly name an unnamed pet you own using a blank name tag
 				if (
-						(target instanceof EntityVillager && GeneralConfig.nameEntities)
-						|| (target instanceof EntityIronGolem && GeneralConfig.nameGolems && !targetPlayerCreated)
-						|| mappedNamesAutomatic.get("ClassPaths").contains(targetClassPath)
-						|| mappedNamesClickable.get("ClassPaths").contains(targetClassPath)
+						target instanceof EntityTameable
+						&& ((EntityTameable)target).isTamed()
+						&& ((EntityTameable)target).isOwner(player)
+						&& !target.hasCustomName())
+				{
+					if (
+							event.getHand() ==  EnumHand.MAIN_HAND
+							&& !itemstackMain.hasDisplayName())
+					{
+						// Apply the name here
+						String[] petname_a = NameGenerator.newRandomName("pet", random);
+						target.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
+						
+						// Consume the blank name tag if relevant
+						if (!player.capabilities.isCreativeMode) {itemstackMain.setCount(itemstackMain.getCount()-1);}
+						
+						return;
+					}
+					else if (
+							event.getHand() ==  EnumHand.OFF_HAND
+							&& !itemstackOff.hasDisplayName())
+					{
+						// Apply the name here
+						String[] petname_a = NameGenerator.newRandomName("pet", random);
+						target.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
+						
+						// Consume the blank name tag if relevant
+						if (!player.capabilities.isCreativeMode) {itemstackOff.setCount(itemstackOff.getCount()-1);}
+						
+						return;
+					}
+				}
+				
+				
+				// Cancel naming an entity that has special name registration
+				if (
+						//itemstack != null
+						//&& itemstack.getItem() == Items.NAME_TAG
+						(
+								(
+										event.getHand() ==  EnumHand.MAIN_HAND
+										&& itemstackMain.hasDisplayName()
+										&& !itemstackMain.getDisplayName().equals(customName)
+										)
+								||
+								(
+										event.getHand() ==  EnumHand.OFF_HAND
+										&& itemstackOff.hasDisplayName()
+										&& !itemstackOff.getDisplayName().equals(customName)
+										)
+							)
+						//&& itemstack.hasDisplayName()
+						//&& !itemstack.getDisplayName().equals(customName)
+						&& !player.capabilities.isCreativeMode
 						) {
-					// If so, you should be prevented from naming the entity.
-					event.setCanceled(true);
-					if (!world.isRemote) player.sendMessage(new TextComponentString("That is not its name!"));
-					//target.setCustomNameTag(customName);
+					
+					//check to see if the target is a Villager or an entry from the other mod config list.
+					if (
+							(target instanceof EntityVillager && GeneralConfig.nameEntities)
+							|| (target instanceof EntityIronGolem && GeneralConfig.nameGolems && !targetPlayerCreated)
+							|| mappedNamesAutomatic.get("ClassPaths").contains(targetClassPath)
+							|| mappedNamesClickable.get("ClassPaths").contains(targetClassPath)
+							) {
+						// If so, you should be prevented from naming the entity.
+						event.setCanceled(true);
+						if (!world.isRemote) player.sendMessage(new TextComponentString("That is not its name!"));
+						//target.setCustomNameTag(customName);
+					}
 				}
 			}
+			
+			
 
 			//-------------------------------//
 			//------------ Poppy ------------//
@@ -388,18 +435,19 @@ public class EntityInteractHandler {
 									event.getHand() ==  EnumHand.MAIN_HAND
 									&& itemstackMain != null
 									&& itemstackMain.getItem() == Item.getItemFromBlock(Blocks.RED_FLOWER)
+									&& itemstackMain.getMetadata() == 0
 									)
 							||
 							(
 									event.getHand() ==  EnumHand.OFF_HAND
 									&& itemstackOff  != null 
 									&& itemstackOff.getItem()  == Item.getItemFromBlock(Blocks.RED_FLOWER)
+									&& itemstackOff.getMetadata() == 0
 									)
 						)
 					&& target instanceof EntityIronGolem // to an Iron Golem
 					&& !targetPlayerCreated // The Golem wasn't created by you
 					) {
-				
 				int population = -1;
 				// reputationRemoved in v3.2.2
 				
@@ -469,31 +517,36 @@ public class EntityInteractHandler {
 				}
 				catch (Exception e) {} // Not inside a valid Village BB, so playerIsInVillage will remain as false
 				
+				LogHelper.info("population " + population);
+				LogHelper.info("playerIsInVillage " + playerIsInVillage);
+				LogHelper.info("playerRep " + playerRep);
 				
 				if (   
 						(population == 0 || (playerIsInVillage && population == -1)) // No Villagers in the village
 						&& playerRep >= -15 // This may be redundant in the event of an empty village. Changed to playerRep in v3.2.2
-						&& !( (EntityPlayerMP)player ).getStatFile().hasAchievementUnlocked(VillageNames.laputa)
 						) {
-					EntityIronGolem ironGolemTarget = (EntityIronGolem) target;
-					
-					// Play a confirmation sound effect
-					
-					// Consume the poppy
-					if (!player.capabilities.isCreativeMode) {player.inventory.clearMatchingItems( Item.getItemFromBlock(Blocks.RED_FLOWER), -1, 1, null );}
-					
-					// Give the golem the poppy
-					ironGolemTarget.setHoldingRose(true);
-					
-					// Spawn a heart particle
-					
-					// Switch him over to your side
-					ironGolemTarget.setPlayerCreated(true);
-					
-					// Trigger the achievement
-					//player.triggerAchievement(VillageNames.laputa);
-					player.addStat(VillageNames.laputa);
-					AchievementReward.allFiveAchievements( (EntityPlayerMP)player );
+						EntityIronGolem ironGolemTarget = (EntityIronGolem) target;
+						
+						// Play a confirmation sound effect
+						
+						// Consume the poppy
+						if (!player.capabilities.isCreativeMode) {player.inventory.clearMatchingItems( Item.getItemFromBlock(Blocks.RED_FLOWER), 0, 1, null );}
+						
+						// Give the golem the poppy
+						ironGolemTarget.setHoldingRose(true);
+						
+						// Spawn a heart particle
+						
+						// Switch him over to your side
+						ironGolemTarget.setPlayerCreated(true);
+						
+						// Trigger the achievement
+						//player.triggerAchievement(VillageNames.laputa);
+						if (!( (EntityPlayerMP)player ).getStatFile().hasAchievementUnlocked(VillageNames.laputa))
+						{
+							player.addStat(VillageNames.laputa);
+							AchievementReward.allFiveAchievements( (EntityPlayerMP)player );
+						}
 					}
 				}
 			
