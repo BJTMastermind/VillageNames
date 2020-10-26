@@ -17,6 +17,7 @@ import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
+import astrotibs.villagenames.utility.FunctionsVN.VillageType;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import astrotibs.villagenames.village.biomestructures.BlueprintData;
@@ -607,6 +608,7 @@ public class StructureVillageVN
         	if (block == Blocks.double_stone_slab)             {blockstate=Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.sandstone_stairs)              {blockstate=Blocks.stone_stairs.getStateFromMeta(meta); break;}
         	if (block == Blocks.sapling)                       {blockstate=Blocks.sapling.getStateFromMeta(woodMeta); break;}
+        	// No snow conversion because snow is okay in spruce biomes
         	if (block == Blocks.ice)                           {blockstate=Blocks.planks.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.packed_ice)                    {blockstate=Blocks.cobblestone.getDefaultState(); break;}
         	
@@ -801,8 +803,6 @@ public class StructureVillageVN
         	if (block == Blocks.mossy_cobblestone)             {blockstate=Blocks.hardened_clay.getDefaultState(); break;}
         	if (block == Blocks.stone_stairs)                  {blockstate=Blocks.brick_stairs.getStateFromMeta(meta); break;}
         	if (block == Blocks.gravel)                        {blockstate=Blocks.hardened_clay.getDefaultState(); break;}
-        	if (block == Blocks.stone_slab)                    {blockstate=Blocks.stone_slab.getStateFromMeta(meta==3? 4: meta==11? 12 : meta); break;} // Brick slab
-        	if (block == Blocks.double_stone_slab)             {blockstate=Blocks.double_stone_slab.getStateFromMeta(1); break;} // Sandstone double slab
         	if (block == Blocks.cobblestone_wall)              {
 																	IBlockState tryBlockstate=ModObjects.chooseModSandstoneWall(true);
 													        		if (tryBlockstate!=null) {blockstate=tryBlockstate;}
@@ -811,7 +811,6 @@ public class StructureVillageVN
         	if (block == Blocks.sand)                          {blockstate=Blocks.sand.getStateFromMeta(1); break;} // Red Sand
 			if (block == Blocks.sandstone)                     {blockstate=Blocks.red_sandstone.getDefaultState(); break;}
 			if (block == Blocks.stone_slab)                    {blockstate=Blocks.stone_slab2.getStateFromMeta(meta>=8? 8:0); break;}
-			if (block == Blocks.double_stone_slab)             {blockstate=Blocks.double_stone_slab2.getDefaultState(); break;}
 			if (block == Blocks.sandstone_stairs)              {blockstate=Blocks.red_sandstone_stairs.getStateFromMeta(meta); break;}
         	if (block == Blocks.sapling)                       {blockstate=Blocks.tallgrass.getStateFromMeta(0); break;} // Shrub
         	if (block == Blocks.snow)                          {blockstate=Blocks.sand.getStateFromMeta(1); break;} // Red Sand
@@ -2732,6 +2731,30 @@ public class StructureVillageVN
 			}
 			if (matchFound) {matchFound=false; continue;}
 			else {return candidateColor;}
+		}
+	}
+	
+	/**
+	 * Pick a random decor component based off of village type
+	 * The decor will be randomly selected based on the village type, except you can specify whether to allow troughs for Taiga types
+	 */
+	public static ArrayList<BlueprintData> getRandomDecorBlueprint(VillageType villageType, MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, EnumFacing coordBaseMode, Random random, boolean allowTaigaTroughs)
+	{
+		switch (villageType)
+		{
+		default:
+		case PLAINS:
+			return PlainsStructures.getRandomPlainsDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
+		case DESERT:
+			return DesertStructures.getRandomDesertDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
+		case TAIGA:
+			return allowTaigaTroughs ? 
+					TaigaStructures.getRandomTaigaDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random)
+					:TaigaStructures.getTaigaDecorBlueprint(1+random.nextInt(6), materialType, disallowModSubs, biome, coordBaseMode, random);
+		case SAVANNA:
+			return SavannaStructures.getRandomSavannaDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
+		case SNOWY:
+			return SnowyStructures.getRandomSnowyDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		}
 	}
 }
