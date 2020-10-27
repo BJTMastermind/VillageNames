@@ -26,6 +26,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombieVillager;
+import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -348,14 +349,21 @@ public class EntityInteractHandler {
 			{
 				// Randomly name an unnamed pet you own using a blank name tag
 				if (
-						target instanceof EntityTameable
-						&& ((EntityTameable)target).isTamed()
-						&& ((EntityTameable)target).isOwner(player)
+						(
+							(target instanceof EntityTameable
+							&& ((EntityTameable)target).isTamed()
+							&& ((EntityTameable)target).isOwner(player))
+							||
+							(target instanceof AbstractHorse
+							&& ((AbstractHorse)target).getOwnerUniqueId().equals(player.getUniqueID()))
+						)
+						
 						&& !target.hasCustomName())
 				{
 					if (
 							event.getHand() ==  EnumHand.MAIN_HAND
-							&& !itemstackMain.hasDisplayName())
+							&& (!itemstackMain.hasDisplayName() || (itemstackMain.hasDisplayName() && itemstackMain.getDisplayName().equals("")))
+							)
 					{
 						// Apply the name here
 						String[] petname_a = NameGenerator.newRandomName("pet", random);
@@ -368,7 +376,8 @@ public class EntityInteractHandler {
 					}
 					else if (
 							event.getHand() ==  EnumHand.OFF_HAND
-							&& !itemstackOff.hasDisplayName())
+							&& (!itemstackOff.hasDisplayName() || (itemstackOff.hasDisplayName() && itemstackOff.getDisplayName().equals("")))
+							)
 					{
 						// Apply the name here
 						String[] petname_a = NameGenerator.newRandomName("pet", random);
