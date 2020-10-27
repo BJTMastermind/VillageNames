@@ -27,6 +27,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombieVillager;
+import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -384,10 +385,15 @@ public class EntityInteractHandler {
 			{
 				// Randomly name an unnamed pet you own using a blank name tag
 				if (
-						!itemstackMain.hasDisplayName()
-						&& target instanceof EntityTameable
-						&& ((EntityTameable)target).isTamed()
-						&& ((EntityTameable)target).isOwner(player)
+						(
+							(target instanceof EntityTameable
+							&& ((EntityTameable)target).isTamed()
+							&& ((EntityTameable)target).isOwner(player))
+							||
+							(target instanceof AbstractHorse
+							&& ((AbstractHorse)target).getOwnerUniqueId().equals(player.getUniqueID()))
+						)
+						
 						&& !target.hasCustomName()
 						)
 				{
@@ -644,10 +650,15 @@ public class EntityInteractHandler {
 			{
 				// Randomly name an unnamed pet you own using a blank name tag
 				if (
-						!itemstackOff.hasDisplayName()
-						&& target instanceof EntityTameable
-						&& ((EntityTameable)target).isTamed()
-						&& ((EntityTameable)target).isOwner(player)
+						(
+							(target instanceof EntityTameable
+							&& ((EntityTameable)target).isTamed()
+							&& ((EntityTameable)target).isOwner(player))
+							||
+							(target instanceof AbstractHorse
+							&& ((AbstractHorse)target).getOwnerUniqueId().equals(player.getUniqueID().toString()))
+						)
+						
 						&& !target.hasCustomName()
 						)
 				{
