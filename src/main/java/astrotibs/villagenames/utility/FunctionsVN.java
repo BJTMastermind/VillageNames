@@ -3137,7 +3137,7 @@ public class FunctionsVN
     			}
     			
     			// --- VILLAGE -- //
-    			String[] entityName = NameGenerator.newRandomName("villager-alien-angel-demon-dragon-goblin-golem", new Random());
+    			String[] entityName = NameGenerator.newRandomName("villager-angel-demon-dragon-goblin-golem-pet", new Random());
     	        ItemStack tagWithName = new ItemStack(Items.name_tag, 1).setStackDisplayName( (entityName[1]+" "+entityName[2]+" "+entityName[3]).trim() );
     			tagWithName.setRepairCost(99);
     			merchantRecipeArray.add( new MerchantRecipe(
@@ -3771,7 +3771,7 @@ public class FunctionsVN
 						}
 						
 						// --- VILLAGE -- //
-						String[] entityName = NameGenerator.newRandomName("villager-alien-angel-demon-dragon-goblin-golem", new Random());
+						String[] entityName = NameGenerator.newRandomName("villager-angel-demon-dragon-goblin-golem-pet", new Random());
 				        ItemStack tagWithName = new ItemStack(Items.name_tag, 1).setStackDisplayName( (entityName[1]+" "+entityName[2]+" "+entityName[3]).trim() );
 						tagWithName.setRepairCost(99);
 						buyingList.add( new MerchantRecipe(

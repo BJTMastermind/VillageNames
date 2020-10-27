@@ -28,6 +28,7 @@ import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -370,11 +371,17 @@ public class EntityInteractHandler {
 			{
 				// Randomly name an unnamed pet you own using a blank name tag
 				if (
-						target instanceof EntityTameable
-						&& ((EntityTameable)target).isTamed()
-						&& ((EntityTameable)target).isOwner(player)
+						(
+							(target instanceof EntityTameable
+							&& ((EntityTameable)target).isTamed()
+							&& ((EntityTameable)target).isOwner(player))
+							||
+							(target instanceof EntityHorse
+							&& ((EntityHorse)target).getOwnerId().equals(player.getUniqueID().toString()))
+						)
+						
 						&& !target.hasCustomName()
-						&& !itemstack.hasDisplayName()
+						&& (!itemstack.hasDisplayName() || (itemstack.hasDisplayName() && itemstack.getDisplayName().equals("")))
 						)
 				{
 					// Apply the name here
