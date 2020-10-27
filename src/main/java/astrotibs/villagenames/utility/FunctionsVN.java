@@ -3052,7 +3052,7 @@ public class FunctionsVN
     			merchantRecipeArray.add( iglooForSplashWeakness ); // Splash Weakness (3:00)
     			
     			// --- VILLAGE -- //
-    			ItemStack tagWithName = new ItemStack(Items.NAME_TAG, 1).setStackDisplayName( NameGenerator.newRandomName("villager-angel-demon-dragon-goblin-golem", new Random())[2] );
+    			ItemStack tagWithName = new ItemStack(Items.NAME_TAG, 1).setStackDisplayName( NameGenerator.newRandomName("villager-angel-demon-dragon-goblin-golem-pet", new Random())[2] );
     			tagWithName.setRepairCost(99);
     			merchantRecipeArray.add( new MerchantRecipe(
     					new ItemStack(ModItems.VILLAGE_BOOK, 1), (ItemStack)null,
