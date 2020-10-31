@@ -1521,7 +1521,7 @@ public class EntityInteractHandler {
     					else if (!world.isRemote) { // Messages send to both sides
     						if (emeralds < emeraldRequired && goldIngots < goldRequired) {player.sendMessage(new TextComponentString( "The Villager wants more emeralds and gold from you." ) );}
     						else if (emeralds < emeraldRequired) {player.sendMessage(new TextComponentString( "The Villager wants more emeralds from you." ) );}
-    						else if (emeralds < goldRequired) {player.sendMessage(new TextComponentString( "The Villager wants more gold from you." ) );}
+    						else if (goldIngots < goldRequired) {player.sendMessage(new TextComponentString( "The Villager wants more gold from you." ) );}
     					}
     					
     				}
@@ -1558,7 +1558,7 @@ public class EntityInteractHandler {
     					else if (!world.isRemote) { // Messages send to both sides
     						if (emeralds < emeraldRequired && ironIngots < ironRequired) {player.sendMessage(new TextComponentString( "The Villager wants more emeralds and iron from you." ) );}
     						else if (emeralds < emeraldRequired) {player.sendMessage(new TextComponentString( "The Villager wants more emeralds from you." ) );}
-    						else if (emeralds < ironRequired) {player.sendMessage(new TextComponentString( "The Villager wants more iron from you." ) );}
+    						else if (ironIngots < ironRequired) {player.sendMessage(new TextComponentString( "The Villager wants more iron from you." ) );}
     					}
     				}
 				}
