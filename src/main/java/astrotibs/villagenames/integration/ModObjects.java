@@ -47,20 +47,6 @@ public class ModObjects {
   	//public static final String WitcheryHobgoblinClass = "com.emoniph.witchery.entity.EntityGoblin";
   	//public static final String WitcheryHunterClass = "com.emoniph.witchery.entity.EntityWitchHunter";
   	
-  	// Primitive Mobs class paths
-  	public static final String PMTravelingMerchantClass = "net.daveyx0.primitivemobs.entity.passive.EntityTravelingMerchant"; //Counts as a Villager
-  	public static final String PMLostMinerClass = "net.daveyx0.primitivemobs.entity.passive.EntityLostMiner"; //Counts as a Villager
-  	public static final String PMSheepmanClass = "net.daveyx0.primitivemobs.entity.passive.EntitySheepman"; //Counts as a Villager
-  	public static final String PMSheepmanSmithClass = "net.daveyx0.primitivemobs.entity.passive.EntitySheepmanSmith";
-  	// Primitive Mobs unlocalized names
-  	public static final String PMTravelingMerchantUnlocalized = "entity.primitivemobs.TravelingMerchant.name";
-  	public static final String PMTravelingMerchantUnlocalizedModern = "entity.primitivemobs.traveling_merchant.name";
-  	public static final String PMLostMinerUnlocalized = "entity.primitivemobs.LostMiner.name";
-  	public static final String PMLostMinerUnlocalizedModern = "entity.primitivemobs.lost_miner.name";
-  	public static final String PMSheepmanUnlocalized = "entity.primitivemobs.Sheepman.name";
-  	public static final String PMSheepmanUnlocalizedModern = "entity.primitivemobs.sheepman.name";
-  	public static final String PMSheepmanSmithUnlocalized = "entity.primitivemobs.SheepmanSmith.name";
-	
 	public static final String TQShopkeeperClass = "net.torocraft.toroquest.entities.EntityShopkeeper"; //Counts as a Villager
 	public static final String TQFugitiveClass = "net.torocraft.toroquest.entities.EntityFugitive"; //Counts as a Villager
 	public static final String TQGuardClass = "net.torocraft.toroquest.entities.EntityGuard";

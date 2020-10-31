@@ -262,14 +262,6 @@ public class EntityInteractHandler {
 			
 	    	//if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) {villagerMappedProfession = 5;}
 	    	
-	    	// Primitive Mobs hard coding for career detection
-	    	if (targetClassPath.equals( ModObjects.PMTravelingMerchantClass ) )
-					{villagerMappedProfession = GeneralConfig.PMMerchantProfessionMap;}
-	    	else if (targetClassPath.equals( ModObjects.PMLostMinerClass ) )
-					{villagerMappedProfession = GeneralConfig.PMLostMinerProfessionMap;}
-	    	else if (targetClassPath.equals( ModObjects.PMSheepmanSmithClass ) )
-					{villagerMappedProfession = 3;}
-			
 	    	if (target instanceof EntityVillager) {
 				targetCareer = ReflectionHelper.getPrivateValue(EntityVillager.class, (EntityVillager)target, new String[]{"careerId", "field_175563_bv"});
 				//LogHelper.info("targetCareer = " + targetCareer);
@@ -726,7 +718,7 @@ public class EntityInteractHandler {
             					else if (!world.isRemote) { // Messages send to both sides
             						if (emeralds < emeraldRequired && goldIngots < goldRequired) {player.sendMessage(new TextComponentString( "The Villager wants more emeralds and gold from you." ) );}
             						else if (emeralds < emeraldRequired) {player.sendMessage(new TextComponentString( "The Villager wants more emeralds from you." ) );}
-            						else if (emeralds < goldRequired) {player.sendMessage(new TextComponentString( "The Villager wants more gold from you." ) );}
+            						else if (goldIngots < goldRequired) {player.sendMessage(new TextComponentString( "The Villager wants more gold from you." ) );}
             					}
             					
             				}
@@ -763,7 +755,7 @@ public class EntityInteractHandler {
             					else if (!world.isRemote) { // Messages send to both sides
             						if (emeralds < emeraldRequired && ironIngots < ironRequired) {player.sendMessage(new TextComponentString( "The Villager wants more emeralds and iron from you." ) );}
             						else if (emeralds < emeraldRequired) {player.sendMessage(new TextComponentString( "The Villager wants more emeralds from you." ) );}
-            						else if (emeralds < ironRequired) {player.sendMessage(new TextComponentString( "The Villager wants more iron from you." ) );}
+            						else if (ironIngots < ironRequired) {player.sendMessage(new TextComponentString( "The Villager wants more iron from you." ) );}
             					}
             				}
 						}
@@ -1301,34 +1293,7 @@ public class EntityInteractHandler {
 					String PMSSUnloc = "Sheepman Smith";
 					
 					// Unfortunately, I18n are client-side only and will crash the server. So we're going to just have to deal with the English versions.
-					if ( (customName.trim()).equals("") || customName.equals(null)
-						||
-						 (targetClassPath.equals(ModObjects.PMTravelingMerchantClass)
-								 //&& customName.equals("Traveling Merchant")
-								 && 
-								 ( customName.equals( PMTMUnloc )
-									|| customName.equals( PMTMUnlocModern ) )// Contingency in there specifically for PM's Traveling Merchants
-								 )
-						 ||
-						 (targetClassPath.equals(ModObjects.PMSheepmanClass)
-								 //&& customName.equals("Sheepman")
-								 &&
-								 ( customName.equals( PMShUnloc )
-									|| customName.equals( PMShUnlocModern ) ) // Contingency in there specifically for PM's Sheepman
-								 ) // Contingency in there specifically for PM's Sheepmen
-						 ||
-						 (targetClassPath.equals(ModObjects.PMSheepmanSmithClass)
-								 &&
-								 ( customName.equals( PMSSUnloc ) ) // Contingency in there specifically for PM's Sheepman Smith
-								 ) // Contingency in there specifically for PM's Sheepmen Smith
-						 // Hard-wired ToroQuest entries
-						 /*
-						 ||
-						 (compound.getString("id")=="toroquest.shopkeeper")
-						 ||
-						 (compound.getString("id")=="toroquest.fugitive")
-						 */
-							) {
+					if ((customName.trim()).equals("") || customName.equals(null)) {
 						
 						// Generate a name type that's defined in the config entry
 						
