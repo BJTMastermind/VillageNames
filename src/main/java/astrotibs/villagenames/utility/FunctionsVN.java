@@ -76,12 +76,12 @@ public class FunctionsVN
 			Set<BiomeDictionary.Type> typeTags = BiomeDictionary.getTypes(biome);
 			
 			// Ordered by personal priority. The first of these to be fulfilled gets returned
-			if (biome.getBiomeName().toLowerCase().contains("taiga")) {return TAIGA;}
+			if (((String)(ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"}))).toLowerCase().contains("taiga")) {return TAIGA;}
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.CONIFEROUS) {return TAIGA;}}
-			if (biome.getBiomeName().toLowerCase().contains("savanna")) {return SAVANNA;}
+			if (((String)(ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"}))).toLowerCase().contains("savanna")) {return SAVANNA;}
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SAVANNA) {return SAVANNA;}}
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SNOWY) {return SNOWY;}}
-			if (biome.getBiomeName().toLowerCase().contains("desert")) {return DESERT;}
+			if (((String)(ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"}))).toLowerCase().contains("desert")) {return DESERT;}
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SANDY) {return DESERT;}}
 			//for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.PLAINS) {return PLAINS;}}
 			
@@ -119,14 +119,14 @@ public class FunctionsVN
 		}
 		public static MaterialType getMaterialTemplateForBiome(Biome biome)
 		{
-			if (biome.getBiomeName().toLowerCase().contains("birch")) {return BIRCH;}
-			if (biome.getBiomeName().toLowerCase().contains("roofed forest")) {return DARK_OAK;}
+			if (((String)(ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"}))).toLowerCase().contains("birch")) {return BIRCH;}
+			if (((String)(ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"}))).toLowerCase().contains("roofed forest")) {return DARK_OAK;}
 			
 			Set<BiomeDictionary.Type> typeTags = BiomeDictionary.getTypes(biome);
-			if (biome.getBiomeName().toLowerCase().contains("taiga")) {return SPRUCE;}
+			if (((String)(ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"}))).toLowerCase().contains("taiga")) {return SPRUCE;}
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.CONIFEROUS) {return SPRUCE;}}
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.JUNGLE) {return JUNGLE;}}
-			if (biome.getBiomeName().toLowerCase().contains("savanna")) {return ACACIA;}
+			if (((String)(ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"}))).toLowerCase().contains("savanna")) {return ACACIA;}
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SAVANNA) {return ACACIA;}}
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.MESA) {return MESA;}}
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.MUSHROOM) {return MUSHROOM;}}
@@ -3711,8 +3711,8 @@ public class FunctionsVN
 		ArrayList<String> boatTypes = new ArrayList<String>();
 		
 		// Add wood types to pool based on name
-		if (biome.getBiomeName().toLowerCase().contains("birch")) {boatTypes.add("birch");}
-		if (biome.getBiomeName().toLowerCase().contains("roofed")) {boatTypes.add("darkoak");}
+		if (((String) ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"})).toLowerCase().contains("birch")) {boatTypes.add("birch");}
+		if (((String) ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"})).toLowerCase().contains("roofed")) {boatTypes.add("darkoak");}
 		
 		boolean isForest = false;
 		

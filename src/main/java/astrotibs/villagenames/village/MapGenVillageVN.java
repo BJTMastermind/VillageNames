@@ -33,6 +33,7 @@ import net.minecraftforge.event.terraingen.InitMapGenEvent;
 import net.minecraftforge.event.terraingen.InitMapGenEvent.EventType;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class MapGenVillageVN extends MapGenVillage
 {
@@ -97,7 +98,11 @@ public class MapGenVillageVN extends MapGenVillage
     @Override
     protected boolean canSpawnStructureAtCoords(int chunkXin, int chunkZin)
     {
-        int chunkX = chunkXin;
+    	// Deny villages less than a config-specified distance away from spawn
+    	int noVillagesRadius = VillageGeneratorConfigHandler.noVillagesRadius;
+    	if ((chunkXin*chunkXin) + (chunkZin*chunkXin) < (noVillagesRadius*noVillagesRadius)) {return false;}
+    	
+    	int chunkX = chunkXin;
         int chunkZ = chunkZin;
         
         // Handle negative chunk values
@@ -130,7 +135,7 @@ public class MapGenVillageVN extends MapGenVillage
         		
     			for (int i = 0; i < mappedBiomes.get("BiomeNames").size(); i++)
     			{
-    				if (mappedBiomes.get("BiomeNames").get(i).equals(biome.getBiomeName()))
+    				if (mappedBiomes.get("BiomeNames").get(i).equals((String) (ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"}))))
     				{
     					BiomeManager.addVillageBiome(biome, true); // Set biome to be able to spawn villages
     					
@@ -170,7 +175,7 @@ public class MapGenVillageVN extends MapGenVillage
 			
 			// Attempt to swap it with the config value
 			try {
-            	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
+            	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf((String)(ReflectionHelper.getPrivateValue(Biome.class, biome, new String[]{"biomeName","field_76791_y"}))));
             	if (mappedVillageType.equals("")) {startVillageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, posX, posZ);}
             	else {startVillageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
             	}
