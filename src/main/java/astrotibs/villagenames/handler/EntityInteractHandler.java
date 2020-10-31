@@ -271,14 +271,6 @@ public class EntityInteractHandler {
 			
 	    	if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) {villagerMappedProfession = 5;}
 	    	
-	    	// Primitive Mobs hard coding for career detection
-	    	if (targetClassPath.equals( ModObjects.PMTravelingMerchantClass ) )
-					{villagerMappedProfession = GeneralConfig.PMMerchantProfessionMap;}
-	    	else if (targetClassPath.equals( ModObjects.PMLostMinerClass ) )
-					{villagerMappedProfession = GeneralConfig.PMLostMinerProfessionMap;}
-	    	else if (targetClassPath.equals( ModObjects.PMSheepmanSmithClass ) )
-					{villagerMappedProfession = 3;}
-			
 	    	if (target instanceof EntityVillager) {
 				targetCareer = ReflectionHelper.getPrivateValue(EntityVillager.class, (EntityVillager)target, new String[]{"careerId", "field_175563_bv"});
 				//LogHelper.info("targetCareer = " + targetCareer);
@@ -762,7 +754,7 @@ public class EntityInteractHandler {
             					else if (!world.isRemote) { // Messages send to both sides
             						if (emeralds < emeraldRequired && goldIngots < goldRequired) {player.addChatComponentMessage(new TextComponentString( "The Villager wants more emeralds and gold from you." ) );}
             						else if (emeralds < emeraldRequired) {player.addChatComponentMessage(new TextComponentString( "The Villager wants more emeralds from you." ) );}
-            						else if (emeralds < goldRequired) {player.addChatComponentMessage(new TextComponentString( "The Villager wants more gold from you." ) );}
+            						else if (goldIngots < goldRequired) {player.addChatComponentMessage(new TextComponentString( "The Villager wants more gold from you." ) );}
             					}
             					
             				}
@@ -799,7 +791,7 @@ public class EntityInteractHandler {
             					else if (!world.isRemote) { // Messages send to both sides
             						if (emeralds < emeraldRequired && ironIngots < ironRequired) {player.addChatComponentMessage(new TextComponentString( "The Villager wants more emeralds and iron from you." ) );}
             						else if (emeralds < emeraldRequired) {player.addChatComponentMessage(new TextComponentString( "The Villager wants more emeralds from you." ) );}
-            						else if (emeralds < ironRequired) {player.addChatComponentMessage(new TextComponentString( "The Villager wants more iron from you." ) );}
+            						else if (ironIngots < ironRequired) {player.addChatComponentMessage(new TextComponentString( "The Villager wants more iron from you." ) );}
             					}
             				}
 						}

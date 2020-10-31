@@ -394,6 +394,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -586,7 +588,7 @@ public class PlainsStructures
             this.fillWithAir(world, structureBB, 4, 2, 4, 5, 2, 5);
             
             // Well rim
-            if (GeneralConfig.wellSlabs)
+            if (GeneralConfig.wellSlabs && GeneralConfig.wellDecorations)
             {
             	this.fillWithBlocks(world, structureBB, 4, 2, 3, 5, 2, 3, biomeCobblestoneSlabState, biomeCobblestoneSlabState, false);
             	this.fillWithBlocks(world, structureBB, 4, 2, 6, 5, 2, 6, biomeCobblestoneSlabState, biomeCobblestoneSlabState, false);
@@ -753,6 +755,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -1101,6 +1105,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -1505,6 +1511,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -1957,7 +1965,7 @@ public class PlainsStructures
             	
             	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(1, 2) + 0.5D, (double)this.getYWithOffset(1) + 0.5D, (double)this.getZWithOffset(1, 2) + 0.5D);
             	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
-            	if (VillageGeneratorConfigHandler.nameVillageHorses && animal instanceof EntityHorse)
+            	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
             	{
             		String[] petname_a = NameGenerator.newRandomName("pet", random);
             		animal.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
@@ -1969,6 +1977,8 @@ public class PlainsStructures
                 //this.setBlockState(world, biomeDirtState, 1, 0, 2, structureBB);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -2237,7 +2247,7 @@ public class PlainsStructures
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
                 	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
-                	if (VillageGeneratorConfigHandler.nameVillageHorses && animal instanceof EntityHorse)
+                	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
                 		animal.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
@@ -2250,6 +2260,8 @@ public class PlainsStructures
         		}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -2540,7 +2552,7 @@ public class PlainsStructures
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
                 	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
-                	if (VillageGeneratorConfigHandler.nameVillageHorses && animal instanceof EntityHorse)
+                	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
                 		animal.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
@@ -2618,6 +2630,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -2993,6 +3007,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -3386,6 +3402,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -3847,6 +3865,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -4362,6 +4382,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -4761,6 +4783,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -5209,6 +5233,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -5715,6 +5741,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -6047,6 +6075,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -6516,6 +6546,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -6981,6 +7013,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -7417,6 +7451,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -8014,6 +8050,8 @@ public class PlainsStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -8484,6 +8522,8 @@ public class PlainsStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -8967,6 +9007,8 @@ public class PlainsStructures
             	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? this.townColor2 : 0), uvw[0], uvw[1], uvw[2], structureBB);
             }        	
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -9394,6 +9436,8 @@ public class PlainsStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -9897,6 +9941,8 @@ public class PlainsStructures
         		}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -10202,6 +10248,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -10618,6 +10666,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -11027,6 +11077,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -11444,6 +11496,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -11856,6 +11910,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -12373,6 +12429,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -12809,6 +12867,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -13241,6 +13301,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -13674,6 +13736,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -14152,7 +14216,7 @@ public class PlainsStructures
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
                 	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
-                	if (VillageGeneratorConfigHandler.nameVillageHorses && animal instanceof EntityHorse)
+                	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
                 		animal.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
@@ -14165,6 +14229,8 @@ public class PlainsStructures
         		}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -14592,7 +14658,7 @@ public class PlainsStructures
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
                 	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
-                	if (VillageGeneratorConfigHandler.nameVillageHorses && animal instanceof EntityHorse)
+                	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
                 		animal.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
@@ -14605,6 +14671,8 @@ public class PlainsStructures
         		}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -15049,6 +15117,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -15476,6 +15546,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -15908,6 +15980,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -16308,6 +16382,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -16810,6 +16886,8 @@ public class PlainsStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -17138,6 +17216,8 @@ public class PlainsStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
