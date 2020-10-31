@@ -21,14 +21,13 @@ public class GeneralConfig {
     public static boolean recordStructureCoords; 
 	public static boolean addJobToName;
 	public static String nitwitProfession;
-	// Added in v3.1banner
 	public static boolean villageBanners;
 	public static int signYaw;
 	
 	public static boolean addConcrete;
 	public static boolean concreteWell;
 	public static boolean addIgloos;
-	public static boolean biomedictIgloos; // Added in v3.1
+	public static boolean biomedictIgloos;
 	
 	public static boolean codexChestLoot;
 	public static boolean versionChecker;
@@ -44,21 +43,16 @@ public class GeneralConfig {
 	
 	public static String[] modProfessionMapping;
 	
-	public static int PMMerchantProfessionMap;
-	public static int PMLostMinerProfessionMap;
-	
 	public static String[] modStructureNames;
 		
-	public static boolean modernVillagerSkins; // Changed in v3.1
+	public static boolean modernVillagerSkins;
 	
-	public static boolean moddedVillagerHeadwear; // Added in v3.1.1
+	public static boolean moddedVillagerHeadwear;
 
-	// Added in v3.2
 	public static String[] moddedVillagerHeadwearGraylist;
 	public static ArrayList<Integer> moddedVillagerHeadwearWhitelist = new ArrayList<Integer>();;
 	public static ArrayList<Integer> moddedVillagerHeadwearBlacklist = new ArrayList<Integer>();;
 
-	// Added in v3.2
 	public static String[] moddedVillagerModularSkins;
 	public static Map<String, ArrayList> moddedVillagerCareerSkins;
 	public static ArrayList<String> careerAsset_a;
@@ -119,19 +113,15 @@ public class GeneralConfig {
 	    //villagerCareers = config.getBoolean("Villager Careers", "villager professions", false, "Assign 1.8+ Career subdivisions to vanilla Professions. Trading is still 1.7 style, but merchant offers will be more progression-based. "
 	    //		+ "\nWARNING: This will permanently modify already-generated vanilla Villager trade offers.");
 	    
-	    // Changed in 3.1
 	    modernVillagerSkins = config.getBoolean("Modern Villager Profession Skins", "villager professions", true, "Use the composite 1.14 Villager skins");
-	    // Added in v3.1
 	    modernVillagerTrades = config.getBoolean("Modern Villager Trades", "villager professions", true, "Use JE 1.14 / BE 1.12 trade offerings and add the Cartographer and Mason villagers");
 
     	// Per-profession registry and spawning is broken in 1.8
 	    //enableNitwit = config.getBoolean("Nitwit Villager", "villager professions", true, "Enable 1.11 NitWit Villagers"); 
 	    //villagerLegacyTrades = config.getBoolean("Villager Legacy Trades", "villager professions", true, "When using Villager Careers: some trades that were removed in 1.8 can still be unlocked.");
 	    
-	    // Added in v3.1.1
 	    moddedVillagerHeadwear = config.getBoolean("Modded Villager Headwear", "villager professions", false, "If modern skins are enabled: renders the headwear layer for non-vanilla villager professions, if one exists.");
 	    
-	    // Added in v3.2
 	    moddedVillagerHeadwearGraylist = config.getStringList("Modded Villager Headwear Graylist", "villager professions", new String[]{
 				"14", // Growthcraft Apiarist
 				"80", // Forestry Apiarist
@@ -156,7 +146,6 @@ public class GeneralConfig {
 	    	catch (Exception e) {} // Failure to parse the string entry into an integer, so ignore it
 	    }
 	    
-	    // Added in v3.2
 	    moddedVillagerModularSkins = config.getStringList("Modded Villager Modular Skins", "villager professions", new String[]{
 				"gc_brewer||10", // Growthcraft
 				"gc_apiarist||14", // Growthcraft
@@ -396,7 +385,7 @@ public class GeneralConfig {
 				"endcity|hardcoreenderdragon_EndTower|Dungeon Tower|The End|endcity|",
 				"endcity|hardcoreenderdragon_EndIsland|Laboratory|The End|endcity|"
 				},
-				"List of mod structures that can be named with a Codex, or by right-clicking an entity in that structure (optional)."
+				"List of mod structures that can be named with a Codex, or by right-clicking an entity in that structure (optional). "
 				+ "Structures must have been generated in a manner similarly to vanilla (e.g. Galacticraft Moon Villages).\n"
 				+ "Format is: nameType|structureType|structureTitle|dimensionName|bookType|entityClassPath\n"
 				+ "nameType is your choice of name pool for the structure. Options: village, mineshaft, temple, stronghold, fortress, monument, endcity, mansion, alienvillage\n"
@@ -439,34 +428,7 @@ public class GeneralConfig {
 								+ "4=Butcher\n"
 								+ "5=Nitwit\n");
 		
-				
 		
-		// Primitive Mobs villager mapping
-	    //PMMerchantProfession = config.getString("PMMerchantProfession", "Mapping Professions", "Merchant", "The career displayed for Primitive Mobs's Traveling Merchant. Blank this out to display no profession regardless of addJobToName.");
-	    PMMerchantProfessionMap = config.getInt("PM Traveling Merchant Profession ID", "Mod Integration", 0, 0, 5,
-	    		"Which vanilla archetype the traveling merchant emulates in order to generate hint pages.\n"
-				+ "Use this reference:\n"
-				+ "-1=None\n"
-				+ "0=Farmer\n"
-				+ "1=Librarian\n"
-				+ "2=Priest\n"
-				+ "3=Blacksmith\n"
-				+ "4=Butcher\n"
-				+ "5=Nitwit\n");
-		
-	    //PMLostMinerProfession = config.getString("PMLostMinerProfession", "Mapping Professions", "Miner", "The career displayed for Primitive Mobs's Lost Miner. Blank this out to display no profession regardless of addJobToName.");
-	    PMLostMinerProfessionMap = config.getInt("PM Lost Miner Profession ID", "Mod Integration", 3, 0, 5,
-	    		"Which vanilla archetype the traveling merchant emulates in order to generate hint pages.\n"
-				+ "Use this reference:\n"
-				+ "-1=None\n"
-				+ "0=Farmer\n"
-				+ "1=Librarian\n"
-				+ "2=Priest\n"
-				+ "3=Blacksmith\n"
-				+ "4=Butcher\n"
-				+ "5=Nitwit\n");
-	    
-	    
 	    if (config.hasChanged()) config.save();
 		
 	}

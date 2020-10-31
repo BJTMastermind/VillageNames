@@ -39,6 +39,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityMooshroom;
@@ -50,6 +51,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntitySign;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumFacing;
@@ -2001,7 +2003,9 @@ public class StructureVillageVN
             		}        		
             	}
             }
-        	
+            
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -2756,5 +2760,33 @@ public class StructureVillageVN
 		case SNOWY:
 			return SnowyStructures.getRandomSnowyDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		}
+	}
+	
+	
+	/**
+	 * Deletes EntityItems within a given structure bounding box
+	 */
+	public static void cleanEntityItems(World world, StructureBoundingBox boundingBox)
+	{
+		// selectEntitiesWithinAABB is an AABB method
+		AxisAlignedBB aabb = (new AxisAlignedBB(
+				// Modified to center onto front of house
+				boundingBox.minX, boundingBox.minY, boundingBox.minZ,
+				boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ)).expand(3, 8, 3);
+        
+        List<EntityItem> list = world.getEntitiesWithinAABB(EntityItem.class, aabb, null);
+        
+		if (!list.isEmpty())
+        {
+			Iterator iterator = list.iterator();
+					
+			while (iterator.hasNext())
+			{
+				EntityItem entityitem = (EntityItem) iterator.next();
+				entityitem.setDead();
+			}
+			
+			if (GeneralConfig.debugMessages) {LogHelper.info("Cleaned "+list.size()+" Entity items within " + aabb.toString());}
+        }
 	}
 }

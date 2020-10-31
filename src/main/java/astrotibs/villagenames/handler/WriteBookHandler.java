@@ -10,7 +10,6 @@ import java.util.Set;
 import astrotibs.villagenames.VillageNames;
 import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.config.GeneralConfig;
-import astrotibs.villagenames.integration.ModObjects;
 import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldData;
@@ -180,9 +179,7 @@ public class WriteBookHandler {
         // ----- Second Page ----- //
         // ----------------------- //
         if (target!=null) {
-        			if ((target instanceof EntityVillager 
-            				|| target.getClass().toString().substring(6).equals(ModObjects.PMLostMinerClass)
-            				|| target.getClass().toString().substring(6).equals(ModObjects.PMTravelingMerchantClass)) 
+        			if ((target instanceof EntityVillager) 
             		&&
             		((author != "" && author != null) || !GeneralConfig.nameEntities) ) {
             	
@@ -423,14 +420,6 @@ public class WriteBookHandler {
     	catch (Exception e) {
     		if(!event.entityLiving.worldObj.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");
     		}
-    	
-    	// Primitive Mobs hard coding for career detection
-    	if (targetClassPath.equals( ModObjects.PMTravelingMerchantClass ) )
-				{villagerMappedProfession = GeneralConfig.PMMerchantProfessionMap;}
-		else if (targetClassPath.equals( ModObjects.PMLostMinerClass ) )
-				{villagerMappedProfession = GeneralConfig.PMLostMinerProfessionMap;}
-		else if (targetClassPath.equals( ModObjects.PMSheepmanSmithClass ) )
-				{villagerMappedProfession = 3;}
     	
     	// ------------------------- //
     	// Find Structures by Career //

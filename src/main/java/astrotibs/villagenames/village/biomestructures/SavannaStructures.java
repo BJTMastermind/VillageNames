@@ -479,6 +479,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -835,6 +837,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -1160,6 +1164,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -1486,6 +1492,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -1877,6 +1885,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -2282,7 +2292,7 @@ public class SavannaStructures
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
                 	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
-                	if (VillageGeneratorConfigHandler.nameVillageHorses && animal instanceof EntityHorse)
+                	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
                 		animal.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
@@ -2296,6 +2306,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -2691,7 +2703,7 @@ public class SavannaStructures
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
                 	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
-                	if (VillageGeneratorConfigHandler.nameVillageHorses && animal instanceof EntityHorse)
+                	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
                 		animal.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
@@ -2705,6 +2717,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -3107,6 +3121,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -3656,6 +3672,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -4175,6 +4193,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -4752,6 +4772,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -5246,6 +5268,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -5751,6 +5775,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -6145,6 +6171,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -6575,6 +6603,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -7067,6 +7097,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -7542,6 +7574,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -8137,6 +8171,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -8685,6 +8721,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -9188,6 +9226,8 @@ public class SavannaStructures
         		}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -9525,6 +9565,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -9954,6 +9996,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -10380,6 +10424,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -10792,6 +10838,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -11322,6 +11370,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -11807,6 +11857,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -12246,6 +12298,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -12683,6 +12737,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -13089,6 +13145,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -13590,6 +13648,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -14108,6 +14168,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -14530,6 +14592,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -15023,6 +15087,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -15520,6 +15586,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -16044,6 +16112,8 @@ public class SavannaStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -16371,6 +16441,8 @@ public class SavannaStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -16743,6 +16815,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -17142,6 +17216,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -17408,6 +17484,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -17698,6 +17776,8 @@ public class SavannaStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
