@@ -395,6 +395,8 @@ public class DesertStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -744,6 +746,8 @@ public class DesertStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -1220,6 +1224,8 @@ public class DesertStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
     }
@@ -1568,6 +1574,8 @@ public class DesertStructures
         		}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -1917,6 +1925,8 @@ public class DesertStructures
         		}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -2328,6 +2338,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -2759,6 +2771,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -3170,6 +3184,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -3526,6 +3542,8 @@ public class DesertStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -3922,6 +3940,8 @@ public class DesertStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -4353,6 +4373,8 @@ public class DesertStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -4775,6 +4797,8 @@ public class DesertStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -5183,6 +5207,8 @@ public class DesertStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -5593,6 +5619,8 @@ public class DesertStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -5984,6 +6012,8 @@ public class DesertStructures
                 world.spawnEntityInWorld(entityvillager);
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -6428,6 +6458,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -6888,6 +6920,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -7340,6 +7374,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -7733,6 +7769,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -8187,6 +8225,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -8613,6 +8653,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -9002,6 +9044,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -9409,6 +9453,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -9942,6 +9988,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -10365,6 +10413,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -10774,6 +10824,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -11216,6 +11268,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -11674,6 +11728,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -12113,6 +12169,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -12610,6 +12668,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -13086,6 +13146,8 @@ public class DesertStructures
             }
             
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -13412,6 +13474,8 @@ public class DesertStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         
@@ -13744,6 +13808,8 @@ public class DesertStructures
             	}
             }
             
+            // Clean items
+            if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
             return true;
         }
         

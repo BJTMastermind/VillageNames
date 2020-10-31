@@ -49,16 +49,13 @@ public class GeneralConfig {
 	
 	public static String[] modStructureNames;
 	
-	public static boolean modernVillagerSkins; // Added in v3.1
+	public static boolean modernVillagerSkins;
 
-	public static boolean moddedVillagerHeadwear; // Added in v3.1.1
-
-	// Added in v.3.2
+	public static boolean moddedVillagerHeadwear;
 	public static String[] moddedVillagerHeadwearGraylist;
 	public static ArrayList<String> moddedVillagerHeadwearWhitelist = new ArrayList<String>();
 	public static ArrayList<String> moddedVillagerHeadwearBlacklist = new ArrayList<String>();
 
-	// Added in v3.2
 	public static String[] moddedVillagerModularSkins;
 	public static Map<String, ArrayList> moddedVillagerCareerSkins;
 	public static ArrayList<String> careerAsset_a;
@@ -118,15 +115,11 @@ public class GeneralConfig {
 	    treasureTrades = config.getBoolean("Treasure Trades", "villager professions", true, "High-level Librarians and Cartographers will offer enchanted books and treasures in exchange for " + Reference.MOD_NAME + " items.");
 	    writtenBookTrade = config.getBoolean("Written Book Trade", "villager professions", true, "Change the vanilla Librarian trade to require a single written book instead of two identical written books");
 	    
-	    // Changed in 3.1
 	    modernVillagerSkins = config.getBoolean("Modern Villager Profession Skins", "villager professions", true, "Use the composite 1.14 Villager skins");
-	    // Added in v3.1
 	    modernVillagerTrades = config.getBoolean("Modern Villager Trades", "villager professions", true, "Use JE 1.14 / BE 1.12 trade offerings and add the Mason villager");
 
-	    // Added in v3.1.1
 	    moddedVillagerHeadwear = config.getBoolean("Modded Villager Headwear", "villager professions", false, "If modern skins are enabled: renders the headwear layer for non-vanilla villager professions, if one exists.");
-
-	    // Added in v.3.2
+	    
 	    moddedVillagerHeadwearGraylist = config.getStringList("Modded Villager Headwear Graylist", "villager professions", new String[]{
 				"forestry:apiarist", // Forestry Apiarist
 				"-openblocks:radio", // Open Blocks Music Merchant
@@ -150,7 +143,6 @@ public class GeneralConfig {
 	    	}
 	    }
 
-	    // Added in v3.2
 	    moddedVillagerModularSkins = config.getStringList("Modded Villager Modular Skins", "villager professions", new String[]{
 				"for_apiarist|for_apiarist|forestry:apiarist", // Forestry
 				"for_arborist|for_arborist|forestry:arborist", // Forestry
@@ -388,7 +380,7 @@ public class GeneralConfig {
 				"endcity|hardcoreenderdragon_EndTower|Dungeon Tower|The End|endcity|",
 				"endcity|hardcoreenderdragon_EndIsland|Laboratory|The End|endcity|"
 				},
-				"List of mod structures that can be named with a Codex, or by right-clicking an entity in that structure (optional)."
+				"List of mod structures that can be named with a Codex, or by right-clicking an entity in that structure (optional). "
 				+ "Structures must have been generated in a manner similarly to vanilla (e.g. Galacticraft Moon Villages).\n"
 				+ "Format is: nameType|structureType|structureTitle|dimensionName|bookType|entityClassPath\n"
 				+ "nameType is your choice of name pool for the structure. Options: village, mineshaft, temple, stronghold, fortress, monument, endcity, mansion, alienvillage\n"
@@ -448,7 +440,7 @@ public class GeneralConfig {
 		
 	    //PMLostMinerProfession = config.getString("PMLostMinerProfession", "Mapping Professions", "Miner", "The career displayed for Primitive Mobs's Lost Miner. Blank this out to display no profession regardless of addJobToName.");
 	    PMLostMinerProfessionMap = config.getInt("PM Lost Miner Profession ID", "Mod Integration", 3, 0, 5,
-	    		"Which vanilla archetype the traveling merchant emulates in order to generate hint pages.\n"
+	    		"Which vanilla archetype the lost miner emulates in order to generate hint pages.\n"
 				+ "Use this reference:\n"
 				+ "-1=None\n"
 				+ "0=Farmer\n"
