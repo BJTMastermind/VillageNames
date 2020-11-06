@@ -116,10 +116,13 @@ public class GeneralConfig {
 
 	    moddedVillagerHeadwear = config.getBoolean("Modded Villager Headwear", "villager professions", false, "If modern skins are enabled: renders the headwear layer for non-vanilla villager professions, if one exists.");
 	    
-	    moddedVillagerHeadwearGraylist = config.getStringList("Modded Villager Headwear Graylist", "villager professions", new String[]{
+	    moddedVillagerHeadwearGraylist = config.getStringList("Modded Villager Headwear Graylist", "villager professions", new String[]
+	    		{
 				"forestry:apiarist", // Forestry Apiarist
 				"-openblocks:radio", // Open Blocks Music Merchant
 				"bewitchment:alchemist", // Bewitchment Alchemist... not sure if this is the ID because I can't get the thing to load
+				// Extra Utilities 2
+				"extrautils2:alchemist",
 	    		},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers. A normal value will be whitelisted: it will display that villager's headwear layer even if Modded Villager Headwear is false. "
 	    		+ "Adding a negative sign in front of the ID int will blacklist the profession so that its headwear layer never renders.");
@@ -139,16 +142,29 @@ public class GeneralConfig {
 	    	}
 	    }
 
-	    moddedVillagerModularSkins = config.getStringList("Modded Villager Modular Skins", "villager professions", new String[]{
+	    moddedVillagerModularSkins = config.getStringList("Modded Villager Modular Skins", "villager professions", new String[]
+	    		{
 				"for_apiarist|for_apiarist|forestry:apiarist", // Forestry
 				"for_arborist|for_arborist|forestry:arborist", // Forestry
 				"fa_archaeologist||fossil:archeologist", // Fossils and Archaeology
 				"rc_engineer|rc_engineer|railcraft:trackman", // Railcraft
 				"ob_musicmerchant||openblocks:radio", // Open Blocks
 				"myc_archivist||mystcraft:archivist", // Mystcraft
-				"hac_researcher|hac_researcher|dcs_climate:agri_researcher", // HeatAndClimateMod -v3.2.3
-				"hac_researcher|hac_researcher|dcs_climate:engineer", // HeatAndClimateMod -v3.2.3
-				"hac_trader|hac_trader|dcs_climate:trader", // HeatAndClimateMod -v3.2.3
+				"hac_researcher|hac_researcher|dcs_climate:agri_researcher", // HeatAndClimateMod
+				"hac_researcher|hac_researcher|dcs_climate:engineer", // HeatAndClimateMod
+				"hac_trader|hac_trader|dcs_climate:trader", // HeatAndClimateMod
+				// Actually Additions
+				"aa_engineer|aa_engineer|actuallyadditions:engineer",
+				"aa_jam|aa_jam|actuallyadditions:jamguy",
+				// Cyclic
+				"cm_druid|cm_druid|cyclicmagic:druid",
+				"cm_sage|cm_sage|cyclicmagic:sage",
+				// Extra Utilities 2
+				"eu_alchemist|eu_alchemist|extrautils2:alchemist",
+				"eu_red_mechanic|eu_red_mechanic|extrautils2:red_mechanic",
+				"eu_shady_merchant|eu_shady_merchant|extrautils2:shady_merchant",
+				// MiniHeads
+				"mh_retailer|mh_retailer|miniheads:storeowner",
 	    		},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers to render in the modular skin style. Format is: careerAsset|zombieCareerAsset|professionID\n"+
 	    		"careerAsset: career skin png to be overlaid onto the villager, located in assets\\"+Reference.MOD_ID.toLowerCase()+"\\textures\\entity\\villager\\profession\n"+
@@ -412,7 +428,19 @@ public class GeneralConfig {
 				"Tinkerer|78943|5", // Tinkers Construct
 				"Enchanter|935153|2", 
 				"Stablehand|19940402|0", // ChocoCraft Plus
-				"Archivist|1210950779|1" // Mystcraft
+				"Archivist|1210950779|1", // Mystcraft
+				// Actually Additions
+				"Engineer|actuallyadditions:engineer|1",
+				"Jam Guy|actuallyadditions:jamguy|0",
+				// Cylic
+				"Druid|cyclicmagic:druid|2",
+				"Sage|cyclicmagic:sage|1",
+				// Extra Utilities 2
+				"Alchemist|extrautils2:alchemist|2",
+				"Mechanic|extrautils2:red_mechanic|3",
+				"Shady Merchant|extrautils2:shady_merchant|-1",
+				// MiniHeads
+				"Store Owner|miniheads:storeowner|-1",
 				},
 				"List of professions for other mods' villagers. Format is: Name|ID|pageType\n"
 				+ "Name is your choice of name for the profession.\n"

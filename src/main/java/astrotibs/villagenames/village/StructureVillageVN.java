@@ -130,7 +130,7 @@ public class StructureVillageVN
 	{0,1,2,3,};
 		
 	
-    public static List getStructureVillageWeightedPieceList(Random random, int villageSize, FunctionsVN.VillageType villageType)
+    public static List getStructureVillageWeightedPieceList(Random random, float villageSize, FunctionsVN.VillageType villageType)
     {
         ArrayList arraylist = new ArrayList();
         
@@ -208,7 +208,7 @@ public class StructureVillageVN
 	    	arraylist.add(new StructureVillagePieces.PieceWeight(StructureVillagePieces.House3.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic)));
         }
         
-        VillagerRegistry.addExtraVillageComponents(arraylist, random, villageSize);
+        VillagerRegistry.addExtraVillageComponents(arraylist, random, Math.floor(villageSize)+villageSize%1<random.nextFloat()?1:0); // Round to integer stochastically
 
 
 		ArrayList<String> classPaths = new ArrayList();
@@ -1031,11 +1031,11 @@ public class StructureVillageVN
     {
     	// Regenerate these if null
     	if (materialType==null) {materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(world, posX, posZ);}
-    	if (biome==null) {biome = world.getBiome(new BlockPos(posX, 0, posZ));}
+    	if (biome==null) {biome = world.getBiome(new BlockPos(posX, 64, posZ));}
     	
     	
     	// Top block level
-    	int surfaceY = searchDownward ? StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(posX, 0, posZ)).down().getY() : posY;
+    	int surfaceY = searchDownward ? StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, new BlockPos(posX, 64, posZ)).down().getY() : posY;
     	
     	// Raise Y to be at least below sea level
     	if (surfaceY < world.getSeaLevel()) {surfaceY = world.getSeaLevel()-1;}
@@ -1729,12 +1729,12 @@ public class StructureVillageVN
     	
         public StartVN() {}
 
-        public StartVN(BiomeProvider biomeProvider, int componentType, Random random, int posX, int posZ, List components, int terrainType)
+        public StartVN(BiomeProvider biomeProvider, int componentType, Random random, int posX, int posZ, List components, float villageSize)
         {
-            super(biomeProvider, componentType, random, posX, posZ, components, terrainType);
+            super(biomeProvider, componentType, random, posX, posZ, components, villageSize%1<random.nextFloat()?1:0);
             
-            Biome biome = biomeProvider.getBiome(new BlockPos(posX, 0, posZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
+            this.biome = biomeProvider.getBiome(new BlockPos(posX, 64, posZ));
+            Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
             
 			try {
             	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
@@ -1920,7 +1920,7 @@ public class StructureVillageVN
             	
             	BiomeProvider chunkManager= world.getBiomeProvider();
             	int posX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int posZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            	Biome biome = chunkManager.getBiome(new BlockPos(posX, 0, posZ));
+            	Biome biome = chunkManager.getBiome(new BlockPos(posX, 64, posZ));
     			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
                 
     			try {
@@ -1951,11 +1951,14 @@ public class StructureVillageVN
 
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	// Establish top and filler blocks, substituting Grass and Dirt if they're null
+        	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
+        	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Make dirt foundation
-			this.replaceAirAndLiquidDownwards(world, biomeDirtState, 1, -2, 1, structureBB);
+			this.replaceAirAndLiquidDownwards(world, biomeFillerState, 1, -2, 1, structureBB);
 			// Top with grass
-        	this.setBlockState(world, biomeGrassState, 1, -1, 1, structureBB);
+        	this.setBlockState(world, biomeTopState, 1, -1, 1, structureBB);
             
         	// Decor
             int[][] decorUVW = new int[][]{
