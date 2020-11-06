@@ -370,6 +370,8 @@ public class FunctionsVN
      */
     public static void modernizeVillagerTrades(EntityVillager villager)
     {
+    	if (villager.getProfession()<0 || villager.getProfession()>5) {return;} // Don't modify non-vanilla villager trades
+    	
     	Random random = villager.worldObj.rand;
     	ExtendedVillager ev = ExtendedVillager.get(villager);
     	final int professionLevel = ev.getProfessionLevel();
@@ -2505,10 +2507,13 @@ public class FunctionsVN
 								possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.beef, Math.max(10 - ev.getProfessionLevelVN() + 3, 1) ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 5) );
 								possibleHighButcherTrades.add(new MerchantRecipe( new ItemStack( Items.mutton, Math.max(8 - ev.getProfessionLevelVN() + 3, 1) ), (ItemStack)null, new ItemStack( Items.emerald, 1 ), 0, 5) ); // BE price
 								
-		    					while (true)
+								
+								// We'll comb through the possibilities until one is selected and added, or none are selected because they all match already-existing trades.
+		    					while (possibleHighButcherTrades.size()>0)
 		    					{
-		    						MerchantRecipe chosenRecipe = possibleHighButcherTrades.get(random.nextInt(possibleHighButcherTrades.size()));
-		    			        	
+		    						// Pop off a random recipe to evaluate. If we don't use it, it will be discarded.
+		    						MerchantRecipe chosenRecipe = possibleHighButcherTrades.remove(random.nextInt(possibleHighButcherTrades.size()));
+		    						
 		    			        	// 2: check to see if that type already exists on the list
 		    			        	boolean matched = false;
 		    			        	for (int i=0; i<buyingList.size(); i++)
@@ -2699,11 +2704,13 @@ public class FunctionsVN
 								itemStackColorizable = FunctionsVN.colorizeItemstack(itemStackColorizable, FunctionsVN.combineDyeColors(new int[]{random.nextInt(16), random.nextInt(16)}));
 								possibleExpertLeatherworkerTrades.add(new MerchantRecipe( new ItemStack( Items.emerald, Math.max(4 - 2*(ev.getProfessionLevelVN()-2), 1) ), (ItemStack)null, itemStackColorizable, 0, 2) );
 								
-								
-		    					while (true)
+
+								// We'll comb through the possibilities until one is selected and added, or none are selected because they all match already-existing trades.
+		    					while (possibleExpertLeatherworkerTrades.size()>0)
 		    					{
-		    						MerchantRecipe chosenRecipe = possibleExpertLeatherworkerTrades.get(random.nextInt(possibleExpertLeatherworkerTrades.size()));
-		    			        	
+		    						// Pop off a random recipe to evaluate. If we don't use it, it will be discarded.
+		    						MerchantRecipe chosenRecipe = possibleExpertLeatherworkerTrades.remove(random.nextInt(possibleExpertLeatherworkerTrades.size()));
+		    						
 		    			        	// 2: check to see if that type already exists on the list
 		    			        	boolean matched = false;
 		    			        	for (int i=0; i<buyingList.size(); i++)

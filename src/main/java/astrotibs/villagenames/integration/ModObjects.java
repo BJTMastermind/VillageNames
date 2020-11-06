@@ -126,7 +126,6 @@ public class ModObjects {
 	
 	// Quicksand
 	public static final String quicksandBOP_classPath = "biomesoplenty.common.block.BlockBOPSand";
- 	
 	
 	
 	// --- Items --- //
@@ -582,6 +581,30 @@ public class ModObjects {
 	{
 		return null;
 	}
+	
+	
+	// Trap door
+	/*
+	public static Block chooseModWoodenTrapdoor(int materialMeta)
+	{
+		if (materialMeta==0) {return Blocks.trapdoor;}
+		
+		Block modblock=null;
+		
+		switch (materialMeta)
+		{
+			case 1: modblock = Block.getBlockFromName(ModObjects.trapdoorSpruceMD); break;
+			case 2: modblock = Block.getBlockFromName(ModObjects.trapdoorBirchMD); break;
+			case 3: modblock = Block.getBlockFromName(ModObjects.trapdoorJungleMD); break;
+			case 4: modblock = Block.getBlockFromName(ModObjects.trapdoorAcaciaMD); break;
+			case 5: modblock = Block.getBlockFromName(ModObjects.trapdoorDarkOakMD); break;
+		}
+		if (modblock != null) {return modblock;}
+		
+		// If all else fails, grab the vanilla version
+		return Blocks.trapdoor;
+	}
+	*/
 	
 	// Wood block (has bark on all surfaces)
 	// Added as craftable in 1.13
