@@ -73,6 +73,7 @@ public class GeneralConfig {
 	public static boolean swampHutMushroomPot;
 	
 	public static String[] modDye;
+	public static String[] modLantern;
 	public static String[] modSandstone;
 	public static String[] modSmoothStone;
 	
@@ -120,10 +121,18 @@ public class GeneralConfig {
 
 	    moddedVillagerHeadwear = config.getBoolean("Modded Villager Headwear", "villager professions", false, "If modern skins are enabled: renders the headwear layer for non-vanilla villager professions, if one exists.");
 	    
-	    moddedVillagerHeadwearGraylist = config.getStringList("Modded Villager Headwear Graylist", "villager professions", new String[]{
+	    moddedVillagerHeadwearGraylist = config.getStringList("Modded Villager Headwear Graylist", "villager professions", new String[]
+	    		{
 				"forestry:apiarist", // Forestry Apiarist
 				"-openblocks:radio", // Open Blocks Music Merchant
 				"bewitchment:alchemist", // Bewitchment Alchemist... not sure if this is the ID because I can't get the thing to load
+				// Custom Ideas
+				"custom:guard",
+				// Extra Utilities 2
+				"extrautils2:alchemist",
+				// Tolkien Tweaks - Mobs Edition
+				"tolkienmobs:junk_dealer",
+				"totemexpansion:witchdoctor",
 	    		},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers. A normal value will be whitelisted: it will display that villager's headwear layer even if Modded Villager Headwear is false. "
 	    		+ "Adding a negative sign in front of the ID int will blacklist the profession so that its headwear layer never renders.");
@@ -143,17 +152,39 @@ public class GeneralConfig {
 	    	}
 	    }
 
-	    moddedVillagerModularSkins = config.getStringList("Modded Villager Modular Skins", "villager professions", new String[]{
+	    moddedVillagerModularSkins = config.getStringList("Modded Villager Modular Skins", "villager professions", new String[]
+	    		{
 				"for_apiarist|for_apiarist|forestry:apiarist", // Forestry
 				"for_arborist|for_arborist|forestry:arborist", // Forestry
 				"fa_archaeologist||fossil:archeologist", // Fossils and Archaeology
 				"rc_engineer|rc_engineer|railcraft:trackman", // Railcraft
 				"ob_musicmerchant||openblocks:radio", // Open Blocks
 				"myc_archivist||mystcraft:archivist", // Mystcraft
-				"bew_alchemist||bewitchment:alchemist", // Bewitchment -v3.2.3
-	    		"hac_researcher|hac_researcher|dcs_climate:agri_researcher", // HeatAndClimateMod -v3.2.3
-				"hac_researcher|hac_researcher|dcs_climate:engineer", // HeatAndClimateMod -v3.2.3
-				"hac_trader|hac_trader|dcs_climate:trader", // HeatAndClimateMod -v3.2.3
+				"bew_alchemist||bewitchment:alchemist", // Bewitchment
+	    		"hac_researcher|hac_researcher|dcs_climate:agri_researcher", // HeatAndClimateMod
+				"hac_researcher|hac_researcher|dcs_climate:engineer", // HeatAndClimateMod
+				"hac_trader|hac_trader|dcs_climate:trader", // HeatAndClimateMod
+				// Actually Additions
+				"aa_engineer|aa_engineer|actuallyadditions:engineer",
+				"aa_jam|aa_jam|actuallyadditions:jamguy",
+				// Custom Ideas
+				"custom_guard|custom_guard|custom:guard",
+				// Cyclic
+				"cm_druid|cm_druid|cyclicmagic:druid",
+				"cm_sage|cm_sage|cyclicmagic:sage",
+				// Extra Utilities 2
+				"eu_alchemist|eu_alchemist|extrautils2:alchemist",
+				"eu_red_mechanic|eu_red_mechanic|extrautils2:red_mechanic",
+				"eu_shady_merchant|eu_shady_merchant|extrautils2:shady_merchant",
+				// MiniHeads
+				"mh_retailer|mh_retailer|miniheads:storeowner",
+				// Tolkien Tweaks - Mobs Edition
+				"ttm_coin_trader|ttm_coin_trader|tolkienmobs:coin_trader",
+				"ttm_grocery_store|ttm_grocery_store|tolkienmobs:grocery_store",
+				"ttm_junk_trader|ttm_junk_trader|tolkienmobs:junk_dealer",
+				"ttm_pet_merchant|ttm_pet_merchant|tolkienmobs:pet_merchant",
+				// Totem Expansion
+				"te_witch_doctor||totemexpansion:witchdoctor",
 				},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers to render in the modular skin style. Format is: careerAsset|zombieCareerAsset|professionID\n"+
 	    		"careerAsset: career skin png to be overlaid onto the villager, located in assets\\"+Reference.MOD_ID.toLowerCase()+"\\textures\\entity\\villager\\profession\n"+
@@ -374,6 +405,13 @@ public class GeneralConfig {
  				},
  				"Priority order for referencing dye for villager trade offers. The version highest on the list and registered in your game will be used."
  				);
+
+	    modLantern = config.getStringList("Mod Priority: Lantern", "Mod Integration", new String[]{
+ 				"charm",
+	    		"futuremc",
+ 				},
+ 				"Priority order for referencing lanterns for village generation and villager trade offers. The version highest on the list and registered in your game will be used."
+ 				);
 	    
 	    modSandstone = config.getStringList("Mod Priority: Sandstone", "Mod Integration", new String[]{
  				"quark",
@@ -434,7 +472,28 @@ public class GeneralConfig {
 				"Engineer|railcraft:trackman|3", // Railcraft
 				"Music Merchant|openblocks:radio|5", // Open Blocks
 				"Archivist|mystcraft:archivist|1", // Mystcraft
-				"Alchemist|bewitchment:alchemist|2", // Bewitchment -v3.2.3
+				"Alchemist|bewitchment:alchemist|2", // Bewitchment
+				// Actually Additions
+				"Engineer|actuallyadditions:engineer|1",
+				"Jam Guy|actuallyadditions:jamguy|0",
+				// Custom Ideas
+				"Guard|custom:guard|-1",
+				// Cylic
+				"Druid|cyclicmagic:druid|2",
+				"Sage|cyclicmagic:sage|1",
+				// Extra Utilities 2
+				"Alchemist|extrautils2:alchemist|2",
+				"Mechanic|extrautils2:red_mechanic|3",
+				"Shady Merchant|extrautils2:shady_merchant|-1",
+				// MiniHeads
+				"Store Owner|miniheads:storeowner|-1",
+				// Tolkien Tweaks - Mobs Edition
+				"Coin Banker|tolkienmobs:coin_trader|0",
+				"Grocer|tolkienmobs:grocery_store|0",
+				"Junk Dealer|tolkienmobs:junk_dealer|5",
+				"Pet Supplier|tolkienmobs:pet_merchant|0",
+				// Totem Expansion
+				"Witch Doctor|totemexpansion:witchdoctor|2",
 				},
 				"List of professions for other mods' villagers. Format is: Name|ID|pageType\n"
 				+ "Name is your choice of name for the profession.\n"

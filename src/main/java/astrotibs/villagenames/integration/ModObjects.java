@@ -27,6 +27,7 @@ public class ModObjects {
 	public static final String DOM_BIOMESOPLENTY = "biomesoplenty";
 	public static final String DOM_FUTUREMC = "futuremc";
 	public static final String DOM_HARVESTCRAFT = "harvestcraft";
+	public static final String DOM_MALISISDOORS = "malisisdoors";
 	public static final String DOM_QUARK = "quark";
 	
 	
@@ -218,6 +219,7 @@ public class ModObjects {
 	
 	// Lantern
 	public static final String lanternFMC = DOM_FUTUREMC + ":lantern";
+	public static final String lanternCh = "charm:iron_lantern";
 	
 	// Loom
 	public static final String loomFMC = DOM_FUTUREMC + ":loom";
@@ -705,18 +707,48 @@ public class ModObjects {
 	// Lantern
     public static IBlockState chooseModLanternBlockState(boolean isHanging)
     {
-    	Block tryLantern = Block.getBlockFromName(ModObjects.lanternFMC);
-    	if (tryLantern!=null) {return tryLantern.getStateFromMeta(isHanging? 0:1);} // 1 is hanging, 0 is sitting, but they need to be assigned in reverse for some reason
+    	String[] modprioritylist = GeneralConfig.modLantern;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("charm"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.lanternCh);
+				if (modblock != null) {return modblock.getStateFromMeta(isHanging? 1:0);}
+			}
+			else if (mod.toLowerCase().equals("futuremc"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.lanternFMC);
+				if (modblock != null) {return modblock.getStateFromMeta(isHanging? 0:1);}
+			}
+		}
     	
     	// None are found, so return ordinary glowstone
     	return Blocks.GLOWSTONE.getDefaultState();
     }
 	public static Item chooseModLanternItem()
 	{
-		Item moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.lanternFMC));
-		if (moditem != null) {return moditem;}
+		String[] modprioritylist = GeneralConfig.modLantern;
 		
-		return null;
+		for (String mod : modprioritylist)
+		{
+			Item moditem=null;
+			
+			if (mod.toLowerCase().equals("charm"))
+			{
+				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.lanternCh));
+				if (moditem != null) {return moditem;}
+			}
+			else if (mod.toLowerCase().equals("futuremc"))
+			{
+				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.lanternFMC));
+				if (moditem != null) {return moditem;}
+			}
+		}
+    	
+    	return null;
 	}
 	
 	

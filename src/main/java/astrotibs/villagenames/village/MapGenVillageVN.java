@@ -52,13 +52,13 @@ public class MapGenVillageVN extends MapGenVillage
         }
 	}
 	
-    private int size;
+    private float size;
     private int distance; // Maximum distance between villages
     private int minTownSeparation; // Minimum distance between villages
     
     public MapGenVillageVN()
     {
-    	this.size = VillageGeneratorConfigHandler.newVillageSize-1; // Because vanilla is "0" and default provided value is 1
+    	this.size = 0; // Vanilla is "0" - will be changed on the fly at getStructureStart
     	
     	// Set spacings
     	this.minTownSeparation = VillageGeneratorConfigHandler.newVillageSpacingMedian - VillageGeneratorConfigHandler.newVillageSpacingSpread;
@@ -80,7 +80,7 @@ public class MapGenVillageVN extends MapGenVillage
 
             if (((String)entry.getKey()).equals("size"))
             {
-                this.size = MathHelper.getInt((String)entry.getValue(), this.size, 0);
+                this.size = (float) MathHelper.getDouble((String)entry.getValue(), this.size, 0);
             }
             else if (((String)entry.getKey()).equals("distance"))
             {
@@ -150,6 +150,25 @@ public class MapGenVillageVN extends MapGenVillage
     @Override
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
+    	// Get a random size for the village
+    	int order = VillageGeneratorConfigHandler.newVillageSizeNormalOrder;
+    	float randomizedVillageSize;
+    	
+    	do
+    	{
+    		// Obtain a random variate between 0 and 1, with a distribution based on the normal order value specified
+    		randomizedVillageSize=0; for (int n=0; n<VillageGeneratorConfigHandler.newVillageSizeNormalOrder; n++) {randomizedVillageSize+=this.rand.nextFloat();} randomizedVillageSize/=VillageGeneratorConfigHandler.newVillageSizeNormalOrder;
+        	// Scale and offset the variate based on the maximum, minimum, and mode values wanted
+    		double halfrange = MathHelper.absMax(VillageGeneratorConfigHandler.newVillageSizeMaximum-VillageGeneratorConfigHandler.newVillageSizeMode, VillageGeneratorConfigHandler.newVillageSizeMode-VillageGeneratorConfigHandler.newVillageSizeMinimum);
+    		randomizedVillageSize *= (2*halfrange);
+        	randomizedVillageSize += (VillageGeneratorConfigHandler.newVillageSizeMode - halfrange);
+    	}
+    	// Keep drawing until the value is within the range specified
+    	while (randomizedVillageSize>VillageGeneratorConfigHandler.newVillageSizeMaximum || randomizedVillageSize<VillageGeneratorConfigHandler.newVillageSizeMinimum);
+    	
+    	this.size = randomizedVillageSize-1F;
+    	
+    	// Return the village starter
         return new MapGenVillageVN.Start(this.world, this.rand, chunkX, chunkZ, this.size);
     }
     
@@ -161,7 +180,7 @@ public class MapGenVillageVN extends MapGenVillage
         
         public Start() {}
 
-        public Start(World world, Random random, int chunkX, int chunkZ, int villageSize)
+        public Start(World world, Random random, int chunkX, int chunkZ, float villageSize)
         {
             super(chunkX, chunkZ);
 
