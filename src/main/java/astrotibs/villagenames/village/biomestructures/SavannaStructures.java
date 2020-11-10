@@ -5167,6 +5167,7 @@ public class SavannaStructures
         	
         	// Barrels
     		IBlockState barrelState = ModObjects.chooseModBarrelBlockState();
+    		boolean isChestType=(barrelState==null);
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward
@@ -5180,9 +5181,9 @@ public class SavannaStructures
             })
             {
     			// Set the barrel, or a chest if it's not supported
-    			if (barrelState==null) {barrelState = Blocks.CHEST.getDefaultState();}
+    			if (isChestType) {barrelState = Blocks.CHEST.getDefaultState();}
     			this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(barrelState.getBlock()==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(isChestType?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
             }
             
             
