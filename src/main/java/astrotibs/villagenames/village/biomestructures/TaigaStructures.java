@@ -3580,6 +3580,7 @@ public class TaigaStructures
         	
         	// Barrels
     		Block barrelBlock = ModObjects.chooseModBarrelBlockState();
+    		boolean isChestType=(barrelBlock==null);
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward

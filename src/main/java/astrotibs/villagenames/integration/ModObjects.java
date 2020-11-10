@@ -27,7 +27,6 @@ public class ModObjects {
 	public static final String DOM_BIOMESOPLENTY = "biomesoplenty";
 	public static final String DOM_FUTUREMC = "futuremc";
 	public static final String DOM_HARVESTCRAFT = "harvestcraft";
-	public static final String DOM_MALISISDOORS = "malisisdoors";
 	public static final String DOM_QUARK = "quark";
 	
 	
