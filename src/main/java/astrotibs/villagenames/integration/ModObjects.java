@@ -25,7 +25,6 @@ public class ModObjects {
 	// Constantly referenced domain names
 	public static final String DOM_BIOMESOPLENTY = "biomesoplenty";
 	public static final String DOM_HARVESTCRAFT = "harvestcraft";
-	public static final String DOM_MALISISDOORS = "malisisdoors";
 	public static final String DOM_QUARK = "quark";
 	
 
