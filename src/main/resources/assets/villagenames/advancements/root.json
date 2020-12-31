@@ -16,8 +16,12 @@
         "announce_to_chat": false
     },
     "criteria": {
-        "impossible": {
-            "trigger": "minecraft:impossible"
+        "archaeologist": {
+            "trigger": "archaeologist"
+        },
+        "ghosttown": {
+            "trigger": "ghosttown"
         }
-    }
+    },
+    "requirements": [["archaeologist", "ghosttown"]]
 }

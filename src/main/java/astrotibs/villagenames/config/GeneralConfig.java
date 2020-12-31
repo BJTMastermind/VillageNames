@@ -71,7 +71,9 @@ public class GeneralConfig {
 	public static boolean treasureTrades;
 	public static boolean writtenBookTrade;
 	public static boolean swampHutMushroomPot;
-	
+
+	public static String[] modBountifulStone;
+	public static String[] modCampfire;
 	public static String[] modDye;
 	public static String[] modLantern;
 	public static String[] modSandstone;
@@ -185,6 +187,8 @@ public class GeneralConfig {
 				"ttm_pet_merchant|ttm_pet_merchant|tolkienmobs:pet_merchant",
 				// Totem Expansion
 				"te_witch_doctor||totemexpansion:witchdoctor",
+				// ChocoCraft Plus
+				"ccp_stablehand||chococraftplus:stablehand",
 				},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers to render in the modular skin style. Format is: careerAsset|zombieCareerAsset|professionID\n"+
 	    		"careerAsset: career skin png to be overlaid onto the villager, located in assets\\"+Reference.MOD_ID.toLowerCase()+"\\textures\\entity\\villager\\profession\n"+
@@ -396,6 +400,20 @@ public class GeneralConfig {
 		//--------------Mod Integration-----------------//
 
 		harvestcraftCropFarmRate = config.getFloat("Crop rate: Harvestcraft", "Mod Integration", 0.25F, 0F, 1F, "Generate Harvestcraft crops in farms. Only used with Village Generator. Set to 0 for no HC crops.");
+
+	    modBountifulStone = config.getStringList("Mod Priority: Bountiful Stone", "Mod Integration", new String[]{
+	    		"quark",
+ 				"vanillabuildersextension",
+ 				},
+ 				"Priority order for referencing Granite, Diorite, and Andesite for things like walls and stairs. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+		modCampfire = config.getStringList("Mod Priority: Campfire", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"toughasnails",
+ 				},
+ 				"Priority order for referencing dye for villager trade offers. The version highest on the list and registered in your game will be used."
+ 				);
 		
 	    modDye = config.getStringList("Mod Priority: Dye", "Mod Integration", new String[]{
 	    		"futuremc",
@@ -416,11 +434,12 @@ public class GeneralConfig {
 	    modSandstone = config.getStringList("Mod Priority: Sandstone", "Mod Integration", new String[]{
  				"quark",
 	    		"futuremc",
+	    		"vanillabuildersextension",
  				},
  				"Priority order for referencing sandstone variations for village generation. The version highest on the list and registered in your game will be used."
  				);
 	    
-	    modSmoothStone = config.getStringList("Mod Priority: Sandstone", "Mod Integration", new String[]{
+	    modSmoothStone = config.getStringList("Mod Priority: Smooth Stone", "Mod Integration", new String[]{
  				"quark",
 	    		"futuremc",
  				},

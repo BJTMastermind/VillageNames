@@ -28,6 +28,7 @@ public class ModObjects {
 	public static final String DOM_FUTUREMC = "futuremc";
 	public static final String DOM_HARVESTCRAFT = "harvestcraft";
 	public static final String DOM_QUARK = "quark";
+	public static final String DOM_VANILLABUILDERSEXTENSION = "vbe";
 	
 	
     // ---------------- //
@@ -100,6 +101,7 @@ public class ModObjects {
 	
 	// Campfire
 	public static final String campfireFMC = DOM_FUTUREMC + ":campfire";
+	public static final String campfireTAN = "toughasnails:campfire";
 	// Future Versions's Campfire sucks
 
 	// Cartography Table
@@ -255,7 +257,11 @@ public class ModObjects {
 	
 	// Stairs
 	public static final String dioriteStairs_Qu = DOM_QUARK + ":stone_diorite_stairs";
+	public static final String dioriteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsdiorite";
 	public static final String graniteStairs_Qu = DOM_QUARK + ":stone_granite_stairs";
+	public static final String graniteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsgranite";
+	public static final String smoothSandstoneStairs_white_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairssandstonesmooth";
+	public static final String smoothSandstoneStairs_red_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsredsandstonesmooth";
 	
 	// Stone cutter
 	public static final String stoneCutterFMC = DOM_FUTUREMC + ":stonecutter";
@@ -290,12 +296,16 @@ public class ModObjects {
 	public static final String trapdoorDarkOakQu = DOM_QUARK + ":dark_oak_trapdoor";
 
 	// Walls
-	public static final String sandstoneWall_white_Qu = DOM_QUARK + ":sandstone_wall"; 
-	public static final String sandstoneWall_red_Qu = DOM_QUARK + ":red_sandstone_wall"; 
+	public static final String sandstoneWall_white_Qu = DOM_QUARK + ":sandstone_wall";
+	public static final String sandstoneWall_white_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallsandstone";
 	public static final String sandstoneWall_white_FMC = DOM_FUTUREMC + ":sandstone_wall"; 
+	public static final String sandstoneWall_red_Qu = DOM_QUARK + ":red_sandstone_wall";
+	public static final String sandstoneWall_red_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallredsandstone";
 	public static final String sandstoneWall_red_FMC = DOM_FUTUREMC + ":red_sandstone_wall"; 
 	public static final String dioriteWall_Qu = DOM_QUARK + ":stone_diorite_wall";
+	public static final String dioriteWall_VBE = DOM_VANILLABUILDERSEXTENSION + ":walldiorite";
 	public static final String graniteWall_Qu = DOM_QUARK + ":stone_granite_wall";
+	public static final String graniteWall_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallgranite";
 	
 	
 	// --------------------------- //
@@ -429,36 +439,65 @@ public class ModObjects {
      */
 	public static IBlockState chooseModCampfireBlockState(int relativeOrientation, EnumFacing coordBaseMode)
 	{
-		int horizIndex = coordBaseMode.getHorizontalIndex();
+    	String[] modprioritylist = GeneralConfig.modCampfire;
 		
-		Block tryCampfire = Block.getBlockFromName(ModObjects.campfireFMC);
-		
-		int campfireMeta=0;
-		
-		if (tryCampfire!=null)
+		for (String mod : modprioritylist)
 		{
+			Block modblock=null;
 			
-    		switch (relativeOrientation)
-    		{
-    		case 0: // Facing away
-    			campfireMeta = new int[]{4,5,6,7}[MathHelper.clamp(horizIndex,0,3)]; break;
-    		case 1: // Facing right
-    			campfireMeta = new int[]{7,4,7,4}[MathHelper.clamp(horizIndex,0,3)]; break;
-    		case 2: // Facing you
-    			campfireMeta = new int[]{6,7,4,5}[MathHelper.clamp(horizIndex,0,3)]; break;
-    		case 3: // Facing left
-    			campfireMeta = new int[]{5,6,5,6}[MathHelper.clamp(horizIndex,0,3)]; break;
-    		}
-			
-			return tryCampfire.getStateFromMeta(campfireMeta);
+			if (mod.toLowerCase().equals("futuremc"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.campfireFMC);
+				
+				if (modblock!=null)
+				{
+					int horizIndex = coordBaseMode.getHorizontalIndex();
+					int campfireMeta=0;
+					
+		    		switch (relativeOrientation)
+		    		{
+		    		case 0: // Facing away
+		    			campfireMeta = new int[]{4,5,6,7}[MathHelper.clamp(horizIndex,0,3)]; break;
+		    		case 1: // Facing right
+		    			campfireMeta = new int[]{7,4,7,4}[MathHelper.clamp(horizIndex,0,3)]; break;
+		    		case 2: // Facing you
+		    			campfireMeta = new int[]{6,7,4,5}[MathHelper.clamp(horizIndex,0,3)]; break;
+		    		case 3: // Facing left
+		    			campfireMeta = new int[]{5,6,5,6}[MathHelper.clamp(horizIndex,0,3)]; break;
+		    		}
+					
+					return modblock.getStateFromMeta(campfireMeta);
+				}
+			}
+			else if (mod.toLowerCase().equals("toughasnails"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.campfireTAN);
+				if (modblock != null) {return modblock.getStateFromMeta(1);} // 1 is "lit"
+			}
 		}
-		
+    	
+		// Return upright torch by default
 		return Blocks.TORCH.getStateFromMeta(0);
 	}
 	public static Item chooseModCampfireItem()
 	{
-		Item moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.campfireFMC));
-		if (moditem != null) {return moditem;}
+    	String[] modprioritylist = GeneralConfig.modCampfire;
+		
+		for (String mod : modprioritylist)
+		{
+			Item moditem=null;
+			
+			if (mod.toLowerCase().equals("futuremc"))
+			{
+				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.campfireFMC));
+				if (moditem != null) {return moditem;}
+			}
+			else if (mod.toLowerCase().equals("toughasnails"))
+			{
+				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.campfireTAN));
+				if (moditem != null) {return moditem;}
+			}
+		}
 		
 		return null;
 	}
@@ -505,22 +544,46 @@ public class ModObjects {
 	// Added in 1.14
 	public static Block chooseModDioriteStairsBlock()
 	{
-		Block modblock=null;
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
 		
-		modblock = Block.getBlockFromName(ModObjects.dioriteStairs_Qu);
-		if (modblock != null) {return modblock;}
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_Qu);
+				if (modblock != null) {return modblock;}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_VBE);
+				if (modblock != null) {return modblock;}
+			}
+		}
 		
-		// TODO - Botania available in 1.10
 		return null;
 	}
 	public static IBlockState chooseModDioriteWallState()
 	{
-		Block modblock=null;
+    	String[] modprioritylist = GeneralConfig.modBountifulStone;
 		
-		modblock = Block.getBlockFromName(ModObjects.dioriteWall_Qu);
-		if (modblock != null) {return modblock.getDefaultState();}
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.dioriteWall_Qu);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.dioriteWall_VBE);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+		}
 		
-		// TODO - Botania available in 1.10
 		return null;
 	}
 	
@@ -668,22 +731,46 @@ public class ModObjects {
 	// Added in 1.14
 	public static Block chooseModGraniteStairsBlock()
 	{
-		Block modblock=null;
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
 		
-		modblock = Block.getBlockFromName(ModObjects.graniteStairs_Qu);
-		if (modblock != null) {return modblock;}
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.graniteStairs_Qu);
+				if (modblock != null) {return modblock;}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.graniteStairs_VBE);
+				if (modblock != null) {return modblock;}
+			}
+		}
 		
-		// TODO - Botania available in 1.10
 		return null;
 	}
 	public static IBlockState chooseModGraniteWallState()
 	{
-		Block modblock=null;
+    	String[] modprioritylist = GeneralConfig.modBountifulStone;
 		
-		modblock = Block.getBlockFromName(ModObjects.graniteWall_Qu);
-		if (modblock != null) {return modblock.getDefaultState();}
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.graniteWall_Qu);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.graniteWall_VBE);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+		}
 		
-		// TODO - Botania available in 1.10
 		return null;
 	}
 	
@@ -889,20 +976,10 @@ public class ModObjects {
 	 */
 	public static IBlockState chooseModSmoothSandstoneSlab(boolean upper, boolean isred)
 	{
-		Block modblock;
+		Block modobject = Block.getBlockFromName(isred ? ModObjects.smoothRedSandstoneSlabQu : ModObjects.smoothSandstoneSlabQu);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
 		
-		if (isred)
-		{
-			modblock = Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu);
-			if (modblock != null) {return modblock.getStateFromMeta(upper?8:0);}
-			else {return Blocks.STONE_SLAB2.getStateFromMeta(upper?8:0);}
-		}
-		else
-		{
-			modblock = Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu);
-			if (modblock != null) {return modblock.getStateFromMeta(upper?8:0);}
-			else {return Blocks.STONE_SLAB.getStateFromMeta(upper?9:1);}
-		}
+		return isred ? Blocks.STONE_SLAB2.getStateFromMeta(upper?8:0) : Blocks.STONE_SLAB.getStateFromMeta(upper?9:1);
 	}
 	
 	
@@ -912,6 +989,9 @@ public class ModObjects {
 	 */
 	public static Block chooseModSmoothSandstoneStairsBlock(boolean isRed)
 	{
+		Block modblock = Block.getBlockFromName(isRed ? ModObjects.smoothSandstoneStairs_red_VBE : ModObjects.smoothSandstoneStairs_white_VBE);
+		if (modblock != null) {return modblock;}
+		
 		return isRed ? Blocks.RED_SANDSTONE_STAIRS : Blocks.SANDSTONE_STAIRS;
 	}
 	
@@ -932,6 +1012,10 @@ public class ModObjects {
 			else if (mod.toLowerCase().equals("futuremc"))
 			{
 				modobject = Block.getBlockFromName(isRed ? ModObjects.sandstoneWall_red_FMC : ModObjects.sandstoneWall_white_FMC);
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(isRed ? ModObjects.sandstoneWall_red_VBE : ModObjects.sandstoneWall_white_VBE);
 			}
 			
 			if (modobject != null) {return modobject.getDefaultState();}

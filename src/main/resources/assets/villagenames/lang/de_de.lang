@@ -1,0 +1,66 @@
+# 1.7.10 version
+
+# Items
+item.villagenames:codex.name=Kodex
+item.villagenames:villagebook.name=Dorfsbuch
+item.villagenames:strongholdbook.name=Festungsbuch
+item.villagenames:templebook.name=Tempelsbuch
+item.villagenames:mineshaftbook.name=Minenbuch
+item.villagenames:monumentbook.name=Monumentsbuch
+item.villagenames:mansionbook.name=Anwesensbuch
+item.villagenames:fortressbook.name=Netherfestungsbuch
+item.villagenames:endcitybook.name=Endsiedlungsbuch
+item.villagenames:jungletemplebook.name=Dschungeltempelbuch
+item.villagenames:desertpyramidbook.name=Wüstentempelbuch
+item.villagenames:swamphutbook.name=Sumpfhüttenbuch
+item.villagenames:igloobook.name=Iglubuch
+item.villagenames:moonvillagebook.name=Monddorfsbuch
+item.villagenames:koentusvillagebook.name=Koentusdorfsbuch
+item.villagenames:fronosvillagebook.name=Fronosdorfsbuch
+item.villagenames:nibiruvillagebook.name=Nibirudorfsbuch
+item.villagenames:abandonedbasebook.name=Verlassene-Basis-Buch
+
+
+# Custom Blocks
+tile.villagenames:lunarinGoldBrick.name=Lunarin-Goldziegel
+tile.villagenames:lunarinIronBrick.name=Lunarin-Eisenziegel
+
+
+# Villager careers/professions
+entity.Villager.farmer=Bauer
+entity.Villager.fisherman=Fischer
+entity.Villager.shepherd=Schäfer
+entity.Villager.fletcher=Pfeilmacher
+entity.Villager.librarian=Bibliothekar
+entity.Villager.cleric=Geistlicher
+entity.Villager.armor=Panzermacher
+entity.Villager.weapon=Waffenschmied
+entity.Villager.tool=Grobschmied
+entity.Villager.butcher=Fleischer
+entity.Villager.leather=Gerber
+entity.Villager.nitwit=Nichtsnutz
+entity.Villager.cartographer=Kartograph
+# This one's custom because there was no such title in vanilla
+entity.Villager.blacksmith=Schmied
+entity.Villager.mason=Maurer
+
+
+# Config Menu
+config.villagenames.global.tooltip=Kontrolliert alles, außer den Silbenpool und die Dorfgeneration
+config.villagenames.villagegenerator.tooltip=Einstellungen für die Dorfgeneration
+config.villagenames.syllables.tooltip=Sammlungen für die Silbenpools der Namensgeneration
+
+
+# Advancements
+advancements.villagenames.description=O, brave new world that has such people in't!
+# Root quote: William Shakespeare, The Tempest
+advancements.maxrep.title=§aSmaragdstandard
+advancements.maxrep.description=Erhalte das höchste Ansehen in einem Dorf
+advancements.archaeologist.title=§6Archäologe
+advancements.archaeologist.description=Identifiziere viele verschiedene Bauwerke
+advancements.minrep.title=§4Du bist ein Monster!
+advancements.minrep.description=Erhalte das niedrigste Ansehen in einem Dorf
+advancements.ghosttown.title=Geisterstadt
+advancements.ghosttown.description=Erschaffe ein Dorfsbuch für ein leeres Dorf
+advancements.laputa.title=§cTreue
+advancements.laputa.description=Freunde dich mit einem einsamen Golem an

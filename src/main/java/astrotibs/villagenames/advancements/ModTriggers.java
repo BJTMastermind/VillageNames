@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
  * http://jabelarminecraft.blogspot.com/p/minecraft-modding-custom-triggers-aka.html
  */
 
-//  advancement grant AstroTibs only villagenames:archaeologist
+ // advancement grant AstroTibs only villagenames:archaeologist
 // advancement revoke AstroTibs only villagenames:archaeologist
 
 public class ModTriggers
@@ -78,27 +78,26 @@ public class ModTriggers
     
     public static void registerTriggers()
     {
-        // DEBUG
-        if(GeneralConfig.debugMessages) {LogHelper.info("Registering custom triggers");}
-        
-        Method method;
-
-        method = ReflectionHelper.findMethod(CriteriaTriggers.class, "register", "func_192118_a", ICriterionTrigger.class);
-
-        method.setAccessible(true);
-
-        for (int i=0; i < TRIGGER_ARRAY.length; i++)
-        {
-             try
-            {
-                method.invoke(null, TRIGGER_ARRAY[i]);
-            }
-            catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        } 
+    	// DEBUG
+    	if(GeneralConfig.debugMessages) {LogHelper.info("Registering custom triggers");}
+    	
+    	Method method;
+    	
+    	method = ReflectionHelper.findMethod(CriteriaTriggers.class, "register", "func_192118_a", ICriterionTrigger.class);
+    	
+    	method.setAccessible(true);
+    	
+    	for (int i=0; i < TRIGGER_ARRAY.length; i++)
+    	{
+    		try
+    		{
+    			method.invoke(null, TRIGGER_ARRAY[i]);
+    		}
+    		catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+    		{
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    	} 
     }
-    
 }
