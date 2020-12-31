@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -58,7 +59,10 @@ public class ModObjects {
 
 	// Bark
 	public static final String barkQu = DOM_QUARK + ":bark";
- 	
+	
+	// Campfire
+	public static final String campfireTAN = "toughasnails:campfire";
+	 	
 	// Crops
 	public static final String cropArtichokeHC = DOM_HARVESTCRAFT + ":pamartichokeCrop";
 	public static final String cropAsparagusHC = DOM_HARVESTCRAFT + ":pamasparagusCrop";
@@ -250,21 +254,22 @@ public class ModObjects {
 	
 	
 	// Campfire
-	/**
-     * Give this method the orientation of the campfire and the base mode of the structure it's in,
-     * and it'll give you back the required meta value for construction.
-     * For relative orientations, use:
-     * 
-     * HANGING:
-     * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-     *   
-     * STANDING:
-     * 0=fore-facing (away from you); 4=right-facing; 8=back-facing (toward you); 12=left-facing
-     */
 	public static IBlockState chooseModCampfireBlockState(int relativeOrientation, EnumFacing coordBaseMode)
 	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.campfireTAN);
+		if (modblock != null) {return modblock.getStateFromMeta(1);} // 1 is "lit"
+		
 		// No mod campfires exist. Return an upright torch.
 		return Blocks.TORCH.getDefaultState();
+	}
+	public static Item chooseModCampfireItem()
+	{
+    	Item moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.campfireTAN));
+		if (moditem != null) {return moditem;}
+		
+		return null;
 	}
 	
 	

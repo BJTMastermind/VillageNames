@@ -1,19 +1,19 @@
-# Item localizations
+# 1.9.4 version
+
+# Items
 item.villagenames:codex.name=Codex
-item.villagenames:endcitybook.name=End City Book
-item.villagenames:fortressbook.name=Fortress Book
-item.villagenames:mansionbook.name=Mansion Book
-item.villagenames:mineshaftbook.name=Mineshaft Book
-item.villagenames:monumentbook.name=Monument Book
+item.villagenames:villagebook.name=Village Book
 item.villagenames:strongholdbook.name=Stronghold Book
 item.villagenames:templebook.name=Temple Book
-item.villagenames:villagebook.name=Village Book
-
+item.villagenames:mineshaftbook.name=Mineshaft Book
+item.villagenames:monumentbook.name=Monument Book
+item.villagenames:mansionbook.name=Mansion Book
+item.villagenames:fortressbook.name=Fortress Book
+item.villagenames:endcitybook.name=End City Book
 item.villagenames:jungletemplebook.name=Jungle Temple Book
 item.villagenames:desertpyramidbook.name=Desert Pyramid Book
 item.villagenames:swamphutbook.name=Swamp Hut Book
 item.villagenames:igloobook.name=Igloo Book
-
 item.villagenames:moonvillagebook.name=Moon Village Book
 item.villagenames:koentusvillagebook.name=Koentus Village Book
 item.villagenames:fronosvillagebook.name=Fronos Village Book
@@ -21,13 +21,12 @@ item.villagenames:nibiruvillagebook.name=Nibiru Village Book
 item.villagenames:abandonedbasebook.name=Abandoned Base Book
 
 
-# Block localizations
+# Custom Blocks
 tile.villagenames:lunarinGoldBrick.name=Lunarin Style Gold Brick
 tile.villagenames:lunarinIronBrick.name=Lunarin Style Iron Brick
 
 
 # Backported materials
-
 tile.glazedTerracottaWhite.name=White Glazed Terracotta
 tile.glazedTerracottaOrange.name=Orange Glazed Terracotta
 tile.glazedTerracottaMagenta.name=Magenta Glazed Terracotta
@@ -99,6 +98,7 @@ tile.clayHardenedStained.orange.name=Orange Terracotta
 tile.clayHardenedStained.white.name=White Terracotta
 tile.clayHardened.name=Terracotta
 
+
 # Villager careers/professions
 entity.Villager.farmer=Farmer
 entity.Villager.fisherman=Fisherman
@@ -117,10 +117,12 @@ entity.Villager.cartographer=Cartographer
 entity.Villager.blacksmith=Blacksmith
 entity.Villager.mason=Mason
 
+
 # Config Menu
 config.villagenames.global.tooltip=Controls everything that's not name syllable pools or the village generator
 config.villagenames.villagegenerator.tooltip=Settings for the village generation system
 config.villagenames.syllables.tooltip=Collection of the pools of syllables accessible to the name generator
+
 
 # Achievements
 achievement.maxrep=§aEmerald Standard
@@ -133,6 +135,3 @@ achievement.ghosttown=Ghost Town
 achievement.ghosttown.desc=Create a Village Book for an empty village
 achievement.laputa=§cFidelity
 achievement.laputa.desc=Befriend a lonely golem
-
-# Subtitles
-subtitles.entity.endereye.launch=Eye of Ender shoots

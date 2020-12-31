@@ -36,7 +36,7 @@ public class CommonProxy {
 		MinecraftForge.EVENT_BUS.register( new WellDecorateEvent() );
 		MinecraftForge.EVENT_BUS.register( new ConfigReloader() );
 		MinecraftForge.EVENT_BUS.register( new SpawnNamingHandler() );
-		MinecraftForge.EVENT_BUS.register( new CapabilityAttach() ); //Added in v3.1
+		MinecraftForge.EVENT_BUS.register( new CapabilityAttach() );
 		if (GeneralConfig.codexChestLoot) MinecraftForge.EVENT_BUS.register(new ChestLootHandler());
 		
 		// Achievements

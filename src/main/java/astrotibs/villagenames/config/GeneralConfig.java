@@ -155,6 +155,8 @@ public class GeneralConfig {
 				"eu_alchemist|eu_alchemist|extrautils2:alchemist",
 				"eu_red_mechanic|eu_red_mechanic|extrautils2:red_mechanic",
 				"eu_shady_merchant|eu_shady_merchant|extrautils2:shady_merchant",
+				// ChocoCraft Plus
+				"ccp_stablehand||chococraftplus:stablehand",
 	    		},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers to render in the modular skin style. Format is: careerAsset|zombieCareerAsset|professionID\n"+
 	    		"careerAsset: career skin png to be overlaid onto the villager, located in assets\\"+Reference.MOD_ID.toLowerCase()+"\\textures\\entity\\villager\\profession\n"+
