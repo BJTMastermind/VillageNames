@@ -206,6 +206,10 @@ public class VillageGeneratorConfigHandler
 	public static String componentModernSnowyToolSmith1_string; public static ArrayList<Double> componentModernSnowyToolSmith1_vals;
 	public static String componentModernSnowyWeaponSmith1_string; public static ArrayList<Double> componentModernSnowyWeaponSmith1_vals;
 	public static String componentModernSnowyStreetDecor1_string; public static ArrayList<Double> componentModernSnowyStreetDecor1_vals;
+	
+	// Decor
+	public static boolean allowTaigaTroughs;
+	public static boolean restrictTaigaTroughs;
 
 	// Misc new village stuff
 	public static String[] componentVillageTypes;
@@ -867,6 +871,12 @@ public class VillageGeneratorConfigHandler
 		for (int i=1; i<modernDefaults.size(); i++) {modifiedDefaults.set(i, modernDefaults.get(i)*snowyHouses * snowyDecorToHouseRatio);}
 		componentModernSnowyStreetDecor1_string = config.getString(componentModern+"Snowy Road Decor", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modifiedDefaults), generationStatsForM+snowyVillages);
 		componentModernSnowyStreetDecor1_vals = parseDoubleArray(componentModernSnowyStreetDecor1_string, modifiedDefaults);
+		
+		
+		// --- Decor --- //
+		allowTaigaTroughs = config.getBoolean("Decor: Allow Taiga Troughs", Reference.CATEGORY_VILLAGE_GENERATOR, true, "Set to false to completely disallow the trough as decor in taiga villages");
+		restrictTaigaTroughs = config.getBoolean("Decor: Restrict Taiga Troughs", Reference.CATEGORY_VILLAGE_GENERATOR, true, "Limit taiga troughs only to the well or as street decor. "
+				+ "Setting this to false allows them in any flagged taiga decor location, at the risk of them cutting into the parent structure.");
 
 		
 		componentVillageTypes = config.getStringList("Component Village Types", Reference.CATEGORY_VILLAGE_GENERATOR,

@@ -653,10 +653,28 @@ public class FunctionsVN
 	    										));
 	    								
 	    								// Slot 4
-	    								// TODO - Campfire (Added 1.14)
-	    								merchantRecipeArray = new ArrayList<MerchantRecipe>();
-	    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Items.FISH, 6, 1 ), new ItemStack( Items.COOKED_FISH, 6, 1 ), 0, 5) );
-	    								buyingList.add(MathHelper.clamp_int(addToSlot++, 0, Math.max(buyingList.size()-1,0)), merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
+	    								// Campfire (Added 1.14)
+    		    						while (true)
+    			    					{
+    										moditem = ModObjects.chooseModCampfireItem();
+    										
+    										if (moditem != null)
+    										{
+    											buyingList.add(MathHelper.clamp_int(addToSlot++, 0, Math.max(buyingList.size()-1,0)),
+    													new MerchantRecipe(
+    												new ItemStack( Items.EMERALD, 2 ), (ItemStack)null, new ItemStack( moditem, 1 ), 0, 4
+    												));
+    											break;
+    										}
+    										else // User does not have campfires from any mods
+    										{
+    											merchantRecipeArray = new ArrayList<MerchantRecipe>();
+    		    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Items.FISH, 6, 1 ), new ItemStack( Items.COOKED_FISH, 6, 1 ), 0, 5) );
+    		    								buyingList.add(MathHelper.clamp_int(addToSlot++, 0, Math.max(buyingList.size()-1,0)), merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
+    		    								
+    		    								break;
+    										}
+    									}
 	    								
 	    								// Erase the old block...
 	    								eraseTrades(buyingList, addToSlot, cbs);

@@ -26,6 +26,7 @@ public class ModObjects {
 	public static final String DOM_BIOMESOPLENTY = "biomesoplenty";
 	public static final String DOM_HARVESTCRAFT = "harvestcraft";
 	public static final String DOM_QUARK = "quark";
+	public static final String DOM_VANILLABUILDERSEXTENSION = "vbe";
 	
 
     // ---------------- //
@@ -78,6 +79,9 @@ public class ModObjects {
 
 	// Bark
 	public static final String barkQu = DOM_QUARK + ":bark";
+	
+	// Campfire
+	public static final String campfireTAN = "toughasnails:campfire";
 	
 	// Colored Bed
 	public static final String coloredBedBlock_root_Qu = DOM_QUARK + ":colored_bed_";
@@ -153,14 +157,20 @@ public class ModObjects {
 	
 	// Smooth Sandstone Slab
 	public static final String smoothSandstoneSlabQu = DOM_QUARK + ":sandstone_smooth_slab";
+	public static final String smoothSandstoneSlabVBE = DOM_VANILLABUILDERSEXTENSION + ":slabSandStoneSmooth";
 	public static final String smoothRedSandstoneSlabQu = DOM_QUARK + ":red_sandstone_smooth_slab";
+	public static final String smoothRedSandstoneSlabVBE = DOM_VANILLABUILDERSEXTENSION + ":slabRedSandStoneSmooth";
 	
 	// Smooth Stone 
 	public static final String smoothStoneQu = DOM_QUARK + ":polished_stone";
 	
 	// Stairs
 	public static final String dioriteStairs_Qu = DOM_QUARK + ":stone_diorite_stairs";
+	public static final String dioriteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsDiorite";
 	public static final String graniteStairs_Qu = DOM_QUARK + ":stone_granite_stairs";
+	public static final String graniteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsGranite";
+	public static final String smoothSandstoneStairs_white_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsSandStoneSmooth";
+	public static final String smoothSandstoneStairs_red_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsRedSandStoneSmooth";
 
 	// Trapdoor
 	public static final String trapdoorSpruceQu = DOM_QUARK + ":spruce_trapdoor";
@@ -170,10 +180,14 @@ public class ModObjects {
 	public static final String trapdoorDarkOakQu = DOM_QUARK + ":dark_oak_trapdoor";
 	
 	// Walls
-	public static final String sandstoneWall_white_Qu = DOM_QUARK + ":sandstone_wall"; 
-	public static final String sandstoneWall_red_Qu = DOM_QUARK + ":red_sandstone_wall"; 
+	public static final String sandstoneWall_white_Qu = DOM_QUARK + ":sandstone_wall";
+	public static final String smoothSandstoneWall_white_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallSandStoneSmooth"; // There is no non-smooth wall
+	public static final String sandstoneWall_red_Qu = DOM_QUARK + ":red_sandstone_wall";
+	public static final String smoothSandstoneWall_red_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallRedSandStoneSmooth"; // There is no non-smooth wall
 	public static final String dioriteWall_Qu = DOM_QUARK + ":stone_diorite_wall";
+	public static final String dioriteWall_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallDiorite";
 	public static final String graniteWall_Qu = DOM_QUARK + ":stone_granite_wall";
+	public static final String graniteWall_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallGranite";
 	
 	
 	
@@ -324,8 +338,20 @@ public class ModObjects {
      */
 	public static IBlockState chooseModCampfireBlockState(int relativeOrientation, EnumFacing coordBaseMode)
 	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.campfireTAN);
+		if (modblock != null) {return modblock.getStateFromMeta(1);} // 1 is "lit"
+		
 		// No mod campfires exist. Return an upright torch.
 		return Blocks.TORCH.getDefaultState();
+	}
+	public static Item chooseModCampfireItem()
+	{
+    	Item moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.campfireTAN));
+		if (moditem != null) {return moditem;}
+		
+		return null;
 	}
 	
 	
@@ -372,22 +398,46 @@ public class ModObjects {
 	// Added in 1.14
 	public static Block chooseModDioriteStairsBlock()
 	{
-		Block modblock=null;
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
 		
-		modblock = Block.getBlockFromName(ModObjects.dioriteStairs_Qu);
-		if (modblock != null) {return modblock;}
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_Qu);
+				if (modblock != null) {return modblock;}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_VBE);
+				if (modblock != null) {return modblock;}
+			}
+		}
 		
-		// TODO - Botania available in 1.10
 		return null;
 	}
 	public static IBlockState chooseModDioriteWallState()
 	{
-		Block modblock=null;
+    	String[] modprioritylist = GeneralConfig.modBountifulStone;
 		
-		modblock = Block.getBlockFromName(ModObjects.dioriteWall_Qu);
-		if (modblock != null) {return modblock.getDefaultState();}
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.dioriteWall_Qu);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.dioriteWall_VBE);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+		}
 		
-		// TODO - Botania available in 1.10
 		return null;
 	}
 	
@@ -417,22 +467,46 @@ public class ModObjects {
 	// Added in 1.14
 	public static Block chooseModGraniteStairsBlock()
 	{
-		Block modblock=null;
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
 		
-		modblock = Block.getBlockFromName(ModObjects.graniteStairs_Qu);
-		if (modblock != null) {return modblock;}
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.graniteStairs_Qu);
+				if (modblock != null) {return modblock;}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.graniteStairs_VBE);
+				if (modblock != null) {return modblock;}
+			}
+		}
 		
-		// TODO - Botania available in 1.10
 		return null;
 	}
 	public static IBlockState chooseModGraniteWallState()
 	{
-		Block modblock=null;
+    	String[] modprioritylist = GeneralConfig.modBountifulStone;
 		
-		modblock = Block.getBlockFromName(ModObjects.graniteWall_Qu);
-		if (modblock != null) {return modblock.getDefaultState();}
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.graniteWall_Qu);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.graniteWall_VBE);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+		}
 		
-		// TODO - Botania available in 1.10
 		return null;
 	}
 	
@@ -550,20 +624,25 @@ public class ModObjects {
 	 */
 	public static IBlockState chooseModSmoothSandstoneSlab(boolean upper, boolean isred)
 	{
-		Block modblock;
+		String[] modprioritylist = GeneralConfig.modSandstone;
 		
-		if (isred)
+		for (String mod : modprioritylist)
 		{
-			modblock = Block.getBlockFromName(ModObjects.smoothRedSandstoneSlabQu);
-			if (modblock != null) {return modblock.getStateFromMeta(upper?8:0);}
-			else {return Blocks.STONE_SLAB2.getStateFromMeta(upper?8:0);}
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(isred ? ModObjects.smoothRedSandstoneSlabQu : ModObjects.smoothSandstoneSlabQu);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(isred ? ModObjects.smoothRedSandstoneSlabVBE : ModObjects.smoothSandstoneSlabVBE);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
 		}
-		else
-		{
-			modblock = Block.getBlockFromName(ModObjects.smoothSandstoneSlabQu);
-			if (modblock != null) {return modblock.getStateFromMeta(upper?8:0);}
-			else {return Blocks.STONE_SLAB.getStateFromMeta(upper?9:1);}
-		}
+		
+		return isred ? Blocks.STONE_SLAB2.getStateFromMeta(upper?8:0) : Blocks.STONE_SLAB.getStateFromMeta(upper?9:1);
 	}
 	
 	
@@ -573,6 +652,9 @@ public class ModObjects {
 	 */
 	public static Block chooseModSmoothSandstoneStairsBlock(boolean isRed)
 	{
+		Block modblock = Block.getBlockFromName(isRed ? ModObjects.smoothSandstoneStairs_red_VBE : ModObjects.smoothSandstoneStairs_white_VBE);
+		if (modblock != null) {return modblock;}
+		
 		return isRed ? Blocks.RED_SANDSTONE_STAIRS : Blocks.SANDSTONE_STAIRS;
 	}
 	
@@ -580,12 +662,23 @@ public class ModObjects {
 	// Sandstone Wall - Added in 1.14
 	public static IBlockState chooseModSandstoneWall(boolean isRed)
 	{
-		// TODO - Railcraft is 1.10
-		Block modblock=null;
-
-		if (isRed) {modblock = Block.getBlockFromName(ModObjects.sandstoneWall_red_Qu);}
-		else {modblock = Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu);}
-		if (modblock != null) {return modblock.getDefaultState();}
+		String[] modprioritylist = GeneralConfig.modSandstone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(isRed ? ModObjects.sandstoneWall_red_Qu : ModObjects.sandstoneWall_white_Qu);
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(isRed ? ModObjects.smoothSandstoneWall_red_VBE : ModObjects.smoothSandstoneWall_white_VBE);
+			}
+			
+			if (modobject != null) {return modobject.getDefaultState();}
+		}
 		
 		return null;
 	}

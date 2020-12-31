@@ -73,6 +73,9 @@ public class GeneralConfig {
 	public static boolean writtenBookTrade;
 	public static boolean swampHutMushroomPot;
 	
+	public static String[] modBountifulStone;
+	public static String[] modSandstone;
+	
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
 
@@ -166,6 +169,8 @@ public class GeneralConfig {
 				"eu_shady_merchant|eu_shady_merchant|extrautils2:shady_merchant",
 				// MiniHeads
 				"mh_retailer|mh_retailer|miniheads:storeowner",
+				// ChocoCraft Plus
+				"ccp_stablehand||chococraftplus:stablehand",
 	    		},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers to render in the modular skin style. Format is: careerAsset|zombieCareerAsset|professionID\n"+
 	    		"careerAsset: career skin png to be overlaid onto the villager, located in assets\\"+Reference.MOD_ID.toLowerCase()+"\\textures\\entity\\villager\\profession\n"+
@@ -373,6 +378,21 @@ public class GeneralConfig {
 		//--------------Mod Integration-----------------//
 
 		harvestcraftCropFarmRate = config.getFloat("Crop rate: Harvestcraft", "Mod Integration", 0.25F, 0F, 1F, "Generate Harvestcraft crops in farms. Only used with Village Generator. Set to 0 for no HC crops.");
+		
+	    modBountifulStone = config.getStringList("Mod Priority: Bountiful Stone", "Mod Integration", new String[]{
+	    		"quark",
+ 				"vanillabuildersextension",
+ 				},
+ 				"Priority order for referencing Granite, Diorite, and Andesite for e.g. villager trade offers. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modSandstone = config.getStringList("Mod Priority: Sandstone", "Mod Integration", new String[]{
+ 				"quark",
+	    		"vanillabuildersextension",
+ 				},
+ 				"Priority order for referencing sandstone variations for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
 		
 		// Mapping for modded structures, and the creatures that can name them
 		modStructureNames = config.getStringList("Mod Structures", "Mod Integration", new String[]{
