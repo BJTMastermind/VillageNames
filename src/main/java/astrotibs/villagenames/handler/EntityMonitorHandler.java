@@ -536,7 +536,7 @@ public class EntityMonitorHandler
         // --- Initialize villager trades and sync skin with client --- //
         
         else if (
-        		event.entity.getClass().toString().substring(6).equals(Reference.VILLAGER_CLASS) // Explicit vanilla villager class - v3.2.4
+        		event.entity.getClass().toString().substring(6).equals(Reference.VILLAGER_CLASS) // Explicit vanilla villager class
 				&& !event.entity.worldObj.isRemote
         		)
         {
@@ -558,12 +558,11 @@ public class EntityMonitorHandler
     		int careerLevel = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"});
         	
     		if (ev.getBiomeType()==-1) {ev.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
-    		if (ev.getSkinTone()==-99) {ev.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));} // v3.2
+    		if (ev.getSkinTone()==-99) {ev.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));}
     		
-    		// Added in v3.1
     		if (
     				(villager.ticksExisted + villager.getEntityId())%5 == 0 // Ticks intermittently, modulated so villagers don't deliberately sync.
-    				// v3.2: changed 5 to 4 because there are no Nitwits
+    				// Changed 5 to 4 because there are no Nitwits
     				&& ev.getProfession() >= 0 && (ev.getProfession() <=4 || GeneralConfig.professionID_a.indexOf(ev.getProfession())>-1) // This villager ID is specified in the configs
     				)
     		{
