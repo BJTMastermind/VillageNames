@@ -1081,7 +1081,11 @@ public class StructureVillageVN
     		{
     	    	IBlockState planks = getBiomeSpecificBlockState(Blocks.PLANKS.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, planks, 2);
+
+    			// Clear space above just in case it's a lilypad
+    			world.setBlockToAir(pos.up());
     			
+    			// Add log support
     			int yDownScan = surfaceY;
     			if (MathHelper.abs(posX)%2==0 && MathHelper.abs(posZ)%2==0)
     			{
