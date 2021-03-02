@@ -375,48 +375,57 @@ public class EntityInteractHandler {
 					)
 			{
 				// Randomly name an unnamed pet you own using a blank name tag
-				if (
-						(
-							(target instanceof EntityTameable
-							&& ((EntityTameable)target).isTamed()
-							&& ((EntityTameable)target).isOwner(player))
-							||
-							(target instanceof EntityHorse
-							&& ((EntityHorse)target).getOwnerUniqueId().equals(player.getUniqueID()))
-						)
-						
-						&& !target.hasCustomName())
+				
+				/*
+				 * give AstroTibs minecraft:name_tag 64 0 {display:{Name:"Larongom"}}
+				 * summon EntityHorse ~ ~ ~ {Tame:1, Owner:"AstroTibs"}
+				 * summon Wolf ~ ~ ~ {Owner:"AstroTibs"}
+				 */
+				try
 				{
 					if (
-							event.getHand() ==  EnumHand.MAIN_HAND
-							&& (!itemstackMain.hasDisplayName() || (itemstackMain.hasDisplayName() && itemstackMain.getDisplayName().equals("")))
+							(
+								(target instanceof EntityTameable
+								&& ((EntityTameable)target).isTamed()
+								&& ((EntityTameable)target).isOwner(player))
+								||
+								(target instanceof EntityHorse
+								&& ((EntityHorse)target).getOwnerUniqueId().equals(player.getUniqueID()))
 							)
+							
+							&& !target.hasCustomName())
 					{
-						// Apply the name here
-						String[] petname_a = NameGenerator.newRandomName("pet", random);
-						target.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
-						
-						// Consume the blank name tag if relevant
-						if (!player.capabilities.isCreativeMode) {itemstackMain.stackSize--;}
-						
-						return;
-					}
-					else if (
-							event.getHand() ==  EnumHand.OFF_HAND
-							&& (!itemstackOff.hasDisplayName() || (itemstackOff.hasDisplayName() && itemstackOff.getDisplayName().equals("")))
-							)
-					{
-						// Apply the name here
-						String[] petname_a = NameGenerator.newRandomName("pet", random);
-						target.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
-						
-						// Consume the blank name tag if relevant
-						if (!player.capabilities.isCreativeMode) {itemstackOff.stackSize--;}
-						
-						return;
+						if (
+								event.getHand() ==  EnumHand.MAIN_HAND
+								&& (!itemstackMain.hasDisplayName() || (itemstackMain.hasDisplayName() && itemstackMain.getDisplayName().equals("")))
+								)
+						{
+							// Apply the name here
+							String[] petname_a = NameGenerator.newRandomName("pet", random);
+							target.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
+							
+							// Consume the blank name tag if relevant
+							if (!player.capabilities.isCreativeMode) {itemstackMain.stackSize--;}
+							
+							return;
+						}
+						else if (
+								event.getHand() ==  EnumHand.OFF_HAND
+								&& (!itemstackOff.hasDisplayName() || (itemstackOff.hasDisplayName() && itemstackOff.getDisplayName().equals("")))
+								)
+						{
+							// Apply the name here
+							String[] petname_a = NameGenerator.newRandomName("pet", random);
+							target.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
+							
+							// Consume the blank name tag if relevant
+							if (!player.capabilities.isCreativeMode) {itemstackOff.stackSize--;}
+							
+							return;
+						}
 					}
 				}
-				
+				catch (Exception e) {LogHelper.error("Caught exception when naming a pet: " + e);}
 				
 				// Cancel naming an entity that has special name registration
 				if (
