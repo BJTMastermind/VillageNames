@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 public class ModObjects {
 	
 	// Constantly referenced domain names
+	public static final String DOM_ANIMANIA = "animania";
 	public static final String DOM_BIOMESOPLENTY = "biomesoplenty";
 	public static final String DOM_HARVESTCRAFT = "harvestcraft";
 	public static final String DOM_QUARK = "quark";
@@ -212,7 +213,164 @@ public class ModObjects {
 	// Kelp and Kelp Accessories
 	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
 
+	
+	
+	// ------------------------ //
+	// --- Animania animals --- //
+	// ------------------------ //
 
+	// --- Chicken --- //
+	// Male
+	public static final String RoosterLeghorn = DOM_ANIMANIA + ".RoosterLeghorn";
+	public static final String RoosterOrpington = DOM_ANIMANIA + ".RoosterOrpington";
+	public static final String RoosterPlymouthRock = DOM_ANIMANIA + ".RoosterPlymouthRock";
+	public static final String RoosterRhodeIslandRed = DOM_ANIMANIA + ".RoosterRhodeIslandRed";
+	public static final String RoosterWyandotte = DOM_ANIMANIA + ".RoosterWyandotte";
+	// Female
+	public static final String HenLeghorn = DOM_ANIMANIA + ".HenLeghorn";
+	public static final String HenOrpington = DOM_ANIMANIA + ".HenOrpington";
+	public static final String HenPlymouthRock = DOM_ANIMANIA + ".HenPlymouthRock";
+	public static final String HenRhodeIslandRed = DOM_ANIMANIA + ".HenRhodeIslandRed";
+	public static final String HenWyandotte = DOM_ANIMANIA + ".HenWyandotte";
+	// Baby
+	public static final String ChickLeghorn = DOM_ANIMANIA + ".ChickLeghorn";
+	public static final String ChickOrpington = DOM_ANIMANIA + ".ChickOrpington";
+	public static final String ChickPlymouthRock = DOM_ANIMANIA + ".ChickPlymouthRock";
+	public static final String ChickRhodeIslandRed = DOM_ANIMANIA + ".ChickRhodeIslandRed";
+	public static final String ChickWyandotte = DOM_ANIMANIA + ".ChickWyandotte";
+	
+	// --- Cow --- //
+	// Male
+	public static final String BullAngus = DOM_ANIMANIA + ".BullAngus";
+	public static final String BullFriesian = DOM_ANIMANIA + ".BullFriesian";
+	public static final String BullHereford = DOM_ANIMANIA + ".BullHereford";
+	public static final String BullHolstein = DOM_ANIMANIA + ".BullHolstein";
+	public static final String BullLonghorn = DOM_ANIMANIA + ".BullLonghorn";
+	// Female
+	public static final String CowAngus = DOM_ANIMANIA + ".CowAngus";
+	public static final String CowFriesian = DOM_ANIMANIA + ".CowFriesian";
+	public static final String CowHereford = DOM_ANIMANIA + ".CowHereford";
+	public static final String CowHolstein = DOM_ANIMANIA + ".CowHolstein";
+	public static final String CowLonghorn = DOM_ANIMANIA + ".CowLonghorn";
+	// Baby
+	public static final String CalfAngus = DOM_ANIMANIA + ".CalfAngus";
+	public static final String CalfFriesian = DOM_ANIMANIA + ".CalfFriesian";
+	public static final String CalfHereford = DOM_ANIMANIA + ".CalfHereford";
+	public static final String CalfHolstein = DOM_ANIMANIA + ".CalfHolstein";
+	public static final String CalfLonghorn = DOM_ANIMANIA + ".CalfLonghorn";
+	
+	// --- Goat --- //
+	// Male
+	public static final String buck_alpine = DOM_ANIMANIA + ".buck_alpine";
+	public static final String buck_angora = DOM_ANIMANIA + ".buck_angora";
+	public static final String buck_fainting = DOM_ANIMANIA + ".buck_fainting";
+	public static final String buck_kiko = DOM_ANIMANIA + ".buck_kiko";
+	public static final String buck_kinder = DOM_ANIMANIA + ".buck_kinder";
+	public static final String buck_nigerian_dwarf = DOM_ANIMANIA + ".buck_nigerian_dwarf";
+	public static final String buck_pygmy = DOM_ANIMANIA + ".buck_pygmy";
+	// Female
+	public static final String doe_alpine = DOM_ANIMANIA + ".doe_alpine";
+	public static final String doe_angora = DOM_ANIMANIA + ".doe_angora";
+	public static final String doe_fainting = DOM_ANIMANIA + ".doe_fainting";
+	public static final String doe_kiko = DOM_ANIMANIA + ".doe_kiko";
+	public static final String doe_kinder = DOM_ANIMANIA + ".doe_kinder";
+	public static final String doe_nigerian_dwarf = DOM_ANIMANIA + ".doe_nigerian_dwarf";
+	public static final String doe_pygmy = DOM_ANIMANIA + ".doe_pygmy";
+	// Baby
+	public static final String kid_alpine = DOM_ANIMANIA + ".kid_alpine";
+	public static final String kid_angora = DOM_ANIMANIA + ".kid_angora";
+	public static final String kid_fainting = DOM_ANIMANIA + ".kid_fainting";
+	public static final String kid_kiko = DOM_ANIMANIA + ".kid_kiko";
+	public static final String kid_kinder = DOM_ANIMANIA + ".kid_kinder";
+	public static final String kid_nigerian_dwarf = DOM_ANIMANIA + ".kid_nigerian_dwarf";
+	public static final String kid_pygmy = DOM_ANIMANIA + ".kid_pygmy";
+	
+	// --- Horse --- //
+	// Male
+	public static final String StallionDraftHorse = DOM_ANIMANIA + ".StallionDraftHorse";
+	// Female
+	public static final String MareDraftHorse = DOM_ANIMANIA + ".MareDraftHorse";
+	// Baby
+	public static final String FoalDraftHorse = DOM_ANIMANIA + ".FoalDraftHorse";
+
+	// --- Pig --- //
+	// Male
+	public static final String HogDuroc = DOM_ANIMANIA + ".HogDuroc";
+	public static final String HogHampshire = DOM_ANIMANIA + ".HogHampshire";
+	public static final String HogLargeBlack = DOM_ANIMANIA + ".HogLargeBlack";
+	public static final String HogLargeWhite = DOM_ANIMANIA + ".HogLargeWhite";
+	public static final String HogOldSpot = DOM_ANIMANIA + ".HogOldSpot";
+	public static final String HogYorkshire = DOM_ANIMANIA + ".HogYorkshire";
+	// Female
+	public static final String SowDuroc = DOM_ANIMANIA + ".SowDuroc";
+	public static final String SowHampshire = DOM_ANIMANIA + ".SowHampshire";
+	public static final String SowLargeBlack = DOM_ANIMANIA + ".SowLargeBlack";
+	public static final String SowLargeWhite = DOM_ANIMANIA + ".SowLargeWhite";
+	public static final String SowOldSpot = DOM_ANIMANIA + ".SowOldSpot";
+	public static final String SowYorkshire = DOM_ANIMANIA + ".SowYorkshire";
+	// Baby
+	public static final String PigletDuroc = DOM_ANIMANIA + ".PigletDuroc";
+	public static final String PigletHampshire = DOM_ANIMANIA + ".PigletHampshire";
+	public static final String PigletLargeBlack = DOM_ANIMANIA + ".PigletLargeBlack";
+	public static final String PigletLargeWhite = DOM_ANIMANIA + ".PigletLargeWhite";
+	public static final String PigletOldSpot = DOM_ANIMANIA + ".PigletOldSpot";
+	public static final String PigletYorkshire = DOM_ANIMANIA + ".PigletYorkshire";
+	
+	// --- Sheep --- //
+	// Male
+	public static final String ram_dorper = DOM_ANIMANIA + ".ram_dorper";
+	public static final String ram_dorset = DOM_ANIMANIA + ".ram_dorset";
+	public static final String ram_friesian = DOM_ANIMANIA + ".ram_friesian";
+	public static final String ram_jacob = DOM_ANIMANIA + ".ram_jacob";
+	public static final String ram_merino = DOM_ANIMANIA + ".ram_merino";
+	public static final String ram_suffolk = DOM_ANIMANIA + ".ram_suffolk";
+	// Female
+	public static final String ewe_dorper = DOM_ANIMANIA + ".ewe_dorper";
+	public static final String ewe_dorset = DOM_ANIMANIA + ".ewe_dorset";
+	public static final String ewe_friesian = DOM_ANIMANIA + ".ewe_friesian";
+	public static final String ewe_jacob = DOM_ANIMANIA + ".ewe_jacob";
+	public static final String ewe_merino = DOM_ANIMANIA + ".ewe_merino";
+	public static final String ewe_suffolk = DOM_ANIMANIA + ".ewe_suffolk";
+	// Baby
+	public static final String lamb_dorper = DOM_ANIMANIA + ".lamb_dorper";
+	public static final String lamb_dorset = DOM_ANIMANIA + ".lamb_dorset";
+	public static final String lamb_friesian = DOM_ANIMANIA + ".lamb_friesian";
+	public static final String lamb_jacob = DOM_ANIMANIA + ".lamb_jacob";
+	public static final String lamb_merino = DOM_ANIMANIA + ".lamb_merino";
+	public static final String lamb_suffolk = DOM_ANIMANIA + ".lamb_suffolk";
+
+
+
+	public static final String[] animania_chicken = new String[]{
+		RoosterLeghorn, RoosterOrpington, RoosterPlymouthRock, RoosterRhodeIslandRed, RoosterWyandotte,
+		HenLeghorn, HenOrpington, HenPlymouthRock, HenRhodeIslandRed, HenWyandotte,
+		//ChickLeghorn, ChickOrpington, ChickPlymouthRock, ChickRhodeIslandRed, ChickWyandotte,
+	};
+	public static final String[] animania_goat = new String[]{
+		buck_fainting, buck_kiko, buck_kinder, buck_nigerian_dwarf, buck_pygmy,
+		doe_fainting, doe_kiko, doe_kinder, doe_nigerian_dwarf, doe_pygmy,
+		//kid_fainting, kid_kiko, kid_kinder, kid_nigerian_dwarf, kid_pygmy,
+	};
+	public static final String[] animania_pig = new String[]{
+		HogDuroc, HogHampshire, HogLargeBlack, HogLargeWhite, HogOldSpot, HogYorkshire,
+		SowDuroc, SowHampshire, SowLargeBlack, SowLargeWhite, SowOldSpot, SowYorkshire,
+		//PigletDuroc, PigletHampshire, PigletLargeBlack, PigletLargeWhite, PigletOldSpot, PigletYorkshire,
+	};
+	public static final String[] animania_sheep = new String[]{
+		ram_dorper, ram_dorset, ram_friesian, ram_jacob, ram_merino, ram_suffolk,
+		ewe_dorper, ewe_dorset, ewe_friesian, ewe_jacob, ewe_merino, ewe_suffolk,
+		//lamb_dorper, lamb_dorset, lamb_friesian, lamb_jacob, lamb_merino, lamb_suffolk,
+	};
+	public static final String[] animania_cow = new String[]{
+		BullAngus, BullFriesian, BullHereford, BullHolstein, BullLonghorn, 
+		CowAngus, CowFriesian, CowHereford, CowHolstein, CowLonghorn, 
+		//CalfAngus, CalfFriesian, CalfHereford, CalfHolstein, CalfLonghorn, 
+	};
+	public static final String[] animania_horse = new String[]{
+		StallionDraftHorse, 
+		MareDraftHorse, 
+		//FoalDraftHorse, 
+	};
 	
 	
 	// --------------------------- //

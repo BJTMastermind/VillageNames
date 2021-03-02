@@ -36,6 +36,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.item.EntityItem;
@@ -2121,14 +2122,14 @@ public class StructureVillageVN
             {
                 switch (this.getCoordBaseMode())
                 {
-                    case NORTH:
+	                case NORTH:
+	                    generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.WEST, this.getComponentType());
+	                    break;
+                    case SOUTH:
                         generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.WEST, this.getComponentType());
                         break;
-                    case SOUTH:
-                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
-                        break;
                     case WEST:
-                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.WEST, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
                         break;
                     case EAST:
                         generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
@@ -2140,14 +2141,14 @@ public class StructureVillageVN
             {
                 switch (this.getCoordBaseMode())
                 {
-                    case NORTH:
+	                case NORTH:
+	                    generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.EAST, this.getComponentType());
+	                    break;
+                    case SOUTH:
                         generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.EAST, this.getComponentType());
                         break;
-                    case SOUTH:
-                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
-                        break;
                     case WEST:
-                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.EAST, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
                         break;
                     case EAST:
                         generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
@@ -2276,20 +2277,151 @@ public class StructureVillageVN
 						};
 	}
 
+
 	/**
 	 * Returns a random animal from the /structures/village/common/animals folder, not including cats
 	 */
-	public static EntityLiving getVillageAnimal(World world, BlockPos pos, Random random, boolean includeHorses, boolean mooshroomsInsteadOfCows)
+	public static EntityLiving getVillageAnimal(World world, BlockPos pos, Random random, boolean includeHorses, boolean includeSheep, boolean includeOtherAnimals, boolean mooshroomsInsteadOfCows)
 	{
-		EntityLiving animal;
-		int animalIndex = random.nextInt(4 + (includeHorses ? 5 : 0));
+		EntityLiving animal = null;
 		
-		if (animalIndex==0)      {animal = mooshroomsInsteadOfCows ? new EntityMooshroom(world) : new EntityCow(world);}
-		else if (animalIndex==1) {animal = new EntityPig(world);}
-		else if (animalIndex<=3) {animal = new EntitySheep(world);}
-		else                     {animal = new EntityHorse(world);}
+		int chickenWeight = 0; // How much to weight chickens vs other animals
+		int sheepWeight = 2; // How much to weight sheep vs other animals
+		int horseWeight = 5; // How much to weight horses vs other animals
 		
-		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(pos), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+		// Make blank arraylist
+		ArrayList<EntityLiving> arraylist_animal = new ArrayList(); 
+		
+		// Check Animania animal list
+		// For each entry that is not null, add to list
+		ArrayList<EntityLiving> arraylist_temp_animal = new ArrayList();
+		
+		arraylist_temp_animal.clear();
+		if (includeHorses)
+		{
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : ModObjects.animania_horse)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByName(animal_namespace, world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<horseWeight; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			
+			// Add vanilla horses regardless
+			for (int i=0; i<horseWeight; i++) {arraylist_temp_animal.add(new EntityHorse(world));}
+		}
+		// Dump temp animals into main animal array
+		for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+		
+		arraylist_temp_animal.clear();
+		if (includeSheep)
+		{
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : ModObjects.animania_sheep)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByName(animal_namespace, world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<sheepWeight; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			
+			if (arraylist_temp_animal.isEmpty()) {for (int i=0; i<sheepWeight; i++) {arraylist_temp_animal.add(new EntitySheep(world));}} 
+		}
+		// Dump temp animals into main animal array
+		for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+
+		if (includeOtherAnimals)
+		{
+			arraylist_temp_animal.clear();
+			// Chicken
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : ModObjects.animania_chicken)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByName(animal_namespace, world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<chickenWeight; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			// Dump temp animals into main animal array
+			for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+			
+			arraylist_temp_animal.clear();
+			// Goat
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : ModObjects.animania_goat)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByName(animal_namespace, world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<1; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			// Dump temp animals into main animal array
+			for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+			
+			arraylist_temp_animal.clear();
+			// Pig
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : ModObjects.animania_pig)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByName(animal_namespace, world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<1; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			if (arraylist_temp_animal.isEmpty()) {for (int i=0; i<1; i++) {arraylist_animal.add(new EntityPig(world));}} 
+			// Dump temp animals into main animal array
+			for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+			
+			arraylist_temp_animal.clear();
+			// Cow or Mooshroom
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				if (!mooshroomsInsteadOfCows)
+				{
+					for (String animal_namespace : ModObjects.animania_cow)
+					{
+						EntityLiving testEntity = null;
+						
+						try {testEntity = (EntityLiving)EntityList.createEntityByName(animal_namespace, world);}
+						catch (Exception e) {}
+						
+						if (testEntity != null) {for (int i=0; i<1; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+					}
+				}
+			}
+			if (arraylist_temp_animal.isEmpty()) {for (int i=0; i<1; i++) {arraylist_temp_animal.add(mooshroomsInsteadOfCows ? new EntityMooshroom(world) : new EntityCow(world));}}
+			
+			// Dump temp animals into main animal array
+			for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+		}
+		
+		
+		// Pick a random animal from the list
+		animal = arraylist_animal.get(random.nextInt(arraylist_animal.size()));
+		
+		// To give the animal random spawning properties (horse pattern, sheep color, etc)
+		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 		
 		return animal;
 	}
