@@ -5,7 +5,7 @@ public class Reference
 	// Contains common constants for the mod
 	public static final String MOD_ID = "VillageNames";
 	public static final String MOD_NAME = "Village Names";
-	public static final String VERSION = "4.1.4";
+	public static final String VERSION = "4.1.5";
 	public static final String URL = "https://www.curseforge.com/minecraft/mc-mods/village-names";
 	public static final String VERSION_CHECKER_URL = "https://gitgud.io/AstroTibs/VillageNames/raw/1.8.9/CURRENT_VERSION";
 	public static final String MOD_CHANNEL = "vnChannel";
@@ -17,7 +17,7 @@ public class Reference
     // Elder Guardian class path: prior to 1.11, the Elder is just a normal Guardian with an "Elder" flag turned on.
     // This helps distinguish the two via hard-coding a faux class path
     public static final String ELDER_GUARDIAN_CLASS = "net.minecraft.entity.monster.EntityElderGuardian";
-    public static final String VILLAGER_CLASS = "net.minecraft.entity.passive.EntityVillager"; // v3.2.4
+    public static final String VILLAGER_CLASS = "net.minecraft.entity.passive.EntityVillager";
     public static final int STREET_WIDTH = 3;
 	
 	// Vanilla village component class paths
