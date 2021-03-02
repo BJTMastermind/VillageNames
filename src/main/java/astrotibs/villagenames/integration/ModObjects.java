@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 public class ModObjects {
 	
 	// Constantly referenced domain names
+	public static final String DOM_ANIMANIA = "animania";
 	public static final String DOM_BIOMESOPLENTY = "biomesoplenty";
 	public static final String DOM_HARVESTCRAFT = "harvestcraft";
 	public static final String DOM_QUARK = "quark";
@@ -196,7 +197,106 @@ public class ModObjects {
 	// Kelp and Kelp Accessories
 	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
 
-
+	
+	
+	// ------------------------ //
+	// --- Animania animals --- //
+	// ------------------------ //
+	
+	// --- Chicken --- //
+	// Male
+	// Female
+	// Baby
+	
+	// --- Cow --- //
+	// Male
+	public static final String bull_highland = DOM_ANIMANIA + ":bull_highland";
+	public static final String bull_jersey = DOM_ANIMANIA + ":bull_jersey";
+	public static final String bull_mooshroom = DOM_ANIMANIA + ":bull_mooshroom";
+	// Female
+	public static final String cow_highland = DOM_ANIMANIA + ":cow_highland";
+	public static final String cow_jersey = DOM_ANIMANIA + ":cow_jersey";
+	public static final String cow_mooshroom = DOM_ANIMANIA + ":cow_mooshroom";
+	// Baby
+	public static final String calf_highland = DOM_ANIMANIA + ":calf_highland";
+	public static final String calf_jersey = DOM_ANIMANIA + ":calf_jersey";
+	public static final String calf_mooshroom = DOM_ANIMANIA + ":calf_mooshroom";
+	
+	// --- Goat --- //
+	// Male
+	public static final String buck_alpine = DOM_ANIMANIA + ":buck_alpine";
+	public static final String buck_angora = DOM_ANIMANIA + ":buck_angora";
+	public static final String buck_fainting = DOM_ANIMANIA + ":buck_fainting";
+	public static final String buck_kiko = DOM_ANIMANIA + ":buck_kiko";
+	public static final String buck_kinder = DOM_ANIMANIA + ":buck_kinder";
+	public static final String buck_nigerian_dwarf = DOM_ANIMANIA + ":buck_nigerian_dwarf";
+	public static final String buck_pygmy = DOM_ANIMANIA + ":buck_pygmy";
+	// Female
+	public static final String doe_alpine = DOM_ANIMANIA + ":doe_alpine";
+	public static final String doe_angora = DOM_ANIMANIA + ":doe_angora";
+	public static final String doe_fainting = DOM_ANIMANIA + ":doe_fainting";
+	public static final String doe_kiko = DOM_ANIMANIA + ":doe_kiko";
+	public static final String doe_kinder = DOM_ANIMANIA + ":doe_kinder";
+	public static final String doe_nigerian_dwarf = DOM_ANIMANIA + ":doe_nigerian_dwarf";
+	public static final String doe_pygmy = DOM_ANIMANIA + ":doe_pygmy";
+	// Baby
+	public static final String kid_alpine = DOM_ANIMANIA + ":kid_alpine";
+	public static final String kid_angora = DOM_ANIMANIA + ":kid_angora";
+	public static final String kid_fainting = DOM_ANIMANIA + ":kid_fainting";
+	public static final String kid_kiko = DOM_ANIMANIA + ":kid_kiko";
+	public static final String kid_kinder = DOM_ANIMANIA + ":kid_kinder";
+	public static final String kid_nigerian_dwarf = DOM_ANIMANIA + ":kid_nigerian_dwarf";
+	public static final String kid_pygmy = DOM_ANIMANIA + ":kid_pygmy";
+	
+	// --- Horse --- //
+	// Male
+	// Female
+	// Baby
+	
+	// --- Pig --- //
+	// Male
+	// Female
+	// Baby
+	
+	// --- Sheep --- //
+	// Male
+	public static final String ram_dorper = DOM_ANIMANIA + ":ram_dorper";
+	public static final String ram_dorset = DOM_ANIMANIA + ":ram_dorset";
+	public static final String ram_friesian = DOM_ANIMANIA + ":ram_friesian";
+	public static final String ram_jacob = DOM_ANIMANIA + ":ram_jacob";
+	public static final String ram_merino = DOM_ANIMANIA + ":ram_merino";
+	public static final String ram_suffolk = DOM_ANIMANIA + ":ram_suffolk";
+	// Female
+	public static final String ewe_dorper = DOM_ANIMANIA + ":ewe_dorper";
+	public static final String ewe_dorset = DOM_ANIMANIA + ":ewe_dorset";
+	public static final String ewe_friesian = DOM_ANIMANIA + ":ewe_friesian";
+	public static final String ewe_jacob = DOM_ANIMANIA + ":ewe_jacob";
+	public static final String ewe_merino = DOM_ANIMANIA + ":ewe_merino";
+	public static final String ewe_suffolk = DOM_ANIMANIA + ":ewe_suffolk";
+	// Baby
+	public static final String lamb_dorper = DOM_ANIMANIA + ":lamb_dorper";
+	public static final String lamb_dorset = DOM_ANIMANIA + ":lamb_dorset";
+	public static final String lamb_friesian = DOM_ANIMANIA + ":lamb_friesian";
+	public static final String lamb_jacob = DOM_ANIMANIA + ":lamb_jacob";
+	public static final String lamb_merino = DOM_ANIMANIA + ":lamb_merino";
+	public static final String lamb_suffolk = DOM_ANIMANIA + ":lamb_suffolk";
+	
+	
+	public static final String[] animania_goat = new String[]{
+		buck_fainting, buck_kiko, buck_kinder, buck_nigerian_dwarf, buck_pygmy,
+		doe_fainting, doe_kiko, doe_kinder, doe_nigerian_dwarf, doe_pygmy,
+		//kid_fainting, kid_kiko, kid_kinder, kid_nigerian_dwarf, kid_pygmy,
+	};
+	public static final String[] animania_sheep = new String[]{
+		ram_dorper, ram_dorset, ram_friesian, ram_jacob, ram_merino, ram_suffolk,
+		ewe_dorper, ewe_dorset, ewe_friesian, ewe_jacob, ewe_merino, ewe_suffolk,
+		//lamb_dorper, lamb_dorset, lamb_friesian, lamb_jacob, lamb_merino, lamb_suffolk,
+	};
+	public static final String[] animania_mooshroom = new String[]{
+		bull_mooshroom,
+		cow_mooshroom,
+		//calf_mooshroom,
+	};
 	
 	
 	// --------------------------- //

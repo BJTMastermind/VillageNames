@@ -218,6 +218,7 @@ public class VillageGeneratorConfigHandler
 	public static boolean spawnVillagersInTownCenters;
 	public static boolean nameVillageHorses;
 	public static boolean cleanDroppedItems;
+	public static boolean animaniaLivestock;
 	
 	public static void init(File configFile)
 	{
@@ -1062,6 +1063,8 @@ public class VillageGeneratorConfigHandler
 		spawnVillagersInTownCenters = config.getBoolean("Spawn Extra Villagers in Town Centers", Reference.CATEGORY_VILLAGE_GENERATOR, true, "Spawn villagers with random professions and ages in the town center.");
 		nameVillageHorses = config.getBoolean("Name Village Horses", Reference.CATEGORY_VILLAGE_GENERATOR, false, "Domesticated horses spawn with names generated from the \"pet\" syllable pool.");
 		cleanDroppedItems = config.getBoolean("Clean Dropped Items", Reference.CATEGORY_VILLAGE_GENERATOR, true, "Deletes most blocks and items accidentally broken and dropped onto the ground by village generation, such as torches, doors, beds, and chest contents.");
+		
+		animaniaLivestock = config.getBoolean("Use Animania Livestock", Reference.CATEGORY_VILLAGE_GENERATOR, true, "When using Animania, spawn its livestock in animal pens.");
 		
 		spawnBiomesNames = config.getStringList("Spawn Biome Names", Reference.CATEGORY_VILLAGE_GENERATOR,
 				new String[] {
