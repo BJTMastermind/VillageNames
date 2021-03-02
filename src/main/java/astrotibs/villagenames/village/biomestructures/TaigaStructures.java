@@ -22,7 +22,6 @@ import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -1089,7 +1088,7 @@ public class TaigaStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, this.materialType==MaterialType.MUSHROOM); // Because horses can escape the pen
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, true, this.materialType==MaterialType.MUSHROOM); // Because horses can escape the pen
                     animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
@@ -1863,14 +1862,17 @@ public class TaigaStructures
         		{6, 1, 0}, 
         		})
             {
-            	int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
             
@@ -2406,14 +2408,17 @@ public class TaigaStructures
         		{4, 1, 8}, {5, 1, 8}, 
         		})
             {
-            	int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
 
@@ -2474,7 +2479,7 @@ public class TaigaStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, true, this.materialType==MaterialType.MUSHROOM);
                     animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
@@ -2981,14 +2986,17 @@ public class TaigaStructures
         		{3, 5, 1}, 
         		})
             {
-            	int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -3546,14 +3554,17 @@ public class TaigaStructures
         		{3, 2, 1}, 
         		})
             {
-            	int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
 
@@ -3579,22 +3590,19 @@ public class TaigaStructures
         	
         	
         	// Barrels
-    		Block barrelBlock = ModObjects.chooseModBarrelBlockState();
-    		boolean isChestType=(barrelBlock==null);
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward
-    			// orientationIfUTDBarrel: -1=vertical,  0=forward,  1=rightward,  2=backward (toward you),  3=leftward
-    			// TODO - use different barrel meta for different mods
+    			// orientationIfBarrel: -1=vertical,  0=forward,  1=rightward,  2=backward (toward you),  3=leftward
             	
     			// Exterior
     			{8,2,10, 3,-1}, {9,2,7, 0,-1}, 
             })
             {
-    			// Set the barrel, or a chest if it's not supported
-    			if (barrelBlock==null) {barrelBlock = Blocks.CHEST;}
-    			//this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelBlock.getStateFromMeta(barrelBlock==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])),
+                		ModObjects.chooseModBarrelBlockState(this.getCoordBaseMode(), uvwoo[4], uvwoo[3]),
+                		2);
             }
             
             
@@ -4137,14 +4145,17 @@ public class TaigaStructures
         		{7, 1, 1}, 
         		})
             {
-            	int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
             
@@ -5491,14 +5502,17 @@ public class TaigaStructures
         		{3, 2, 1}, 
         		})
             {
-            	int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
 
@@ -8731,10 +8745,11 @@ public class TaigaStructures
         			{6, 2, 8},
         			})
         		{
-            		EntityLiving animal = new EntitySheep(world);
-            		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2]))), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+            		BlockPos animalPos = new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2]));
+            		EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, false, this.materialType==MaterialType.MUSHROOM);
+            		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(animalPos), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
             		
-                    animal.setLocationAndAngles((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D, random.nextFloat()*360F, 0.0F);
+                    animal.setLocationAndAngles((double)animalPos.getX() + 0.5D, (double)animalPos.getY() + 0.5D, (double)animalPos.getZ() + 0.5D, random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
                     // Dirt block underneath
@@ -11805,14 +11820,17 @@ public class TaigaStructures
         		{2,1,1}, 
         		})
             {
-            	int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -12296,7 +12314,7 @@ public class TaigaStructures
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Tower roof
             	{6,11,3, 10,11,4}, 
@@ -12377,14 +12395,17 @@ public class TaigaStructures
         		{8,2,2}, 
         		})
             {
-            	int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -13347,14 +13368,17 @@ public class TaigaStructures
         		{5,5,1}, 
         		})
             {
-            	int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             

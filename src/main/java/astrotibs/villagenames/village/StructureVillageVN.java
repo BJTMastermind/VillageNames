@@ -36,6 +36,7 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.item.EntityItem;
@@ -51,6 +52,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -593,7 +595,9 @@ public class StructureVillageVN
         	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, false), meta}; break;}
-        	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
+        	if (block != null &&
+        			(block == Block.getBlockFromName(ModObjects.woodQu)
+        				|| block == Block.getBlockFromName(ModObjects.woodFV_spruce))) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1}; break;}
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
@@ -645,7 +649,9 @@ public class StructureVillageVN
         	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(2, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(2, false), meta}; break;}
-        	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
+        	if (block != null &&
+            		(block == Block.getBlockFromName(ModObjects.woodQu)
+            			|| block == Block.getBlockFromName(ModObjects.woodFV_birch))) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogBirchUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 2}; break;}
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
@@ -705,7 +711,9 @@ public class StructureVillageVN
         	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, false), meta}; break;}
-        	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
+        	if (block != null &&
+            		(block == Block.getBlockFromName(ModObjects.woodQu)
+            			|| block == Block.getBlockFromName(ModObjects.woodFV_jungle))) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogJungleUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 3}; break;}
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
@@ -758,7 +766,9 @@ public class StructureVillageVN
         	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(4, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(4, false), meta}; break;}
-        	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
+        	if (block != null &&
+            		(block == Block.getBlockFromName(ModObjects.woodQu)
+            			|| block == Block.getBlockFromName(ModObjects.woodFV_acacia))) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogAcaciaUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog2EF), 4*meta + 0}; break;}
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
@@ -811,7 +821,9 @@ public class StructureVillageVN
         	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(5, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(5, false), meta}; break;}
-        	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
+        	if (block != null &&
+            		(block == Block.getBlockFromName(ModObjects.woodQu)
+            			|| block == Block.getBlockFromName(ModObjects.woodFV_dark_oak))) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogDarkOakUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog2EF), 4*meta + 1}; break;}
         	if (block == Blocks.SANDSTONE && meta==2)          {blockstate=Blocks.COBBLESTONE.getStateFromMeta(0); break;} // Cut sandstone into stone brick
@@ -880,10 +892,12 @@ public class StructureVillageVN
         	//if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(4); break;} // Brick double slab
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, false), meta}; break;}
-        	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=Blocks.SANDSTONE.getStateFromMeta(2); break;} // Cut Sandstone
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogJungleUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 3}; break;}
-        	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=Blocks.SANDSTONE.getStateFromMeta(2); break;} // Cut sandstone
+        	if (block != null &&
+            		(block == Block.getBlockFromName(ModObjects.woodQu)
+            			|| block == Block.getBlockFromName(ModObjects.woodFV_jungle))) {blockstate=Blocks.SANDSTONE.getStateFromMeta(2); break;} // Cut sandstone
+        	
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Blocks.SANDSTONE, 2}; break;} // Cut sandstone
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Blocks.SANDSTONE, 2}; break;} // Cut sandstone
         	if (block == Blocks.SAPLING)                       {blockstate=Blocks.DEADBUSH.getDefaultState(); break;}
@@ -949,7 +963,9 @@ public class StructureVillageVN
         	if (block == Blocks.MOSSY_COBBLESTONE)             {blockstate=Blocks.COBBLESTONE.getDefaultState(); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, true), meta/4}; break;}
         	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, false), meta}; break;}
-        	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
+        	if (block != null &&
+        			(block == Block.getBlockFromName(ModObjects.woodQu)
+        				|| block == Block.getBlockFromName(ModObjects.woodFV_spruce))) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1}; break;}
         	if (block == Blocks.SANDSTONE)                     {blockstate=Blocks.COBBLESTONE.getDefaultState(); break;}
@@ -2204,14 +2220,14 @@ public class StructureVillageVN
             {
                 switch (this.getCoordBaseMode())
                 {
-                    case NORTH:
+	                case NORTH:
+	                    generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.WEST, this.getComponentType());
+	                    break;
+                    case SOUTH:
                         generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.WEST, this.getComponentType());
                         break;
-                    case SOUTH:
-                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
-                        break;
                     case WEST:
-                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.WEST, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
                         break;
                     case EAST:
                         generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.minZ - 1, EnumFacing.NORTH, this.getComponentType());
@@ -2223,14 +2239,14 @@ public class StructureVillageVN
             {
                 switch (this.getCoordBaseMode())
                 {
-                    case NORTH:
+	                case NORTH:
+	                    generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.EAST, this.getComponentType());
+	                    break;
+                    case SOUTH:
                         generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.EAST, this.getComponentType());
                         break;
-                    case SOUTH:
-                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
-                        break;
                     case WEST:
-                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ, EnumFacing.EAST, this.getComponentType());
+                        generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
                         break;
                     case EAST:
                         generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX - 2, this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
@@ -2318,7 +2334,7 @@ public class StructureVillageVN
 		return ANVIL_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
 	}
 	
-	public static int chooseGrindstoneHangingMeta(int orientation, EnumFacing coordBaseMode)
+	public static int chooseFMCGrindstoneHangingMeta(int orientation, EnumFacing coordBaseMode)
 	{
 		if (orientation<0) {return -orientation;}
 		return HANGING_GRINDSTONE_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
@@ -2356,22 +2372,149 @@ public class StructureVillageVN
 	/**
 	 * Returns a random animal from the /structures/village/common/animals folder, not including cats
 	 */
-	public static EntityLiving getVillageAnimal(World world, BlockPos pos, Random random, boolean includeHorses, boolean mooshroomsInsteadOfCows)
+	public static EntityLiving getVillageAnimal(World world, BlockPos pos, Random random, boolean includeHorses, boolean includeSheep, boolean includeOtherAnimals, boolean mooshroomsInsteadOfCows)
 	{
-		EntityLiving animal;
-		int animalIndex = random.nextInt(4 + (includeHorses ? 5 : 0));
+		EntityLiving animal = null;
 		
-		if (animalIndex==0)      {animal = mooshroomsInsteadOfCows ? new EntityMooshroom(world) : new EntityCow(world);}
-		else if (animalIndex==1) {animal = new EntityPig(world);}
-		else if (animalIndex<=3) {animal = new EntitySheep(world);}
-		else                     {animal = new EntityHorse(world);}
+		int chickenWeight = 0; // How much to weight chickens vs other animals
+		int sheepWeight = 2; // How much to weight sheep vs other animals
+		int horseWeight = 5; // How much to weight horses vs other animals
 		
-		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(pos), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+		// Make blank arraylist
+		ArrayList<EntityLiving> arraylist_animal = new ArrayList<>(); 
+		
+		// Check Animania animal list
+		// For each entry that is not null, add to list
+		ArrayList<EntityLiving> arraylist_temp_animal = new ArrayList<>();
+		
+		arraylist_temp_animal.clear();
+		if (includeHorses)
+		{
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : ModObjects.animania_horse)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByIDFromName(new ResourceLocation(animal_namespace), world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<horseWeight; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			
+			// Add vanilla horses regardless
+			for (int i=0; i<horseWeight; i++) {arraylist_temp_animal.add(new EntityHorse(world));}
+		}
+		// Dump temp animals into main animal array
+		for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+		
+		arraylist_temp_animal.clear();
+		if (includeSheep)
+		{
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : ModObjects.animania_sheep)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByIDFromName(new ResourceLocation(animal_namespace), world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<sheepWeight; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			
+			if (arraylist_temp_animal.isEmpty()) {for (int i=0; i<sheepWeight; i++) {arraylist_temp_animal.add(new EntitySheep(world));}} 
+		}
+		// Dump temp animals into main animal array
+		for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+
+		if (includeOtherAnimals)
+		{
+			arraylist_temp_animal.clear();
+			// Chicken
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : ModObjects.animania_chicken)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByIDFromName(new ResourceLocation(animal_namespace), world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<chickenWeight; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			// Dump temp animals into main animal array
+			for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+			
+			arraylist_temp_animal.clear();
+			// Goat
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : ModObjects.animania_goat)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByIDFromName(new ResourceLocation(animal_namespace), world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<1; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			// Dump temp animals into main animal array
+			for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+			
+			arraylist_temp_animal.clear();
+			// Pig
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : ModObjects.animania_pig)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByIDFromName(new ResourceLocation(animal_namespace), world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<1; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			if (arraylist_temp_animal.isEmpty()) {for (int i=0; i<1; i++) {arraylist_animal.add(new EntityPig(world));}} 
+			// Dump temp animals into main animal array
+			for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+			
+			arraylist_temp_animal.clear();
+			// Cow or Mooshroom
+			if (VillageGeneratorConfigHandler.animaniaLivestock)
+			{
+				for (String animal_namespace : mooshroomsInsteadOfCows ? ModObjects.animania_mooshroom:ModObjects.animania_cow)
+				{
+					EntityLiving testEntity = null;
+					
+					try {testEntity = (EntityLiving)EntityList.createEntityByIDFromName(new ResourceLocation(animal_namespace), world);}
+					catch (Exception e) {}
+					
+					if (testEntity != null) {for (int i=0; i<1; i++) {arraylist_temp_animal.add((EntityLiving) testEntity);}}
+				}
+			}
+			if (arraylist_temp_animal.isEmpty()) {for (int i=0; i<1; i++) {arraylist_temp_animal.add(mooshroomsInsteadOfCows ? new EntityMooshroom(world) : new EntityCow(world));}}
+			
+			// Dump temp animals into main animal array
+			for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
+		}
+		
+		
+		// Pick a random animal from the list
+		animal = arraylist_animal.get(random.nextInt(arraylist_animal.size()));
+		
+		// To give the animal random spawning properties (horse pattern, sheep color, etc)
+		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 		
 		return animal;
 	}
 	
-		
+	
 	/**
 	 * relativeOrientation
 	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing

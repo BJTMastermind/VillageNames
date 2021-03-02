@@ -25,7 +25,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -1673,14 +1672,17 @@ public class PlainsStructures
         	// Flowers on top
         	for (int f=0; f<3; f++)
         	{
-        		int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), 1+f, 2, 1, structureBB);
+        		this.setBlockState(world, flowerstate, 1+f, 2, 1, structureBB);
         		// Upper half of double flower block
         		//if (flowerindex>9) {this.setBlockState(world, flowerblock, 11, 1+f, 3, 1, structureBB);} // Meta is always 11?
         	}
@@ -1896,14 +1898,17 @@ public class PlainsStructures
             {
             	if (i==0) // Random flower
             	{
-            		int flowerindex = random.nextInt(10);
+            		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+            		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
             		// 0-8 is "red" flower
             		// 9 is a basic yellow flower
-            		// 10-11 are the flowers from UpToDateMod
-            		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-            		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+            		// 10 is cornflower, 11 is lily of the valley
+            		IBlockState flowerstate;
+                	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+                	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+                	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
             		
-            		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), weedpositions.get(i)%(STRUCTURE_WIDTH-2)+1, 1, weedpositions.get(i)/(STRUCTURE_WIDTH-2)+1, structureBB);
+            		this.setBlockState(world, flowerstate, weedpositions.get(i)%(STRUCTURE_WIDTH-2)+1, 1, weedpositions.get(i)/(STRUCTURE_WIDTH-2)+1, structureBB);
             	}
             	else // Tall grass
             	{
@@ -1943,7 +1948,7 @@ public class PlainsStructures
             	entitiesGenerated = true;
             	
             	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(1, 2) + 0.5D, (double)this.getYWithOffset(1) + 0.5D, (double)this.getZWithOffset(1, 2) + 0.5D);
-            	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
+            	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, true, true, this.materialType==MaterialType.MUSHROOM);
             	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
             	{
             		String[] petname_a = NameGenerator.newRandomName("pet", random);
@@ -2174,14 +2179,17 @@ public class PlainsStructures
             {
             	if (i==0) // Random flower
             	{
-            		int flowerindex = random.nextInt(10);
+            		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+            		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
             		// 0-8 is "red" flower
             		// 9 is a basic yellow flower
-            		// 10-11 are the flowers from UpToDateMod
-            		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-            		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+            		// 10 is cornflower, 11 is lily of the valley
+            		IBlockState flowerstate;
+                	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+                	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+                	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
             		
-            		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), weedpositions.get(i)%(STRUCTURE_WIDTH-2)+1, 1, weedpositions.get(i)/(STRUCTURE_WIDTH-2)+1, structureBB);
+            		this.setBlockState(world, flowerstate, weedpositions.get(i)%(STRUCTURE_WIDTH-2)+1, 1, weedpositions.get(i)/(STRUCTURE_WIDTH-2)+1, structureBB);
             	}
             	else // Tall grass if < 11 or double-tall grass otherwise 
             	{
@@ -2227,7 +2235,7 @@ public class PlainsStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, true, true, this.materialType==MaterialType.MUSHROOM);
                 	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
@@ -2536,7 +2544,7 @@ public class PlainsStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, true, true, this.materialType==MaterialType.MUSHROOM);
                 	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
@@ -3849,7 +3857,7 @@ public class PlainsStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, true, this.materialType==MaterialType.MUSHROOM);
                     animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
@@ -4376,7 +4384,7 @@ public class PlainsStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, true, this.materialType==MaterialType.MUSHROOM);
                     animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
@@ -4755,14 +4763,17 @@ public class PlainsStructures
         	// Flowers on top
         	for (int f : new int[]{1,2,4,5})
         	{
-        		int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), f, 2, 1, structureBB);
+        		this.setBlockState(world, flowerstate, f, 2, 1, structureBB);
         	}
         	
             
@@ -5187,21 +5198,18 @@ public class PlainsStructures
     		this.fillWithBlocks(world, structureBB, 5, 1, 6, 5, 1, 7, biomePlankState, biomePlankState, false); // Instead of fences b/c waterlogging
     		
     		// Barrels
-    		Block barrelBlock = ModObjects.chooseModBarrelBlockState();
-    		boolean isChestType=(barrelBlock==null);
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward
-    			// orientationIfUTDBarrel:  1=vertical,  0=forward,  1=rightward,  2=backward (toward you),  3=leftward
-    			// TODO - use different barrel meta for different mods
+    			// orientationIfBarrel:  1=vertical,  0=forward,  1=rightward,  2=backward (toward you),  3=leftward
             	{2,2,2, 3,-1},
             	{7,2,9, 1,-1},
             })
             {
-    			// Set the barrel, or a chest if it's not supported
-    			if (barrelBlock==null) {barrelBlock = Blocks.CHEST;}
-    			//this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelBlock.getStateFromMeta(barrelBlock==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])),
+                		ModObjects.chooseModBarrelBlockState(this.getCoordBaseMode(), uvwoo[4], uvwoo[3]),
+                		2);
                 // Dirt beneath
                 this.setBlockState(world, biomeDirtState, uvwoo[0], uvwoo[1]-1, uvwoo[2], structureBB);
             }
@@ -7445,14 +7453,17 @@ public class PlainsStructures
         	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(5), 2, 0, 0, structureBB); // Front
         	
         	// Flowers on top
-    		int flowerindex = random.nextInt(10);
+    		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+    		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
     		// 0-8 is "red" flower
     		// 9 is a basic yellow flower
-    		// 10-11 are the flowers from UpToDateMod
-    		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-    		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+    		// 10 is cornflower, 11 is lily of the valley
+    		IBlockState flowerstate;
+        	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+        	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+        	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
     		
-    		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), 2, 1, 1, structureBB);
+    		this.setBlockState(world, flowerstate, 2, 1, 1, structureBB);
         	
     		
         	
@@ -9991,10 +10002,12 @@ public class PlainsStructures
         			{5, 1, 7},
         			})
         		{
-            		EntityLiving animal = new EntitySheep(world);
-            		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2]))), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+            		BlockPos animalPos = new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2]));
+            		EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, false, this.materialType==MaterialType.MUSHROOM);
             		
-                    animal.setLocationAndAngles((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D, random.nextFloat()*360F, 0.0F);
+            		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(animalPos), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+            		
+                    animal.setLocationAndAngles((double)animalPos.getX() + 0.5D, (double)animalPos.getY() + 0.5D, (double)animalPos.getZ() + 0.5D, random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
                     // Dirt block underneath
@@ -12900,14 +12913,17 @@ public class PlainsStructures
             	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(5), u, 0, 0, structureBB); // Front trapdoor
             	
             	// Flowers on top
-        		int flowerindex = random.nextInt(10);
+        		IBlockState cornflowerState = ModObjects.chooseModCornflower(); IBlockState lilyOfTheValleyState = ModObjects.chooseModLilyOfTheValley();
+        		int flowerindex = random.nextInt(10 + (cornflowerState!=null && lilyOfTheValleyState!=null ? 2:0));
         		// 0-8 is "red" flower
         		// 9 is a basic yellow flower
-        		// 10-11 are the flowers from UpToDateMod
-        		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
-        		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
+        		// 10 is cornflower, 11 is lily of the valley
+        		IBlockState flowerstate;
+            	if (flowerindex==10 && cornflowerState!=null) {flowerstate=cornflowerState;}
+            	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
+            	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), u, 1, 1, structureBB);
+        		this.setBlockState(world, flowerstate, u, 1, 1, structureBB);
             }
             
         	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(6), 1, 0, 1, structureBB); // Left trapdoor
@@ -14314,7 +14330,7 @@ public class PlainsStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, true, true, this.materialType==MaterialType.MUSHROOM);
                 	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
@@ -14760,7 +14776,7 @@ public class PlainsStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, true, true, this.materialType==MaterialType.MUSHROOM);
                 	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);

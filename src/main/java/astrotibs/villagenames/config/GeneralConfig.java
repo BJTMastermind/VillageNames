@@ -48,7 +48,7 @@ public class GeneralConfig {
 	public static boolean TQVillageNames;
 	
 	public static String[] modStructureNames;
-
+	
 	public static boolean modernVillagerSkins;
 
 	public static boolean moddedVillagerHeadwear;
@@ -72,12 +72,31 @@ public class GeneralConfig {
 	public static boolean writtenBookTrade;
 	public static boolean swampHutMushroomPot;
 
+	public static String[] modBarrel;
+	public static String[] modBell;
+	public static String[] modBlastFurnace;
+	public static String[] modBlueIce;
 	public static String[] modBountifulStone;
 	public static String[] modCampfire;
+	public static String[] modCartographyTable;
+	public static String[] modComposter;
 	public static String[] modDye;
+	public static String[] modFletchingTable;
+	public static String[] modFlower;
+	public static String[] modGrindstone;
 	public static String[] modLantern;
+	public static String[] modLoom;
 	public static String[] modSandstone;
+	public static String[] modSmithingTable;
+	public static String[] modSmoker;
 	public static String[] modSmoothStone;
+	public static String[] modStonecutter;
+	public static String[] modStrippedLog;
+	public static String[] modStrippedWood;
+	public static String[] modSuspiciousStew;
+	public static String[] modSweetBerries;
+	public static String[] modWood;
+	public static String[] modWoodenTrapdoor;
 	
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
@@ -401,9 +420,38 @@ public class GeneralConfig {
 
 		harvestcraftCropFarmRate = config.getFloat("Crop rate: Harvestcraft", "Mod Integration", 0.25F, 0F, 1F, "Generate Harvestcraft crops in farms. Only used with Village Generator. Set to 0 for no HC crops.");
 
+		modBarrel = config.getStringList("Mod Priority: Barrel", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing Barrels for village generation and villager trades. The version highest on the list and registered in your game will be used."
+ 				);
+		
+		modBell = config.getStringList("Mod Priority: Bell", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing Bells for villager trades. The version highest on the list and registered in your game will be used."
+ 				);
+		
+		modBlastFurnace = config.getStringList("Mod Priority: Blast Furnace", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing Blast Furnace for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+		
+		modBlueIce = config.getStringList("Mod Priority: Blue Ice", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing Blue Ice for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+		
 	    modBountifulStone = config.getStringList("Mod Priority: Bountiful Stone", "Mod Integration", new String[]{
 	    		"quark",
  				"vanillabuildersextension",
+ 				"futureversions",
  				},
  				"Priority order for referencing Granite, Diorite, and Andesite for things like walls and stairs. The version highest on the list and registered in your game will be used."
  				);
@@ -411,8 +459,23 @@ public class GeneralConfig {
 		modCampfire = config.getStringList("Mod Priority: Campfire", "Mod Integration", new String[]{
 	    		"futuremc",
  				"toughasnails",
+ 				"futureversions",
  				},
- 				"Priority order for referencing dye for villager trade offers. The version highest on the list and registered in your game will be used."
+ 				"Priority order for referencing the Campfire for village generation and villager trade offers. The version highest on the list and registered in your game will be used."
+ 				);
+		
+		modCartographyTable = config.getStringList("Mod Priority: Cartography Table", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing the Cartography Table for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+		
+		modComposter = config.getStringList("Mod Priority: Composter", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing the Composter for village generation. The version highest on the list and registered in your game will be used."
  				);
 		
 	    modDye = config.getStringList("Mod Priority: Dye", "Mod Integration", new String[]{
@@ -420,30 +483,125 @@ public class GeneralConfig {
  				"biomesoplenty",
  				"quark",
  				"botania",
+ 				"futureversions",
  				},
  				"Priority order for referencing dye for villager trade offers. The version highest on the list and registered in your game will be used."
  				);
-
+		
+		modFletchingTable = config.getStringList("Mod Priority: Fletching Table", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing the Fletching Table for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modFlower = config.getStringList("Mod Priority: Flower", "Mod Integration", new String[]{
+ 				"futuremc",
+	    		"futureversions",
+ 				},
+ 				"Priority order for referencing flowers for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+		
+		modGrindstone = config.getStringList("Mod Priority: Grindstone", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing the Grindstone for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+		
 	    modLantern = config.getStringList("Mod Priority: Lantern", "Mod Integration", new String[]{
  				"charm",
 	    		"futuremc",
+	    		"futureversions",
  				},
- 				"Priority order for referencing lanterns for village generation and villager trade offers. The version highest on the list and registered in your game will be used."
+ 				"Priority order for referencing Lanterns for village generation and villager trade offers. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modLoom = config.getStringList("Mod Priority: Loom", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing the Loom for village generation. The version highest on the list and registered in your game will be used."
  				);
 	    
 	    modSandstone = config.getStringList("Mod Priority: Sandstone", "Mod Integration", new String[]{
  				"quark",
 	    		"futuremc",
 	    		"vanillabuildersextension",
+	    		"futureversions",
  				},
- 				"Priority order for referencing sandstone variations for village generation. The version highest on the list and registered in your game will be used."
+ 				"Priority order for referencing Sandstone variations for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+		
+		modSmithingTable = config.getStringList("Mod Priority: Smithing Table", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing the Smithing Table for village generation. The version highest on the list and registered in your game will be used."
  				);
 	    
+		modSmoker = config.getStringList("Mod Priority: Smoker", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing the Smoker for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+		
 	    modSmoothStone = config.getStringList("Mod Priority: Smooth Stone", "Mod Integration", new String[]{
  				"quark",
 	    		"futuremc",
+	    		"futureversions"
  				},
- 				"Priority order for referencing smooth stone for village generation. The version highest on the list and registered in your game will be used."
+ 				"Priority order for referencing Smooth Stone for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modStonecutter = config.getStringList("Mod Priority: Stonecutter", "Mod Integration", new String[]{
+	    		"futuremc",
+ 				"futureversions",
+ 				},
+ 				"Priority order for referencing the Stonecutter for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modStrippedLog = config.getStringList("Mod Priority: Stripped Log", "Mod Integration", new String[]{
+ 				"futuremc",
+	    		"futureversions",
+ 				},
+ 				"Priority order for referencing Stripped Logs for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modStrippedWood = config.getStringList("Mod Priority: Stripped Wood", "Mod Integration", new String[]{
+ 				"futuremc",
+	    		"futureversions",
+ 				},
+ 				"Priority order for referencing Stripped Wood for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modSuspiciousStew = config.getStringList("Mod Priority: Suspicious Stew", "Mod Integration", new String[]{
+ 				"futuremc",
+	    		"futureversions",
+ 				},
+ 				"Priority order for referencing Suspicious Stew for villager trades. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modSweetBerries = config.getStringList("Mod Priority: Sweet Berries", "Mod Integration", new String[]{
+ 				"futuremc",
+	    		"futureversions",
+ 				},
+ 				"Priority order for referencing Sweet Berries for villager trades. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modWood = config.getStringList("Mod Priority: Smooth Stone", "Mod Integration", new String[]{
+ 				"quark",
+	    		"futureversions",
+ 				},
+ 				"Priority order for referencing Wood blocks (bark on all sides) for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modWoodenTrapdoor = config.getStringList("Mod Priority: Smooth Stone", "Mod Integration", new String[]{
+ 				"quark",
+	    		"futureversions",
+ 				},
+ 				"Priority order for referencing wooden trapdoors for village generation. The version highest on the list and registered in your game will be used."
  				);
 	    
 		// Mapping for modded structures, and the creatures that can name them

@@ -25,7 +25,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -954,7 +953,7 @@ public class SavannaStructures
         	IBlockState biomeWoodenSlabState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_SLAB.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.PLANKS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeBarkState = ModObjects.chooseModBarkState(biomeLogState);
+        	IBlockState biomeBarkState = ModObjects.chooseModWoodState(biomeLogState);
 
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -1284,7 +1283,7 @@ public class SavannaStructures
         	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.PLANKS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeWoodenStairsState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeBarkState = ModObjects.chooseModBarkState(biomeLogState);
+        	IBlockState biomeBarkState = ModObjects.chooseModWoodState(biomeLogState);
 
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -1896,7 +1895,7 @@ public class SavannaStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, this.materialType==MaterialType.MUSHROOM); // Because horses can escape the pen
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, true, this.materialType==MaterialType.MUSHROOM); // Because horses can escape the pen
                     animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
@@ -2316,7 +2315,7 @@ public class SavannaStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, true, true, this.materialType==MaterialType.MUSHROOM);
                 	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
@@ -2732,7 +2731,7 @@ public class SavannaStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, true, true, this.materialType==MaterialType.MUSHROOM);
                 	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
                 	{
                 		String[] petname_a = NameGenerator.newRandomName("pet", random);
@@ -3679,7 +3678,7 @@ public class SavannaStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, true, this.materialType==MaterialType.MUSHROOM);
                     animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
@@ -4216,7 +4215,7 @@ public class SavannaStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, true, this.materialType==MaterialType.MUSHROOM);
                     animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
@@ -4549,7 +4548,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Tower roof
             	{2,3,4, 2,3,4}, {6,3,5, 6,3,5}, 
@@ -5180,13 +5179,10 @@ public class SavannaStructures
         	
         	
         	// Barrels
-    		Block barrelBlock = ModObjects.chooseModBarrelBlockState();
-    		boolean isChestType=(barrelBlock==null);
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward
-    			// orientationIfUTDBarrel: -1=vertical,  0=forward,  1=rightward,  2=backward (toward you),  3=leftward
-    			// TODO - use different barrel meta for different mods
+    			// orientationIfBarrel: -1=vertical,  0=forward,  1=rightward,  2=backward (toward you),  3=leftward
             	
     			// Exterior
     			{1,2,2, 2,2}, 
@@ -5194,10 +5190,10 @@ public class SavannaStructures
     			{5,3,4, 0,-1}, 
             })
             {
-    			// Set the barrel, or a chest if it's not supported
-    			if (barrelBlock==null) {barrelBlock = Blocks.CHEST;}
-    			//this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelBlock.getStateFromMeta(barrelBlock==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])),
+                		ModObjects.chooseModBarrelBlockState(this.getCoordBaseMode(), uvwoo[4], uvwoo[3]),
+                		2);
             }
             
             
@@ -7921,7 +7917,7 @@ public class SavannaStructures
             }
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Right house platform
             	{10,1,4, 10,1,4}, 
@@ -8517,7 +8513,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Left house
             	{1,1,3, 1,1,3}, {1,3,3, 1,3,3}, 
@@ -9186,7 +9182,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{6,1,2, 6,1,2}, 
             	{6,1,4, 6,1,4}, 
@@ -9315,10 +9311,11 @@ public class SavannaStructures
         			{4, 1, 7},
         			})
         		{
-            		EntityLiving animal = new EntitySheep(world);
-            		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2]))), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+            		BlockPos animalPos = new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2]));
+            		EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, false, this.materialType==MaterialType.MUSHROOM);
+            		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(animalPos), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
             		
-                    animal.setLocationAndAngles((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D, random.nextFloat()*360F, 0.0F);
+                    animal.setLocationAndAngles((double)animalPos.getX() + 0.5D, (double)animalPos.getY() + 0.5D, (double)animalPos.getZ() + 0.5D, random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
         		}
             }
@@ -9330,7 +9327,7 @@ public class SavannaStructures
         
         /**
          * Returns the villager type to spawn in this component, based on the number
-         * of villagers already spawned.
+         * of villagers already spawned.	
          */
         @Override
         protected int chooseProfession(int villagersSpawnedIn, int currentVillagerProfession) {return 0;}
@@ -9909,7 +9906,7 @@ public class SavannaStructures
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{2,0,2, 4,0,4}, 
             	{3,0,1, 3,0,1}, 
@@ -10344,7 +10341,7 @@ public class SavannaStructures
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{2,0,2, 4,0,4}, 
             	{3,0,1, 3,0,1}, 
@@ -10776,7 +10773,7 @@ public class SavannaStructures
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{2,0,2, 4,0,4}, 
             	{3,0,1, 3,0,1}, 
@@ -11219,7 +11216,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{6,0,1, 6,0,1}, 
             	{4,0,3, 4,0,3}, 
@@ -12254,7 +12251,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{2,1,3, 2,1,3}, 
             	})
@@ -12665,7 +12662,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Walls
             	// Front wall
@@ -14059,7 +14056,7 @@ public class SavannaStructures
             
             
             // Wood with bark on all sides
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	// Table
             	{6,1,9, 6,1,9}, 
@@ -15967,7 +15964,7 @@ public class SavannaStructures
             
             // Wood with bark on all sides
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodState = ModObjects.chooseModBarkState(biomeLogVertState);
+        	IBlockState biomeWoodState = ModObjects.chooseModWoodState(biomeLogVertState);
             for (int[] uw : new int[][]{
             	{1,1,5, 1,2,5}, {1,1,6, 1,4,6}, 
             	{2,1,7, 10,4,7}, 

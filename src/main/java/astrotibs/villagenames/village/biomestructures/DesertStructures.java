@@ -23,7 +23,6 @@ import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -1553,7 +1552,7 @@ public class DesertStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, this.materialType==MaterialType.MUSHROOM); // Because horses can escape the pen
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, true, this.materialType==MaterialType.MUSHROOM); // Because horses can escape the pen
                     animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
         		}
@@ -1908,7 +1907,7 @@ public class DesertStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, this.materialType==MaterialType.MUSHROOM); // Because horses can escape the pen
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, true, this.materialType==MaterialType.MUSHROOM); // Because horses can escape the pen
                     animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
         		}
@@ -2753,7 +2752,7 @@ public class DesertStructures
         			})
         		{
                 	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, this.materialType==MaterialType.MUSHROOM);
+                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, true, this.materialType==MaterialType.MUSHROOM);
                     animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
@@ -4293,13 +4292,10 @@ public class DesertStructures
         	
         	
         	// Barrels
-    		Block barrelBlock = ModObjects.chooseModBarrelBlockState();
-    		boolean isChestType=(barrelBlock==null);
     		for (int[] uvwoo : new int[][]{
     			// u, v, w, orientationIfChest, orientationIfUTDBarrel
     			// orientationIfChest:  0=foreward (away from you),  1=rightward,  2=backward (toward you),  3=leftward
-    			// orientationIfUTDBarrel: -1=vertical,  0=forward,  1=rightward,  2=backward (toward you),  3=leftward
-    			// TODO - use different barrel meta for different mods
+    			// orientationIfBarrel: -1=vertical,  0=forward,  1=rightward,  2=backward (toward you),  3=leftward
             	
     			// Exterior
     			{5,1,2, 1,1}, {5,2,2, 2,-1}, 
@@ -4308,10 +4304,10 @@ public class DesertStructures
             	{8,1,6, 3,2}, {8,1,5, 3,0}, {8,2,6, 3,3}, 
             })
             {
-    			// Set the barrel, or a chest if it's not supported
-    			if (barrelBlock==null) {barrelBlock = Blocks.CHEST;}
-    			//this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelBlock.getStateFromMeta(barrelBlock==Blocks.CHEST?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
+                world.setBlockState(
+                		new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])),
+                		ModObjects.chooseModBarrelBlockState(this.getCoordBaseMode(), uvwoo[4], uvwoo[3]),
+                		2);
             }
         	
             
@@ -7411,10 +7407,11 @@ public class DesertStructures
         			{3, 1, 2},
         			})
         		{
-            		EntityLiving animal = new EntitySheep(world);
-            		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2]))), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
+            		BlockPos animalPos = new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2]));
+            		EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, false, true, false, this.materialType==MaterialType.MUSHROOM);
+            		IEntityLivingData ientitylivingdata = animal.onInitialSpawn(world.getDifficultyForLocation(animalPos), null); // To give the animal random spawning properties (horse pattern, sheep color, etc)
             		
-                    animal.setLocationAndAngles((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D, random.nextFloat()*360F, 0.0F);
+                    animal.setLocationAndAngles((double)animalPos.getX() + 0.5D, (double)animalPos.getY() + 0.5D, (double)animalPos.getZ() + 0.5D, random.nextFloat()*360F, 0.0F);
                     world.spawnEntity(animal);
                     
                     // Dirt block underneath

@@ -551,7 +551,7 @@ public class FunctionsVN
 	    										));
 	    								
 	    								// Slot 8.5 - Selling only one at a time, up to five times (BE) and doing so as Expert level (JE)
-	    								moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFMC);
+	    								moditem = ModObjects.chooseModSuspiciousStew(random.nextInt(10));
 	    								if (moditem != null)
 	    								{
 	    									buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), new MerchantRecipe(
@@ -1865,7 +1865,7 @@ public class FunctionsVN
 										
 										// Slot 4
 										merchantRecipeArray = new ArrayList<MerchantRecipe>();
-										moditem = FunctionsVN.getItemFromName(ModObjects.bellFMC); if (moditem != null) {merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 36 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 3) );} // Bell
+										moditem = ModObjects.chooseBellItem(); if (moditem != null) {merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 36 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 3) );} // Bell
 										merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.CHAINMAIL_BOOTS, 1 ), 0, 3) );
 	    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 3 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.CHAINMAIL_LEGGINGS, 1 ), 0, 3) );
 	    								buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), merchantRecipeArray.get(random.nextInt(merchantRecipeArray.size())));
@@ -2090,7 +2090,7 @@ public class FunctionsVN
 												));
 										
 										// Slot 6
-										moditem = FunctionsVN.getItemFromName(ModObjects.bellFMC);
+										moditem = ModObjects.chooseBellItem();
 										if (moditem != null) {
 											buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), new MerchantRecipe(
 													new ItemStack( Items.EMERALD, 36 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 2
@@ -2217,7 +2217,7 @@ public class FunctionsVN
 												));
 										
 										// Slot 4
-										moditem = FunctionsVN.getItemFromName(ModObjects.bellFMC);
+										moditem = ModObjects.chooseBellItem();
 										if (moditem != null) {
 											buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), new MerchantRecipe(
 													new ItemStack( Items.EMERALD, 36 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 2
@@ -2529,6 +2529,17 @@ public class FunctionsVN
 		    					// Dried Kelp Block to Emerald
 		    					while (true)
 		    					{
+		    						// Try to get an actual dried kelp block
+		    						IBlockState modblockstate = ModObjects.chooseModDriedKelpBlockState();
+		    						if (modblockstate !=null && modblockstate.getBlock()!=null)
+		    						{
+										buyingList.add(new MerchantRecipe(
+												new ItemStack( Item.getItemFromBlock(modblockstate.getBlock()), 10 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.EMERALD, 1 ), 0, 5
+												));
+											return;
+		    						}
+		    						
+		    						// Failing the above, try to use BoP kelp items:
 									moditem = FunctionsVN.getItemFromName(ModObjects.kelpBOP);
 									
 									if (moditem != null)
@@ -2549,7 +2560,7 @@ public class FunctionsVN
 		    					{
 		    						while (true)
 			    					{
-										moditem = FunctionsVN.getItemFromName(ModObjects.sweetBerriesFMC);
+										moditem = ModObjects.chooseModSweetBerriesItem();
 										
 										if (moditem != null)
 										{
