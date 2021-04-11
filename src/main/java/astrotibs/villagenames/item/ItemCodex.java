@@ -12,7 +12,7 @@ import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.handler.AdvancementReward;
 import astrotibs.villagenames.handler.EntityInteractHandler;
 import astrotibs.villagenames.handler.WriteBookHandler;
-import astrotibs.villagenames.integration.ToroQuestWorldDataStructure;
+import astrotibs.villagenames.integration.toroquest.ToroQuestWorldDataStructure;
 import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
 import astrotibs.villagenames.utility.FunctionsVN;

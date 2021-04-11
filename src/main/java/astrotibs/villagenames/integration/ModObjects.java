@@ -1,5 +1,7 @@
 package astrotibs.villagenames.integration;
 
+import java.util.Random;
+
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.village.StructureVillageVN;
@@ -10,6 +12,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBed;
 import net.minecraft.util.EnumFacing;
@@ -1787,7 +1790,7 @@ public class ModObjects {
 	}
 	
 	
-	public static Item chooseModSuspiciousStew(int stewType)
+	public static ItemStack chooseModSuspiciousStew(Random random)
 	{
 		String[] modprioritylist = GeneralConfig.modSuspiciousStew;
 		
@@ -1798,25 +1801,78 @@ public class ModObjects {
 			if (mod.toLowerCase().equals("futuremc"))
 			{
 				moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFMC);
-				if (moditem != null) {return moditem;}
+				
+				if (moditem != null)
+				{
+					ItemStack moditemstack = new ItemStack(moditem, 1);
+					
+					// Only six potion effects are allowed
+					int[][] potionEffects = new int[][]{
+						//{12, 80}, // Allium (Fire Resistance)
+						{15, 160}, // Azure Bluet (Blindness)
+						//{23, 7}, // Blue Orchid (Saturation)
+						{23, 7}, // Dandelion (Saturation)
+						//{10, 160}, // Oxeye Daisy (Regeneration)
+						{16, 100}, // Poppy (Night Vision)
+						//{18, 180}, // Red Tulip (Weakness)
+						{18, 180}, // Orange Tulip (Weakness)
+						//{18, 180}, // White Tulip (Weakness)
+						//{18, 180}, // Pink Tulip (Weakness)
+						{8, 120}, // Lily of the Valley (High Jump)
+						{19, 240}, // Cornflower (Poison)
+						//{20, 160}, // Wither Rose (Wither)
+					};
+					
+					int chosenPotionEffect = random.nextInt(6);
+					
+//					NBTTagCompound tagcompound3 = new NBTTagCompound();
+//					tagcompound3.setByte("Count", (byte)1);
+//					tagcompound3.setShort("Damage", (short)0);
+//					tagcompound3.setString("id", "minecraft:milk_bucket");
+//					
+//					NBTTagList curativeItems = new NBTTagList();
+//					curativeItems.appendTag(tagcompound3);
+					
+					NBTTagCompound tagcompound2 = new NBTTagCompound();
+					//tagcompound2.setByte("Ambient", (byte)0);
+					//tagcompound2.setByte("Amplifier", (byte)0);
+					//tagcompound2.setByte("ShowParticles", (byte)1);
+					//tagcompound2.setTag("CurativeItems", curativeItems);
+					tagcompound2.setByte("Id", (byte)potionEffects[chosenPotionEffect][0]);
+					tagcompound2.setInteger("Duration", potionEffects[chosenPotionEffect][1]);
+					
+					NBTTagList customPotionEffects = new NBTTagList();
+					customPotionEffects.appendTag(tagcompound2);
+					
+					
+					NBTTagCompound tagcompound = new NBTTagCompound();
+					
+					tagcompound.setTag("CustomPotionEffects", customPotionEffects);
+					
+					moditemstack.setTagCompound(tagcompound);
+					
+					return moditemstack;
+				}
 			}
 			else if (mod.toLowerCase().equals("futureversions"))
 			{
-				switch (stewType)
+				// Many of these effects aren't sold by villagers and don't even correctly correspond to vanilla,
+				// so I'm leaving them all in to give Future Versions SOMETHING unique
+				switch (random.nextInt(10))
 				{
-					case 0: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_1); break;
-					case 1: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_2); break;
-					case 2: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_3); break;
-					case 3: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_4); break;
-					case 4: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_5); break;
-					case 5: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_6); break;
-					case 6: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_7); break;
-					case 7: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_8); break;
-					case 8: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_9); break;
-					case 9: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_10); break;
+					case 0: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_1); break; // Regeneration 6s [BE] (Oxeye Daisy) 
+					case 1: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_2); break; // Jump Boost 4s [BE] (Cornflower)
+					case 2: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_3); break; // Poison 10s [BE] (Lily of the Valley)
+					case 3: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_4); break; // Wither 6s [BE] (Wither Rose)
+					case 4: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_5); break; // Weakness 7s [BE] (Tulips)
+					case 5: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_6); break; // Blindness 6s [BE] (Azure Bluet)
+					case 6: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_7); break; // Fire Resistance 2s [BE] (Allium)
+					case 7: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_8); break; // Saturation 4s [no edition] (Blue Orchid / Dandelion)
+					case 8: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_9); break; // Speed 4s [no edition] (no flower: FV uses Poppy)
+					case 9: moditem = FunctionsVN.getItemFromName(ModObjects.suspiciousStewFV_10); break; // Saturation II 4s [no edition] (no flower: FV uses dandelion)
 				}
 				
-				if (moditem != null) {return moditem;}
+				if (moditem != null) {return new ItemStack(moditem, 1);}
 			}
 		}
     	

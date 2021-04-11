@@ -20,6 +20,7 @@ import astrotibs.villagenames.handler.ServerTrackerStarter;
 import astrotibs.villagenames.handler.VersionChecker;
 import astrotibs.villagenames.handler.VillagerTradeHandler;
 import astrotibs.villagenames.init.InventoryRender;
+import astrotibs.villagenames.integration.antiqueatlas.VillageWatcherAA;
 import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.nbt.NBTUpdater;
 import astrotibs.villagenames.network.MessageModernVillagerSkin;
@@ -45,6 +46,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -496,7 +498,12 @@ public final class VillageNames
                 		);
             }
         }
-		
+        
+        // Other mod stuff
+        if (Loader.isModLoaded(Reference.ANTIQUE_ATLAS_MODID))
+        {
+        	MinecraftForge.EVENT_BUS.register(new VillageWatcherAA()); // Antique Atlas map listener
+        }
 	}
 	
 	// POST-INIT

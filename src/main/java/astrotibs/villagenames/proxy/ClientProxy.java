@@ -1,11 +1,14 @@
 package astrotibs.villagenames.proxy;
 
+import astrotibs.villagenames.integration.antiqueatlas.VillageWatcherAA;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 
 //import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -13,6 +16,17 @@ import net.minecraftforge.client.model.ModelLoader;
 //import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class ClientProxy extends CommonProxy {
+	
+	@Override
+	public void init(FMLInitializationEvent e)
+	{
+		super.init(e);
+		
+		if (Loader.isModLoaded(Reference.ANTIQUE_ATLAS_MODID))
+		{ 
+			VillageWatcherAA.registerTextures();
+		}
+	}
 	
 	@Override
     public void registerItemSided(Item item) {

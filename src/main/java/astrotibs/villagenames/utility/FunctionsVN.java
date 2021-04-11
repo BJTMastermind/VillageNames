@@ -269,9 +269,9 @@ public class FunctionsVN
 		b = 0;
 		for (BiomeDictionary.Type type : typeTags)
 		{
-			if (type==BiomeDictionary.Type.COLD || type==BiomeDictionary.Type.SPARSE) {b = 0; break;}
+			if (type==BiomeDictionary.Type.COLD || type==BiomeDictionary.Type.SPARSE || type==BiomeDictionary.Type.DEAD) {b = 0; break;}
 			if (type==BiomeDictionary.Type.JUNGLE) {b |= 1;}
-			if (type==BiomeDictionary.Type.WET) {b |= 2;}
+			if (type==BiomeDictionary.Type.WET || type==BiomeDictionary.Type.LUSH || type==BiomeDictionary.Type.DENSE) {b |= 2;}
 		}
 		if (b==3)
 		{
@@ -287,34 +287,39 @@ public class FunctionsVN
 			}
 		}
 		
-		// Forest type (3)
+		// Magical type (1)
 		b = 0;
 		for (BiomeDictionary.Type type : typeTags)
 		{
-			if (type==BiomeDictionary.Type.SPARSE) {b = 0; break;}
-			if (type==BiomeDictionary.Type.FOREST) {b |= 1;}
+			if (type==BiomeDictionary.Type.DEAD || type==BiomeDictionary.Type.SPOOKY) {b = 0; break;}
+			if (type==BiomeDictionary.Type.MAGICAL) {b |= 1;}
 		}
 		if (b==1)
 		{
-			return 3;
+			return 1;
 		}
 		
 		// Highland type (2)
 		for (BiomeDictionary.Type type : typeTags)
 		{
-			if (type==BiomeDictionary.Type.MOUNTAIN || type==BiomeDictionary.Type.HILLS)
+			if (type==BiomeDictionary.Type.MOUNTAIN)
 			{
 				return 2;
 			}
 		}
-		
-		// Magical type (1)
+				
+		// Forest type (3)
+		b = 0; b1 = 0;
 		for (BiomeDictionary.Type type : typeTags)
 		{
-			if (type==BiomeDictionary.Type.MAGICAL)
-			{
-				return 1;
-			}
+			if (type==BiomeDictionary.Type.DEAD) {b = 0; break;}
+			if (type==BiomeDictionary.Type.SPARSE) {b1--;}
+			if (type==BiomeDictionary.Type.DENSE) {b1++;}
+			if (type==BiomeDictionary.Type.FOREST) {b |= 1;}
+		}
+		if (b==1 && b1!=-1)
+		{
+			return 3;
 		}
 		
 		// Plains type (0)
@@ -551,11 +556,11 @@ public class FunctionsVN
 	    										));
 	    								
 	    								// Slot 8.5 - Selling only one at a time, up to five times (BE) and doing so as Expert level (JE)
-	    								moditem = ModObjects.chooseModSuspiciousStew(random.nextInt(10));
-	    								if (moditem != null)
+	    								moditemstack = ModObjects.chooseModSuspiciousStew(random);
+	    								if (moditemstack != null)
 	    								{
 	    									buyingList.add(MathHelper.clamp(addToSlot++, 0, Math.max(buyingList.size()-1,0)), new MerchantRecipe(
-		    										new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( moditem, 1 ), 0, 5
+		    										new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), moditemstack, 0, 5
 		    										));
 	    								}
 	    								
