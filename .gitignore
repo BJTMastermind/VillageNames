@@ -1,5 +1,5 @@
 # eclipse
-bin
+/bin
 *.launch
 .settings
 .metadata
@@ -29,3 +29,5 @@ eclipse
 Paulscode*
 run
 README.txt
+/api
+.gitignore

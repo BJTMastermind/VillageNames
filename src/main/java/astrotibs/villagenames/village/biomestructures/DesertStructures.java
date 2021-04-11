@@ -158,7 +158,7 @@ public class DesertStructures
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
 
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -505,8 +505,8 @@ public class DesertStructures
         	
         	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
 
@@ -869,10 +869,11 @@ public class DesertStructures
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
-
+        	// Smooth Sandstone Stairs
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
@@ -1058,8 +1059,8 @@ public class DesertStructures
     		
         	// Cut stone and stairs
         	this.fillWithBlocks(world, structureBB, 2, 1, 6, 4, 1, 6, biomeLogVertState, biomeLogVertState, false);
-        	this.setBlockState(world, Blocks.SANDSTONE_STAIRS.getStateFromMeta(0), 1, 1, 6, structureBB);
-        	this.setBlockState(world, Blocks.SANDSTONE_STAIRS.getStateFromMeta(1), 5, 1, 6, structureBB);
+        	this.setBlockState(world, biomeSmoothSandstoneStairsBlock.getStateFromMeta(0), 1, 1, 6, structureBB);
+        	this.setBlockState(world, biomeSmoothSandstoneStairsBlock.getStateFromMeta(1), 5, 1, 6, structureBB);
         	
         	// Various decorations
         	this.setBlockState(world, Blocks.HAY_BLOCK.getDefaultState(), 5, 1, 0, structureBB);
@@ -1435,11 +1436,11 @@ public class DesertStructures
         	// Sandstone wall that defaults to fence
         	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
         	// Smooth Sandstone Block
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	// Smooth Sandstone Stairs
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE_GATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -1790,11 +1791,11 @@ public class DesertStructures
         	// Sandstone wall that defaults to fence
         	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
         	// Smooth Sandstone Block
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	// Smooth Sandstone Stairs
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE_GATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -2140,10 +2141,10 @@ public class DesertStructures
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE_GATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
@@ -2558,10 +2559,10 @@ public class DesertStructures
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE_GATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	// Sandstone wall that defaults to fence
@@ -2993,9 +2994,9 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState();
@@ -3408,7 +3409,7 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
@@ -3772,8 +3773,8 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeTrapdoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.TRAPDOOR.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
@@ -4175,10 +4176,10 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	
@@ -4611,13 +4612,13 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneWallIntoCobblestoneState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoCobblestoneState==null) {biomeSandstoneWallIntoCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoCobblestoneState, this.materialType, this.biome, this.disallowModSubs);}
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState fletchingTableState = ModObjects.chooseModFletchingTableState();
         	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LADDER.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
@@ -5044,8 +5045,8 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -5453,13 +5454,13 @@ public class DesertStructures
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), false); // Toward you
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true); // Perpendicular to you
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
@@ -5870,12 +5871,12 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true); // Perpendicular to you
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -6267,7 +6268,7 @@ public class DesertStructures
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true); // Perpendicular to you
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
@@ -6717,9 +6718,9 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_BUTTON.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LADDER.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -7181,7 +7182,7 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
@@ -7641,12 +7642,12 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -8041,15 +8042,15 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), false); // Toward you
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true); // Perpendicular to you
         	IBlockState biomeChiseledSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
@@ -8500,13 +8501,13 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_BUTTON.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
@@ -8931,11 +8932,11 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -9327,7 +9328,7 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
@@ -9740,12 +9741,12 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true); // Perpendicular to you
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -10281,11 +10282,11 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneWallIntoFenceState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoFenceState==null) {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} else {biomeSandstoneWallIntoFenceState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoFenceState, this.materialType, this.biome, this.disallowModSubs);}
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
@@ -10707,10 +10708,10 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneStairsState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE_STAIRS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGreenCoralOrPottedCactusState = ModObjects.chooseGreenCoralOrPottedCactus();
         	
@@ -11123,14 +11124,14 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), false); // Toward you
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true); // Perpendicular to you
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -11576,12 +11577,12 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -12039,12 +12040,12 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
         	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
         	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
@@ -12483,10 +12484,10 @@ public class DesertStructures
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs); 
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, false), this.materialType, this.biome, this.disallowModSubs);
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs); 
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(true, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState biomeWoodButtonState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_BUTTON.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	
@@ -12985,14 +12986,14 @@ public class DesertStructures
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeCutSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.SANDSTONE.getStateFromMeta(2), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(false), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, false), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneBlockState(this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeSmoothSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneSlab(false, this.materialType==MaterialType.MESA), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabTopState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(9), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeSandstoneSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_SLAB.getStateFromMeta(1), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), false); // Toward you
         	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true); // Perpendicular to you
-        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(false).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+        	Block biomeSmoothSandstoneStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(ModObjects.chooseModSmoothSandstoneStairsBlock(this.materialType==MaterialType.MESA).getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
         	IBlockState biomeSandstoneWallIntoCobblestoneWallState = ModObjects.chooseModSandstoneWall(this.materialType==MaterialType.MESA); if (biomeSandstoneWallIntoCobblestoneWallState==null) {biomeSandstoneWallIntoCobblestoneWallState = Blocks.COBBLESTONE_WALL.getStateFromMeta(0);} else {biomeSandstoneWallIntoCobblestoneWallState = StructureVillageVN.getBiomeSpecificBlockState(biomeSandstoneWallIntoCobblestoneWallState, this.materialType, this.biome, this.disallowModSubs);}
         	
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null

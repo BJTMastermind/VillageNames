@@ -1,4 +1,4 @@
-package astrotibs.villagenames.integration;
+package astrotibs.villagenames.integration.toroquest;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
