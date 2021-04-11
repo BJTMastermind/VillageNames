@@ -12,7 +12,7 @@ import astrotibs.villagenames.banner.BannerGenerator;
 import astrotibs.villagenames.capabilities.ModularSkinProvider;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.integration.ModObjects;
-import astrotibs.villagenames.integration.ToroQuestWorldDataStructure;
+import astrotibs.villagenames.integration.toroquest.ToroQuestWorldDataStructure;
 import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
