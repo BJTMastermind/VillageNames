@@ -126,9 +126,17 @@ public class ModObjects {
 	public static final String cropZucchiniHC = DOM_HARVESTCRAFT + ":pamzucchiniCrop";
 	public static final String cropKaleJAFFA = "jaffa:kaleCrop";
 	
+	// Diorite
+	public static final String dioriteSlab_Qu = DOM_QUARK + ":stone_diorite_slab";
+	public static final String dioriteBricksSlab_Qu = DOM_QUARK + ":stone_diorite_bricks_slab";
+	
+	
+	// Mossy Stone
+	
+	
 	// Mud
 	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
-
+	
 	// Smooth Sandstone
 	public static final String smoothSandstoneQu = DOM_QUARK + ":sandstone_new";
 	
@@ -142,6 +150,10 @@ public class ModObjects {
 	// Stairs
 	public static final String dioriteStairs_Qu = DOM_QUARK + ":stone_diorite_stairs";
 	public static final String graniteStairs_Qu = DOM_QUARK + ":stone_granite_stairs";
+	// Brick stairs
+	public static final String andesiteBrickStairs_Qu = DOM_QUARK + ":stone_andesite_bricks_stairs";
+	public static final String dioriteBrickStairs_Qu = DOM_QUARK + ":stone_diorite_bricks_stairs";
+	public static final String graniteBrickStairs_Qu = DOM_QUARK + ":stone_granite_bricks_stairs";
 	
 	// Trapdoor
 	public static final String trapdoorSpruceQu = DOM_QUARK + ":spruce_trapdoor";
@@ -151,11 +163,12 @@ public class ModObjects {
 	public static final String trapdoorDarkOakQu = DOM_QUARK + ":dark_oak_trapdoor";
 	
 	// Walls
+	public static final String stoneBrickWall_Qu = DOM_QUARK + ":stonebrick_wall"; 
 	public static final String sandstoneWall_white_Qu = DOM_QUARK + ":sandstone_wall"; 
 	public static final String sandstoneWall_red_Qu = DOM_QUARK + ":red_sandstone_wall"; 
 	public static final String dioriteWall_Qu = DOM_QUARK + ":stone_diorite_wall";
 	public static final String graniteWall_Qu = DOM_QUARK + ":stone_granite_wall";
-	
+
 	
 	
 	// --- Items --- //
@@ -314,11 +327,31 @@ public class ModObjects {
 	 */
 	// Diorite Stairs
 	// Added in 1.14
+	public static Block chooseModAndesiteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.andesiteBrickStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		// TODO - Botania available in 1.10
+		return null;
+	}
 	public static Block chooseModDioriteStairsBlock()
 	{
 		Block modblock=null;
 		
 		modblock = Block.getBlockFromName(ModObjects.dioriteStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		// TODO - Botania available in 1.10
+		return null;
+	}
+	public static Block chooseModDioriteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.dioriteBrickStairs_Qu);
 		if (modblock != null) {return modblock;}
 		
 		// TODO - Botania available in 1.10
@@ -332,6 +365,34 @@ public class ModObjects {
 		if (modblock != null) {return modblock.getDefaultState();}
 		
 		// TODO - Botania available in 1.10
+		return null;
+	}
+	public static Block chooseModGraniteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.graniteBrickStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		// TODO - Botania available in 1.10
+		return null;
+	}
+	public static IBlockState chooseModDioriteSlabBlock(boolean upper)
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.dioriteSlab_Qu);
+		if (modblock != null) {return modblock.getStateFromMeta(upper? 8:0);}
+		
+		return null;
+	}
+	public static IBlockState chooseModDioriteBrickslabBlock(boolean upper)
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.dioriteBricksSlab_Qu);
+		if (modblock != null) {return modblock.getStateFromMeta(upper? 8:0);}
+		
 		return null;
 	}
 	
@@ -438,6 +499,20 @@ public class ModObjects {
 	}
 	
 	
+	// Mossy stone
+	public static IBlockState chooseModMossyStoneBrickWallState()
+	{
+		return null;
+	}
+	public static Block chooseModMossyCobblestoneStairsBlock()
+	{
+		return null;
+	}
+	public static Block chooseModMossyStoneBrickStairsBlock()
+	{
+		return null;
+	}
+	
 	// Iron Nugget
 	// TODO - added in 1.11
 	public static ItemStack chooseModIronNugget()
@@ -539,6 +614,18 @@ public class ModObjects {
 		if (modblock != null) {return modblock.getDefaultState();}
 		
 		return Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(8);
+	}
+	
+	
+	// Stone brick wall
+	public static IBlockState chooseModStoneBrickWallState()
+	{
+		Block modblock=null;
+
+		modblock = Block.getBlockFromName(ModObjects.stoneBrickWall_Qu);
+		if (modblock != null) {return modblock.getDefaultState();}
+		
+		return null;
 	}
 	
 	
