@@ -56,7 +56,7 @@ public class FunctionsVN
 	// Represents the 1.14+ village types
 	public static enum VillageType
 	{
-		PLAINS, DESERT, TAIGA, SAVANNA, SNOWY;
+		PLAINS, DESERT, TAIGA, SAVANNA, SNOWY, JUNGLE, SWAMP;
 		
 		/**
 		 * Determine the biometype to generate village buildings
@@ -83,7 +83,10 @@ public class FunctionsVN
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SNOWY) {return SNOWY;}}
 			if (biome.getBiomeName().toLowerCase().contains("desert")) {return DESERT;}
 			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SANDY) {return DESERT;}}
-			//for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.PLAINS) {return PLAINS;}}
+			if (biome.getBiomeName().toLowerCase().contains("jungle")) {return JUNGLE;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.JUNGLE) {return JUNGLE;}}
+			if (biome.getBiomeName().toLowerCase().contains("swamp")) {return SWAMP;}
+			for (BiomeDictionary.Type type : typeTags) {if (type==BiomeDictionary.Type.SWAMP) {return SWAMP;}}
 			
 			// If none apply, send back Plains
 			return PLAINS;
@@ -95,6 +98,8 @@ public class FunctionsVN
 			else if (name.toUpperCase().equals("TAIGA"))   {return TAIGA;}
 			else if (name.toUpperCase().equals("SAVANNA")) {return SAVANNA;}
 			else if (name.toUpperCase().equals("SNOWY"))   {return SNOWY;}
+			else if (name.toUpperCase().equals("JUNGLE"))  {return JUNGLE;}
+			else if (name.toUpperCase().equals("SWAMP"))   {return SWAMP;}
 			return defaultType;
 		}
 	}

@@ -56,8 +56,8 @@ public class VillageWatcherAA
 	
 	public static void setCustomTileTexture(String tileName, String printedName, String aaTileFileRoot)
 	{
-		TileAPI api = AtlasAPI.getTileAPI();
-		AtlasAPI.getTileAPI().setCustomTileTexture(tileName, api.registerTextureSet(printedName, new ResourceLocation(Reference.ANTIQUE_ATLAS_MODID, "textures/gui/tiles/"+aaTileFileRoot+".png")));
+		TileAPI tileAPI = AtlasAPI.getTileAPI();
+		tileAPI.setCustomTileTexture(tileName, tileAPI.registerTextureSet(printedName, new ResourceLocation(Reference.ANTIQUE_ATLAS_MODID, "textures/gui/tiles/"+aaTileFileRoot+".png")));
 	}
 	
 	//public static final MarkerType VILLAGE_MARKER = MarkerTypes.VILLAGE;

@@ -70,6 +70,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	public static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	public DesertMeetingPoint1() {}
     	
@@ -143,9 +147,8 @@ public class DesertStructures
             		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX, this.boundingBox.minZ,
-            						this.boundingBox.maxX, this.boundingBox.maxZ),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)7, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
@@ -433,6 +436,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	public static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	public DesertMeetingPoint2() {}
     	
@@ -492,9 +499,8 @@ public class DesertStructures
             		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX, this.boundingBox.minZ,
-            						this.boundingBox.maxX, this.boundingBox.maxZ),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)15, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
@@ -794,6 +800,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	public static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	public DesertMeetingPoint3() {}
     	
@@ -853,9 +863,8 @@ public class DesertStructures
             		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX, this.boundingBox.minZ,
-            						this.boundingBox.maxX, this.boundingBox.maxZ),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)14, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
@@ -1297,8 +1306,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 0; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	
     	private int averageGroundLevel = -1;
@@ -1349,9 +1360,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -1654,8 +1664,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 0; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -1704,9 +1716,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -2007,8 +2018,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 7;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -2057,9 +2070,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -2425,8 +2437,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 5;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 0; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 3; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 3;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -2475,9 +2489,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -2861,8 +2874,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 7;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 0; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -2911,9 +2926,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)5, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -3276,8 +3290,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 0; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -3326,9 +3342,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -3640,8 +3655,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 7;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 3; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 3;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -3690,9 +3707,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -4043,8 +4059,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 3; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 3;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -4093,9 +4111,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -4479,8 +4496,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 12;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 3; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 3;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -4529,9 +4548,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -4912,8 +4930,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 7;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -4962,9 +4982,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -5320,8 +5339,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 7;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -5370,9 +5391,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -5738,8 +5758,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 5;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -5788,9 +5810,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -6134,8 +6155,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -6184,9 +6207,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -6585,8 +6607,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 9;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 1; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 1; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 1;
+    	private static final int DECREASE_MAX_U = 1;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -6635,9 +6659,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -7049,8 +7072,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 2; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 2;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -7099,9 +7124,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -7509,8 +7533,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -7559,9 +7585,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -7909,8 +7934,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -7959,9 +7986,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -8368,8 +8394,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 5;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -8418,9 +8446,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -8799,8 +8826,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 5;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -8849,9 +8878,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -9195,8 +9223,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -9245,9 +9275,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -9608,8 +9637,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 18;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -9658,9 +9689,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -10149,8 +10179,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 5;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 1; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 3; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 1;
+    	private static final int DECREASE_MAX_U = 3;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -10199,9 +10231,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -10575,8 +10606,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 5;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -10625,9 +10658,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -10991,8 +11023,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 10;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 2; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -11041,9 +11075,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -11444,8 +11477,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 7;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 0; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -11494,9 +11529,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -11907,8 +11941,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -11957,9 +11993,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -12351,8 +12386,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 9;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 3; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 4; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 0; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 4;
+    	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -12401,9 +12438,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -12852,8 +12888,10 @@ public class DesertStructures
     	public static final int STRUCTURE_HEIGHT = 6;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 0; // Spaces above the bottom of the structure considered to be "ground level"
-    	private static final int INCREASE_MIN_U = 0; // How far "rightward" to start scanning the structure's front edge to determine the median ground level
-    	private static final int DECREASE_MAX_U = 3; // How far "leftward" to start scanning the structure's front edge to determine the median ground level
+    	private static final int INCREASE_MIN_U = 0;
+    	private static final int DECREASE_MAX_U = 3;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -12902,9 +12940,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -13331,6 +13368,8 @@ public class DesertStructures
     	private static final int GROUND_LEVEL = 0; // Spaces above the bottom of the structure considered to be "ground level"
     	private static final int INCREASE_MIN_U = 0;
     	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -13379,9 +13418,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -13656,6 +13694,8 @@ public class DesertStructures
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
     	private static final int INCREASE_MIN_U = 0;
     	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	// Values related to structures straddling streets
         
     	private int averageGroundLevel = -1;
@@ -13710,9 +13750,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -13992,6 +14031,8 @@ public class DesertStructures
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
     	private static final int INCREASE_MIN_U = 0;
     	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	
     	private int averageGroundLevel = -1;
     	
@@ -14045,9 +14086,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
@@ -14324,6 +14364,8 @@ public class DesertStructures
     	private static final int GROUND_LEVEL = 1; // Spaces above the bottom of the structure considered to be "ground level"
     	private static final int INCREASE_MIN_U = 0;
     	private static final int DECREASE_MAX_U = 0;
+    	private static final int INCREASE_MIN_W = 0;
+    	private static final int DECREASE_MAX_W = 0;
     	// Values related to structures straddling streets
     	
     	private int averageGroundLevel = -1;
@@ -14378,9 +14420,8 @@ public class DesertStructures
             		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
             				// Set the bounding box version as this bounding box but with Y going from 0 to 512
             				new StructureBoundingBox(
-            						// Modified to center onto front of house
-            						this.boundingBox.minX+(this.getCoordBaseMode().getHorizontalIndex()%2==0?INCREASE_MIN_U:0), this.boundingBox.minZ+(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:INCREASE_MIN_U),
-            						this.boundingBox.maxX-(this.getCoordBaseMode().getHorizontalIndex()%2==0?DECREASE_MAX_U:0), this.boundingBox.maxZ-(this.getCoordBaseMode().getHorizontalIndex()%2==0?0:DECREASE_MAX_U)),
+            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
+            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
             				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
             		
                     if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
