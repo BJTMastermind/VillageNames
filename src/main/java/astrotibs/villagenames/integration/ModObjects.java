@@ -149,6 +149,20 @@ public class ModObjects {
 	public static final String cropWintersquashHC = DOM_HARVESTCRAFT + ":pamwintersquashcrop";
 	public static final String cropZucchiniHC = DOM_HARVESTCRAFT + ":pamzucchinicrop";
 	public static final String cropKaleJAFFA = "jaffa:kaleCrop";
+
+	// Diorite
+	public static final String dioriteSlab_Qu = DOM_QUARK + ":stone_diorite_slab";
+	public static final String dioriteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabDiorite";
+	public static final String dioriteBrickSlab_Qu = DOM_QUARK + ":stone_diorite_bricks_slab";
+	public static final String polishedDioriteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabDioriteSmooth";
+
+	
+	// Mossy Stone
+	public static final String mossyCobblestoneStairsVBE = DOM_VANILLABUILDERSEXTENSION + ":stairsStoneMoss";
+	public static final String mossyStoneBrickStairsVBE = DOM_VANILLABUILDERSEXTENSION + ":stairsStoneBrickMossy";
+	public static final String mossyStoneBrickWallVBE = DOM_VANILLABUILDERSEXTENSION + ":wallStoneBrickMossy";
+	public static final String mossyCobblestoneSlabVBE = DOM_VANILLABUILDERSEXTENSION + ":slabStoneMoss";
+	public static final String mossyStoneBrickSlabVBE = DOM_VANILLABUILDERSEXTENSION + ":slabStoneBrickMossy";
 	
 	// Mud
 	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
@@ -170,6 +184,12 @@ public class ModObjects {
 	public static final String dioriteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsDiorite";
 	public static final String graniteStairs_Qu = DOM_QUARK + ":stone_granite_stairs";
 	public static final String graniteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsGranite";
+	public static final String andesiteBrickStairs_Qu = DOM_QUARK + ":stone_andesite_bricks_stairs";
+	public static final String dioriteBrickStairs_Qu = DOM_QUARK + ":stone_diorite_bricks_stairs";
+	public static final String graniteBrickStairs_Qu = DOM_QUARK + ":stone_granite_bricks_stairs";
+	public static final String polishedAndesiteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsAndesiteSmooth";
+	public static final String polishedDioriteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsDioriteSmooth";
+	public static final String polishedGraniteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsGraniteSmooth";
 	public static final String smoothSandstoneStairs_white_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsSandStoneSmooth";
 	public static final String smoothSandstoneStairs_red_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsRedSandStoneSmooth";
 
@@ -181,6 +201,7 @@ public class ModObjects {
 	public static final String trapdoorDarkOakQu = DOM_QUARK + ":dark_oak_trapdoor";
 	
 	// Walls
+	public static final String stoneBrickWall_Qu = DOM_QUARK + ":stonebrick_wall"; 
 	public static final String sandstoneWall_white_Qu = DOM_QUARK + ":sandstone_wall";
 	public static final String smoothSandstoneWall_white_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallSandStoneSmooth"; // There is no non-smooth wall
 	public static final String sandstoneWall_red_Qu = DOM_QUARK + ":red_sandstone_wall";
@@ -377,6 +398,26 @@ public class ModObjects {
 	// --- Generator Functions --- //
 	// --------------------------- //
 	
+	
+	// Andesite stairs
+	public static Block chooseModPolishedAndesiteStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.polishedAndesiteStairs_VBE);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
+	public static Block chooseModAndesiteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.andesiteBrickStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
 	
 	// Barrel
 	public static ItemStack chooseModBarrelItem()
@@ -576,6 +617,24 @@ public class ModObjects {
 		
 		return null;
 	}
+	public static Block chooseModPolishedDioriteStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.polishedDioriteStairs_VBE);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
+	public static Block chooseModDioriteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.dioriteBrickStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
 	public static IBlockState chooseModDioriteWallState()
 	{
     	String[] modprioritylist = GeneralConfig.modBountifulStone;
@@ -598,7 +657,46 @@ public class ModObjects {
 		
 		return null;
 	}
-	
+	public static IBlockState chooseModDioriteSlabState(boolean upper)
+	{
+		String[] modprioritylist = GeneralConfig.modSandstone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.dioriteSlab_Qu);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.dioriteSlab_VBE);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+		}
+		
+		return null;
+	}
+	public static IBlockState chooseModDioriteBrickSlabState(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.dioriteBrickSlab_Qu);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
+	public static IBlockState chooseModPolishedDioriteSlabState(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.polishedDioriteSlab_VBE);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
 	
 	// Fletching Table
 	public static IBlockState chooseModFletchingTableState()
@@ -642,6 +740,24 @@ public class ModObjects {
 				if (modblock != null) {return modblock;}
 			}
 		}
+		
+		return null;
+	}
+	public static Block chooseModPolishedGraniteStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.polishedGraniteStairs_VBE);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
+	public static Block chooseModGraniteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.graniteBrickStairs_Qu);
+		if (modblock != null) {return modblock;}
 		
 		return null;
 	}
@@ -738,6 +854,58 @@ public class ModObjects {
 	public static IBlockState chooseModLoom()
 	{
 		return Blocks.CRAFTING_TABLE.getDefaultState();
+	}
+	
+	
+	// Mossy Stone
+	public static Block chooseModMossyCobblestoneStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.mossyCobblestoneStairsVBE);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
+	public static Block chooseModMossyStoneBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.mossyStoneBrickStairsVBE);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
+	public static IBlockState chooseModMossyStoneBrickWall()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.mossyStoneBrickWallVBE);
+		if (modblock != null) {return modblock.getDefaultState();}
+		
+		return null;
+	}
+	public static IBlockState chooseModMossyCobblestoneSlab(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.mossyCobblestoneSlabVBE);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
+	public static IBlockState chooseModMossyStoneBrickSlab(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickSlabVBE);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
+	public static IBlockState chooseModMossyStoneBrickWallState()
+	{
+		return null;
 	}
 	
 	
@@ -850,6 +1018,18 @@ public class ModObjects {
 		if (modblock != null) {return modblock.getDefaultState();}
 		
 		return Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(8);
+	}
+	
+	
+	// Stone brick wall
+	public static IBlockState chooseModStoneBrickWallState()
+	{
+		Block modblock=null;
+
+		modblock = Block.getBlockFromName(ModObjects.stoneBrickWall_Qu);
+		if (modblock != null) {return modblock.getDefaultState();}
+		
+		return null;
 	}
 	
 	
