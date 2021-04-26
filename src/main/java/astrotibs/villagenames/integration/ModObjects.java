@@ -300,15 +300,20 @@ public class ModObjects {
 	// Added in 1.14
 	public static Block chooseModDioriteStairsBlock()
 	{
-		// TODO - Botania available in 1.10
+		return null;
+	}
+	public static IBlockState chooseModDioriteSlabState(boolean upper)
+	{
+		return null;
+	}
+	public static IBlockState chooseModPolishedDioriteSlabState(boolean upper)
+	{
 		return null;
 	}
 	public static IBlockState chooseModDioriteWallState()
 	{
-		// TODO - Botania available in 1.10
 		return null;
 	}
-	
 	
 	// Fletching Table
 	public static IBlockState chooseModFletchingTableState()
@@ -439,6 +444,21 @@ public class ModObjects {
 	}
 	
 	
+	// Mossy stone
+	public static IBlockState chooseModMossyStoneBrickWallState()
+	{
+		return null;
+	}
+	public static IBlockState choosModMossyStoneBrickStairsBlock()
+	{
+		return null;
+	}
+	public static IBlockState chooseModMossyCobblestoneStairsBlock()
+	{
+		return null;
+	}
+	
+	
 	/**
 	 * Added in 1.14
 	 * Returns non-smooth stair versions on failure
@@ -512,6 +532,13 @@ public class ModObjects {
 	public static IBlockState chooseModSmoothStoneBlockState()
 	{
 		return Blocks.double_stone_slab.getStateFromMeta(8);
+	}
+	
+	
+	// Stone brick wall
+	public static IBlockState chooseModStoneBrickWallState()
+	{
+		return null;
 	}
 	
 	
