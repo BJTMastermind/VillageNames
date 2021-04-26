@@ -217,6 +217,15 @@ public class ModObjects {
 	// Desk
 	public static final String deskBC = "bibliocraft:desk";
 	
+	// Diorite
+	public static final String dioriteSlab_Qu = DOM_QUARK + ":stone_diorite_slab";
+	public static final String dioriteSlab_FV = DOM_FUTUREVERSIONS + ":dioriteslab";
+	
+	public static final String dioriteBrickSlab_Qu = DOM_QUARK + ":stone_diorite_bricks_slab";
+	
+	public static final String polishedDioriteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabdioritesmooth";
+	public static final String polishedDioriteSlab_FV = DOM_FUTUREVERSIONS + ":polisheddioriteslab";
+	
 	// Dye
 	public static final String dyeBlueBOP = DOM_BIOMESOPLENTY + ":blue_dye";
 	public static final String dyeBrownBOP = DOM_BIOMESOPLENTY + ":brown_dye";
@@ -261,6 +270,25 @@ public class ModObjects {
 	// Loom
 	public static final String loomFMC = DOM_FUTUREMC + ":loom";
 	public static final String loomFV = DOM_FUTUREVERSIONS + ":loom";
+
+	// Mossy Stone
+	public static final String mossyStoneBrickWall_Qu = DOM_QUARK + ":stonebrick_mossy_wall";
+	public static final String mossyStoneBrickWall_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallstonebrickmossy";
+	public static final String mossyStoneBrickWall_FMC = DOM_FUTUREMC + ":mossy_stone_brick_wall";
+	public static final String mossyStoneBrickWall_FV = DOM_FUTUREVERSIONS + ":mossystonebrickwall";
+	public static final String mossyCobblestoneSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabstonemoss";
+	public static final String mossyCobblestoneSlab_FV = DOM_FUTUREVERSIONS + ":mossycobblestoneslab";
+	public static final String mossyStoneBrickSlab_Qu = DOM_QUARK + ":stonebrick_mossy_slab";
+	public static final String mossyStoneBrickSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabstonebrickmossy";
+	public static final String mossyStoneBrickSlab_FV = DOM_FUTUREVERSIONS + ":mossystonebrickslab";
+	
+	public static final String mossyCobblestoneStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsstonemoss";
+	public static final String mossyCobblestoneStairs_FV = DOM_FUTUREVERSIONS + ":mossycobblestonestairs";
+	
+	public static final String mossyStoneBrickStairs_Qu = DOM_QUARK + ":stonebrick_mossy_stairs";
+	public static final String mossyStoneBrickStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsstonebrickmossy";
+	public static final String mossyStoneBrickStairs_FV = DOM_FUTUREVERSIONS + ":mossystonebrickstairs";
+	
 	
 	// Mud
 	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
@@ -300,16 +328,30 @@ public class ModObjects {
 	public static final String smoothStoneFV = DOM_FUTUREVERSIONS + ":smoothstone";
 	
 	// Stairs
+	public static final String andesiteStairs_Qu = DOM_QUARK + ":stone_andesite_stairs";
+	public static final String andesiteStairs_FV = DOM_FUTUREVERSIONS + ":andesitestair";
+	public static final String polishedAndesiteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsandesitesmooth";
+	public static final String polishedAndesiteStairs_FV = DOM_FUTUREVERSIONS + ":polishedandesitestair";
+	
 	public static final String dioriteStairs_Qu = DOM_QUARK + ":stone_diorite_stairs";
-	public static final String dioriteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsdiorite";
 	public static final String dioriteStairs_FV = DOM_FUTUREVERSIONS + ":dioritestair";
+	public static final String polishedDioriteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsdioritesmooth";
+	public static final String polishedDioriteStairs_FV = DOM_FUTUREVERSIONS + ":polisheddioritestair";
+	
 	public static final String graniteStairs_Qu = DOM_QUARK + ":stone_granite_stairs";
-	public static final String graniteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsgranite";
 	public static final String graniteStairs_FV = DOM_FUTUREVERSIONS + ":granitestair";
+	public static final String polishedGraniteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsgranitesmooth";
+	public static final String polishedGraniteStairs_FV = DOM_FUTUREVERSIONS + ":polishedgranitestair";
+	
+	public static final String andesiteBrickStairs_Qu = DOM_QUARK + ":stone_andesite_bricks_stairs";
+	public static final String dioriteBrickStairs_Qu = DOM_QUARK + ":stone_diorite_bricks_stairs";
+	public static final String graniteBrickStairs_Qu = DOM_QUARK + ":stone_granite_bricks_stairs";
+	
 	public static final String smoothSandstoneStairs_white_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairssandstonesmooth";
 	public static final String smoothSandstoneStairs_red_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsredsandstonesmooth";
 	public static final String smoothSandstoneStairs_white_FV = DOM_FUTUREVERSIONS + ":smoothsandstonestairs";
 	public static final String smoothSandstoneStairs_red_FV = DOM_FUTUREVERSIONS + ":smoothredsandstonestairs";
+	
 	
 	// Stone cutter
 	public static final String stoneCutterFMC = DOM_FUTUREMC + ":stonecutter";
@@ -374,6 +416,9 @@ public class ModObjects {
 	
 	
 	// Walls
+	public static final String stoneBrickWall_Qu = DOM_QUARK + ":stonebrick_wall";
+	public static final String stoneBrickWall_FMC = DOM_FUTUREMC + ":stone_brick_wall";
+	public static final String stoneBrickWall_FV = DOM_FUTUREVERSIONS + ":stonebrickwall";
 	public static final String sandstoneWall_white_Qu = DOM_QUARK + ":sandstone_wall";
 	public static final String sandstoneWall_white_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallsandstone";
 	public static final String sandstoneWall_white_FMC = DOM_FUTUREMC + ":sandstone_wall"; 
@@ -564,7 +609,66 @@ public class ModObjects {
 	// --------------------------- //
 	// --- Generator Functions --- //
 	// --------------------------- //
-
+	
+	
+	/**
+	 * Select a diorite stairs block from a mod; returns null otherwise
+	 */
+	// Andesite Stairs
+	// Added in 1.14
+	public static Block chooseModAndesiteStairsBlock()
+	{
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.andesiteStairs_Qu);
+				if (modblock != null) {return modblock;}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.andesiteStairs_FV);
+				if (modblock != null) {return modblock;}
+			}
+		}
+		
+		return null;
+	}
+	public static Block chooseModPolishedAndesiteStairsBlock()
+	{
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.polishedAndesiteStairs_VBE);
+				if (modblock != null) {return modblock;}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.polishedAndesiteStairs_FV);
+				if (modblock != null) {return modblock;}
+			}
+		}
+		
+		return null;
+	}
+	public static Block chooseModAndesiteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.andesiteBrickStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
 	
 	// Barrel
 	public static ItemStack chooseModBarrelItem()
@@ -963,17 +1067,43 @@ public class ModObjects {
 				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_Qu);
 				if (modblock != null) {return modblock;}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
-			{
-				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_VBE);
-				if (modblock != null) {return modblock;}
-			}
 			else if (mod.toLowerCase().equals("futureversions"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_FV);
 				if (modblock != null) {return modblock;}
 			}
 		}
+		
+		return null;
+	}
+	public static Block chooseModPolishedDioriteStairsBlock()
+	{
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.polishedDioriteStairs_VBE);
+				if (modblock != null) {return modblock;}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.polishedDioriteStairs_FV);
+				if (modblock != null) {return modblock;}
+			}
+		}
+		
+		return null;
+	}
+	public static Block chooseModDioriteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.dioriteBrickStairs_Qu);
+		if (modblock != null) {return modblock;}
 		
 		return null;
 	}
@@ -1004,7 +1134,59 @@ public class ModObjects {
 		
 		return null;
 	}
-	
+	public static IBlockState chooseModDioriteSlabState(boolean upper)
+	{
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.dioriteSlab_Qu);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.dioriteSlab_FV);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?0:1);}
+			}
+		}
+		
+		return null;
+	}
+	public static IBlockState chooseModDioriteSlabBrickState(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.dioriteBrickSlab_Qu);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
+	public static IBlockState chooseModPolishedDioriteSlabState(boolean upper)
+	{
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.polishedDioriteSlab_VBE);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.polishedDioriteSlab_FV);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+		}
+		
+		return null;
+	}
 	
 	// Dried Kelp Block
 	public static IBlockState chooseModDriedKelpBlockState()
@@ -1245,17 +1427,43 @@ public class ModObjects {
 				modblock = Block.getBlockFromName(ModObjects.graniteStairs_Qu);
 				if (modblock != null) {return modblock;}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
-			{
-				modblock = Block.getBlockFromName(ModObjects.graniteStairs_VBE);
-				if (modblock != null) {return modblock;}
-			}
 			else if (mod.toLowerCase().equals("futureversions"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.graniteStairs_FV);
 				if (modblock != null) {return modblock;}
 			}
 		}
+		
+		return null;
+	}
+	public static Block chooseModPolishedGraniteStairsBlock()
+	{
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.polishedGraniteStairs_VBE);
+				if (modblock != null) {return modblock;}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.polishedGraniteStairs_FV);
+				if (modblock != null) {return modblock;}
+			}
+		}
+		
+		return null;
+	}
+	public static Block chooseModGraniteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.graniteBrickStairs_Qu);
+		if (modblock != null) {return modblock;}
 		
 		return null;
 	}
@@ -1430,6 +1638,137 @@ public class ModObjects {
 		}
 		
 		return Blocks.CRAFTING_TABLE.getDefaultState();
+	}
+	
+	
+	// Mossy stone
+	public static IBlockState chooseModMossyCobblestoneWallState()
+	{
+		String[] modprioritylist = GeneralConfig.modMossyStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickWall_Qu);
+				if (modobject != null) {return modobject.getDefaultState();}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickWall_VBE);
+				if (modobject != null) {return modobject.getDefaultState();}
+			}
+			else if (mod.toLowerCase().equals("futuremc"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickWall_FMC);
+				if (modobject != null) {return modobject.getDefaultState();}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickWall_FV);
+				if (modobject != null) {return modobject.getDefaultState();}
+			}
+		}
+		return null;
+	}
+	public static IBlockState chooseModMossyCobblestoneSlabState(boolean upper)
+	{
+		String[] modprioritylist = GeneralConfig.modMossyStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyCobblestoneSlab_VBE);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyCobblestoneSlab_FV);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+		}
+		return null;
+	}
+	public static IBlockState chooseModMossyStoneBrickSlabState(boolean upper)
+	{
+		String[] modprioritylist = GeneralConfig.modMossyStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickSlab_Qu);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickSlab_VBE);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickSlab_FV);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+		}
+		return null;
+	}
+	public static Block chooseModMossyCobblestoneStairsBlock()
+	{
+		String[] modprioritylist = GeneralConfig.modMossyStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyCobblestoneStairs_VBE);
+				if (modobject != null) {return modobject;}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyCobblestoneStairs_FV);
+				if (modobject != null) {return modobject;}
+			}
+		}
+		return null;
+	}
+	public static Block chooseModMossyStoneBrickStairsBlock()
+	{
+		String[] modprioritylist = GeneralConfig.modMossyStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickStairs_Qu);
+				if (modobject != null) {return modobject;}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickStairs_VBE);
+				if (modobject != null) {return modobject;}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickStairs_FV);
+				if (modobject != null) {return modobject;}
+			}
+		}
+		return null;
+	}
+	public static IBlockState chooseModMossyStoneBrickWallState()
+	{
+		return null;
 	}
 	
     
@@ -1664,6 +2003,35 @@ public class ModObjects {
 	}
 	
 	
+	// Stone brick wall
+	public static IBlockState chooseModStoneBrickWallState()
+	{
+		String[] modprioritylist = GeneralConfig.modStoneBrickWall;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.stoneBrickWall_Qu);
+				if (modobject != null) {return modobject.getDefaultState();}
+			}
+			else if (mod.toLowerCase().equals("futuremc"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.stoneBrickWall_FMC);
+				if (modobject != null) {return modobject.getDefaultState();}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.stoneBrickWall_FV);
+				if (modobject != null) {return modobject.getDefaultState();}
+			}
+		}
+		return null;
+	}
+	
+		
 	// Stonecutter
 	public static IBlockState chooseModStonecutterState(int orientation, EnumFacing coordBaseMode)
 	{

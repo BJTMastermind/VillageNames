@@ -86,10 +86,12 @@ public class GeneralConfig {
 	public static String[] modGrindstone;
 	public static String[] modLantern;
 	public static String[] modLoom;
+	public static String[] modMossyStone;
 	public static String[] modSandstone;
 	public static String[] modSmithingTable;
 	public static String[] modSmoker;
 	public static String[] modSmoothStone;
+	public static String[] modStoneBrickWall;
 	public static String[] modStonecutter;
 	public static String[] modStrippedLog;
 	public static String[] modStrippedWood;
@@ -529,6 +531,13 @@ public class GeneralConfig {
  				"Priority order for referencing the Loom for village generation. The version highest on the list and registered in your game will be used."
  				);
 	    
+	    modMossyStone = config.getStringList("Mod Priority: Mossy Stone", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+ 				"etfuturum",
+	    		"uptodate",
+ 				},
+ 				"Priority order for referencing mossy stone blocks for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
 	    modSandstone = config.getStringList("Mod Priority: Sandstone", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
  				"quark",
 	    		"futuremc",
@@ -558,6 +567,14 @@ public class GeneralConfig {
 	    		"futureversions"
  				},
  				"Priority order for referencing Smooth Stone for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modStoneBrickWall = config.getStringList("Mod Priority: Stone Brick Wall", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+ 				"quark",
+	    		"futuremc",
+	    		"futureversions"
+ 				},
+ 				"Priority order for referencing Stone Brick Walls for village generation. The version highest on the list and registered in your game will be used."
  				);
 	    
 	    modStonecutter = config.getStringList("Mod Priority: Stonecutter", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
