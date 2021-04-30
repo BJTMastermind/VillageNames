@@ -74,6 +74,7 @@ public class GeneralConfig {
 	public static boolean swampHutMushroomPot;
 	
 	public static String[] modBountifulStone;
+	public static String[] modPrismarine;
 	public static String[] modSandstone;
 	
 	public static String[] zombieCureCatalysts;
@@ -387,6 +388,13 @@ public class GeneralConfig {
  				"vanillabuildersextension",
  				},
  				"Priority order for referencing Granite, Diorite, and Andesite for e.g. villager trade offers. The version highest on the list and registered in your game will be used."
+ 				);
+	    
+	    modPrismarine = config.getStringList("Mod Priority: Prismarine", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+ 				"quark",
+	    		"vanillabuildersextension",
+ 				},
+ 				"Priority order for referencing prismarine variations for village generation. The version highest on the list and registered in your game will be used."
  				);
 	    
 	    modSandstone = config.getStringList("Mod Priority: Sandstone", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
