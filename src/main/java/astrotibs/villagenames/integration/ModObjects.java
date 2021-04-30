@@ -150,7 +150,12 @@ public class ModObjects {
 	
 	// Mud
 	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
-
+	
+	// Prismarine
+	public static final String prismarineStairs_Qu = DOM_QUARK + ":prismarine_stairs";
+	public static final String prismarineSlab_Qu = DOM_QUARK + ":prismarine_slab";
+	public static final String prismarineWall_Qu = DOM_QUARK + ":prismarine_rough_wall";
+	
 	// Smooth Sandstone
 	public static final String smoothSandstoneQu = DOM_QUARK + ":sandstone_new";
 	
@@ -761,6 +766,42 @@ public class ModObjects {
 	}
 	public static IBlockState chooseModMossyStoneBrickWallState()
 	{
+		return null;
+	}
+	
+	// Prismarine Stairs
+	public static Block chooseModPrismarineStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.prismarineStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
+	
+	// Prismarine Slab
+	/**
+	 * Returns regular sandstone slab on a failure
+	 */
+	public static IBlockState chooseModPrismarineSlab(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.prismarineSlab_Qu);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
+	
+	// Prismarine Wall
+	public static IBlockState chooseModPrismarineWallState()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.prismarineWall_Qu);
+		if (modblock != null) {return modblock.getDefaultState();}
+		
 		return null;
 	}
 	
