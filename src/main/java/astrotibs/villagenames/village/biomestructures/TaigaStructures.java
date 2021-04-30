@@ -14219,8 +14219,12 @@ public class TaigaStructures
 		int horizIndex = coordBaseMode.getHorizontalIndex();
 		
 		// Generate per-material blocks
-		IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.cobblestone.getDefaultState(), materialType, biome, disallowModSubs);
+    	
+    	// Establish top and filler blocks, substituting Grass and Dirt if they're null
     	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), materialType, biome, disallowModSubs);
+    	IBlockState biomeFillerState=biomeDirtState; if (biome!=null && biome.fillerBlock!=null) {biomeFillerState=biome.fillerBlock;}
+    	
+		IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.cobblestone.getDefaultState(), materialType, biome, disallowModSubs);
     	IBlockState biomeStoneStairsState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_stairs.getDefaultState(), materialType, biome, disallowModSubs);
     	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.planks.getDefaultState(), materialType, biome, disallowModSubs);
     	IBlockState biomeTrapdoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.trapdoor.getDefaultState(), materialType, biome, disallowModSubs);
@@ -14240,7 +14244,7 @@ public class TaigaStructures
     			for (int i=-2 ; i<=1; i++)
     			{
     				BlueprintData.addPlaceBlockAndClearAbove(blueprint, 0, -1, i+(shift?1:0), biomePlankState);
-    				BlueprintData.addFillBelowTo(blueprint, 0, -2, i+(shift?1:0), biomeDirtState);
+    				BlueprintData.addFillBelowTo(blueprint, 0, -2, i+(shift?1:0), biomeFillerState);
     			}
     			
     			// Left
@@ -14258,7 +14262,7 @@ public class TaigaStructures
     			// Base
     			BlueprintData.addFillWithBlocks(blueprint, -2+(shift?1:0), -1, 0, 1+(shift?1:0), -1, 0, biomePlankState);
     			// Foundation
-    			for (int i=-2 ; i<=1; i++) {BlueprintData.addPlaceBlock(blueprint, i+(shift?1:0), -2, 0, biomeDirtState);}
+    			for (int i=-2 ; i<=1; i++) {BlueprintData.addPlaceBlock(blueprint, i+(shift?1:0), -2, 0, biomeFillerState);}
     			
     			// Left
     			BlueprintData.addFillWithBlocks(blueprint, -3+(shift?1:0), 0, 0, -3+(shift?1:0), 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(horizIndex%2==0 ? 6 : 4));
@@ -14275,49 +14279,49 @@ public class TaigaStructures
     	case 1: // Large boulder
     		// Central boulder is in the same place
     		BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, biomeCobblestoneState);
-    		BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeDirtState); // Foundation
+    		BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
     		
     		switch (random.nextInt(4))
     		{
     		case 0: // Facing you
     			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, biomeCobblestoneState);
-    			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3, coordBaseMode)));
     			BlueprintData.addPlaceBlock(blueprint, 0, 1, 1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2, coordBaseMode)));
     			BlueprintData.addPlaceBlock(blueprint, 1, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, 1, -1, 1, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, 1, -1, 1, biomeFillerState); // Foundation
     			break;
     		case 1: // Facing left
     			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, biomeCobblestoneState);
-    			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0, coordBaseMode)));
     			BlueprintData.addPlaceBlock(blueprint, 1, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1, coordBaseMode)));
     			BlueprintData.addPlaceBlock(blueprint, 1, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, 1, -1, -1, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, 1, -1, -1, biomeFillerState); // Foundation
     			break;
     		case 2: // Facing away
     			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, biomeCobblestoneState);
-    			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2, coordBaseMode)));
     			BlueprintData.addPlaceBlock(blueprint, 0, 1, -1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3, coordBaseMode)));
     			BlueprintData.addPlaceBlock(blueprint, -1, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 1, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 1, biomeFillerState); // Foundation
     			break;
     		case 3: // Facing right
     			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, biomeCobblestoneState);
-    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1, coordBaseMode)));
     			BlueprintData.addPlaceBlock(blueprint, -1, 1, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0, coordBaseMode)));
     			BlueprintData.addPlaceBlock(blueprint, -1, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 1, biomeDirtState); // Foundation
+    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 1, biomeFillerState); // Foundation
     			break;
     		}
     		break;
@@ -14327,7 +14331,7 @@ public class TaigaStructures
     	case 3: // Small boulder without spike
     		// Central boulder is in the same place
     		BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, biomeCobblestoneState);
-    		BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeDirtState); // Foundation
+    		BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
     		
     		Block boulderTopperBlock; int boulderTopperMeta;
     		int boulderOrientation = random.nextInt(4);
@@ -14370,19 +14374,19 @@ public class TaigaStructures
     		{
     		case 0:
     			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 2, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeDirtState);
+    			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeFillerState);
     			break;
     		case 1:
     			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 1, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeDirtState);
+    			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeFillerState);
     			break;
     		case 2:
     			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 3, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeDirtState);
+    			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeFillerState);
     			break;
     		case 3:
     			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, biomeStoneStairsState.getBlock().getStateFromMeta(StructureVillageVN.getMetadataWithOffset(biomeStoneStairsState.getBlock(), 0, coordBaseMode)));
-    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeDirtState);
+    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeFillerState);
     			break;
     		}
     		break;
@@ -14397,7 +14401,7 @@ public class TaigaStructures
     		
     		// Foundation
     		//for (int i=-1 ; i<=1; i++) {for (int l=-1 ; l<=1; l++) {if (i==0 || l==0) {
-    		//	BlueprintData.addFillBelowTo(blueprint, i, -2, l, biomeDirtState);
+    		//	BlueprintData.addFillBelowTo(blueprint, i, -2, l, biomeFillerState);
     		//	BlueprintData.addPlaceBlock(blueprint, i, -1, l, biomeGrassState);
     		//}}}
     		
