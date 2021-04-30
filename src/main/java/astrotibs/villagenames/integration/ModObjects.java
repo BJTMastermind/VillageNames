@@ -289,7 +289,6 @@ public class ModObjects {
 	public static final String mossyStoneBrickStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsstonebrickmossy";
 	public static final String mossyStoneBrickStairs_FV = DOM_FUTUREVERSIONS + ":mossystonebrickstairs";
 	
-	
 	// Mud
 	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
 
@@ -299,6 +298,14 @@ public class ModObjects {
 	public static final String pressurePlateJungleQu = DOM_QUARK + ":jungle_pressure_plate";
 	public static final String pressurePlateAcaciaQu = DOM_QUARK + ":acacia_pressure_plate";
 	public static final String pressurePlateDarkOakQu = DOM_QUARK + ":dark_oak_pressure_plate";
+
+	// Prismarine
+	public static final String prismarineStairs_Qu = DOM_QUARK + ":prismarine_stairs";
+	public static final String prismarineStairs_FV = DOM_FUTUREVERSIONS + ":stairsPrismarineRough";
+	public static final String prismarineSlab_Qu = DOM_QUARK + ":prismarine_slab";
+	public static final String prismarineSlab_FV = DOM_FUTUREVERSIONS + ":slabPrismarineRough";
+	public static final String prismarineWall_Qu = DOM_QUARK + ":prismarine_rough_wall";
+	public static final String prismarineWall_FV = DOM_FUTUREVERSIONS + ":wallPrismarineRough";
 	
 	// Smithing Table
 	public static final String smithingTableFMC = DOM_FUTUREMC + ":smithing_table";
@@ -1789,6 +1796,81 @@ public class ModObjects {
 		if (modblock != null) {return modblock;}
 		
 		return Blocks.WOODEN_PRESSURE_PLATE;
+	}
+	
+	// Prismarine Stairs
+	public static Block chooseModPrismarineStairsBlock()
+	{
+		String[] modprioritylist = GeneralConfig.modPrismarine;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.prismarineStairs_Qu);
+				if (modblock != null) {return modblock;}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.prismarineStairs_FV);
+				if (modblock != null) {return modblock;}
+			}
+		}
+		
+		return null;
+	}
+	
+	// Prismarine Slab
+	/**
+	 * Returns regular sandstone slab on a failure
+	 */
+	public static IBlockState chooseModPrismarineSlab(boolean upper)
+	{
+		String[] modprioritylist = GeneralConfig.modPrismarine;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.prismarineSlab_Qu);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.prismarineSlab_FV);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?0:1);}
+			}
+		}
+		
+		return null;
+	}
+	
+	// Prismarine Wall
+	public static IBlockState chooseModPrismarineWallState()
+	{
+    	String[] modprioritylist = GeneralConfig.modPrismarine;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.prismarineWall_Qu);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.prismarineWall_FV);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+		}
+		
+		return null;
 	}
 	
 	

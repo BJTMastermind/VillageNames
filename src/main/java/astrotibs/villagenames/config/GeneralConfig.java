@@ -86,6 +86,7 @@ public class GeneralConfig {
 	public static String[] modGrindstone;
 	public static String[] modLantern;
 	public static String[] modLoom;
+	public static String[] modPrismarine;
 	public static String[] modMossyStone;
 	public static String[] modSandstone;
 	public static String[] modSmithingTable;
@@ -661,7 +662,14 @@ public class GeneralConfig {
 				+ "stronghold, fortress, monument, endcity, mansion, moonvillage, koentusvillage, fronosvillage, nibiruvillage, abandonedbase\n"
 				+ "entityClassPath is the mod's address to the entity class that will generate this book (when inside the structure). "
 					+ "It can be left blank, wherein the structure name can only be obtained via a Codex.\n");
-		
+	    
+	    modPrismarine = config.getStringList("Mod Priority: Prismarine", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+ 				"quark",
+	    		"futureversions",
+ 				},
+ 				"Priority order for referencing prismarine variations for village generation. The version highest on the list and registered in your game will be used."
+ 				);
+	    
 		// New mod profession mapping
 		// Changed IDs from integers to ProfessionForge.getRegistryName() strings
 		modProfessionMapping = config.getStringList("Mod Professions", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
