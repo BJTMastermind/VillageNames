@@ -137,6 +137,11 @@ public class ModObjects {
 	// Mud
 	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
 	
+	// Prismarine
+	public static final String prismarineStairs_Qu = DOM_QUARK + ":prismarine_stairs";
+	public static final String prismarineSlab_Qu = DOM_QUARK + ":prismarine_slab";
+	public static final String prismarineWall_Qu = DOM_QUARK + ":prismarine_rough_wall";
+	
 	// Smooth Sandstone
 	public static final String smoothSandstoneQu = DOM_QUARK + ":sandstone_new";
 	
@@ -520,6 +525,35 @@ public class ModObjects {
 		// TODO - Railcraft available in 1.10
 		// TODO - Thermal Foundation available in 1.10
 		// TODO - Tinkers Construct available in 1.8
+		return null;
+	}
+	
+	// Prismarine
+	public static Block chooseModPrismarineStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.prismarineStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
+	public static IBlockState chooseModPrismarineSlabBlock(boolean upper)
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.prismarineSlab_Qu);
+		if (modblock != null) {return modblock.getStateFromMeta(upper? 8:0);}
+		
+		return null;
+	}
+	public static IBlockState chooseModPrismarineWallBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.prismarineWall_Qu);
+		if (modblock != null) {return modblock.getDefaultState();}
+		
 		return null;
 	}
 	
