@@ -466,6 +466,7 @@ public class GeneralConfig {
 	    
 		modCampfire = config.getStringList("Mod Priority: Campfire", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
 	    		"futuremc",
+	    		"justacampfire",
  				"toughasnails",
  				"futureversions",
  				},

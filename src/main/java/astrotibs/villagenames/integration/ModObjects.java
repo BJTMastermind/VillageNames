@@ -82,6 +82,15 @@ public class ModObjects {
 	// --- Blocks and items reference for trades --- //
 	// --------------------------------------------- //
 	
+	// Andesite
+	public static final String andesiteSlab_Qu = DOM_QUARK + ":stone_andesite_slab";
+	public static final String andesiteSlab_FV = DOM_FUTUREVERSIONS + ":andesiteslab";
+
+	public static final String andesiteBrickSlab_Qu = DOM_QUARK + ":stone_andesite_bricks_slab";
+	
+	public static final String polishedAndesiteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabandesitesmooth";
+	public static final String polishedAndesiteSlab_FV = DOM_FUTUREVERSIONS + ":polishedandesiteslab";
+	
 	// Bark
 	public static final String woodQu = DOM_QUARK + ":bark";
 	public static final String woodFV_oak = DOM_FUTUREVERSIONS + ":oakwood";
@@ -118,6 +127,7 @@ public class ModObjects {
 	public static final String campfireFMC = DOM_FUTUREMC + ":campfire";
 	public static final String campfireFV = DOM_FUTUREVERSIONS + ":campfire";
 	public static final String campfireTAN = "toughasnails:campfire";
+	public static final String campfire_JAC = "jac:campfire_lit";
 	// Future Versions's Campfire sucks
 
 	// Cartography Table
@@ -618,10 +628,7 @@ public class ModObjects {
 	// --------------------------- //
 	
 	
-	/**
-	 * Select a diorite stairs block from a mod; returns null otherwise
-	 */
-	// Andesite Stairs
+	// Andesite
 	// Added in 1.14
 	public static Block chooseModAndesiteStairsBlock()
 	{
@@ -673,6 +680,59 @@ public class ModObjects {
 		
 		modblock = Block.getBlockFromName(ModObjects.andesiteBrickStairs_Qu);
 		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
+	public static IBlockState chooseModAndesiteSlabState(boolean upper)
+	{
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.andesiteSlab_Qu);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.andesiteSlab_FV);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?0:1);}
+			}
+		}
+		
+		return null;
+	}
+	public static IBlockState chooseModAndesiteSlabBrickState(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.andesiteBrickSlab_Qu);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
+	public static IBlockState chooseModPolishedAndesiteSlabState(boolean upper)
+	{
+		String[] modprioritylist = GeneralConfig.modBountifulStone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.polishedAndesiteSlab_VBE);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.polishedAndesiteSlab_FV);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?0:1);}
+			}
+		}
 		
 		return null;
 	}
@@ -955,6 +1015,30 @@ public class ModObjects {
 					return modblock.getStateFromMeta(campfireMeta);
 				}
 			}
+			else if (mod.toLowerCase().equals("justacampfire"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.campfire_JAC);
+				
+				if (modblock!=null)
+				{
+					int horizIndex = coordBaseMode.getHorizontalIndex();
+					int campfireMeta=0;
+					
+		    		switch (relativeOrientation)
+		    		{
+		    		case 0: // Facing away
+		    			campfireMeta = new int[]{2,3,0,1}[MathHelper.clamp(horizIndex,0,3)]; break;
+		    		case 1: // Facing right
+		    			campfireMeta = new int[]{1,2,1,2}[MathHelper.clamp(horizIndex,0,3)]; break;
+		    		case 2: // Facing you
+		    			campfireMeta = new int[]{0,1,2,3}[MathHelper.clamp(horizIndex,0,3)]; break;
+		    		case 3: // Facing left
+		    			campfireMeta = new int[]{3,0,3,0}[MathHelper.clamp(horizIndex,0,3)]; break;
+		    		}
+					
+					return modblock.getStateFromMeta(campfireMeta);
+				}
+			}
 			else if (mod.toLowerCase().equals("toughasnails"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.campfireTAN);
@@ -981,6 +1065,11 @@ public class ModObjects {
 			if (mod.toLowerCase().equals("futuremc"))
 			{
 				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.campfireFMC));
+				if (moditem != null) {return moditem;}
+			}
+			else if (mod.toLowerCase().equals("justacampfire"))
+			{
+				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.campfire_JAC));
 				if (moditem != null) {return moditem;}
 			}
 			else if (mod.toLowerCase().equals("toughasnails"))
@@ -1188,7 +1277,7 @@ public class ModObjects {
 			else if (mod.toLowerCase().equals("futureversions"))
 			{
 				modobject = Block.getBlockFromName(ModObjects.polishedDioriteSlab_FV);
-				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+				if (modobject != null) {return modobject.getStateFromMeta(upper?0:1);}
 			}
 		}
 		
@@ -1696,7 +1785,7 @@ public class ModObjects {
 			else if (mod.toLowerCase().equals("futureversions"))
 			{
 				modobject = Block.getBlockFromName(ModObjects.mossyCobblestoneSlab_FV);
-				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+				if (modobject != null) {return modobject.getStateFromMeta(upper?0:1);}
 			}
 		}
 		return null;
@@ -1722,7 +1811,7 @@ public class ModObjects {
 			else if (mod.toLowerCase().equals("futureversions"))
 			{
 				modobject = Block.getBlockFromName(ModObjects.mossyStoneBrickSlab_FV);
-				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+				if (modobject != null) {return modobject.getStateFromMeta(upper?0:1);}
 			}
 		}
 		return null;
