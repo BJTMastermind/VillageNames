@@ -77,7 +77,13 @@ public class ModObjects {
 	// --------------------------------------------- //
 	
 	// --- Blocks ---//
-
+	
+	// Andesite
+	public static final String andesiteSlab_Qu = DOM_QUARK + ":stone_andesite_slab";
+	public static final String andesiteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabAndesite";
+	public static final String andesiteBrickSlab_Qu = DOM_QUARK + ":stone_andesite_bricks_slab";
+	public static final String polishedAndesiteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabAndesiteSmooth";
+	
 	// Bark
 	public static final String barkQu = DOM_QUARK + ":bark";
 	
@@ -407,7 +413,7 @@ public class ModObjects {
 	// --------------------------- //
 	
 	
-	// Andesite stairs
+	// Andesite
 	public static Block chooseModPolishedAndesiteStairsBlock()
 	{
 		Block modblock=null;
@@ -423,6 +429,46 @@ public class ModObjects {
 		
 		modblock = Block.getBlockFromName(ModObjects.andesiteBrickStairs_Qu);
 		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
+	public static IBlockState chooseModAndesiteSlabState(boolean upper)
+	{
+		String[] modprioritylist = GeneralConfig.modSandstone;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modobject=null;
+			
+			if (mod.toLowerCase().equals("quark"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.andesiteSlab_Qu);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			{
+				modobject = Block.getBlockFromName(ModObjects.andesiteSlab_VBE);
+				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+			}
+		}
+		
+		return null;
+	}
+	public static IBlockState chooseModAndesiteBrickSlabState(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.andesiteBrickSlab_Qu);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
+	public static IBlockState chooseModAndesiteDioriteSlabState(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.polishedAndesiteSlab_VBE);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
 		
 		return null;
 	}
