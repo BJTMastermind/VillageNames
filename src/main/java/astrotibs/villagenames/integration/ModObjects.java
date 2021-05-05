@@ -64,7 +64,11 @@ public class ModObjects {
 	
 	
 	// --- Blocks ---//
- 	
+
+	// Andesite
+	public static final String andesiteSlab_Qu = DOM_QUARK + ":stone_andesite_slab";
+	public static final String andesiteBrickSlab_Qu = DOM_QUARK + ":stone_andesite_bricks_slab";
+	
 	// Bark
 	public static final String barkQu = DOM_QUARK + ":bark";
 	
@@ -324,7 +328,7 @@ public class ModObjects {
 	// --------------------------- //
 
 	
-	// Andesite stairs
+	// Andesite
 	public static Block chooseModAndesiteBrickStairsBlock()
 	{
 		Block modblock=null;
@@ -334,6 +338,25 @@ public class ModObjects {
 		
 		return null;
 	}
+	public static IBlockState chooseModAndesiteSlabState(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.andesiteSlab_Qu);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
+	public static IBlockState chooseModAndesiteBrickSlabState(boolean upper)
+	{
+		Block modobject=null;
+		
+		modobject = Block.getBlockFromName(ModObjects.andesiteBrickSlab_Qu);
+		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
+	
 	
 	// Barrel
 	public static ItemStack chooseModBarrelItem()
