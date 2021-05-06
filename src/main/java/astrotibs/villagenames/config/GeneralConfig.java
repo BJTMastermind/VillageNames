@@ -70,7 +70,8 @@ public class GeneralConfig {
 	public static boolean treasureTrades;
 	public static boolean writtenBookTrade;
 	public static boolean swampHutMushroomPot;
-	
+
+	public static String[] modBamboo;
 	public static String[] modBountifulStone;
 	public static String[] modSandstone;
 	
@@ -383,6 +384,13 @@ public class GeneralConfig {
 
 		harvestcraftCropFarmRate = config.getFloat("Crop rate: Harvestcraft", Reference.CATEGORY_MOD_INTEGRATION, 0.25F, 0F, 1F, "Generate Harvestcraft crops in farms. Only used with Village Generator. Set to 0 for no HC crops.");
 		antiqueAtlasMarkerNames = config.getBoolean("Antique Atlas: Village Marker Names", Reference.CATEGORY_MOD_INTEGRATION, true, "Label a new village marker with the village's name in your Antique Atlases.");
+		
+		modBamboo = config.getStringList("Mod Priority: Bamboo", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+ 				"growthcraft",
+ 				"biomesoplenty",
+ 				},
+ 				"Priority order for referencing Bamboo for village generation. The version highest on the list and registered in your game will be used."
+ 				);
 		
 	    modBountifulStone = config.getStringList("Mod Priority: Bountiful Stone", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
 	    		"quark",

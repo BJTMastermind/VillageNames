@@ -62,15 +62,26 @@ public class ModObjects {
 	// --- Blocks and items reference for trades --- //
 	// --------------------------------------------- //
 	
-	
-	// --- Blocks ---//
-
 	// Andesite
 	public static final String andesiteSlab_Qu = DOM_QUARK + ":stone_andesite_slab";
 	public static final String andesiteBrickSlab_Qu = DOM_QUARK + ":stone_andesite_bricks_slab";
 	
+	// Bamboo
+	// Stalks (Blocks)
+	public static final String bambooStalk_BoP = DOM_BIOMESOPLENTY + ":bamboo";
+	public static final String bambooStalk_GC = "growthcraft_bamboo:bamboo_stalk";
+	// Saplings (Items)
+	public static final String sapling_BoP = DOM_BIOMESOPLENTY + ":sapling_0"; // Meta 2
+	public static final String bambooShoot_GC = "growthcraft_bamboo:bamboo_shoot";
+	// Leaves
+	public static final String bambooLeaves_BoP = DOM_BIOMESOPLENTY + ":leaves_0"; // Meta 2
+	public static final String bambooLeaves_GC = "growthcraft_bamboo:bamboo_leaves";
+	
 	// Bark
 	public static final String barkQu = DOM_QUARK + ":bark";
+
+	// Bed
+	public static final String bedQu = DOM_QUARK + ":colored_bed_item";
 	
 	// Campfire
 	public static final String campfireTAN = "toughasnails:campfire";
@@ -140,10 +151,23 @@ public class ModObjects {
 	public static final String cropWintersquashHC = DOM_HARVESTCRAFT + ":pamwintersquashcrop";
 	public static final String cropZucchiniHC = DOM_HARVESTCRAFT + ":pamzucchinicrop";
 	public static final String cropKaleJAFFA = "jaffa:kalecrop";
+
+	// Desk
+	public static final String deskBC = "bibliocraft:desk";
 	
 	// Diorite
 	public static final String dioriteSlab_Qu = DOM_QUARK + ":stone_diorite_slab";
 	public static final String dioriteBrickSlab_Qu = DOM_QUARK + ":stone_diorite_bricks_slab";
+
+	// Dye
+	public static final String dyeBlueBOP = DOM_BIOMESOPLENTY + ":blue_dye";
+	public static final String dyeBrownBOP = DOM_BIOMESOPLENTY + ":brown_dye";
+	public static final String dyeGreenBOP = DOM_BIOMESOPLENTY + ":green_dye";
+	public static final String dyeWhiteBOP = DOM_BIOMESOPLENTY + ":white_dye";
+	public static final String dyeBlackBOP = DOM_BIOMESOPLENTY + ":black_dye";
+	
+	// Kelp and Kelp Accessories
+	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
 	
 	// Mossy Stone
 	public static final String mossyCobblestoneStairsVBE = DOM_VANILLABUILDERSEXTENSION + ":stairsstonemoss";
@@ -201,26 +225,6 @@ public class ModObjects {
 	public static final String graniteWall_Qu = DOM_QUARK + ":stone_granite_wall";
 	public static final String graniteWall_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallgranite";
 	
-	
-	
-	// --- Items --- //
-	
-	// Bed
-	public static final String bedQu = DOM_QUARK + ":colored_bed_item";
-	
-	// Desk
-	public static final String deskBC = "bibliocraft:desk";
-	
-	// Dye
-	public static final String dyeBlueBOP = DOM_BIOMESOPLENTY + ":blue_dye";
-	public static final String dyeBrownBOP = DOM_BIOMESOPLENTY + ":brown_dye";
-	public static final String dyeGreenBOP = DOM_BIOMESOPLENTY + ":green_dye";
-	public static final String dyeWhiteBOP = DOM_BIOMESOPLENTY + ":white_dye";
-	public static final String dyeBlackBOP = DOM_BIOMESOPLENTY + ":black_dye";
-	
-	// Kelp and Kelp Accessories
-	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
-
 	
 	
 	// ------------------------ //
@@ -357,6 +361,74 @@ public class ModObjects {
 		return null;
 	}
 	
+	// Bamboo
+	public static IBlockState chooseModBambooStalk()
+	{
+		String[] modprioritylist = GeneralConfig.modBamboo;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("biomesoplenty"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooStalk_BoP);
+				if (modblock != null) {return modblock.getStateFromMeta(0);}
+			}
+			else if (mod.toLowerCase().equals("growthcraft"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooStalk_GC);
+				if (modblock != null) {return modblock.getStateFromMeta(0);}
+			}
+		}
+		return null;
+	}
+	// Shoot
+	public static ItemStack chooseModBambooShoot()
+	{
+		String[] modprioritylist = GeneralConfig.modBamboo;
+		
+		for (String mod : modprioritylist)
+		{
+			Item moditem=null;
+			
+			if (mod.toLowerCase().equals("biomesoplenty"))
+			{
+				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.sapling_BoP));
+				if (moditem != null) {return new ItemStack(moditem, 1, 2);}
+			}
+			else if (mod.toLowerCase().equals("growthcraft"))
+			{
+				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.bambooShoot_GC));
+				if (moditem != null) {return new ItemStack(moditem);}
+			}
+		}
+		
+		return null;
+	}
+	// Leaves
+	public static IBlockState chooseModBambooLeaves()
+	{
+		String[] modprioritylist = GeneralConfig.modBamboo;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("biomesoplenty"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooLeaves_BoP);
+				if (modblock != null) {return modblock.getStateFromMeta(2);}
+			}
+			else if (mod.toLowerCase().equals("growthcraft"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooLeaves_GC);
+				if (modblock != null) {return modblock.getDefaultState();}
+			}
+		}
+		
+		return null;
+	}
 	
 	// Barrel
 	public static ItemStack chooseModBarrelItem()
