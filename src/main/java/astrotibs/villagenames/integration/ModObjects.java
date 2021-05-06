@@ -76,16 +76,25 @@ public class ModObjects {
 	// --- Blocks and items reference for trades --- //
 	// --------------------------------------------- //
 	
-	// --- Blocks ---//
-	
 	// Andesite
 	public static final String andesiteSlab_Qu = DOM_QUARK + ":stone_andesite_slab";
 	public static final String andesiteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabAndesite";
 	public static final String andesiteBrickSlab_Qu = DOM_QUARK + ":stone_andesite_bricks_slab";
 	public static final String polishedAndesiteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabAndesiteSmooth";
+
+	// Bamboo
+	// Stalks (Blocks)
+	public static final String bambooStalk_BoP = DOM_BIOMESOPLENTY + ":bamboo";
+	// Saplings (Items)
+	public static final String sapling0_BoP = DOM_BIOMESOPLENTY + ":sapling_0"; // Meta 2
+	// Leaves
+	public static final String bambooLeaves_BoP = DOM_BIOMESOPLENTY + ":leaves_0";
 	
 	// Bark
 	public static final String barkQu = DOM_QUARK + ":bark";
+
+	// Bed
+	public static final String bedQu = DOM_QUARK + ":colored_bed_item";
 	
 	// Campfire
 	public static final String campfireTAN = "toughasnails:campfire";
@@ -156,12 +165,27 @@ public class ModObjects {
 	public static final String cropZucchiniHC = DOM_HARVESTCRAFT + ":pamzucchinicrop";
 	public static final String cropKaleJAFFA = "jaffa:kaleCrop";
 
+	// Desk
+	public static final String deskBC = "bibliocraft:Desk";
+	
 	// Diorite
 	public static final String dioriteSlab_Qu = DOM_QUARK + ":stone_diorite_slab";
 	public static final String dioriteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabDiorite";
 	public static final String dioriteBrickSlab_Qu = DOM_QUARK + ":stone_diorite_bricks_slab";
 	public static final String polishedDioriteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabDioriteSmooth";
 
+	// Dye
+	public static final String dyeBlueBOP = DOM_BIOMESOPLENTY + ":blue_dye";
+	public static final String dyeBrownBOP = DOM_BIOMESOPLENTY + ":brown_dye";
+	public static final String dyeGreenBOP = DOM_BIOMESOPLENTY + ":green_dye";
+	public static final String dyeWhiteBOP = DOM_BIOMESOPLENTY + ":white_dye";
+	public static final String dyeBlackBOP = DOM_BIOMESOPLENTY + ":black_dye";
+
+	// Iron Nuggets
+	public static final String nuggetRC = "railcraft:nugget"; // Iron Nugget is 0
+	
+	// Kelp and Kelp Accessories
+	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
 	
 	// Mossy Stone
 	public static final String mossyCobblestoneStairsVBE = DOM_VANILLABUILDERSEXTENSION + ":stairsStoneMoss";
@@ -225,29 +249,6 @@ public class ModObjects {
 	public static final String graniteWall_Qu = DOM_QUARK + ":stone_granite_wall";
 	public static final String graniteWall_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallGranite";
 	
-	
-	
-	// --- Items --- //
-
-	// Bed
-	public static final String bedQu = DOM_QUARK + ":colored_bed_item";
-	
-	// Desk
-	public static final String deskBC = "bibliocraft:Desk";
-	
-	// Dye
-	public static final String dyeBlueBOP = DOM_BIOMESOPLENTY + ":blue_dye";
-	public static final String dyeBrownBOP = DOM_BIOMESOPLENTY + ":brown_dye";
-	public static final String dyeGreenBOP = DOM_BIOMESOPLENTY + ":green_dye";
-	public static final String dyeWhiteBOP = DOM_BIOMESOPLENTY + ":white_dye";
-	public static final String dyeBlackBOP = DOM_BIOMESOPLENTY + ":black_dye";
-	
-	// Iron Nuggets
-	public static final String nuggetRC = "railcraft:nugget"; // Iron Nugget is 0
-	
-	// Kelp and Kelp Accessories
-	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
-
 	
 	
 	// ------------------------ //
@@ -469,6 +470,37 @@ public class ModObjects {
 		
 		modobject = Block.getBlockFromName(ModObjects.polishedAndesiteSlab_VBE);
 		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
+		
+		return null;
+	}
+	
+	// Bamboo
+	public static IBlockState chooseModBambooStalk()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.bambooStalk_BoP);
+		if (modblock != null) {return modblock.getStateFromMeta(0);}
+		
+		return null;
+	}
+	// Shoot
+	public static ItemStack chooseModBambooShoot()
+	{
+		Item moditem=null;
+		
+		moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.sapling0_BoP));
+		if (moditem != null) {return new ItemStack(moditem, 1, 2);}
+		
+		return null;
+	}
+	// Leaves
+	public static IBlockState chooseModBambooLeaves()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.bambooLeaves_BoP);
+		if (modblock != null) {return modblock.getStateFromMeta(2);}
 		
 		return null;
 	}

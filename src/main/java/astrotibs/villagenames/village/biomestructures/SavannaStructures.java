@@ -9624,7 +9624,7 @@ public class SavannaStructures
             	{1,1,8}, 
             	})
             {
-            	this.setBlockState(world, Blocks.MELON_BLOCK.getStateFromMeta(random.nextInt(3)), uvw[0], uvw[1], uvw[2], structureBB); // Random pumpkin orientation
+            	this.setBlockState(world, Blocks.MELON_BLOCK.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB); // Random pumpkin orientation
             }
             
             
@@ -9653,7 +9653,7 @@ public class SavannaStructures
                 }
             	else
             	{
-            		this.setBlockState(world, Blocks.MELON_BLOCK.getStateFromMeta(random.nextInt(3)), uvw[0], uvw[1], uvw[2], structureBB);
+            		this.setBlockState(world, Blocks.MELON_BLOCK.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
             	}
             }
             
