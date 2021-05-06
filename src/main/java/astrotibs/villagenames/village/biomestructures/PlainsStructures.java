@@ -1341,7 +1341,7 @@ public class PlainsStructures
         	
         	
         	// Dirt block
-        	world.setBlockState(new BlockPos(this.getXWithOffset(5, 5), this.getYWithOffset(0), this.getZWithOffset(5, 5)), Blocks.DIRT.getDefaultState(), 2);
+        	world.setBlockState(new BlockPos(this.getXWithOffset(5, 5), this.getYWithOffset(0), this.getZWithOffset(5, 5)), biomeDirtState, 2);
         	
         	// Leaves placed into world
         	for (int u=3; u<=7; u++) {for (int v=5; v<=6; v++) {for (int w=4; w<=6; w++) {world.setBlockState(new BlockPos(this.getXWithOffset(u, w), this.getYWithOffset(v), this.getZWithOffset(u, w)), Blocks.LEAVES.getStateFromMeta(0), 2);}}}
@@ -6198,8 +6198,8 @@ public class PlainsStructures
             IBlockState compostBinState = ModObjects.chooseModComposterState();
             if (compostBinState != null)
             {
-            	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 1, 1, 1, structureBB); this.setBlockState(world, Blocks.DIRT.getDefaultState(), 1, 0, 1, structureBB);
-            	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 1, 1, 11, structureBB); this.setBlockState(world, Blocks.DIRT.getDefaultState(), 1, 0, 1, structureBB);
+            	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 1, 1, 1, structureBB); this.setBlockState(world, biomeDirtState, 1, 0, 1, structureBB);
+            	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 1, 1, 11, structureBB); this.setBlockState(world, biomeDirtState, 1, 0, 11, structureBB);
             }
             
             
@@ -10461,7 +10461,7 @@ public class PlainsStructures
             if (compostBinState != null)
             {
             	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), STRUCTURE_WIDTH-2, 1, STRUCTURE_DEPTH-2, structureBB);
-            	this.setBlockState(world, Blocks.DIRT.getDefaultState(), STRUCTURE_WIDTH-2, 0, STRUCTURE_DEPTH-2, structureBB);
+            	this.setBlockState(world, biomeDirtState, STRUCTURE_WIDTH-2, 0, STRUCTURE_DEPTH-2, structureBB);
             }
             
             

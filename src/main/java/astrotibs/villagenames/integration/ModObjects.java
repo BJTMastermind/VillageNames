@@ -90,6 +90,22 @@ public class ModObjects {
 	
 	public static final String polishedAndesiteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabandesitesmooth";
 	public static final String polishedAndesiteSlab_FV = DOM_FUTUREVERSIONS + ":polishedandesiteslab";
+
+	// Bamboo
+	// Stalks (Blocks)
+	public static final String bambooStalk_BoP = DOM_BIOMESOPLENTY + ":bamboo";
+	public static final String bambooStalk_GC = "growthcraft_bamboo:bamboo_stalk";
+	public static final String bambooStalk_Sa = "sakura:bamboo";
+	public static final String bambooStalk_Bam = "bamboozled:bamboo";
+	public static final String bambooStalk_FMC = DOM_FUTUREMC + ":bamboo";
+	public static final String bambooStalk_FV = DOM_FUTUREVERSIONS + ":bamboo2";
+	// Shoots
+	public static final String sapling_BoP = DOM_BIOMESOPLENTY + ":sapling_0"; // Meta 2
+	public static final String bambooShoot_GC = "growthcraft_bamboo:bamboo_shoot";
+	public static final String bambooShoot_Sa = "sakura:bamboo_shoot";
+	// Leaves
+	public static final String bambooLeaves_BoP = DOM_BIOMESOPLENTY + ":leaves_0"; // Meta 2
+	public static final String bambooLeaves_GC = "growthcraft_bamboo:bamboo_leaves";
 	
 	// Bark
 	public static final String woodQu = DOM_QUARK + ":bark";
@@ -249,7 +265,6 @@ public class ModObjects {
 	public static final String dyeBlueFV = DOM_FUTUREVERSIONS + ":bluedye";
 	public static final String dyeBrownFV = DOM_FUTUREVERSIONS + ":browndye";
 	public static final String dyeWhiteFV = DOM_FUTUREVERSIONS + ":whitedye";
-	
 	
 	// Fletching Table
 	public static final String fletchingTableFMC = DOM_FUTUREMC + ":fletching_table";
@@ -430,7 +445,6 @@ public class ModObjects {
 	public static final String trapdoorJungleFV = DOM_FUTUREVERSIONS + ":jungletrapdoor";
 	public static final String trapdoorAcaciaFV = DOM_FUTUREVERSIONS + ":acaciatrapdoor";
 	public static final String trapdoorDarkOakFV = DOM_FUTUREVERSIONS + ":darkoaktrapdoor";
-	
 	
 	// Walls
 	public static final String stoneBrickWall_Qu = DOM_QUARK + ":stonebrick_wall";
@@ -731,6 +745,100 @@ public class ModObjects {
 			{
 				modobject = Block.getBlockFromName(ModObjects.polishedAndesiteSlab_FV);
 				if (modobject != null) {return modobject.getStateFromMeta(upper?0:1);}
+			}
+		}
+		
+		return null;
+	}
+	
+	// Bamboo
+	public static IBlockState chooseModBambooStalk(int state)
+	{
+		String[] modprioritylist = GeneralConfig.modBamboo;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("futuremc"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooStalk_FMC);
+				if (modblock != null) {return modblock.getStateFromMeta(state);} // 0:thin base; 1-2:thin base with leaves; 3: thick base; 4-5:thick base with leaves
+			}
+			else if (mod.toLowerCase().equals("biomesoplenty"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooStalk_BoP);
+				if (modblock != null) {return modblock.getStateFromMeta(0);}
+			}
+			else if (mod.toLowerCase().equals("growthcraft"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooStalk_GC);
+				if (modblock != null) {return modblock.getStateFromMeta(0);}
+			}
+			else if (mod.toLowerCase().equals("sakura"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooStalk_Sa);
+				if (modblock != null) {return modblock.getStateFromMeta(state);} // 0 for base or 1 for cap
+			}
+			else if (mod.toLowerCase().equals("futureversions"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooStalk_FV);
+				if (modblock != null) {return modblock.getStateFromMeta(0);}
+			}
+			else if (mod.toLowerCase().equals("bamboozled"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooStalk_Bam);
+				if (modblock != null) {return modblock.getStateFromMeta(0);}
+			}
+		}
+		return null;
+	}
+	// Shoot
+	public static ItemStack chooseModBambooShoot()
+	{
+		String[] modprioritylist = GeneralConfig.modBamboo;
+		
+		for (String mod : modprioritylist)
+		{
+			Item moditem=null;
+			
+			if (mod.toLowerCase().equals("biomesoplenty"))
+			{
+				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.sapling_BoP));
+				if (moditem != null) {return new ItemStack(moditem, 1, 2);}
+			}
+			else if (mod.toLowerCase().equals("growthcraft"))
+			{
+				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.bambooShoot_GC));
+				if (moditem != null) {return new ItemStack(moditem);}
+			}
+			else if (mod.toLowerCase().equals("sakura"))
+			{
+				moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.bambooShoot_Sa));
+				if (moditem != null) {return new ItemStack(moditem);}
+			}
+		}
+		
+		return null;
+	}
+	// Leaves
+	public static IBlockState chooseModBambooLeaves()
+	{
+		String[] modprioritylist = GeneralConfig.modBamboo;
+		
+		for (String mod : modprioritylist)
+		{
+			Block modblock=null;
+			
+			if (mod.toLowerCase().equals("biomesoplenty"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooLeaves_BoP);
+				if (modblock != null) {return modblock.getStateFromMeta(2);}
+			}
+			else if (mod.toLowerCase().equals("growthcraft"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.bambooLeaves_GC);
+				if (modblock != null) {return modblock.getDefaultState();}
 			}
 		}
 		
