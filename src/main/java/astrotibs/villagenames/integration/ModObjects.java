@@ -53,11 +53,20 @@ public class ModObjects {
 	// --------------------------------------------- //
 	// --- Blocks and items reference for trades --- //
 	// --------------------------------------------- //
- 	
+
+	// Bamboo
+	// Stalks (Blocks)
+	public static final String bambooStalk_BoP = DOM_BIOMESOPLENTY + ":bamboo";
+	// Saplings (Items)
+	public static final String sapling0_BoP = DOM_BIOMESOPLENTY + ":sapling_0"; // Meta 2
+	// Leaves
+	public static final String bambooLeaves_BoP = DOM_BIOMESOPLENTY + ":leaves_0";
 	
-	// --- Blocks ---//
+	// Beetroot
+	public static final String beetrootSeedSB = DOM_SAMSBEETROOT + ":beetroot_seed";
+	public static final String beetrootItemSB = DOM_SAMSBEETROOT + ":beetroot_item";
+	public static final String beetrootSoupSB = DOM_SAMSBEETROOT + ":beetroot_soup";
 	
- 	
 	// Crops
 	public static final String cropArtichokeHC = DOM_HARVESTCRAFT + ":pamartichokeCrop";
 	public static final String cropAsparagusHC = DOM_HARVESTCRAFT + ":pamasparagusCrop";
@@ -120,21 +129,7 @@ public class ModObjects {
 	public static final String cropWintersquashHC = DOM_HARVESTCRAFT + ":pamwintersquashCrop";
 	public static final String cropZucchiniHC = DOM_HARVESTCRAFT + ":pamzucchiniCrop";
 	public static final String cropKaleJAFFA = "jaffa:kaleCrop";
-	
-	// Mud
-	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
-	
-	// Quicksand
-	public static final String quicksandBOP_classPath = "biomesoplenty.common.block.BlockBOPSand";
-	
-	
-	// --- Items --- //
-	
-	// Beetroot
-	public static final String beetrootSeedSB = DOM_SAMSBEETROOT + ":beetroot_seed";
-	public static final String beetrootItemSB = DOM_SAMSBEETROOT + ":beetroot_item";
-	public static final String beetrootSoupSB = DOM_SAMSBEETROOT + ":beetroot_soup";
-	
+
 	// Desk
 	public static final String deskBC = "bibliocraft:Desk";
 	
@@ -144,9 +139,15 @@ public class ModObjects {
 	public static final String dyeGreenBOP = DOM_BIOMESOPLENTY + ":green_dye";
 	public static final String dyeWhiteBOP = DOM_BIOMESOPLENTY + ":white_dye";
 	public static final String dyeBlackBOP = DOM_BIOMESOPLENTY + ":black_dye";
-
+	
 	// Kelp and Kelp Accessories
 	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
+	
+	// Mud
+	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
+	
+	// Quicksand
+	public static final String quicksandBOP_classPath = "biomesoplenty.common.block.BlockBOPSand";
 	
 
 	
@@ -154,6 +155,37 @@ public class ModObjects {
 	// --------------------------- //
 	// --- Generator Functions --- //
 	// --------------------------- //
+	
+	// Bamboo
+	public static IBlockState chooseModBambooStalk()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.bambooStalk_BoP);
+		if (modblock != null) {return modblock.getStateFromMeta(0);}
+		
+		return null;
+	}
+	// Shoot
+	public static ItemStack chooseModBambooShoot()
+	{
+		Item moditem=null;
+		
+		moditem = Item.getItemFromBlock(Block.getBlockFromName(ModObjects.sapling0_BoP));
+		if (moditem != null) {return new ItemStack(moditem, 1, 2);}
+		
+		return null;
+	}
+	// Leaves
+	public static IBlockState chooseModBambooLeaves()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.bambooLeaves_BoP);
+		if (modblock != null) {return modblock.getStateFromMeta(2);}
+		
+		return null;
+	}
 	
 	// Bark
 	public static IBlockState chooseModBarkState(IBlockState blockstate)

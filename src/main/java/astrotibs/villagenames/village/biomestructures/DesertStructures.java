@@ -3537,7 +3537,7 @@ public class DesertStructures
             if (compostBinState != null)
             {
             	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 5, 1, 2, structureBB);
-            	this.setBlockState(world, Blocks.dirt.getDefaultState(), 5, 0, 2, structureBB);
+            	this.setBlockState(world, biomeDirtState, 5, 0, 2, structureBB);
             }
             
             

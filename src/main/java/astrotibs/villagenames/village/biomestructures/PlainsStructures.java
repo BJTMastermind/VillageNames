@@ -6189,8 +6189,8 @@ public class PlainsStructures
             IBlockState compostBinState = ModObjects.chooseModComposterState();
             if (compostBinState != null)
             {
-            	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 1, 1, 1, structureBB); this.setBlockState(world, Blocks.dirt.getDefaultState(), 1, 0, 1, structureBB);
-            	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 1, 1, 11, structureBB); this.setBlockState(world, Blocks.dirt.getDefaultState(), 1, 0, 1, structureBB);
+            	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 1, 1, 1, structureBB); this.setBlockState(world, biomeDirtState, 1, 0, 1, structureBB);
+            	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 1, 1, 11, structureBB); this.setBlockState(world, biomeDirtState, 1, 0, 11, structureBB);
             }
             
             
@@ -10438,7 +10438,7 @@ public class PlainsStructures
             if (compostBinState != null)
             {
             	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), STRUCTURE_WIDTH-2, 1, STRUCTURE_DEPTH-2, structureBB);
-            	this.setBlockState(world, Blocks.dirt.getDefaultState(), STRUCTURE_WIDTH-2, 0, STRUCTURE_DEPTH-2, structureBB);
+            	this.setBlockState(world, biomeDirtState, STRUCTURE_WIDTH-2, 0, STRUCTURE_DEPTH-2, structureBB);
             }
             
             
