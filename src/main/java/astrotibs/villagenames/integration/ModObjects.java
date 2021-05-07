@@ -571,6 +571,10 @@ public class ModObjects {
 	{
 		return null;
 	}
+	public static IBlockState chooseModMossyStoneBrickSlabState(boolean upper)
+	{
+		return null;
+	}
 	
 	// Iron Nugget
 	// TODO - added in 1.11
