@@ -980,7 +980,7 @@ public class ModObjects {
 		
 		return null;
 	}
-	public static IBlockState chooseModMossyStoneBrickSlab(boolean upper)
+	public static IBlockState chooseModMossyStoneBrickSlabState(boolean upper)
 	{
 		Block modobject=null;
 		
