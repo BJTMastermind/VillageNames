@@ -713,6 +713,10 @@ public class StructureVillageVN
         	if (block == Blocks.sandstone && meta==1)          {blockstate=Blocks.stonebrick.getStateFromMeta(3); break;} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {blockstate=Blocks.mossy_cobblestone.getDefaultState(); break;}
         	if (block == Blocks.stone_slab)                    {blockstate=Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
+        	if (block == Blocks.stone_slab && (meta==5||meta==13)) // Stone brick slab into mossy stone brick slab
+															   {blockstate = ModObjects.chooseModMossyStoneBrickSlabState(meta==13);
+																if (blockstate==null) {blockstate = block.getStateFromMeta(meta);}
+																break;}
         	if (block == Blocks.double_stone_slab && meta==9)  {blockstate=Blocks.planks.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
         	if (block == Blocks.double_stone_slab)             {blockstate=Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.sandstone_stairs)              {blockstate=Blocks.stone_stairs.getStateFromMeta(meta); break;}
@@ -800,6 +804,7 @@ public class StructureVillageVN
         	if (block == Blocks.stonebrick && meta==0)         {blockstate=Blocks.sandstone.getStateFromMeta(2); break;} // Stone brick into cut sandstone
         	if (block == Blocks.cobblestone && meta==3)        {blockstate=Blocks.sandstone.getStateFromMeta(1); break;} // Chiseled sandstone
         	if (block == Blocks.cobblestone)                   {blockstate=Blocks.sandstone.getStateFromMeta(0); break;} // Regular sandstone
+        	if (block == Blocks.stone && meta==0)              {blockstate=Blocks.sandstone.getStateFromMeta(0); break;} // Regular stone into regular sandstone
         	if (block == Blocks.mossy_cobblestone)             {blockstate=Blocks.sandstone.getStateFromMeta(0); break;} // Regular sandstone
         	if (block == Blocks.planks)                        {blockstate=Blocks.planks.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.oak_fence)					   {blockstate=Blocks.jungle_fence.getDefaultState(); break;}
@@ -841,6 +846,7 @@ public class StructureVillageVN
         case MESA:
         	
         	if (block == Blocks.cobblestone)                   {blockstate=Blocks.hardened_clay.getDefaultState(); break;}
+        	if (block == Blocks.stone && meta==0)              {blockstate=Blocks.hardened_clay.getDefaultState(); break;} // Regular stone into terracotta
         	if (block == Blocks.mossy_cobblestone)             {blockstate=Blocks.hardened_clay.getDefaultState(); break;}
         	if (block == Blocks.stone_stairs)                  {blockstate=Blocks.brick_stairs.getStateFromMeta(meta); break;}
         	if (block == Blocks.gravel)                        {blockstate=Blocks.hardened_clay.getDefaultState(); break;}
@@ -895,6 +901,10 @@ public class StructureVillageVN
         	if (block == Blocks.sandstone && meta==1)          {blockstate=Blocks.stonebrick.getStateFromMeta(3); break;} // Chiseled sandstone into chiseled stone
         	if (block == Blocks.sandstone)                     {blockstate=Blocks.cobblestone.getStateFromMeta(0); break;}
         	if (block == Blocks.stone_slab)                    {blockstate=Blocks.stone_slab.getStateFromMeta(meta==1? 3: meta==9? 11 : meta); break;}
+        	if (block!=null && ModObjects.chooseModMossyStoneBrickSlabState(true)!=null && block == ModObjects.chooseModMossyStoneBrickSlabState(true).getBlock()) // Mossy stone brick slab into stone brick slab
+															   {block = Blocks.stone_slab;
+																meta = meta==block.getMetaFromState(ModObjects.chooseModMossyStoneBrickSlabState(true))?13:5;
+																break;}
         	if (block == Blocks.double_stone_slab && meta==9)  {blockstate=Blocks.planks.getStateFromMeta(woodMeta); break;} // Smooth sandstone into planks
         	if (block == Blocks.double_stone_slab)             {blockstate=Blocks.double_stone_slab.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.sandstone_stairs)              {blockstate=Blocks.stone_stairs.getStateFromMeta(meta); break;}
