@@ -959,6 +959,7 @@ public class StructureVillageVN
         case MUSHROOM:
         	
         	if (block == Blocks.LOG || block == Blocks.LOG2)   {blockstate=Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(15); break;} // Stem on all six sides
+    		if (block == Blocks.LEAVES || block == Blocks.LEAVES2) {blockstate=Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(14); break;} // Cap on all six sides
         	if (block == Blocks.COBBLESTONE)                   {blockstate=Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(14); break;} // Cap on all six sides
         	if (block == Blocks.MOSSY_COBBLESTONE)             {blockstate=Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(14); break;} // Cap on all six sides
         	if (block == Blocks.PLANKS)                        {blockstate=Blocks.BROWN_MUSHROOM_BLOCK.getStateFromMeta(0); break;} // Pores on all six sides
