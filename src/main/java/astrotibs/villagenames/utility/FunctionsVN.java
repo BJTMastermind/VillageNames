@@ -3866,4 +3866,28 @@ public class FunctionsVN
 		return block.getStateFromMeta(facingMeta);
 	}
 	
+	/**
+	 * Inputs two object arrays and joins them, sequentially placing array2 after array1
+	 * Adapted from https://www.geeksforgeeks.org/java-program-to-merge-two-arrays/
+	 */
+	public static String[] joinTwoStringArrays(String[] array1, String[] array2)
+	{
+        // determines length of firstArray
+        int a1len = array1.length;
+        
+        // determines length of secondArray
+        int a2len = array2.length;
+        
+        // resultant array size
+        int aolen = a1len + a2len;
+  
+        // create the resultant array
+        String[] out_array = new String[aolen];
+  
+        // using the pre-defined function arraycopy
+        System.arraycopy(array1, 0, out_array, 0, a1len);
+        System.arraycopy(array2, 0, out_array, a1len, a2len);
+        
+        return out_array;
+	}
 }
