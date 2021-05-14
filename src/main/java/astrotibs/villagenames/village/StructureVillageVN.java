@@ -221,23 +221,19 @@ public class StructureVillageVN
         
         VillagerRegistry.addExtraVillageComponents(arraylist, random, Math.floor(villageSize)+villageSize%1<random.nextFloat()?1:0); // Round to integer stochastically
 
-
-		ArrayList<String> classPaths = new ArrayList();
-		ArrayList<String> villageTypes = new ArrayList();
         
         // keys: "ClassPaths", "VillageTypes"
 		Map<String, ArrayList> mappedComponentVillageTypes = VillageGeneratorConfigHandler.unpackComponentVillageTypes(VillageGeneratorConfigHandler.componentVillageTypes);
-		
-		classPaths.addAll( mappedComponentVillageTypes.get("ClassPaths") );
-		villageTypes.addAll( mappedComponentVillageTypes.get("VillageTypes") );
-		
+		Map<String, ArrayList> mappedComponentVillageTypesNonModDefaults = VillageGeneratorConfigHandler.unpackComponentVillageTypes(VillageGeneratorConfigHandler.MODERN_VANILLA_COMPONENT_VILLAGE_TYPE_DEFAULTS);
         
         Iterator iterator = arraylist.iterator();
-
+        
+        String villageTypeToCompare = villageType.toString().toLowerCase();
+        
         while (iterator.hasNext())
         {
         	PieceWeight pw = (StructureVillagePieces.PieceWeight)iterator.next();
-
+        	
         	// Remove all buildings that rolled 0 for number or which have a weight of 0
             if (pw.villagePiecesLimit == 0 || pw.villagePieceWeight <=0) {iterator.remove(); continue;}
             
@@ -253,33 +249,32 @@ public class StructureVillageVN
             if (VillageGeneratorConfigHandler.componentLegacyHouse3_vals.get(0)<=0 && pw.villagePieceClass.toString().substring(6).equals(Reference.House3_CLASS)) {iterator.remove(); continue;}
             
             // Remove buildings that aren't appropriate for the current biome
-            
-			String villageTypeToCompare = "";
-			
-			switch (villageType)
-			{
-				default:
-				case PLAINS: villageTypeToCompare = "plains"; break;
-				case DESERT: villageTypeToCompare = "desert"; break;
-				case TAIGA: villageTypeToCompare = "taiga"; break;
-				case SAVANNA: villageTypeToCompare = "savanna"; break;
-				case SNOWY: villageTypeToCompare = "snowy"; break;
-				case JUNGLE: villageTypeToCompare = "jungle"; break;
-				case SWAMP: villageTypeToCompare = "swamp"; break;
-			}
-			
 			int classPathListIndex = mappedComponentVillageTypes.get("ClassPaths").indexOf(pw.villagePieceClass.toString().substring(6));
 			
-			if (
-					classPathListIndex!=-1 &&
+			if (classPathListIndex==-1) // It's not in the "Component Village Types" config entries
+			{
+				int classPathListIndexNonModDefaults = mappedComponentVillageTypesNonModDefaults.get("ClassPaths").indexOf(pw.villagePieceClass.toString().substring(6));
+				
+				if (classPathListIndexNonModDefaults!=-1) // It is in the "Component Village Types" default values
+				{
+					if (
+							!((String) ((mappedComponentVillageTypesNonModDefaults.get("VillageTypes")).get(classPathListIndexNonModDefaults))).trim().toLowerCase().contains(villageTypeToCompare)
+							|| ((String) ((mappedComponentVillageTypesNonModDefaults.get("VillageTypes")).get(classPathListIndexNonModDefaults))).trim().toLowerCase().equals("")
+							)
+					{
+						iterator.remove(); continue;
+					}
+				}
+			}
+			else if (
 					!((String) ((mappedComponentVillageTypes.get("VillageTypes")).get(classPathListIndex))).trim().toLowerCase().contains(villageTypeToCompare)
-            		)
+					|| ((String) ((mappedComponentVillageTypes.get("VillageTypes")).get(classPathListIndex))).trim().toLowerCase().equals("")
+					)
             {
             	iterator.remove(); continue;
             }
-            
         }
-
+        
         return arraylist;
     }
     
@@ -770,6 +765,7 @@ public class StructureVillageVN
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.ACACIA_FENCE.getDefaultState(); break;}
+        	if (block == Blocks.SAPLING)                       {blockstate=Blocks.SAPLING.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.SNOW)                          {blockstate=Blocks.DIRT.getDefaultState(); break;}
         	if (block == Blocks.SNOW_LAYER)                    {blockstate=Blocks.AIR.getDefaultState(); break;}
         	if (block == Blocks.ICE)                           {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;}
@@ -815,6 +811,7 @@ public class StructureVillageVN
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.DARK_OAK_FENCE.getDefaultState(); break;}
+        	if (block == Blocks.SAPLING)                       {blockstate=Blocks.SAPLING.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.SNOW)                          {blockstate=Blocks.DIRT.getDefaultState(); break;}
         	if (block == Blocks.SNOW_LAYER)                    {blockstate=Blocks.AIR.getDefaultState(); break;}
         	if (block == Blocks.ICE)                           {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;}
@@ -953,7 +950,8 @@ public class StructureVillageVN
         	if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(meta==1? 0 : meta); break;}
         	if (block == Blocks.SANDSTONE_STAIRS)              {blockstate=Blocks.STONE_STAIRS.getStateFromMeta(meta); break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.sandstoneWall_white_Qu)) {blockstate=Blocks.SPRUCE_FENCE.getDefaultState(); break;}
-        	
+        	if (block == Blocks.SAPLING)                       {blockstate=Blocks.SAPLING.getStateFromMeta(woodMeta); break;}
+
         	break;
         	
         case MUSHROOM:
