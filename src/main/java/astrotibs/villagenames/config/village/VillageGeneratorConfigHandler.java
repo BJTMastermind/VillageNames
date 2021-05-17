@@ -1281,7 +1281,7 @@ public class VillageGeneratorConfigHandler
 			
 			// Place entries into variables
 			try {componentClassPath = splitEntry[0].trim();}   catch (Exception e) {componentClassPath="FAILSAFE";}
-			try {componentVillageType = splitEntry[1].trim();} catch (Exception e) {componentVillageType="plains desert taiga savanna snowy jungle swamp";}
+			try {componentVillageType = splitEntry[1].trim();} catch (Exception e) {componentVillageType="none";} // If the second field is blank, that implies "don't spawn"
 			
 			if( !componentClassPath.equals("")) { // Something was actually assigned in the try block
 				componentClassPaths.add(componentClassPath);
