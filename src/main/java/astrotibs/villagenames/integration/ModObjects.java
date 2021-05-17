@@ -252,6 +252,9 @@ public class ModObjects {
 	public static final String polishedDioriteSlab_VBE = DOM_VANILLABUILDERSEXTENSION + ":slabdioritesmooth";
 	public static final String polishedDioriteSlab_FV = DOM_FUTUREVERSIONS + ":polisheddioriteslab";
 	
+	// Dusty Book
+	public static final String dustyBook_LB = "lostbooks:random_book";
+	
 	// Dye
 	public static final String dyeBlueBOP = DOM_BIOMESOPLENTY + ":blue_dye";
 	public static final String dyeBrownBOP = DOM_BIOMESOPLENTY + ":brown_dye";
