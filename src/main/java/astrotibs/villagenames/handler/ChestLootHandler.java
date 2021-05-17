@@ -373,6 +373,33 @@ public class ChestLootHandler {
 		
 		
 		
+		// --- Library --- //
+		// Custom
+		chestGenHooks = ChestGenHooks.getInfo("vn_library");
+		
+		// Number of stacks in a chest
+		stacks_min=1;
+		stacks_max=5;
+		
+		chestGenHooks.setMin(stacks_min); chestGenHooks.setMax(stacks_max+1);
+		
+		// Register chest entries: ItemStack, stackMin, stackMax, weight
+		for (Object[] chestItemObject : new Object[][]{
+			{new ItemStack(Items.PAPER), def_min, 3, def_weight},
+			{new ItemStack(Items.DYE, 1, 0), def_min, 3, 6}, // Ink sac
+			{new ItemStack(Items.FEATHER), def_min, 3, 6},
+			{new ItemStack(Items.WRITABLE_BOOK), def_min, def_max, def_weight},
+			{new ItemStack(Items.BOOK), def_min, 3, 3},
+			{new ItemStack(Items.APPLE), def_min, def_max, 15},
+			{new ItemStack(Items.EMERALD), def_min, def_max, def_weight},
+			//{new ItemStack(FunctionsVN.getItemFromName(ModObjects.dustyBook_LB)), def_min, def_max, 2}, // Lost Book
+		})
+		{
+			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
+		}
+		
+		
+		
 		// --- Mason --- //
 		
 		chestGenHooks = ChestGenHooks.getInfo("vn_mason");
