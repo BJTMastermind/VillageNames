@@ -1052,14 +1052,14 @@ public class VillageGeneratorConfigHandler
 		componentVillageTypes = config.getStringList("Component Village Types", Reference.CATEGORY_VILLAGE_GENERATOR,
 				FunctionsVN.joinTwoStringArrays(MODERN_VANILLA_COMPONENT_VILLAGE_TYPE_DEFAULTS, new String[] {
 						// Mod buildings
-						"forestry.apiculture.worldgen.ComponentVillageBeeHouse|plains taiga savanna",
+						"forestry.apiculture.worldgen.ComponentVillageBeeHouse|plains taiga savanna jungle swamp",
 						
-						"growthcraft.apples.common.village.ComponentVillageAppleFarm|plains taiga snowy",
-						"growthcraft.bamboo.common.village.ComponentVillageBambooYard|plains taiga savanna snowy",
-						"growthcraft.bees.common.village.ComponentVillageApiarist|plains taiga savanna",
-						"growthcraft.grapes.common.village.ComponentVillageGrapeVineyard|plains taiga snowy",
-						"growthcraft.hops.common.village.ComponentVillageHopVineyard|plains taiga snowy",
-						"growthcraft.rice.common.village.ComponentVillageRiceField|plains taiga savanna snowy",
+						"growthcraft.apples.common.village.ComponentVillageAppleFarm|plains taiga snowy swamp",
+						"growthcraft.bamboo.common.village.ComponentVillageBambooYard|plains taiga savanna snowy jungle swamp",
+						"growthcraft.bees.common.village.ComponentVillageApiarist|plains taiga savanna jungle swamp",
+						"growthcraft.grapes.common.village.ComponentVillageGrapeVineyard|plains taiga snowy swamp",
+						"growthcraft.hops.common.village.ComponentVillageHopVineyard|plains taiga snowy swamp",
+						"growthcraft.rice.common.village.ComponentVillageRiceField|plains taiga savanna snowy jungle swamp",
 						}),
 				"List of village components that only appear in certain village types. Format is: classPaths|villageTypes\n"
 				+ "classPaths: The class address to the specific structure component. If debugMessages is true, every time a village generates, a list of village components not yet specified on this list will be printed to the console.\n"
