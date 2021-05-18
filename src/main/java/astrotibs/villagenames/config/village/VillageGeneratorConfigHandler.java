@@ -1052,7 +1052,7 @@ public class VillageGeneratorConfigHandler
 		componentVillageTypes = config.getStringList("Component Village Types", Reference.CATEGORY_VILLAGE_GENERATOR,
 				FunctionsVN.joinTwoStringArrays(MODERN_VANILLA_COMPONENT_VILLAGE_TYPE_DEFAULTS, new String[] {
 						// Mod buildings
-						"forestry.apiculture.worldgen.VillageApiaristHouse|plains taiga savanna",
+						"forestry.apiculture.worldgen.VillageApiaristHouse|plains taiga savanna swamp",
 						}),
 				"List of village components that only appear in certain village types. Format is: classPaths|villageTypes\n"
 				+ "classPaths: The class address to the specific structure component. If debugMessages is true, every time a village generates, a list of village components not yet specified on this list will be printed to the console.\n"
