@@ -238,6 +238,64 @@ public class ChestLootHandler {
 		
 		
 		
+		// --- Jungle House --- //
+		
+		chestGenHooks = ChestGenHooks.getInfo("vn_jungle_house");
+		
+		// Number of stacks in a chest
+		stacks_min=3;
+		stacks_max=8;
+		
+		chestGenHooks.setMin(stacks_min); chestGenHooks.setMax(stacks_max+1);
+		
+		// Register chest entries: ItemStack, stackMin, stackMax, weight
+		for (Object[] chestItemObject : new Object[][]{
+			{new ItemStack(Items.BREAD), def_min, 4, 10},
+			{new ItemStack(Items.EMERALD), def_min, 4, 2},
+			{new ItemStack(Items.field_191525_da), def_min, 5, def_weight}, // Iron Nugget
+			{new ItemStack(Blocks.SAPLING, 1, 3), def_min, 5, 3}, // Jungle Sapling
+			{new ItemStack(Blocks.LOG, 1, 3), def_min, 5, 10}, // Jungle Log
+			{ModObjects.chooseModWoodenSignItem(3), def_min, def_max, def_weight}, // Jungle Sign
+			{new ItemStack(Blocks.VINE), def_min, def_max, 5},
+			{new ItemStack(Blocks.TORCH), def_min, 2, def_weight},
+			{new ItemStack(Items.FEATHER), def_min, def_max, def_weight},
+			{new ItemStack(Items.CHICKEN), def_min, 2, 3},
+		})
+		{
+			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
+		}
+		
+		
+		
+		// --- Swamp House --- //
+		
+		chestGenHooks = ChestGenHooks.getInfo("vn_swamp_house");
+		
+		// Number of stacks in a chest
+		stacks_min=3;
+		stacks_max=8;
+		
+		chestGenHooks.setMin(stacks_min); chestGenHooks.setMax(stacks_max+1);
+		
+		// Register chest entries: ItemStack, stackMin, stackMax, weight
+		for (Object[] chestItemObject : new Object[][]{
+			{new ItemStack(Items.BREAD), def_min, 4, 10},
+			{new ItemStack(Items.EMERALD), def_min, 4, def_weight},
+			{new ItemStack(Items.BOOK), def_min, def_max, def_weight},
+			{new ItemStack(Blocks.VINE), def_min, def_max, 5},
+			{new ItemStack(Items.WATER_BUCKET), def_min, 3, def_weight},
+			{new ItemStack(Items.COAL), def_min, 4, 5},
+			{new ItemStack(Items.FISH, 1, 0), def_min, 2, def_weight}, // Raw Cod
+			{new ItemStack(Blocks.OAK_FENCE), def_min, 4, 2}, // Oak Fence
+			{new ItemStack(Items.BOAT), def_min, def_max, def_weight}, // Oak Boat
+			{new ItemStack(Items.PRISMARINE_SHARD), def_min, def_max, def_weight},
+		})
+		{
+			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
+		}
+		
+		
+		
 		
 		// ------------------------------ //
 		// --- Specific career chests --- //
@@ -318,6 +376,33 @@ public class ChestLootHandler {
 		if (GeneralConfig.codexChestLoot)
 		{
 			chestGenHooks.addItem(new WeightedRandomChestContent(new ItemStack(ModItems.CODEX), def_min, 2, 4));
+		}
+		
+		
+		
+		// --- Farm --- //
+		// Custom by AstroTibs
+		chestGenHooks = ChestGenHooks.getInfo("vn_farm");
+		
+		// Number of stacks in a chest
+		stacks_min=1;
+		stacks_max=5;
+		
+		chestGenHooks.setMin(stacks_min); chestGenHooks.setMax(stacks_max+1);
+		
+		// Register chest entries: ItemStack, stackMin, stackMax, weight
+		for (Object[] chestItemObject : new Object[][]{
+			{new ItemStack(Items.EMERALD), def_min, def_max, def_weight},
+			{new ItemStack(Items.WHEAT_SEEDS), def_min, 5, 5},
+			{new ItemStack(Items.POTATO), def_min, 5, 2},
+			{new ItemStack(Items.CARROT), def_min, 5, 2},
+			{new ItemStack(Items.BEETROOT_SEEDS), def_min, 5, def_weight},
+			{new ItemStack(Items.PUMPKIN_SEEDS), def_min, 5, def_weight},
+			{new ItemStack(Items.REEDS), def_min, 5, def_weight},
+			{new ItemStack(Items.BUCKET), def_min, def_max, def_weight},
+		})
+		{
+			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
 		}
 		
 		
