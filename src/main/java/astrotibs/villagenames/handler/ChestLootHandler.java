@@ -403,6 +403,11 @@ public class ChestLootHandler {
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
 		}
+		// Add codex
+		if (GeneralConfig.codexChestLoot)
+		{
+			chestGenHooks.addItem(new WeightedRandomChestContent(new ItemStack(ModItems.CODEX), def_min, 2, 4));
+		}
 		
 		
 		
