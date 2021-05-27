@@ -502,7 +502,7 @@ public class ModObjects {
 	
 	
 	// Grindstone
-	public static IBlockState chooseModGrindstone(int orientation, EnumFacing coordBaseMode)
+	public static IBlockState chooseModGrindstone(int orientation, EnumFacing coordBaseMode, boolean isHanging)
 	{
 		return Blocks.ANVIL.getStateFromMeta(StructureVillageVN.chooseAnvilMeta(orientation, coordBaseMode));
 	}
