@@ -156,6 +156,28 @@ public class ModObjects {
 	// --- Generator Functions --- //
 	// --------------------------- //
 	
+	// Andesite
+	public static Block chooseModAndesiteStairsBlock()
+	{
+		return null;
+	}
+	public static Block chooseModPolishedAndesiteStairsBlock()
+	{
+		return null;
+	}
+	public static IBlockState chooseModAndesiteSlabState(boolean upper)
+	{
+		return null;
+	}
+	public static IBlockState chooseModPolishedAndesiteSlabState(boolean upper)
+	{
+		return null;
+	}
+	public static IBlockState chooseModAndesiteWallState()
+	{
+		return null;
+	}
+	
 	// Bamboo
 	public static IBlockState chooseModBambooStalk()
 	{
@@ -273,6 +295,13 @@ public class ModObjects {
     }
 	
 	
+	// Brick Wall
+	public static IBlockState chooseModBrickWallState()
+	{
+		return null;
+	}
+	
+	
 	// Concrete
 	public static IBlockState chooseModConcreteState(int color)
 	{
@@ -334,6 +363,10 @@ public class ModObjects {
 	{
 		return null;
 	}
+	public static Block chooseModPolishedDioriteStairsBlock()
+	{
+		return null;
+	}
 	public static IBlockState chooseModDioriteSlabState(boolean upper)
 	{
 		return null;
@@ -352,6 +385,18 @@ public class ModObjects {
 	{
 		return Blocks.crafting_table.getDefaultState();
 	}
+	
+	
+	// Flowers
+	public static IBlockState chooseModCornflower()
+	{
+		return null;
+	}
+	public static IBlockState chooseModLilyOfTheValley()
+	{
+		return null;
+	}
+	
 	
 	
 	// Glazed Terracotta
@@ -377,6 +422,10 @@ public class ModObjects {
 	public static IBlockState chooseModGraniteWallState()
 	{
 		// TODO - Botania available in 1.10
+		return null;
+	}
+	public static IBlockState chooseModPolishedGraniteBlockState()
+	{
 		return null;
 	}
 	
@@ -481,15 +530,45 @@ public class ModObjects {
 	{
 		return null;
 	}
-	public static IBlockState choosModMossyStoneBrickStairsBlock()
+	public static Block choosModMossyStoneBrickStairsBlock()
 	{
 		return null;
 	}
-	public static IBlockState chooseModMossyCobblestoneStairsBlock()
+	public static Block chooseModMossyCobblestoneStairsBlock()
+	{
+		return null;
+	}
+	public static IBlockState chooseModMossyCobblestoneSlabState(boolean upper)
+	{
+		return null;
+	}
+	public static IBlockState chooseModMossyStoneSlabState(boolean upper)
 	{
 		return null;
 	}
 	public static IBlockState chooseModMossyStoneBrickSlabState(boolean upper)
+	{
+		return null;
+	}
+	
+	
+	// Polished Blackstone Button
+	public static Block chooseModPolishedBlackstoneButton()
+	{
+		return null;
+	}
+	
+	
+	// Prismarine
+	public static Block chooseModPrismarineStairsBlock()
+	{
+		return null;
+	}
+	public static IBlockState chooseModPrismarineSlabState(boolean upper)
+	{
+		return null;
+	}
+	public static IBlockState chooseModPrismarineWallState()
 	{
 		return null;
 	}

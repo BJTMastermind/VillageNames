@@ -3062,13 +3062,13 @@ public class SavannaStructures
             
             
             // Blast Furnace - this is a TileEntity and needs to have its meta assigned manually
-        	for (int[] uvw : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
+        	for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
         		{3,1,4, 2}, 
         		})
             {
-        		IBlockState blastFurnaceState = ModObjects.chooseModBlastFurnaceState(uvw[3], this.coordBaseMode);
-                this.setBlockState(world, blastFurnaceState.getBlock().getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvw[0], uvw[2]), this.getYWithOffset(uvw[1]), this.getZWithOffset(uvw[0], uvw[2])), blastFurnaceState, 2);
+        		IBlockState blastFurnaceState = ModObjects.chooseModBlastFurnaceState(uvwo[3], this.coordBaseMode);
+                this.setBlockState(world, blastFurnaceState.getBlock().getStateFromMeta(0), uvwo[0], uvwo[1], uvwo[2], structureBB);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), blastFurnaceState, 2);
             }
         	
         	
@@ -3554,7 +3554,6 @@ public class SavannaStructures
             	{2,2,4, 1}
             	})
             {
-                //this.setBlockState(world, smokerBlock, 0, uvwo[0], uvwo[1], uvwo[2], structureBB);
                 world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
             }
             

@@ -13,9 +13,11 @@ import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import astrotibs.villagenames.village.biomestructures.DesertStructures;
+import astrotibs.villagenames.village.biomestructures.JungleStructures;
 import astrotibs.villagenames.village.biomestructures.PlainsStructures;
 import astrotibs.villagenames.village.biomestructures.SavannaStructures;
 import astrotibs.villagenames.village.biomestructures.SnowyStructures;
+import astrotibs.villagenames.village.biomestructures.SwampStructures;
 import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -302,31 +304,105 @@ public class MapGenVillageVN extends MapGenVillage
             		new SnowyStructures.SnowyMeetingPoint3(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Snowy Pavilion
             };
             
+            StructureVillageVN.StartVN[] jungleStarters = new StructureVillageVN.StartVN[]
+            {
+            		new JungleStructures.JungleStatue(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Statue
+            		new JungleStructures.JungleCocoaTree(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Cocoa Tree
+            		new JungleStructures.JungleGarden(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Garden
+            		new JungleStructures.JungleVilla(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Villa
+            };
+            
+            StructureVillageVN.StartVN[] swampStarters = new StructureVillageVN.StartVN[]
+            {
+                	new SwampStructures.SwampWillow(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Willow
+                	new SwampStructures.SwampStatue(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Statue
+                	new SwampStructures.SwampPavilion(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Pavilion
+                	new SwampStructures.SwampMonolith(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Monolith
+            };
+            
+            double[] townCenterWeightArray;
+            StructureVillageVN.StartVN[] townCenterElementArray;
+            
             if (startVillageType==FunctionsVN.VillageType.DESERT)
             {
-            	start = desertStarters[random.nextInt(desertStarters.length)];
+            	townCenterElementArray = desertStarters;
+            	townCenterWeightArray = new double[]{
+            			VillageGeneratorConfigHandler.componentModernDesertFountain,
+            			VillageGeneratorConfigHandler.componentModernDesertWell,
+            			VillageGeneratorConfigHandler.componentModernDesertMarket
+            			};
             }
             else if (startVillageType==FunctionsVN.VillageType.TAIGA)
             {
-            	start = taigaStarters[random.nextInt(taigaStarters.length)];
+            	townCenterElementArray = taigaStarters;
+            	townCenterWeightArray = new double[]{
+            			VillageGeneratorConfigHandler.componentModernTaigaSquare,
+            			VillageGeneratorConfigHandler.componentModernTaigaWell
+            			};
             }
             else if (startVillageType==FunctionsVN.VillageType.SAVANNA)
             {
-            	start = savannaStarters[random.nextInt(savannaStarters.length)];
+            	townCenterElementArray = savannaStarters;
+            	townCenterWeightArray = new double[]{
+            			VillageGeneratorConfigHandler.componentModernSavannaMarket,
+            			VillageGeneratorConfigHandler.componentModernSavannaFountain,
+            			VillageGeneratorConfigHandler.componentModernSavannaDoubleWell,
+            			VillageGeneratorConfigHandler.componentModernSavannaWell
+            			};
             }
             else if (startVillageType==FunctionsVN.VillageType.SNOWY)
             {
-            	start = snowyStarters[random.nextInt(snowyStarters.length)];
+            	townCenterElementArray = snowyStarters;
+            	townCenterWeightArray = new double[]{
+            			VillageGeneratorConfigHandler.componentModernSnowyIceSpire,
+            			VillageGeneratorConfigHandler.componentModernSnowyFountain,
+            			VillageGeneratorConfigHandler.componentModernSnowyPavilion
+            			};
+            }
+            else if (startVillageType==FunctionsVN.VillageType.JUNGLE)
+            {
+            	townCenterElementArray = jungleStarters;
+            	townCenterWeightArray = new double[]{
+            			VillageGeneratorConfigHandler.componentModernJungleStatue,
+            			VillageGeneratorConfigHandler.componentModernJungleCocoaTree,
+            			VillageGeneratorConfigHandler.componentModernJungleGarden,
+            			VillageGeneratorConfigHandler.componentModernJungleVilla
+            			};
+            }
+            else if (startVillageType==FunctionsVN.VillageType.SWAMP)
+            {
+            	townCenterElementArray = swampStarters;
+            	townCenterWeightArray = new double[]{
+            			VillageGeneratorConfigHandler.componentModernSwampWillow,
+            			VillageGeneratorConfigHandler.componentModernSwampStatue,
+            			VillageGeneratorConfigHandler.componentModernSwampPavilion,
+            			VillageGeneratorConfigHandler.componentModernSwampMonolith
+            			};
             }
             else // Plains if nothing else matches
             {
-            	start = plainsStarters[random.nextInt(plainsStarters.length)];
+            	townCenterElementArray = plainsStarters;
+            	townCenterWeightArray = new double[]{
+            			VillageGeneratorConfigHandler.componentModernPlainsFountain,
+            			VillageGeneratorConfigHandler.componentModernPlainsWell,
+            			VillageGeneratorConfigHandler.componentModernPlainsMarket,
+            			VillageGeneratorConfigHandler.componentModernPlainsOakTree
+            			};
             }
             
+        	double totalWeight = 0D; for (int i=0; i<townCenterWeightArray.length; i++) {totalWeight += townCenterWeightArray[i];}
+        	if (totalWeight<=0D) {start = plainsStarters[1];} // If total weight is 0, default to Plains well
+        	else // Select the starter based off of weighting specified in configs
+        	{
+        		start = (StructureVillageVN.StartVN) FunctionsVN.weightedRandom(townCenterElementArray, townCenterWeightArray, random);
+        	}
+        	
+        	
+            // === FORCE A SPECIFIC STARTER FOR TESTING PURPOSES === //
+        	//start = new JungleStructures.JungleCocoaTree(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize);
             
-            // Force a specific starter for testing purposes
-            //start = new DesertStructures.DesertMeetingPoint3(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize);
-            
+        	
+        	
             // Add well to the component list
             this.components.add(start);
             
