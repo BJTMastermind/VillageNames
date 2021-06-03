@@ -3524,7 +3524,7 @@ public class DesertStructures
             
             
             // Attempt to add GardenCore Compost Bins. If this fails, do nothing
-            IBlockState compostBinState = ModObjects.chooseModComposter();
+            IBlockState compostBinState = ModObjects.chooseModComposterState();
             if (compostBinState != null)
             {
             	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 5, 1, 2, structureBB);
@@ -3923,7 +3923,7 @@ public class DesertStructures
         	// Bin
             
             // Attempt to add GardenCore Compost Bins. If this fails, put a hay bale down instead
-            IBlockState compostBinState = ModObjects.chooseModComposter();
+            IBlockState compostBinState = ModObjects.chooseModComposterState();
             this.setBlockState(world, compostBinState!=null?compostBinState:Blocks.HAY_BLOCK.getStateFromMeta(0), 8, 2, 3, structureBB);
             // Trapdoor rim
         	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(6), 7,2,3, structureBB); // Left
@@ -5233,7 +5233,7 @@ public class DesertStructures
            		})
         	{
         		// Attempt to add GardenCore Compost Bins. If this fails, put a hay bale down instead
-                IBlockState compostBinState = ModObjects.chooseModComposter();
+                IBlockState compostBinState = ModObjects.chooseModComposterState();
                 this.setBlockState(world, compostBinState!=null?compostBinState:Blocks.HAY_BLOCK.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
         	}
             

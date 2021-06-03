@@ -6209,7 +6209,7 @@ public class PlainsStructures
             }
             */
             // Attempt to add GardenCore Compost Bins. If this fails, do nothing
-            IBlockState compostBinState = ModObjects.chooseModComposter();
+            IBlockState compostBinState = ModObjects.chooseModComposterState();
             if (compostBinState != null)
             {
             	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), 1, 1, 1, structureBB); this.setBlockState(world, biomeDirtState, 1, 0, 1, structureBB);
@@ -10451,7 +10451,7 @@ public class PlainsStructures
             }
             */
             // Attempt to add GardenCore Compost Bins. If this fails, do nothing
-            IBlockState compostBinState = ModObjects.chooseModComposter();
+            IBlockState compostBinState = ModObjects.chooseModComposterState();
             if (compostBinState != null)
             {
             	this.setBlockState(world, compostBinState.getBlock().getDefaultState(), STRUCTURE_WIDTH-2, 1, STRUCTURE_DEPTH-2, structureBB);

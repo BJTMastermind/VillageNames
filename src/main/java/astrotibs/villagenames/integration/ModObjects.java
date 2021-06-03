@@ -203,13 +203,17 @@ public class ModObjects {
 	
 	
 	// Andesite
-	public static IBlockState chooseModAndesiteSlabBlock(boolean upper)
+	public static IBlockState chooseModAndesiteSlabState(boolean upper)
 	{
 		Block modblock=null;
 		
 		modblock = Block.getBlockFromName(ModObjects.andesiteSlab_Qu);
 		if (modblock != null) {return modblock.getStateFromMeta(upper? 8:0);}
 		
+		return null;
+	}
+	public static IBlockState chooseModPolishedAndesiteSlabState(boolean upper)
+	{
 		return null;
 	}
 	public static IBlockState chooseModAndesiteBrickslabBlock(boolean upper)
@@ -335,6 +339,13 @@ public class ModObjects {
     }
 	
 	
+	// Brick Wall
+	public static IBlockState chooseModBrickWallState()
+	{
+		return null;
+	}
+	
+	
 	// Campfire
 	public static IBlockState chooseModCampfireBlockState(int relativeOrientation, EnumFacing coordBaseMode)
 	{
@@ -367,14 +378,14 @@ public class ModObjects {
 	
 	
 	// Composter
-	public static IBlockState chooseModComposter()
+	public static IBlockState chooseModComposterState()
 	{
 		return null;
 	}
 	
 	
 	// Concrete
-	public static IBlockState chooseModConcrete(int color)
+	public static IBlockState chooseModConcreteState(int color)
 	{
 		if (GeneralConfig.addConcrete)
 		{
@@ -426,16 +437,9 @@ public class ModObjects {
 		// TODO - Botania available in 1.10
 		return null;
 	}
-	public static Block chooseModGraniteBrickStairsBlock()
-	{
-		Block modblock=null;
-		
-		modblock = Block.getBlockFromName(ModObjects.graniteBrickStairs_Qu);
-		if (modblock != null) {return modblock;}
-		
-		// TODO - Botania available in 1.10
-		return null;
-	}
+	
+	
+	
 	public static IBlockState chooseModDioriteSlabBlock(boolean upper)
 	{
 		Block modblock=null;
@@ -523,6 +527,20 @@ public class ModObjects {
 		// TODO - Botania available in 1.10
 		return null;
 	}
+	public static IBlockState chooseModPolishedGraniteBlockState()
+	{
+		return null;
+	}
+	public static Block chooseModGraniteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.graniteBrickStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		// TODO - Botania available in 1.10
+		return null;
+	}
 	
 	
 	// Grindstone
@@ -599,6 +617,18 @@ public class ModObjects {
 	{
 		return null;
 	}
+	public static Block choosModMossyStoneBrickStairsBlock()
+	{
+		return null;
+	}
+	public static IBlockState chooseModMossyCobblestoneSlabState(boolean upper)
+	{
+		return null;
+	}
+	public static IBlockState chooseModMossyStoneSlabState(boolean upper)
+	{
+		return null;
+	}
 	
 	// Iron Nugget
 	// TODO - added in 1.11
@@ -610,6 +640,14 @@ public class ModObjects {
 		return null;
 	}
 	
+	
+	// Polished Blackstone Button
+	public static Block chooseModPolishedBlackstoneButton()
+	{
+		return null;
+	}
+	
+	
 	// Prismarine
 	public static Block chooseModPrismarineStairsBlock()
 	{
@@ -620,7 +658,7 @@ public class ModObjects {
 		
 		return null;
 	}
-	public static IBlockState chooseModPrismarineSlabBlock(boolean upper)
+	public static IBlockState chooseModPrismarineSlabState(boolean upper)
 	{
 		Block modblock=null;
 		
@@ -629,7 +667,7 @@ public class ModObjects {
 		
 		return null;
 	}
-	public static IBlockState chooseModPrismarineWallBlock()
+	public static IBlockState chooseModPrismarineWallState()
 	{
 		Block modblock=null;
 		

@@ -17,6 +17,8 @@ import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
+import astrotibs.villagenames.village.chestloot.ChestGenHooks;
+import astrotibs.villagenames.village.chestloot.WeightedRandomChestContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlowerPot;
 import net.minecraft.block.BlockSapling;
@@ -253,7 +255,7 @@ public class SwampStructures
         	
         	
         	// Mossy Cobblestone
-        	IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uuvvww : new int[][]{
             	{2,0,4, 2,0,4}, {2,0,6, 5,0,6}, {6,0,4, 6,0,5}, 
         		})
@@ -310,7 +312,7 @@ public class SwampStructures
             	{3,2,3}, {4,0,3}, {4,2,3}, {4,3,3}, {5,2,3}, 
             	})
             {
-            	this.setBlockState(world, biomeStrippedWoodOrLogOrLogVerticState, uuvvww[0], uuvvww[1], uuvvww[2], structureBB);	
+            	this.setBlockState(world, biomeStrippedWoodOrLogOrLogVerticState, uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
             
@@ -324,7 +326,7 @@ public class SwampStructures
             	{5,6,4, 5,6,4}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAcrossState, biomeStrippedLogHorizAcrossState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAcrossState, biomeStrippedLogHorizAcrossState, false);
             }
             
             
@@ -393,7 +395,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -467,7 +469,7 @@ public class SwampStructures
         	
         	
             // Sign
-            IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+            IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
             if (GeneralConfig.nameSign)
             {
             	int signU = 3;
@@ -502,7 +504,7 @@ public class SwampStructures
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
 
             	// Set the banner and its orientation
-				world.setBlockState(bannerPos, Blocks.wall_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(bannerO, this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
+				world.setBlockState(bannerPos, Blocks.WALL_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(bannerO, this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -541,7 +543,7 @@ public class SwampStructures
 	        			EntityVillager entityvillager = new EntityVillager(world);
 	        			
 	        			// Nitwits more often than not
-	        			if (GeneralConfig.enableNitwit && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
 	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
 	        			
 	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)this.getYWithOffset(ia[1]) + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
@@ -744,7 +746,7 @@ public class SwampStructures
         	
         	
         	// Dark Prismarine Base
-			IBlockState darkPrismarineState = Blocks.prismarine.getStateFromMeta(2);
+			IBlockState darkPrismarineState = Blocks.PRISMARINE.getStateFromMeta(2);
 			for (int[] uuvvww : new int[][]{
             	{3,1,3, 6,2,6}, 
         		})
@@ -833,7 +835,7 @@ public class SwampStructures
         		{4,6,6, 2}, {5,6,6, 2},
         		})
             {
-        		this.setBlockState(world, biomePrismarineStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        		this.setBlockState(world, biomePrismarineStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
             }
         	for (int[] uuvvww : new int[][]{
         		// Knees
@@ -847,7 +849,7 @@ public class SwampStructures
         		this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], 
         				biomePrismarineBlockState,
         				biomePrismarineBlockState, 
-        				false);	
+        				false);
             }
         	for (int[] uuvvww : new int[][]{
         		// Thighs
@@ -857,7 +859,7 @@ public class SwampStructures
         		this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], 
         				biomePrismarineSlabLowerState,
         				biomePrismarineSlabLowerState, 
-        				false);	
+        				false);
             }
         	for (int[] uuvvww : new int[][]{
         		// Meaty fists
@@ -867,7 +869,7 @@ public class SwampStructures
         		this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], 
         				biomePrismarineSlabUpperState,
         				biomePrismarineSlabUpperState, 
-        				false);	
+        				false);
             }
         	for (int[] uuvvww : new int[][]{
         		// Right arm
@@ -885,7 +887,7 @@ public class SwampStructures
         		this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], 
         				biomePrismarineWallState,
         				biomePrismarineWallState, 
-        				false);	
+        				false);
             }
         	
         	
@@ -894,13 +896,13 @@ public class SwampStructures
             	{4,5,3, 5,5,3}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.iron_bars.getDefaultState(), Blocks.iron_bars.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
             }
         	
         	
         	// Polished Blackstone Buttons
             Block polishedBlackstoneButtonBlock = ModObjects.chooseModPolishedBlackstoneButton(); 
-        	if (polishedBlackstoneButtonBlock==null) {polishedBlackstoneButtonBlock = Blocks.STONE_button;} // Stone button if not found
+        	if (polishedBlackstoneButtonBlock==null) {polishedBlackstoneButtonBlock = Blocks.STONE_BUTTON;} // Stone button if not found
         	for(int[] uuvvwwo : new int[][]{
         		// Rim
         		// Front
@@ -916,7 +918,7 @@ public class SwampStructures
         		{4,7,3, 5,7,3, 2}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], polishedBlackstoneButtonBlock.getStateFromMeta(StructureVillageVN.chooseButtonMeta(uuvvwwo[6], this.coordBaseMode)), polishedBlackstoneButtonBlock.getStateFromMeta(StructureVillageVN.chooseButtonMeta(uuvvwwo[6], this.coordBaseMode)), false);	
+            	this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], polishedBlackstoneButtonBlock.getStateFromMeta(StructureVillageVN.chooseButtonMeta(uuvvwwo[6])), polishedBlackstoneButtonBlock.getStateFromMeta(StructureVillageVN.chooseButtonMeta(uuvvwwo[6])), false);
             }
         	
         	
@@ -927,7 +929,7 @@ public class SwampStructures
             {
             	this.setBlockState(world,
             			Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(GeneralConfig.useVillageColors ? this.townColor : 15), // Black
-            			uuvvww[0], uuvvww[1], uuvvww[2], structureBB);	
+            			uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
         	
         	
@@ -1021,7 +1023,7 @@ public class SwampStructures
         	int signU = 2;
 			int signV = 2;
 			int signW = 1;
-            IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+            IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
             if (GeneralConfig.nameSign)
             {
 
@@ -1036,7 +1038,7 @@ public class SwampStructures
     			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(signO, this.getCoordBaseMode().getHorizontalIndex(), hanging)), 2); // 2 is "send change to clients without block update notification"
         		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
             }
-            else {this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(-1, this.getCoordBaseMode().getHorizontalIndex())), signU, signV, signW, structureBB);} // Substitute a torch if signs are disabled
+            else {this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(-1)), signU, signV, signW, structureBB);} // Substitute a torch if signs are disabled
         	
     		
 			// Banner    		
@@ -1055,7 +1057,7 @@ public class SwampStructures
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
-                world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(bannerO, this.getCoordBaseMode().getHorizontalIndex(), hanging)), 2);
+                world.setBlockState(bannerPos, Blocks.STANDING_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(bannerO, this.getCoordBaseMode().getHorizontalIndex(), hanging)), 2);
 
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -1065,7 +1067,7 @@ public class SwampStructures
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
-    		else {this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(-1, this.getCoordBaseMode().getHorizontalIndex())), bannerU, bannerV, bannerW, structureBB);} // Substitute a torch if banners are disabled
+    		else {this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(-1)), bannerU, bannerV, bannerW, structureBB);} // Substitute a torch if banners are disabled
     		
     		// Villagers
             if (!this.villagersGenerated)
@@ -1083,7 +1085,7 @@ public class SwampStructures
 	        			EntityVillager entityvillager = new EntityVillager(world);
 	        			
 	        			// Nitwits more often than not
-	        			if (GeneralConfig.enableNitwit && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
 	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
 	        			
 	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)this.getYWithOffset(ia[1]) + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
@@ -1303,7 +1305,7 @@ public class SwampStructures
             	{1,4,1, 6,4,6}, {2,5,2, 5,5,5}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
             
             
@@ -1357,7 +1359,7 @@ public class SwampStructures
     			world.setBlockState(new BlockPos(signX, signY, signZ), biomeStandingSignState.getBlock().getStateFromMeta(StructureVillageVN.getSignRotationMeta(signO, this.getCoordBaseMode().getHorizontalIndex(), hanging)), 2); // 2 is "send change to clients without block update notification"
         		world.setTileEntity(new BlockPos(signX, signY, signZ), signContents);
             }
-            else {this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(-1, this.getCoordBaseMode().getHorizontalIndex())), signU, signV, signW, structureBB);} // Substitute a torch if signs are disabled
+            else {this.setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(-1)), signU, signV, signW, structureBB);} // Substitute a torch if signs are disabled
             
     		
     		// Banner - patterend or solid depending on configs
@@ -1380,7 +1382,7 @@ public class SwampStructures
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
-				world.setBlockState(bannerPos, Blocks.wall_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwoc[3], this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
+				world.setBlockState(bannerPos, Blocks.WALL_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwoc[3], this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -1420,7 +1422,7 @@ public class SwampStructures
 	        			EntityVillager entityvillager = new EntityVillager(world);
 	        			
 	        			// Nitwits more often than not
-	        			if (GeneralConfig.enableNitwit && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
 	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
 	        			
 	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)this.getYWithOffset(ia[1]) + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
@@ -1625,7 +1627,7 @@ public class SwampStructures
         	
         	
         	// Dark Prismarine Monolith that becomes green terracotta otherwise
-			IBlockState darkPrismarineState = Blocks.prismarine.getStateFromMeta(2);
+			IBlockState darkPrismarineState = Blocks.PRISMARINE.getStateFromMeta(2);
         	for (int[] uuvvww : new int[][]{
             	{5,1,5, 6,6,6}, 
         		})
@@ -1641,7 +1643,7 @@ public class SwampStructures
             	{4,1,4, 7,1,4}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeTopState, biomeTopState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeTopState, biomeTopState, false);
             }
             
             
@@ -1766,7 +1768,7 @@ public class SwampStructures
         			this.setBlockState(world, biomeCobblestoneState, uvwo[0], uvwo[1]-1, uvwo[2], structureBB);
 
                 	// Set the banner and its orientation
-    				world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex(), false)), 2);
+    				world.setBlockState(bannerPos, Blocks.STANDING_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex(), false)), 2);
     				
     				// Set the tile entity
     				TileEntity tilebanner = new TileEntityBanner();
@@ -1796,7 +1798,7 @@ public class SwampStructures
 	        			EntityVillager entityvillager = new EntityVillager(world);
 	        			
 	        			// Nitwits more often than not
-	        			if (GeneralConfig.enableNitwit && random.nextInt(3)==0) {entityvillager.setProfession(5);}
+	        			if (false && random.nextInt(3)==0) {entityvillager.setProfession(5);}
 	        			else {entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, ia[3], ia[4], -12000-random.nextInt(12001));}
 	        			
 	        			entityvillager.setLocationAndAngles((double)this.getXWithOffset(ia[0], ia[2]) + 0.5D, (double)this.getYWithOffset(ia[1]) + 0.5D, (double)this.getZWithOffset(ia[0], ia[2]) + 0.5D,
@@ -2037,7 +2039,7 @@ public class SwampStructures
             	{1,1,2, 1,1,2}, {2,1,3, 5,1,3}, {6,1,2, 6,1,2}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -2047,7 +2049,7 @@ public class SwampStructures
     			{2,0,0, 2,0,0}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
     		
     		
@@ -2059,7 +2061,7 @@ public class SwampStructures
     			{2,0,1, 5,0,1}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -2069,17 +2071,17 @@ public class SwampStructures
     			{1,2,1, 1,2,2}, {2,2,1, 5,2,1}, {6,2,1, 6,2,3}, {2,2,3, 5,2,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			{1,2,3, 1,2,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
     		
     		
@@ -2093,7 +2095,7 @@ public class SwampStructures
     			{2,3,2, 3,3,2}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -2113,7 +2115,7 @@ public class SwampStructures
     			{0,2,0, 1,2,0}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -2123,7 +2125,7 @@ public class SwampStructures
             	{2,1,1, 2}, {3,1,1, 2}, {4,1,1, 2}, {5,1,1, 2}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
             
@@ -2399,7 +2401,7 @@ public class SwampStructures
     			{13,0,0, 13,0,13}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);
             }
     		
     		
@@ -2478,7 +2480,7 @@ public class SwampStructures
     			{3,0,3, 3,0,4}, {4,0,2, 4,0,5}, {5,0,1, 5,0,6}, {6,0,1, 6,0,5}, {7,0,1, 7,0,4}, {8,0,2, 9,0,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
     		}
     		
     		
@@ -2492,7 +2494,7 @@ public class SwampStructures
     			{9,1,7}, {9,1,9}, 
     			{11,1,6}, 
     			}) {
-    			this.setBlockState(world, Blocks.waterlily.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, Blocks.WATERLILY.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
     		}
             
             
@@ -2501,7 +2503,7 @@ public class SwampStructures
         		{9,1,10}, {10,1,10}, 
         		})
             {
-        		this.setBlockState(world, Blocks.hay_block.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.HAY_BLOCK.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -2510,7 +2512,7 @@ public class SwampStructures
         		{10,1,9}, 
         		})
             {
-        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.hay_block.getStateFromMeta(0), this.getCoordBaseMode().getHorizontalIndex(), false), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.HAY_BLOCK.getStateFromMeta(0), this.getCoordBaseMode().getHorizontalIndex(), false), uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
     		
@@ -2810,7 +2812,7 @@ public class SwampStructures
     		
     		
     		// Brick Blocks
-    		IBlockState biomeBrickBlockState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.brick_block.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeBrickBlockState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.BRICK_BLOCK.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	for(int[] uuvvww : new int[][]{
         		{0,0,3, 7,0,3}, 
         		{0,0,0, 0,0,2}, 
@@ -2818,7 +2820,7 @@ public class SwampStructures
         		{7,0,2, 8,1,2}, {8,0,3, 8,1,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeBrickBlockState, biomeBrickBlockState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeBrickBlockState, biomeBrickBlockState, false);
     		}
             
             
@@ -2840,7 +2842,7 @@ public class SwampStructures
     			{7,2,3, 7,3,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeBrickWallState, biomeBrickWallState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeBrickWallState, biomeBrickWallState, false);
     		}
             
             
@@ -2849,7 +2851,7 @@ public class SwampStructures
         		{7,1,3, 3}, 
         		})
             {
-        		IBlockState blastFurnaceState = ModObjects.chooseModBlastFurnaceState(uvwo[3], this.coordBaseMode);
+        		IBlockState blastFurnaceState = ModObjects.chooseModBlastFurnaceState(uvwo[3], this.getCoordBaseMode());
                 this.setBlockState(world, blastFurnaceState.getBlock().getStateFromMeta(0), uvwo[0], uvwo[1], uvwo[2], structureBB);
                 world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), blastFurnaceState, 2);
             }
@@ -2862,7 +2864,7 @@ public class SwampStructures
     			{0,0,4, 8,0,7}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
         	
         	
@@ -2876,7 +2878,7 @@ public class SwampStructures
     			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], 
     					Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(GeneralConfig.useVillageColors ? this.townColor2 : 13), 
     					Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(GeneralConfig.useVillageColors ? this.townColor2 : 13), 
-    					false);	
+    					false);
             }
         	
         	
@@ -2892,7 +2894,7 @@ public class SwampStructures
     			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], 
     					Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(GeneralConfig.useVillageColors ? this.townColor : 15), 
     					Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(GeneralConfig.useVillageColors ? this.townColor : 15), 
-    					false);	
+    					false);
             }
         	
         	
@@ -2959,7 +2961,7 @@ public class SwampStructures
             		int z = this.getZWithOffset(u+u_offset, w+w_offset);
             		
             		// If space above bordering block is liquid, fill below with filler and cap with topper
-            		if (world.getBlockState(new BlockPos(x, y+1, z)).getBlock().getMaterial().isLiquid())
+            		if (world.getBlockState(new BlockPos(x, y+1, z)).getMaterial().isLiquid())
             		{
             			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u+u_offset, v, w+w_offset, structureBB);
             			this.setBlockState(world, biomeTopState, u+u_offset, v+1, w+w_offset, structureBB);
@@ -2981,7 +2983,7 @@ public class SwampStructures
     			{1,0,0, 7,0,0}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
     		}
             
             
@@ -2995,7 +2997,7 @@ public class SwampStructures
             	{1,1,6, 1,1,6}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -3007,7 +3009,7 @@ public class SwampStructures
     			{0,3,1, 8,3,2}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
     		
     		
@@ -3019,7 +3021,7 @@ public class SwampStructures
     			{1,4,5, 7,4,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -3029,7 +3031,7 @@ public class SwampStructures
     			{0,5,6, 8,5,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeBrickSlabLowerState, biomeBrickSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeBrickSlabLowerState, biomeBrickSlabLowerState, false);
     		}
     		
     		
@@ -3040,7 +3042,7 @@ public class SwampStructures
     			{7,1,5, 2}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
         	
         	            
@@ -3055,7 +3057,7 @@ public class SwampStructures
         	
         	
             // Wooden pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.wooden_pressure_plate.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uvw : new int[][]{
         		{7,2,6}, 
         		})
@@ -3071,12 +3073,12 @@ public class SwampStructures
             	{2,2,4, 0}, {6,2,4, 0}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{4,1,4, 2, 1, 1}, 
@@ -3095,7 +3097,7 @@ public class SwampStructures
         		{1,1,5, 1,2,5}, 
         		})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.bookshelf.getDefaultState(), Blocks.bookshelf.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.BOOKSHELF.getDefaultState(), Blocks.BOOKSHELF.getDefaultState(), false);
             }
             
             
@@ -3104,7 +3106,7 @@ public class SwampStructures
         		{2,1,5, 6,1,6, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
         		})
             {
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.carpet.getStateFromMeta(uuvvww[6]), Blocks.carpet.getStateFromMeta(uuvvww[6]), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
             }
             
             
@@ -3141,7 +3143,7 @@ public class SwampStructures
         	int chestW = 6;
         	int chestO = 1; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -3171,7 +3173,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -3445,7 +3447,7 @@ public class SwampStructures
     			{4,4,4, 4,4,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
             
             
@@ -3465,7 +3467,7 @@ public class SwampStructures
     			{5,4,4, 7,4,4}, {4,4,5, 7,4,8}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
             
             
@@ -3498,7 +3500,7 @@ public class SwampStructures
     			{11,2,8, 11,2,9}, {12,2,2, 12,2,8}, {11,2,1, 11,2,1}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);
             }
     		
     		
@@ -3520,7 +3522,7 @@ public class SwampStructures
     			{4,1,4, 7,3,8}, 
     			})
     		{
-            	this.fillWithAir(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5]);	
+            	this.fillWithAir(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5]);
     		}
             
             
@@ -3563,7 +3565,7 @@ public class SwampStructures
     			{6,1,4, 2}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -3600,12 +3602,12 @@ public class SwampStructures
             
             
             // Smoker
-        	IBlockState smokerState = ModObjects.chooseModSmokerState(3, this.coordBaseMode);
+        	IBlockState smokerState = ModObjects.chooseModSmokerState(3, this.getCoordBaseMode());
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
             	{4,1,4, 1}
             	})
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
+            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), smokerState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
             }
     		
     		
@@ -3615,12 +3617,12 @@ public class SwampStructures
             	{3,3,5, 1}, {3,3,6, 1}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{6,2,3, 2, 1, 0}, 
@@ -3988,7 +3990,7 @@ public class SwampStructures
         	
         	
         	// Dark Prismarine Base
-    		IBlockState darkPrismarineState = Blocks.prismarine.getStateFromMeta(2);
+    		IBlockState darkPrismarineState = Blocks.PRISMARINE.getStateFromMeta(2);
         	for (int[] uuvvww : new int[][]{
             	{1,1,7, 1,2,7}, {7,1,7, 7,2,7}, 
             	{3,1,5, 3,8,5}, {5,1,5, 5,2,5}, 
@@ -4028,7 +4030,7 @@ public class SwampStructures
             	{6,4,2, 6,5,4}, {6,4,6, 6,5,8}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -4056,7 +4058,7 @@ public class SwampStructures
     			{0,6,2, 0}, {1,7,2, 0}, {2,8,2, 0}, {4,8,2, 1}, {5,7,2, 1}, {6,6,2, 1}, 
     			})
     		{
-    			this.setBlockState(world, biomeCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
         	
         	
@@ -4073,7 +4075,7 @@ public class SwampStructures
     			{0,6,3, 0}, {1,7,3, 0}, {6,6,3, 1}, 
     			})
     		{
-    			this.setBlockState(world, biomeMossyCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeMossyCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -4083,7 +4085,7 @@ public class SwampStructures
     			{3,9,2, 3,9,3}, {3,9,5, 3,9,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -4101,7 +4103,7 @@ public class SwampStructures
     			{3,9,4, 3,9,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -4116,7 +4118,7 @@ public class SwampStructures
     			{9,3,3, 3}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -4127,7 +4129,7 @@ public class SwampStructures
     			{9,2,3, 9,2,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -4137,7 +4139,7 @@ public class SwampStructures
             	{1,4,5, 0}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
         	
         	
@@ -4188,12 +4190,12 @@ public class SwampStructures
         		{5,6,7, 5,6,7}, 
         		})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.bookshelf.getDefaultState(), Blocks.bookshelf.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.BOOKSHELF.getDefaultState(), Blocks.BOOKSHELF.getDefaultState(), false);
             }
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{6,4,5, 3, 1, 1}, 
@@ -4213,7 +4215,7 @@ public class SwampStructures
         		{1,4,2, 5,6,2}, {2,7,2, 4,7,2}, {3,8,2, 3,8,2}, 
         		})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.glass.getStateFromMeta(0), Blocks.glass.getStateFromMeta(0), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.GLASS.getStateFromMeta(0), Blocks.GLASS.getStateFromMeta(0), false);
             }
     		
     		
@@ -4239,7 +4241,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -4493,12 +4495,12 @@ public class SwampStructures
     			{0,0,1, 0,0,2}, {1,0,1, 1,0,1}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			// Bases
     			{6,0,7, 7,0,8}, {8,0,7, 8,0,7}, 
@@ -4511,7 +4513,7 @@ public class SwampStructures
     			{6,0,1, 8,0,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
     		
             
@@ -4520,7 +4522,7 @@ public class SwampStructures
     			{2,0,4, 2,0,6}, {3,0,3, 5,0,7}, {6,0,4, 6,0,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
     		}
     		
     		
@@ -4528,7 +4530,7 @@ public class SwampStructures
     		for (int[] uvw : new int[][]{
     			{4,1,3}, {5,1,5}, 
     			}) {
-    			this.setBlockState(world, Blocks.waterlily.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, Blocks.WATERLILY.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
     		}
     		
     		
@@ -4548,7 +4550,7 @@ public class SwampStructures
     			{1,1,2, 1,2,2}, {7,1,2, 7,6,2},
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);
     		}
     		
     		
@@ -4572,7 +4574,7 @@ public class SwampStructures
     			{1,7,2, 2,7,3}, {6,7,3, 6,7,3}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -4608,7 +4610,7 @@ public class SwampStructures
     			{0,7,1, 3}, {1,7,1, 3}, {2,7,1, 3}, {3,7,1, 3}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -4622,7 +4624,7 @@ public class SwampStructures
     			{2,4,2, 2,4,2}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -4647,7 +4649,7 @@ public class SwampStructures
         		{8,5,7}, {8,5,8}, {6,5,9}, {7,5,9}, {2,5,8}, {3,5,8}, {1,5,6}, {1,5,7}, {0,5,2}, {0,5,3}, {1,5,1}, {2,5,1}, {5,5,2}, {6,5,2}, {8,5,7}, {8,5,8}, 
         		})
             {
-        		this.setBlockState(world, Blocks.glass_pane.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.GLASS_PANE.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -4659,7 +4661,7 @@ public class SwampStructures
         		{3,7,3}, {5,7,3}, 
         		})
             {
-    			this.setBlockState(world, Blocks.glass.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, Blocks.GLASS.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	            
@@ -4675,7 +4677,7 @@ public class SwampStructures
             
             // Brick Walls
         	IBlockState biomeBrickWallState = null;
-        	IBlockState biomeBrickBlockState = Blocks.brick_block.getDefaultState();
+        	IBlockState biomeBrickBlockState = Blocks.BRICK_BLOCK.getDefaultState();
         	
         	// First, attempt to obtain modded brick wall
         	biomeBrickWallState = ModObjects.chooseModBrickWallState();
@@ -4693,7 +4695,7 @@ public class SwampStructures
     			{4,5,5, 4,6,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeBrickWallState, biomeBrickWallState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeBrickWallState, biomeBrickWallState, false);
     		}
             // Brick Blocks
         	for(int[] uuvvww : new int[][]{
@@ -4701,7 +4703,7 @@ public class SwampStructures
     			{4,7,5, 4,7,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeBrickBlockState, biomeBrickBlockState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeBrickBlockState, biomeBrickBlockState, false);
     		}
     		
     		
@@ -4712,7 +4714,7 @@ public class SwampStructures
             	{2,4,5, 0}, {3,4,5, 0}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
             
@@ -4731,7 +4733,7 @@ public class SwampStructures
             	{4,4,5, 2}, 
             	})
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.furnace.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
+            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.FURNACE.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
             }
         	
         	
@@ -4742,7 +4744,7 @@ public class SwampStructures
         	int chestW = 7;
         	int chestO = 3; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -4769,7 +4771,7 @@ public class SwampStructures
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{7,4,4, 1, 1, 1}, 
@@ -4814,9 +4816,9 @@ public class SwampStructures
             })
             {
     			// Set the barrel, or a chest if it's not supported
-    			if (isChestType) {barrelState = Blocks.chest.getDefaultState();}
+    			if (isChestType) {barrelState = Blocks.CHEST.getDefaultState();}
     			this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(isChestType?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.coordBaseMode):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.coordBaseMode)), 2);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(isChestType?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
             }
     		
     		
@@ -4838,7 +4840,7 @@ public class SwampStructures
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
-				world.setBlockState(bannerPos, Blocks.wall_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwoc[3], this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
+				world.setBlockState(bannerPos, Blocks.WALL_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwoc[3], this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -4854,7 +4856,7 @@ public class SwampStructures
 	            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
 					
     				tilebanner.readFromNBT(modifystanding);
-    				ItemStack villageBanner = new ItemStack(Items.banner);
+    				ItemStack villageBanner = new ItemStack(Items.BANNER);
     				villageBanner.setTagInfo("BlockEntityTag", villageNBTtag.getCompoundTag("BlockEntityTag"));
     				
         			((TileEntityBanner) tilebanner).setItemValues(villageBanner);
@@ -4882,7 +4884,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -5179,7 +5181,7 @@ public class SwampStructures
             	{5,5,2, 7,5,2}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAcrossState, biomeStrippedLogHorizAcrossState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAcrossState, biomeStrippedLogHorizAcrossState, false);
             }
             
             
@@ -5214,7 +5216,7 @@ public class SwampStructures
             		int z = this.getZWithOffset(u+u_offset, w+w_offset);
             		
             		// If space above bordering block is liquid, fill below with filler and cap with topper
-            		if (world.getBlockState(new BlockPos(x, y+1, z)).getBlock().getMaterial().isLiquid())
+            		if (world.getBlockState(new BlockPos(x, y+1, z)).getMaterial().isLiquid())
             		{
             			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u+u_offset, v, w+w_offset, structureBB);
             			this.setBlockState(world, biomeTopState, u+u_offset, v+1, w+w_offset, structureBB);
@@ -5238,7 +5240,7 @@ public class SwampStructures
     			{1,0,5, 11,0,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
     		}
             
             
@@ -5256,7 +5258,7 @@ public class SwampStructures
             	{10,2,7, 10,2,7}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -5275,7 +5277,7 @@ public class SwampStructures
     			{9,3,7, 2}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -5288,7 +5290,7 @@ public class SwampStructures
     			{6,3,3, 6,3,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -5299,7 +5301,7 @@ public class SwampStructures
     			{6,8,2, 6,8,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
             
             
@@ -5310,7 +5312,7 @@ public class SwampStructures
         		{7,4,6}, 
         		})
             {
-        		this.setBlockState(world, Blocks.glass_pane.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.GLASS_PANE.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	            
@@ -5382,7 +5384,7 @@ public class SwampStructures
         		{6,3,4, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
         		})
             {
-            	this.setBlockState(world, Blocks.carpet.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
+            	this.setBlockState(world, Blocks.CARPET.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
             }
         	
         	
@@ -5398,14 +5400,14 @@ public class SwampStructures
             })
             {
     			// Set the barrel, or a chest if it's not supported
-    			if (isChestType) {barrelState = Blocks.chest.getDefaultState();}
+    			if (isChestType) {barrelState = Blocks.CHEST.getDefaultState();}
     			this.setBlockState(world, barrelState, uvwoo[0], uvwoo[1], uvwoo[2], structureBB);
-                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(isChestType?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.coordBaseMode):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.coordBaseMode)), 2);
+                world.setBlockState(new BlockPos(this.getXWithOffset(uvwoo[0], uvwoo[2]), this.getYWithOffset(uvwoo[1]), this.getZWithOffset(uvwoo[0], uvwoo[2])), barrelState.getBlock().getStateFromMeta(isChestType?StructureVillageVN.chooseFurnaceMeta(uvwoo[3], this.getCoordBaseMode()):StructureVillageVN.chooseFurnaceMeta(uvwoo[4], this.getCoordBaseMode())), 2);
             }
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{5,3,6, 0, 1, 0}, 
@@ -5712,7 +5714,7 @@ public class SwampStructures
             	{9,3,5, 9,3,7}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -5735,7 +5737,7 @@ public class SwampStructures
     			{11,2,5, 11,2,5}, {11,2,7, 11,2,7}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -5746,7 +5748,7 @@ public class SwampStructures
     			{1,1,1, 1,1,1}, {2,2,2, 2,2,2}, {3,3,3, 3,3,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
     		
     		
@@ -5773,7 +5775,7 @@ public class SwampStructures
     			{5,7,5, 5,7,5}, {7,7,5, 7,7,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabUpperState, biomeCobblestoneSlabUpperState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabUpperState, biomeCobblestoneSlabUpperState, false);
     		}
     		
     		
@@ -5796,7 +5798,7 @@ public class SwampStructures
     			{10,6,8, 10,6,9}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabUpperState, biomeMossyCobblestoneSlabUpperState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabUpperState, biomeMossyCobblestoneSlabUpperState, false);
     		}
     		
     		
@@ -5811,7 +5813,7 @@ public class SwampStructures
     			{6,8,5, 6,8,5}, {5,8,6, 7,8,6}, {6,8,7, 6,8,7}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -5830,7 +5832,7 @@ public class SwampStructures
     			{7,7,3, 8,7,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -5844,18 +5846,18 @@ public class SwampStructures
     			{5,7,4, 5,7,5}, {6,7,4, 6,7,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			{4,7,5, 4,7,6}, 
     			{6,7,8, 6,7,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
         	
         	
@@ -5875,7 +5877,7 @@ public class SwampStructures
         		{6,4,3, 7,6,3}, {8,4,4, 8,6,4}, {9,4,5, 9,6,6}, 
         		})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.glass.getStateFromMeta(0), Blocks.glass.getStateFromMeta(0), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.GLASS.getStateFromMeta(0), Blocks.GLASS.getStateFromMeta(0), false);
             }
     		
     		
@@ -5886,7 +5888,7 @@ public class SwampStructures
             	{9,4,8, 1}, {9,5,8, 1}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
     		
     		
@@ -5896,7 +5898,7 @@ public class SwampStructures
             	{9,6,8, 1}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
             
@@ -5929,7 +5931,7 @@ public class SwampStructures
         		{5,4,8, 7,4,8, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
         		})
             {
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.carpet.getStateFromMeta(uuvvww[6]), Blocks.carpet.getStateFromMeta(uuvvww[6]), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
             }
         	
         	
@@ -5982,7 +5984,7 @@ public class SwampStructures
         		{6,3,4, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
         		})
             {
-            	this.setBlockState(world, Blocks.carpet.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
+            	this.setBlockState(world, Blocks.CARPET.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
             }
         	
         	
@@ -5990,7 +5992,7 @@ public class SwampStructures
         	for (int[] uvw : new int[][]{
             	{6,2,6}, 
             	}) {
-            	this.setBlockState(world, Blocks.flowing_water.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+            	this.setBlockState(world, Blocks.FLOWING_WATER.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -6009,7 +6011,7 @@ public class SwampStructures
         	int chestW = 6;
         	int chestO = 0; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.trapped_chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.trapped_chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -6031,7 +6033,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -6263,7 +6265,7 @@ public class SwampStructures
     			{3,21,0, 5,21,0}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);
             }
 
     		        	
@@ -6278,7 +6280,7 @@ public class SwampStructures
     			{3,10,6, 5,20,6}, 
     			})
     		{
-            	this.fillWithAir(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5]);	
+            	this.fillWithAir(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5]);
     		}
             
             
@@ -6288,7 +6290,7 @@ public class SwampStructures
             	{3,21,2, 5,21,2}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.DIRT.getStateFromMeta(1), Blocks.DIRT.getStateFromMeta(1), false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.DIRT.getStateFromMeta(1), Blocks.DIRT.getStateFromMeta(1), false);
             }
             
             
@@ -6302,7 +6304,7 @@ public class SwampStructures
     			{3,19,0, 5,20,0}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeDirtState, biomeDirtState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeDirtState, biomeDirtState, false);
             }
     		
     		
@@ -6342,13 +6344,13 @@ public class SwampStructures
     			{2,0,3, 4,0,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
     		// Replaces regular stone because I lost my mind trying to set the coordinates
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uvw : new int[][]{
     			// Tower
     			{3,18,6}, {4,18,6}, {5,18,6}, 
@@ -6484,7 +6486,7 @@ public class SwampStructures
     			{2,8,4, 0+4}, 
     			})
     		{
-    			this.setBlockState(world, biomeMossyCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeMossyCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -6524,7 +6526,7 @@ public class SwampStructures
             	{2,1,3, 4,5,3}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.iron_bars.getDefaultState(), Blocks.iron_bars.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
             }
         	
         	
@@ -6541,8 +6543,8 @@ public class SwampStructures
             	BlockPos pos = new BlockPos(x, y, z);
                 if (structureBB.isVecInside(pos) && world.getBlockState(pos) != Blocks.dispenser)
                 {
-                	world.setBlockState(new BlockPos(uvwo[0], uvwo[1], uvwo[2]), Blocks.dispenser.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
-                	//world.setBlockMetadataWithNotify(x, y, z, StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode), 2);
+                	world.setBlockState(new BlockPos(uvwo[0], uvwo[1], uvwo[2]), Blocks.dispenser.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                	//world.setBlockMetadataWithNotify(x, y, z, StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode()), 2);
                 	
                     TileEntityDispenser tileentitydispenser = (TileEntityDispenser)world.getTileEntity(pos);
 
@@ -6570,7 +6572,7 @@ public class SwampStructures
             
                     	
             // Stone pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_pressure_plate.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STONE_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uvw : new int[][]{
         		{5,6,4, 5,6,4}, 
         		})
@@ -6926,7 +6928,7 @@ public class SwampStructures
             	{2,4,4, 2,5,4}, {4,4,4, 4,5,4}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -6938,7 +6940,7 @@ public class SwampStructures
     			{3,1,2, 2+4}, {3,2,3, 2+4}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -6952,7 +6954,7 @@ public class SwampStructures
     			{2,3,4, 4,3,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
         	
         	            
@@ -6987,12 +6989,12 @@ public class SwampStructures
     			{2,6,4, 4,6,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			{3,0,4, 4,0,4}, {3,0,8, 4,0,8}, 
     			{6,0,2, 7,0,2}, {6,0,4, 6,0,4}, {6,0,10, 8,0,10}, 
@@ -7006,7 +7008,7 @@ public class SwampStructures
     			{1,6,4, 1,6,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
     		
     		
@@ -7020,7 +7022,7 @@ public class SwampStructures
     			{3,7,5, 4,7,5}, {4,7,6, 4,7,6}, {2,7,7, 4,7,7}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -7041,7 +7043,7 @@ public class SwampStructures
     			{2,7,5, 2,7,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -7059,7 +7061,7 @@ public class SwampStructures
     			{3,7,6, 3,7,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabUpperState, biomeMossyCobblestoneSlabUpperState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabUpperState, biomeMossyCobblestoneSlabUpperState, false);
     		}
     		
             
@@ -7071,7 +7073,7 @@ public class SwampStructures
     			{8,0,6, 8,0,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
     		}
     		
             
@@ -7106,7 +7108,7 @@ public class SwampStructures
     				catch (IllegalArgumentException e)
     				{
     					// The assignment failed with a meta of 0. IDK what's happening so just have wheat
-    					if (cropProgressMeta==0) {cropState = Blocks.wheat.getStateFromMeta(uvwfcp[5]);}
+    					if (cropProgressMeta==0) {cropState = Blocks.WHEAT.getStateFromMeta(uvwfcp[5]);}
     					// The crop is not allowed to have this value. Cut it in half and try again.
     					else {cropProgressMeta /= 2; continue;}
     				}
@@ -7116,7 +7118,7 @@ public class SwampStructures
     				break;
     			}
     			
-            	this.setBlockState(world, Blocks.farmland.getStateFromMeta(uvwfcp[3]), uvwfcp[0], uvwfcp[1], uvwfcp[2], structureBB);
+            	this.setBlockState(world, Blocks.FARMLAND.getStateFromMeta(uvwfcp[3]), uvwfcp[0], uvwfcp[1], uvwfcp[2], structureBB);
             }
     		
     		
@@ -7127,7 +7129,7 @@ public class SwampStructures
     			// Center of patch
     			{8,1,6}, 
     			}) {
-    			this.setBlockState(world, Blocks.waterlily.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, Blocks.WATERLILY.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
     		}
             
             
@@ -7136,7 +7138,7 @@ public class SwampStructures
     			{2,0,5, 2,0,7}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeDirtState, biomeDirtState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeDirtState, biomeDirtState, false);
             }
             
             
@@ -7145,7 +7147,7 @@ public class SwampStructures
     			{2,1,5, 2,1,7}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.reeds.getDefaultState(), Blocks.reeds.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.REEDS.getDefaultState(), Blocks.REEDS.getDefaultState(), false);
     		}
             
             
@@ -7164,8 +7166,8 @@ public class SwampStructures
             	{5,1,5}, {5,1,6}, {5,1,7}, 
             	})
             {
-            	this.setBlockState(world, Blocks.farmland.getStateFromMeta(7), uvw[0], uvw[1]-1, uvw[2], structureBB);
-            	this.setBlockState(world, Blocks.pumpkin_stem.getStateFromMeta(7), uvw[0], uvw[1], uvw[2], structureBB); // Random pumpkin orientation
+            	this.setBlockState(world, Blocks.FARMLAND.getStateFromMeta(7), uvw[0], uvw[1]-1, uvw[2], structureBB);
+            	this.setBlockState(world, Blocks.PUMPKIN_STEM.getStateFromMeta(7), uvw[0], uvw[1], uvw[2], structureBB); // Random pumpkin orientation
             }
     		
     		
@@ -7177,7 +7179,7 @@ public class SwampStructures
         			{5,1,2}, 
         			})
         		{
-        			this.setBlockState(world, compostBinState, uvw[0], uvw[1], uvw[2], structureBB);	
+        			this.setBlockState(world, compostBinState, uvw[0], uvw[1], uvw[2], structureBB);
         		}
             }
             
@@ -7187,7 +7189,7 @@ public class SwampStructures
         		{2,4,6}, {2,4,7}, {2,5,7}, 
         		})
             {
-        		this.setBlockState(world, Blocks.hay_block.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.HAY_BLOCK.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -7196,7 +7198,7 @@ public class SwampStructures
         		{3,4,7}, 
         		})
             {
-        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.hay_block.getStateFromMeta(0), this.getCoordBaseMode().getHorizontalIndex(), false), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.HAY_BLOCK.getStateFromMeta(0), this.getCoordBaseMode().getHorizontalIndex(), false), uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
     		
@@ -7225,7 +7227,7 @@ public class SwampStructures
         	int chestW = 5;
         	int chestO = 3; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -7560,7 +7562,7 @@ public class SwampStructures
     			{3,13,6, 5,13,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);
     		}
     		
     		
@@ -7572,7 +7574,7 @@ public class SwampStructures
     			{7,0,5, 7,0,5}, {8,0,4, 8,0,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);
     		}
     		
     		
@@ -7584,7 +7586,7 @@ public class SwampStructures
     			{0,0,2, 0,0,2}, {1,0,3, 1,0,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false);
     		}
             
             
@@ -7612,7 +7614,7 @@ public class SwampStructures
             	{3,0,1, 5,0,5}, {5,2,4, 5,2,4}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -7623,7 +7625,7 @@ public class SwampStructures
     			{5,0,0, 3}, {5,1,2, 3}, {5,2,3, 3}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -7662,7 +7664,7 @@ public class SwampStructures
     			{1,4,5, 1,4,5}, {7,4,5, 7,4,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -7675,7 +7677,7 @@ public class SwampStructures
     			{2,12,4, 6,12,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
         	
         	            
@@ -7733,7 +7735,7 @@ public class SwampStructures
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{4,9,5, 2, 1, 0}, 
@@ -7756,7 +7758,7 @@ public class SwampStructures
             	{2,7,7, 1}, {6,7,7, 3}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
     		
     		
@@ -7766,17 +7768,17 @@ public class SwampStructures
             	{2,8,7, 1}, {6,8,7, 3}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
             
             // Ladder
-        	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.ladder.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LADDER.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uuvvwwo : new int[][]{ // Orientation - 3:leftward, 1:rightward, 2:backward, 0:forward
         		{4,3,7, 4,8,7, 2}, 
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), false);
             }
             
             
@@ -7810,7 +7812,7 @@ public class SwampStructures
         	int chestW = 8;
         	int chestO = 2; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -7851,7 +7853,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -8113,7 +8115,7 @@ public class SwampStructures
         		{2,1,3, 6,1,10}, 
         		})
             {
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], polishedGraniteState, polishedGraniteState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], polishedGraniteState, polishedGraniteState, false);
             }
             
             
@@ -8123,7 +8125,7 @@ public class SwampStructures
         		{6,2,3, 6,3,3}, {6,2,5, 6,2,6}, {6,2,8, 6,2,8}, {6,2,10, 6,2,10}, {6,4,10, 6,4,10}, 
         		})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.bookshelf.getDefaultState(), Blocks.bookshelf.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.BOOKSHELF.getDefaultState(), Blocks.BOOKSHELF.getDefaultState(), false);
             }
     		
     		
@@ -8151,7 +8153,7 @@ public class SwampStructures
     			{5,2,11, 5,3,11}, {6,4,11, 6,4,11}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStoneState, biomeStoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStoneState, biomeStoneState, false);
     		}
     		
     		
@@ -8199,12 +8201,12 @@ public class SwampStructures
     			{3,6,5, 5,6,5}, {3,6,8, 5,6,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			// Left wall
     			{1,1,4, 1,1,5}, {1,4,5, 1,4,5}, 
@@ -8235,7 +8237,7 @@ public class SwampStructures
     			{8,1,8, 8,1,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
             
             
@@ -8245,7 +8247,7 @@ public class SwampStructures
             	{0,0,0, 2,0,0}, {6,0,0, 8,0,0}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeTopState, biomeTopState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeTopState, biomeTopState, false);
             }
     		
     		
@@ -8281,7 +8283,7 @@ public class SwampStructures
     			{3,1,1, 3+4}, {4,1,1, 3}, {5,1,1, 3+4}, 
     			})
     		{
-    			this.setBlockState(world, biomeCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -8292,7 +8294,7 @@ public class SwampStructures
     			{3,7,5, 5,7,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -8306,7 +8308,7 @@ public class SwampStructures
     			{6,5,3, 0+4}, {6,5,4, 0+4}, {6,5,6, 0+4}, {6,5,7, 0+4}, {6,5,9, 0+4}, {6,5,10, 0+4}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -8316,7 +8318,7 @@ public class SwampStructures
     			{4,6,3, 4,6,4}, {4,6,6, 4,6,7}, {4,6,9, 4,6,10}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -8328,7 +8330,7 @@ public class SwampStructures
     			{3,4,1, 3,4,1}, {5,4,1, 5,4,1}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
         	
         	            
@@ -8375,7 +8377,7 @@ public class SwampStructures
         		{3,3,4, 3,3,4, (GeneralConfig.useVillageColors ? this.townColor2 : 13)}, // Green
         		})
             {
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.carpet.getStateFromMeta(uuvvww[6]), Blocks.carpet.getStateFromMeta(uuvvww[6]), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
             }
             
             
@@ -8397,12 +8399,12 @@ public class SwampStructures
             	{6,3,11, GeneralConfig.useVillageColors ? this.townColor2 : 13}, // Green
         		})
             {
-            	this.setBlockState(world, Blocks.stained_glass_pane.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
+            	this.setBlockState(world, Blocks.STAINED_GLASS_pane.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
             }
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{4,2,2, 0, 1, 0}, 
@@ -8440,7 +8442,7 @@ public class SwampStructures
         	int chestW = 3;
         	int chestO = 0; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -8477,7 +8479,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -8740,12 +8742,12 @@ public class SwampStructures
     			{4,0,10, 5,0,10}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			// Outline
     			{0,0,2, 0,0,3}, {0,0,6, 0,0,8}, 
@@ -8754,7 +8756,7 @@ public class SwampStructures
     			{1,0,0, 2,0,0}, {5,0,0, 5,0,0}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
         	
         	
@@ -8787,7 +8789,7 @@ public class SwampStructures
     			{3,0,0, 3}, 
     			})
     		{
-    			this.setBlockState(world, biomeCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
         	
         	
@@ -8820,7 +8822,7 @@ public class SwampStructures
     			{1,2,8, 1,2,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.STONE_SLAB.getStateFromMeta(3), Blocks.STONE_SLAB.getStateFromMeta(3), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.STONE_SLAB.getStateFromMeta(3), Blocks.STONE_SLAB.getStateFromMeta(3), false);
     		}
     		
     		
@@ -8829,7 +8831,7 @@ public class SwampStructures
     			{1,1,8, 1,1,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.clay.getDefaultState(), Blocks.clay.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.clay.getDefaultState(), Blocks.clay.getDefaultState(), false);
     		}
     		
     		
@@ -8871,7 +8873,7 @@ public class SwampStructures
     			{2,1,5, 2,1,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStoneBrickSlabLowerState, biomeStoneBrickSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStoneBrickSlabLowerState, biomeStoneBrickSlabLowerState, false);
     		}
     		
     		
@@ -8881,7 +8883,7 @@ public class SwampStructures
     			{2,1,6}, 
     			})
     		{
-    			this.setBlockState(world, Blocks.brick_block.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, Blocks.BRICK_BLOCK.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
     		}
     		
     		
@@ -8911,7 +8913,7 @@ public class SwampStructures
     			{2,1,8, 2,3,9}, {3,1,9, 4,3,9}, {4,3,8, 4,3,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], concreteBlock.getStateFromMeta(concreteMeta), concreteBlock.getStateFromMeta(concreteMeta), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], concreteBlock.getStateFromMeta(concreteMeta), concreteBlock.getStateFromMeta(concreteMeta), false);
     		}
     		
     		
@@ -8922,7 +8924,7 @@ public class SwampStructures
             	{5,2,2, 3}, {5,2,4, 3}, {5,2,6, 3}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
     		
     		
@@ -8933,7 +8935,7 @@ public class SwampStructures
             	{3,3,1, 0}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
         	
         	
@@ -8944,7 +8946,7 @@ public class SwampStructures
     			{2,5,2, 4,5,6}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
             
         	
@@ -8960,7 +8962,7 @@ public class SwampStructures
     			{2,4,7, 4,4,7}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -8974,7 +8976,7 @@ public class SwampStructures
     			{2,4,8, 4,4,9}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
             
             
@@ -8988,7 +8990,7 @@ public class SwampStructures
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{3,1,1, 2, 1, 1}, 
@@ -9010,7 +9012,7 @@ public class SwampStructures
         	int chestW = 10;
         	int chestO = 1; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -9050,7 +9052,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -9345,7 +9347,7 @@ public class SwampStructures
     			{9,2,5, 9,3,7}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -9359,18 +9361,18 @@ public class SwampStructures
     			{4,2,9, 6,3,9}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			// Roof
     			{2,4,4, 2,4,4}, {4,5,4, 4,5,4}, {8,4,4, 8,4,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
     		
     		
@@ -9384,7 +9386,7 @@ public class SwampStructures
     			{3,5,6, 3,5,8}, {5,6,4, 5,6,7}, {7,5,4, 7,5,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -9407,7 +9409,7 @@ public class SwampStructures
     			{3,5,4, 3,5,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -9418,7 +9420,7 @@ public class SwampStructures
     			{2,4,5, 2,4,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabUpperState, biomeCobblestoneSlabUpperState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabUpperState, biomeCobblestoneSlabUpperState, false);
     		}
     		
     		
@@ -9437,7 +9439,7 @@ public class SwampStructures
     			{2,4,6, 2,4,7}, {4,5,5, 4,5,7}, {6,5,5, 6,5,7}, {8,4,5, 8,4,7}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabUpperState, biomeMossyCobblestoneSlabUpperState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabUpperState, biomeMossyCobblestoneSlabUpperState, false);
     		}
     		
             
@@ -9462,7 +9464,7 @@ public class SwampStructures
     			{5,2,8, 5,2,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStoneBrickBlockState, biomeStoneBrickBlockState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStoneBrickBlockState, biomeStoneBrickBlockState, false);
     		}
     		
     		
@@ -9477,12 +9479,12 @@ public class SwampStructures
     			{2,2,5, 2}, {3,2,5, 2}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
         	
         	
             // Wooden pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.wooden_pressure_plate.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uvw : new int[][]{
         		{7,3,2},  
         		})
@@ -9519,7 +9521,7 @@ public class SwampStructures
         		{3,2,7, 3,2,7, (GeneralConfig.useVillageColors ? this.townColor2 : 13)}, // Green
         		})
             {
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.carpet.getStateFromMeta(uuvvww[6]), Blocks.carpet.getStateFromMeta(uuvvww[6]), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
             }
             
             
@@ -9528,7 +9530,7 @@ public class SwampStructures
         		{2,2,7, 2,3,7}, 
         		})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.bookshelf.getDefaultState(), Blocks.bookshelf.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.BOOKSHELF.getDefaultState(), Blocks.BOOKSHELF.getDefaultState(), false);
             }
             
             
@@ -9537,12 +9539,12 @@ public class SwampStructures
         		{2,3,4}, {3,3,4}, {8,3,4}, 
         		})
             {
-        		this.setBlockState(world, Blocks.glass_pane.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.GLASS_PANE.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{5,2,4, 2, 1, 1}, 
@@ -9561,7 +9563,7 @@ public class SwampStructures
             	{5,3,8, 2}, 
             	})
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.furnace.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
+            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.FURNACE.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
             }
             
             
@@ -9606,7 +9608,7 @@ public class SwampStructures
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
-				world.setBlockState(bannerPos, Blocks.wall_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwoc[3], this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
+				world.setBlockState(bannerPos, Blocks.WALL_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwoc[3], this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -9622,7 +9624,7 @@ public class SwampStructures
 	            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
 					
     				tilebanner.readFromNBT(modifystanding);
-    				ItemStack villageBanner = new ItemStack(Items.banner);
+    				ItemStack villageBanner = new ItemStack(Items.BANNER);
     				villageBanner.setTagInfo("BlockEntityTag", villageNBTtag.getCompoundTag("BlockEntityTag"));
     				
         			((TileEntityBanner) tilebanner).setItemValues(villageBanner);
@@ -9652,7 +9654,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -9939,7 +9941,7 @@ public class SwampStructures
             	{2,1,0, 6,1,0}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAcrossState, biomeStrippedLogHorizAcrossState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAcrossState, biomeStrippedLogHorizAcrossState, false);
             }
     		
     		
@@ -9994,7 +9996,7 @@ public class SwampStructures
             	{3,1,2, 5,1,4}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -10008,7 +10010,7 @@ public class SwampStructures
     			{7,1,0, 7,1,2}, {9,0,0, 9,0,2}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
     		
     		
@@ -10024,12 +10026,12 @@ public class SwampStructures
     			{8,0,0, 8,0,2}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
         	
         	
             // Wooden pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.wooden_pressure_plate.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uvw : new int[][]{
         		{6,3,6}, 
         		})
@@ -10056,7 +10058,7 @@ public class SwampStructures
         		{3,2,3, 5,2,4, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
         		})
             {
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.carpet.getStateFromMeta(uuvvww[6]), Blocks.carpet.getStateFromMeta(uuvvww[6]), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
             }
         	
         	
@@ -10080,7 +10082,7 @@ public class SwampStructures
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{5,2,2, 2, 1, 0}, 
@@ -10095,7 +10097,7 @@ public class SwampStructures
         	
         	
         	// Crafting Table
-        	IBlockState biomeCraftingTableState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.crafting_table.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeCraftingTableState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.CRAFTING_TABLE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
             for (int[] uvw : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
         		{2,2,6}, 
            		})
@@ -10109,7 +10111,7 @@ public class SwampStructures
             	{2,2,4, 1}, 
             	})
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.furnace.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
+            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.FURNACE.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
             }
         	
         	
@@ -10129,7 +10131,7 @@ public class SwampStructures
     			{2,5,4, 2,5,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
             
             
@@ -10438,7 +10440,7 @@ public class SwampStructures
     		Block biomeWoodStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
     		for (int[] uvwo : new int[][] { { 4, 3, 5, 3 }, { 4, 2, 4, 3 }, { 4, 1, 3, 3 } })
     		{
-    			setBlockState(world, biomeWoodStairsBlock.getStateFromMeta(getMetadataWithOffset(Blocks.OAK_STAIRS, uvwo[3] % 4) + uvwo[3] / 4 * 4), uvwo[0], uvwo[1], uvwo[2], structureBB);
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		// Wooden Slabs (Bottom)
@@ -10479,11 +10481,11 @@ public class SwampStructures
     		Block biomeTrapdoorBlock = StructureVillageVN.getBiomeSpecificBlockState(Blocks.TRAPDOOR.getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
     		for (int[] uuvvww : new int[][] { { 4, 3, 4, 3 }, { 4, 3, 3, 3 }, { 4, 3, 2, 3 } })
     		{
-    			setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), true, false)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+    			setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], true, false)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
     		}
     		
     		// Wooden Doors
-    		Block biomeWoodDoorBlock = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
+    		Block biomeWoodDoorBlock = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
     		for (int[] uvwoor : new int[][] { { 6, 4, 7, 0, 1, 1 } }) {
     			for (int height = 0; height <= 1; height++)
     			{
@@ -10494,7 +10496,7 @@ public class SwampStructures
     		// Glass Panes
     		for (int[] uuvvww : new int[][] { { 2, 5, 7, 3, 5, 7 }, { 1, 5, 3, 1, 5, 5 }, { 7, 5, 3, 7, 5, 5 }, { 2, 5, 1, 3, 5, 1 }, { 5, 5, 1, 6, 5, 1 } })
     		{
-    			fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.glass_pane.getDefaultState(), Blocks.glass_pane.getDefaultState(), false);
+    			fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.GLASS_PANE.getDefaultState(), Blocks.GLASS_PANE.getDefaultState(), false);
     		}
     		
     		// Polished Diorite - not biome adjusted
@@ -10532,13 +10534,13 @@ public class SwampStructures
     			{ 2, 5, 6, GeneralConfig.useVillageColors ? this.townColor4 : 14 } 
     		})
     		{
-    			setBlockState(world, Blocks.wool.getStateFromMeta(uvwo[3]), uvwo[0], uvwo[1], uvwo[2], structureBB);
+    			setBlockState(world, Blocks.WOOL.getStateFromMeta(uvwo[3]), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		// Carpet
     		for (int[] uuvvww : new int[][] { { 6, 4, 3, 6, 4, 6, GeneralConfig.useVillageColors ? this.townColor4 : 14 }, { 5, 4, 2, 5, 4, 6, GeneralConfig.useVillageColors ? this.townColor4 : 14 } })
     		{
-    			fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.carpet.getStateFromMeta(uuvvww[6]), Blocks.carpet.getStateFromMeta(uuvvww[6]), false);
+    			fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
     		}
     		
     		// Unkempt Grass
@@ -10833,7 +10835,7 @@ public class SwampStructures
 				{6,4,6, 6,4,6}, 
 				})
 			{
-				this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeDirtState, biomeDirtState, false);	
+				this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeDirtState, biomeDirtState, false);
 			}
 			
 			
@@ -10853,7 +10855,7 @@ public class SwampStructures
 				{6,5,6, 6,5,6}, 
 				})
 			{
-				this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);	
+				this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);
 			}
     		
     		
@@ -10879,7 +10881,7 @@ public class SwampStructures
             	{3,4,1, 3,4,1}, 
     			})
     		{
-            	this.fillWithAir(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5]);	
+            	this.fillWithAir(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5]);
     		}
 			
 			
@@ -10890,7 +10892,7 @@ public class SwampStructures
 				{3,3,5, 3,3,5}, 
 				})
 			{
-				this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+				this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
 			}
 			
 			
@@ -10944,7 +10946,7 @@ public class SwampStructures
 				{2,4,6, 4,4,7}, {3,4,8, 3,4,8}, 
 				})
 			{
-				this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+				this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
 			}
 			
 			
@@ -10989,7 +10991,7 @@ public class SwampStructures
 				{5,1,6, 2+4}, 
 				})
 			{
-				this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+				this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
 			}
 			
 			
@@ -11000,7 +11002,7 @@ public class SwampStructures
 				{5,1,7, 5,1,7}, 
 				})
 			{
-				this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+				this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
 			}
             
         	
@@ -11030,7 +11032,7 @@ public class SwampStructures
 			
 			
 			// Doors
-			IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+			IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
 			for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
 				// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
 				{3,1,5, 0, 1, 1}, 
@@ -11060,7 +11062,7 @@ public class SwampStructures
 				{1,1,6, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
 			})
 			{
-				this.setBlockState(world, Blocks.wool.getStateFromMeta(uvwo[3]), uvwo[0], uvwo[1], uvwo[2], structureBB);
+				this.setBlockState(world, Blocks.WOOL.getStateFromMeta(uvwo[3]), uvwo[0], uvwo[1], uvwo[2], structureBB);
 			}
 			
 			
@@ -11083,7 +11085,7 @@ public class SwampStructures
         		{4,1,6, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
         		})
             {
-            	this.setBlockState(world, Blocks.carpet.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
+            	this.setBlockState(world, Blocks.CARPET.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
             }
         	
         	
@@ -11107,7 +11109,7 @@ public class SwampStructures
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
-				world.setBlockState(bannerPos, Blocks.wall_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwoc[3], this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
+				world.setBlockState(bannerPos, Blocks.WALL_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwoc[3], this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -11158,7 +11160,7 @@ public class SwampStructures
         	int chestW = 8;
         	int chestO = 1; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -11426,7 +11428,7 @@ public class SwampStructures
     			{4,1,0, 4,1,0},
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);
     		}
             
             
@@ -11446,7 +11448,7 @@ public class SwampStructures
     			{0,0,7, 1,3,7}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
         	
         	            
@@ -11474,7 +11476,7 @@ public class SwampStructures
     			{3,4,7, 3,4,7}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
         	
         	
@@ -11494,7 +11496,7 @@ public class SwampStructures
     			{0,3,2, 1,3,2}, {3,3,2, 4,3,2}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -11506,7 +11508,7 @@ public class SwampStructures
     			{1,4,5, 3,4,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabUpperState, biomeCobblestoneSlabUpperState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabUpperState, biomeCobblestoneSlabUpperState, false);
     		}
     		
     		
@@ -11524,7 +11526,7 @@ public class SwampStructures
     			{2,3,2, 2,3,2}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -11542,7 +11544,7 @@ public class SwampStructures
     			{1,3,3, 3,3,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabUpperState, biomeMossyCobblestoneSlabUpperState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabUpperState, biomeMossyCobblestoneSlabUpperState, false);
     		}
     		
             
@@ -11570,7 +11572,7 @@ public class SwampStructures
     			{1,4,4, 3}, {2,4,4, 3}, {4,4,4, 3}, 
     			})
     		{
-    			this.setBlockState(world, biomeMossyCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeMossyCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
             
             
@@ -11584,7 +11586,7 @@ public class SwampStructures
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{1,1,4, 2, 1, 0}, 
@@ -11603,7 +11605,7 @@ public class SwampStructures
             	{3,1,7, 2}, 
             	})
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.furnace.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
+            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.FURNACE.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
             }
             
             
@@ -11886,7 +11888,7 @@ public class SwampStructures
     			{1,3,3, 5,3,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);
     		}
             
             
@@ -11905,7 +11907,7 @@ public class SwampStructures
     			{1,0,10, 5,3,10}, {2,4,10, 2,4,10}, {4,4,10, 4,4,10}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -11915,7 +11917,7 @@ public class SwampStructures
     			{2,0,0, 3,0,2}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
     		
     		
@@ -11925,7 +11927,7 @@ public class SwampStructures
     			{1,3,4, 5,3,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
         	
         	            
@@ -11951,18 +11953,18 @@ public class SwampStructures
     			{1,4,6, 1,4,8}, {3,5,6, 3,5,6}, {3,5,8, 3,5,8}, {3,5,10, 3,5,10}, {5,4,6, 5,4,6}, {5,4,10, 5,4,10}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			// Roof
     			{1,4,9, 1,4,10}, {5,4,7, 5,4,9}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
     		
     		
@@ -11975,7 +11977,7 @@ public class SwampStructures
     			{6,4,6, 6,4,10}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -11995,7 +11997,7 @@ public class SwampStructures
     			{4,5,8, 4,5,9}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -12006,7 +12008,7 @@ public class SwampStructures
     			{3,5,7, 3,5,7}, {3,5,9, 3,5,9}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabUpperState, biomeCobblestoneSlabUpperState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabUpperState, biomeCobblestoneSlabUpperState, false);
     		}
             
             
@@ -12030,12 +12032,12 @@ public class SwampStructures
         		{4,1,6, (GeneralConfig.useVillageColors ? this.townColor2 : 13)}, // Green
         		})
             {
-            	this.setBlockState(world, Blocks.carpet.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
+            	this.setBlockState(world, Blocks.CARPET.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
             }
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{3,1,5, 2, 1, 1}, 
@@ -12104,7 +12106,7 @@ public class SwampStructures
         	int chestW = 4;
         	int chestO = 2; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -12127,7 +12129,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -12394,7 +12396,7 @@ public class SwampStructures
     			{7,1,5, 7,3,6}, {6,1,4, 6,3,4}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -12404,7 +12406,7 @@ public class SwampStructures
     			{2,0,3, 5,0,7}, {6,0,4, 6,0,7}, {7,0,5, 7,0,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
             
             
@@ -12419,7 +12421,7 @@ public class SwampStructures
     			{7,1,7, 7,2,7}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeDirtState, biomeDirtState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeDirtState, biomeDirtState, false);
             }
             
             
@@ -12431,7 +12433,7 @@ public class SwampStructures
     			{0,1,2, 2,1,2}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);
             }
     		
     		
@@ -12469,7 +12471,7 @@ public class SwampStructures
             	{2,3,4, 4,3,4}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAcrossState, biomeStrippedLogHorizAcrossState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAcrossState, biomeStrippedLogHorizAcrossState, false);
             }
             
             
@@ -12493,7 +12495,7 @@ public class SwampStructures
             	{5,5,2, 5,5,3}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAlongState, biomeStrippedLogHorizAlongState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAlongState, biomeStrippedLogHorizAlongState, false);
             }
             
             
@@ -12511,7 +12513,7 @@ public class SwampStructures
         		{3,3,5, 3,3,6}, 
         		})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.bookshelf.getDefaultState(), Blocks.bookshelf.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.BOOKSHELF.getDefaultState(), Blocks.BOOKSHELF.getDefaultState(), false);
             }
             
                     	
@@ -12544,7 +12546,7 @@ public class SwampStructures
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{4,1,3, 2, 1, 0}, 
@@ -12956,7 +12958,7 @@ public class SwampStructures
     			{3,3,6, 5,3,6}, {3,5,6, 5,5,6}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -12972,7 +12974,7 @@ public class SwampStructures
     			{3,2,2, 5,2,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
 			
 			
@@ -12986,7 +12988,7 @@ public class SwampStructures
 				{3,3,3, 2}, {3,3,5, 3}, 
 				})
 			{
-				this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+				this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
 			}
         	
         	            
@@ -13006,7 +13008,7 @@ public class SwampStructures
         	
         	
             // Wooden pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.wooden_pressure_plate.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uvw : new int[][]{
         		{3,4,4}, 
         		})
@@ -13066,17 +13068,17 @@ public class SwampStructures
     			{6,6,3, 6,6,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			{2,6,4, 2,6,4}, {3,6,6, 4,6,6}, {5,6,2, 6,6,2}, {5,6,3, 5,6,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
     		
     		
@@ -13089,7 +13091,7 @@ public class SwampStructures
     			{2,6,1, 5,6,1}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -13110,7 +13112,7 @@ public class SwampStructures
     			{7,6,2, 7,6,2}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
             
             
@@ -13121,7 +13123,7 @@ public class SwampStructures
     			{7,3,4, 7,3,5}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.GRASS.getDefaultState(), Blocks.GRASS.getDefaultState(), false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.GRASS.getDefaultState(), Blocks.GRASS.getDefaultState(), false);
             }
     		
     		
@@ -13134,7 +13136,7 @@ public class SwampStructures
             	{6,4,4, 3}, {6,4,5, 3}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], true, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
     		
     		
@@ -13146,7 +13148,7 @@ public class SwampStructures
             	{7,3,3, 2}, {8,3,4, 1}, {8,3,5, 1}, {7,3,6, 0}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
     		
     		
@@ -13158,7 +13160,7 @@ public class SwampStructures
             	{7,2,4, 1}, {7,2,5, 1}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), true, false)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], true, false)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
         	
@@ -13184,7 +13186,7 @@ public class SwampStructures
             	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
             	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerstate, uvwf[0], uvwf[1], uvwf[2], structureBB);	
+        		this.setBlockState(world, flowerstate, uvwf[0], uvwf[1], uvwf[2], structureBB);
             }
             
         	
@@ -13205,7 +13207,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -13483,7 +13485,7 @@ public class SwampStructures
     			{1,4,6, 3,4,6}, {2,5,6, 2,5,6}, {1,6,6, 3,6,6}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -13499,7 +13501,7 @@ public class SwampStructures
     			{1,3,2, 3,3,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
 			
 			
@@ -13512,7 +13514,7 @@ public class SwampStructures
 				{1,1,1, 1+4}, {2,2,1, 1+4}, {3,3,1, 1+4}, 
 				})
 			{
-				this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+				this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
 			}
         	
         	            
@@ -13572,12 +13574,12 @@ public class SwampStructures
     			{0,8,4, 2,8,4}, {2,8,5, 2,8,5}, {4,8,4, 4,8,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			{0,7,5, 1,7,5}, 
     			{0,7,3, 0,7,3}, {0,7,3, 0,7,3}, 
@@ -13585,7 +13587,7 @@ public class SwampStructures
     			{3,8,4, 3,8,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
     		
     		
@@ -13598,7 +13600,7 @@ public class SwampStructures
     			{3,8,5, 4,8,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -13619,7 +13621,7 @@ public class SwampStructures
     			{0,8,5, 1,8,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
         	
         	
@@ -13638,7 +13640,7 @@ public class SwampStructures
             	{2,4,5, 2}, 
             	})
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.furnace.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
+            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.FURNACE.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
             }
 			
 			
@@ -13657,7 +13659,7 @@ public class SwampStructures
 				{3,7,5, (GeneralConfig.useVillageColors ? this.townColor2 : 13)}, // Green
 			})
 			{
-				this.setBlockState(world, Blocks.wool.getStateFromMeta(uvwo[3]), uvwo[0], uvwo[1], uvwo[2], structureBB);
+				this.setBlockState(world, Blocks.WOOL.getStateFromMeta(uvwo[3]), uvwo[0], uvwo[1], uvwo[2], structureBB);
 			}
             
             
@@ -13669,7 +13671,7 @@ public class SwampStructures
         		{1,5,2}, 
         		})
             {
-        		this.setBlockState(world, Blocks.glass_pane.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.GLASS_PANE.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             // Moist Farmland with crop above
@@ -13682,8 +13684,8 @@ public class SwampStructures
             {
             	this.replaceAirAndLiquidDownwards(world, biomeFillerState, uvwfcp[0], uvwfcp[1]-1, uvwfcp[2], structureBB);
             	//this.clearCurrentPositionBlocksUpwards(world, uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB);
-            	this.setBlockState(world, (uvwfcp[4]==0?Blocks.wheat:uvwfcp[4]==1?Blocks.potatoes:uvwfcp[4]==2?Blocks.carrots:uvwfcp[4]==3?Blocks.melon_stem:Blocks.pumpkin_stem).getStateFromMeta(uvwfcp[5]), uvwfcp[0], uvwfcp[1]+1, uvwfcp[2], structureBB); 
-            	this.setBlockState(world, Blocks.farmland.getStateFromMeta(uvwfcp[3]), uvwfcp[0], uvwfcp[1], uvwfcp[2], structureBB); // 7 is moist
+            	this.setBlockState(world, (uvwfcp[4]==0?Blocks.WHEAT:uvwfcp[4]==1?Blocks.POTATOES:uvwfcp[4]==2?Blocks.CARROTS:uvwfcp[4]==3?Blocks.MELON_STEM:Blocks.PUMPKIN_STEM).getStateFromMeta(uvwfcp[5]), uvwfcp[0], uvwfcp[1]+1, uvwfcp[2], structureBB); 
+            	this.setBlockState(world, Blocks.FARMLAND.getStateFromMeta(uvwfcp[3]), uvwfcp[0], uvwfcp[1], uvwfcp[2], structureBB); // 7 is moist
             }
             
             // Pumpkin
@@ -13730,7 +13732,7 @@ public class SwampStructures
             		BlockPos pos = new BlockPos(x, y, z);
             		
             		// If space above bordering block is liquid, fill below with filler and cap with topper
-            		if (world.getBlockState(pos.up()).getBlock().getMaterial().isLiquid())
+            		if (world.getBlockState(pos.up()).getMaterial().isLiquid())
             		{
             			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u+u_offset, v, w+w_offset, structureBB);
             			this.setBlockState(world, biomeTopState, u+u_offset, v+1, w+w_offset, structureBB);
@@ -13751,7 +13753,7 @@ public class SwampStructures
     			{2,0,4, 2,0,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
     		}
             
         	
@@ -13776,7 +13778,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -14037,7 +14039,7 @@ public class SwampStructures
     			{17,0,2, 17,0,6}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGrassState, biomeGrassState, false);
             }
     		
     		
@@ -14094,7 +14096,7 @@ public class SwampStructures
             	{2,3,1, 7,3,1}, {2,4,1, 2,4,1}, {4,4,1, 5,4,1}, {7,4,1, 7,4,1}, {2,5,1, 7,5,1}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -14104,7 +14106,7 @@ public class SwampStructures
     			{11,1,3, 11,1,5}, {9,2,3, 9,2,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
     		
     		
@@ -14123,7 +14125,7 @@ public class SwampStructures
     			{8,5,3, 8,5,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -14137,18 +14139,18 @@ public class SwampStructures
     			{3,7,3, 6,7,3}, {3,7,4, 3,7,4}, {6,7,4, 6,7,4}, {3,7,5, 6,7,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			{3,6,7, 4,6,7}, {8,6,4, 8,6,4}, 
     			{2,6,1, 3,6,1}, {6,6,1, 7,6,1}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
     		
     		
@@ -14163,7 +14165,7 @@ public class SwampStructures
     			{4,8,4, 4,8,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -14183,7 +14185,7 @@ public class SwampStructures
     			{5,8,4, 5,8,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -14194,7 +14196,7 @@ public class SwampStructures
             	{7,3,3, 0}, 
             	})
             {
-            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], this.getCoordBaseMode(), false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
+            	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
     		
             
@@ -14209,7 +14211,7 @@ public class SwampStructures
     			{16,0,4, 16,0,5}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
     		}
     		
     		
@@ -14219,7 +14221,7 @@ public class SwampStructures
     			{15,1,5}, 
     			{16,1,4}, 
     			}) {
-    			this.setBlockState(world, Blocks.waterlily.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, Blocks.WATERLILY.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
     		}
             
             
@@ -14274,7 +14276,7 @@ public class SwampStructures
         		{6,3,6}, {8,3,5}, 
         		})
             {
-        		this.setBlockState(world, Blocks.hay_block.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.HAY_BLOCK.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -14285,7 +14287,7 @@ public class SwampStructures
         		{4,3,2}, {7,3,5}, 
         		})
             {
-        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.hay_block.getStateFromMeta(0), this.getCoordBaseMode().getHorizontalIndex(), false), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.HAY_BLOCK.getStateFromMeta(0), this.getCoordBaseMode().getHorizontalIndex(), false), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -14295,7 +14297,7 @@ public class SwampStructures
         		{7,3,6}, {7,4,6}, 
         		})
             {
-        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.hay_block.getStateFromMeta(0), this.getCoordBaseMode().getHorizontalIndex(), true), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.HAY_BLOCK.getStateFromMeta(0), this.getCoordBaseMode().getHorizontalIndex(), true), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -14310,7 +14312,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -14603,7 +14605,7 @@ public class SwampStructures
             	{5,3,2, 5,3,2}, {6,1,2, 6,3,2}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -14622,7 +14624,7 @@ public class SwampStructures
     			{3,3,2, 0}, {4,4,2, 0}, {6,4,2, 1}, {7,3,2, 1}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -14658,22 +14660,22 @@ public class SwampStructures
     			{5,5,2, 5,5,6}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
             
             
             // Ladder
-        	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.ladder.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LADDER.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uuvvwwo : new int[][]{ // Orientation - 3:leftward, 1:rightward, 2:backward, 0:forward
         		{1,1,3, 1,3,3, 0}, 
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), false);
             }
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{5,1,2, 2, 1, 0}, 
@@ -14694,7 +14696,7 @@ public class SwampStructures
         		{10,1,3}, 
         		})
             {
-        		this.setBlockState(world, Blocks.cauldron.getStateFromMeta(3), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.CAULDRON.getStateFromMeta(3), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -14768,7 +14770,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -15049,12 +15051,12 @@ public class SwampStructures
     			{2,0,1, 6,0,9}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
     		}
     		
     		
     		// Mossy Cobblestone
-    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			// Left wall
     			{1,1,2, 1,1,2}, 
@@ -15074,7 +15076,7 @@ public class SwampStructures
     			{1,0,1, 1,0,9}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneState, biomeMossyCobblestoneState, false);
     		}
             
             
@@ -15084,7 +15086,7 @@ public class SwampStructures
             	{7,0,5, 7,0,9}, {9,0,5, 9,0,10}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeTopState, biomeTopState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeTopState, biomeTopState, false);
             }
     		
     		
@@ -15096,7 +15098,7 @@ public class SwampStructures
     			{5,7,1, 1}, 
     			})
     		{
-    			this.setBlockState(world, biomeCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -15113,7 +15115,7 @@ public class SwampStructures
     			{5,6,2, 1}, {5,6,3, 1}, {5,6,4, 1}, {5,6,5, 1}, {5,6,6, 1}, {5,6,7, 1}, {5,6,8, 1}, {5,6,9, 1}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
             
             
@@ -15124,7 +15126,7 @@ public class SwampStructures
             	{3,1,8, 3,1,8}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
     		
     		
@@ -15135,7 +15137,7 @@ public class SwampStructures
     			{0,5,2, 0,5,9}, {7,5,2, 7,5,9}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
     		
     		
@@ -15149,7 +15151,7 @@ public class SwampStructures
     			{2,3,0, 3}, {3,3,0, 3}, {4,3,0, 3}, {5,3,0, 3}, 
     			})
     		{
-    			this.setBlockState(world, biomeMossyCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeMossyCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -15160,7 +15162,7 @@ public class SwampStructures
     			{2,1,1, 2,2,1}, {5,1,1, 5,2,1}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogVertState, biomeLogVertState, false);
     		}
     		
     		
@@ -15170,7 +15172,7 @@ public class SwampStructures
     			{2,3,1, 5,3,1}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAcrossState, biomeLogHorAcrossState, false);
     		}
         	
         	
@@ -15217,7 +15219,7 @@ public class SwampStructures
         		{3,1,2, 4,1,7, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
         		})
             {
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.carpet.getStateFromMeta(uuvvww[6]), Blocks.carpet.getStateFromMeta(uuvvww[6]), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
             }
             
             
@@ -15248,12 +15250,12 @@ public class SwampStructures
             	{6,2,8 , GeneralConfig.useVillageColors ? this.townColor2 : 13}, // Green
         		})
             {
-            	this.setBlockState(world, Blocks.stained_glass_pane.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
+            	this.setBlockState(world, Blocks.STAINED_GLASS_pane.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
             }
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{3,1,1, 0, 1, 0}, {4,1,1, 0, 1, 1}, 
@@ -15273,7 +15275,7 @@ public class SwampStructures
     			{3,2,8}, 
     			})
     		{
-    			this.setBlockState(world, Blocks.brewing_stand.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, Blocks.BREWING_STAND.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
     		}
             
             
@@ -15307,7 +15309,7 @@ public class SwampStructures
             	else if (flowerindex==11 && lilyOfTheValleyState!=null) {flowerstate=lilyOfTheValleyState;}
             	else {flowerstate = (flowerindex==9 ? Blocks.YELLOW_FLOWER:Blocks.RED_FLOWER).getStateFromMeta(new int[]{0,1,2,3,4,5,6,7,8,0}[flowerindex%10]);}
         		
-        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);	
+        		this.setBlockState(world, flowerstate, uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -15329,7 +15331,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -15638,7 +15640,7 @@ public class SwampStructures
     			{3,3,1, 4,4,2}, 
     			})
     		{
-            	this.fillWithAir(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5]);	
+            	this.fillWithAir(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5]);
     		}
         	
             
@@ -15657,7 +15659,7 @@ public class SwampStructures
             	{4,4,8, 4,6,8}, {5,6,8, 5,7,8}, {6,7,8, 6,8,8}, {7,6,8, 7,7,8}, {8,4,8, 8,6,8}, {5,4,8, 7,4,8}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
             
             
@@ -15682,7 +15684,7 @@ public class SwampStructures
             	{4,2,3, 4,2,7}, {8,2,3, 8,2,7}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAlongState, biomeStrippedLogHorizAlongState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAlongState, biomeStrippedLogHorizAlongState, false);
             }
             
             
@@ -15705,7 +15707,7 @@ public class SwampStructures
             	{3,2,0, 9,2,0}, {5,2,3, 7,2,3}, {3,2,8, 9,2,8}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAcrossState, biomeStrippedLogHorizAcrossState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeStrippedLogHorizAcrossState, biomeStrippedLogHorizAcrossState, false);
             }
     		
     		
@@ -15715,7 +15717,7 @@ public class SwampStructures
     			{5,3,2, 0}, {6,3,2, 3}, {7,3,2, 1}, 
     			})
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -15725,7 +15727,7 @@ public class SwampStructures
     			{3,1,4, 3,1,4}, {3,2,2, 3,2,2}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
     		}
     		
     		
@@ -15742,7 +15744,7 @@ public class SwampStructures
     			{9,2,3, 9,2,7}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabTopState, biomeWoodSlabTopState, false);
     		}
     		
     		
@@ -15773,7 +15775,7 @@ public class SwampStructures
     			{3,3,5, 3,3,8}, {4,3,3, 9,3,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], concreteBlock.getStateFromMeta(concreteMeta), concreteBlock.getStateFromMeta(concreteMeta), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], concreteBlock.getStateFromMeta(concreteMeta), concreteBlock.getStateFromMeta(concreteMeta), false);
     		}
     		
     		
@@ -15791,7 +15793,7 @@ public class SwampStructures
     			{5,8,0, 0}, {7,8,0, 1}, 
     			})
     		{
-    			this.setBlockState(world, biomeCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -15810,7 +15812,7 @@ public class SwampStructures
     			{3,6,0, 0}, {4,7,0, 0}, {8,7,0, 1}, {9,6,0, 1}, 
     			})
     		{
-    			this.setBlockState(world, biomeMossyCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);	
+    			this.setBlockState(world, biomeMossyCobblestoneStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -15820,7 +15822,7 @@ public class SwampStructures
     			{6,9,1, 6,9,3}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
     		
     		
@@ -15838,12 +15840,12 @@ public class SwampStructures
     			{6,9,0, 6,9,0}, {6,9,4, 6,9,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeMossyCobblestoneSlabLowerState, biomeMossyCobblestoneSlabLowerState, false);
     		}
             
     		
     		// Doors
-    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.oak_door.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeWoodDoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_DOOR.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
     			// orientation: 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
     			{6,4,3, 2, 1, 1}, 
@@ -15872,7 +15874,7 @@ public class SwampStructures
         		{4,6,4, 4,6,5}, 
         		})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.bookshelf.getDefaultState(), Blocks.bookshelf.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.BOOKSHELF.getDefaultState(), Blocks.BOOKSHELF.getDefaultState(), false);
             }
             
             
@@ -15941,7 +15943,7 @@ public class SwampStructures
         	int chestW = 7;
         	int chestO = 3; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -15955,7 +15957,7 @@ public class SwampStructures
             	{1,0,1, 1,0,1}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeTopState, biomeTopState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeTopState, biomeTopState, false);
             }
         	
         	
@@ -15974,7 +15976,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.coordBaseMode)), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -16275,7 +16277,7 @@ public class SwampStructures
         	
         	
         	// Mossy Cobblestone
-        	IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.mossy_cobblestone.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeMossyCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.MOSSY_COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uuvvww : new int[][]{
             	{1,1,8, 1,1,8}, {6,1,8, 6,1,8}, 
         		})
@@ -16308,7 +16310,7 @@ public class SwampStructures
     			{6,4,4, 6,4,4}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneSlabLowerState, biomeCobblestoneSlabLowerState, false);
     		}
         	
         	
@@ -16335,13 +16337,13 @@ public class SwampStructures
     		
     		
             // Gravel
-        	IBlockState biomeGravelState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.gravel.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGravelState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRAVEL.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
             for(int[] uuvvww : new int[][]{
     			{2,1,3, 5,1,4}, 
     			{3,1,2, 4,1,2}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGravelState, biomeGravelState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGravelState, biomeGravelState, false);
             }
     		
     		
@@ -16368,7 +16370,7 @@ public class SwampStructures
 				{5,4,1, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
 			})
 			{
-				this.setBlockState(world, Blocks.wool.getStateFromMeta(uvwo[3]), uvwo[0], uvwo[1], uvwo[2], structureBB);
+				this.setBlockState(world, Blocks.WOOL.getStateFromMeta(uvwo[3]), uvwo[0], uvwo[1], uvwo[2], structureBB);
 			}
             
             
@@ -16391,7 +16393,7 @@ public class SwampStructures
             	{5,2,5, 2}, 
             	})
             {
-            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.furnace.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.coordBaseMode)), 2);
+            	world.setBlockState(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2])), Blocks.FURNACE.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
             }
         	
         	
@@ -16401,7 +16403,7 @@ public class SwampStructures
             	{3,2,6, 4,2,6}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.iron_bars.getDefaultState(), Blocks.iron_bars.getDefaultState(), false);
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
             }
     		
     		
@@ -16411,7 +16413,7 @@ public class SwampStructures
     			{3,1,6}, {4,1,6}, 
     			})
     		{
-                this.setBlockState(world,  Blocks.lava.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+                this.setBlockState(world,  Blocks.LAVA.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
     		}
         	
         	
@@ -16422,7 +16424,7 @@ public class SwampStructures
         	int chestW = 3;
         	int chestO = 0; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -16691,7 +16693,7 @@ public class SwampStructures
             	{14,1,7, 14,1,8}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeTopState, biomeTopState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeTopState, biomeTopState, false);
             }
     		
             
@@ -16711,7 +16713,7 @@ public class SwampStructures
     			{10,1,10, 10,1,10}, {11,1,8, 11,1,10}, {12,1,7, 12,1,9}, {13,1,7, 13,1,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
     		}
     		
             
@@ -16749,7 +16751,7 @@ public class SwampStructures
             	{12,1,1, 7,3,random.nextInt(6)}, {12,1,2, 7,3,random.nextInt(6)}, {12,1,3, 7,3,random.nextInt(6)}, {12,1,4, 7,3,random.nextInt(6)}, 
             	})
             {
-            	this.setBlockState(world, Blocks.farmland.getStateFromMeta(uvwfcp[3]), uvwfcp[0], uvwfcp[1], uvwfcp[2], structureBB);
+            	this.setBlockState(world, Blocks.FARMLAND.getStateFromMeta(uvwfcp[3]), uvwfcp[0], uvwfcp[1], uvwfcp[2], structureBB);
             	
             	int cropProgressMeta = uvwfcp[5]; // Isolate the crop's age meta value
     			IBlockState cropState;
@@ -16760,7 +16762,7 @@ public class SwampStructures
     				catch (IllegalArgumentException e)
     				{
     					// The assignment failed with a meta of 0. IDK what's happening so just have wheat
-    					if (cropProgressMeta==0) {cropState = Blocks.wheat.getStateFromMeta(uvwfcp[5]);}
+    					if (cropProgressMeta==0) {cropState = Blocks.WHEAT.getStateFromMeta(uvwfcp[5]);}
     					// The crop is not allowed to have this value. Cut it in half and try again.
     					else {cropProgressMeta /= 2; continue;}
     				}
@@ -16783,12 +16785,12 @@ public class SwampStructures
     			{12,2,9}, 
     			{13,2,7}, 
     			}) {
-    			this.setBlockState(world, Blocks.waterlily.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+    			this.setBlockState(world, Blocks.WATERLILY.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
     		}
     		
     		
             // Gravel
-        	IBlockState biomeGravelState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.gravel.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeGravelState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRAVEL.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
             for(int[] uuvvww : new int[][]{
             	{7,0,0, 8,0,0}, 
             	{6,0,3, 6,0,4}, {7,0,2, 7,0,3}, 
@@ -16798,7 +16800,7 @@ public class SwampStructures
             	{7,0,11, 8,0,11}, {7,0,12, 7,0,12}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGravelState, biomeGravelState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeGravelState, biomeGravelState, false);
             }
             
             
@@ -16811,7 +16813,7 @@ public class SwampStructures
             	{4,0,9, 4,0,9}, {3,0,10, 6,0,10}, {3,0,11, 4,0,11}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeClayState, biomeClayState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeClayState, biomeClayState, false);
             }
     		
     		
@@ -16823,12 +16825,12 @@ public class SwampStructures
     		{
             	if (compostBinState != null)
             	{
-        			this.setBlockState(world, compostBinState, uvw[0], uvw[1], uvw[2], structureBB);	
-        			this.setBlockState(world, biomeFillerState, uvw[0], uvw[1]-1, uvw[2], structureBB);	
+        			this.setBlockState(world, compostBinState, uvw[0], uvw[1], uvw[2], structureBB);
+        			this.setBlockState(world, biomeFillerState, uvw[0], uvw[1]-1, uvw[2], structureBB);
             	}
             	else
             	{
-                	this.setBlockState(world, Blocks.farmland.getStateFromMeta(7), uvw[0], uvw[1]-1, uvw[2], structureBB);
+                	this.setBlockState(world, Blocks.FARMLAND.getStateFromMeta(7), uvw[0], uvw[1]-1, uvw[2], structureBB);
                 	
                 	int cropProgressMeta = random.nextInt(6); // Isolate the crop's age meta value
         			IBlockState cropState;
@@ -16839,7 +16841,7 @@ public class SwampStructures
         				catch (IllegalArgumentException e)
         				{
         					// The assignment failed with a meta of 0. IDK what's happening so just have wheat
-        					if (cropProgressMeta==0) {cropState = Blocks.wheat.getStateFromMeta(cropProgressMeta);}
+        					if (cropProgressMeta==0) {cropState = Blocks.WHEAT.getStateFromMeta(cropProgressMeta);}
         					// The crop is not allowed to have this value. Cut it in half and try again.
         					else {cropProgressMeta /= 2; continue;}
         				}
@@ -16863,7 +16865,7 @@ public class SwampStructures
     			{14,2,8, 14,2,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.reeds.getDefaultState(), Blocks.reeds.getDefaultState(), false);	
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.REEDS.getDefaultState(), Blocks.REEDS.getDefaultState(), false);
     		}
     		
     		
@@ -17193,7 +17195,7 @@ public class SwampStructures
 	            		int x = this.getXWithOffset(u, w);
 	            		int z = this.getZWithOffset(u, w);
 	            		BlockPos pos = new BlockPos(x, decorY, z);
-	            		if (world.getBlockState(pos).getBlock()!=Blocks.air)
+	            		if (world.getBlockState(pos).getBlock()!=Blocks.AIR)
 	            		{
 	            			if (++nonairSurrounding >=4) {decorHeightY++; break;}
 	            		}
@@ -17323,9 +17325,9 @@ public class SwampStructures
     		
     		// Offset the bounding box to position it onto the street
 			this.boundingBox.offset(
-					this.coordBaseMode==EnumFacing.WEST ? -W_OFFSET : this.coordBaseMode==EnumFacing.EAST ? W_OFFSET : 0,
+					this.getCoordBaseMode()==EnumFacing.WEST ? -W_OFFSET : this.getCoordBaseMode()==EnumFacing.EAST ? W_OFFSET : 0,
 					0,
-					this.coordBaseMode==EnumFacing.SOUTH ? W_OFFSET : this.coordBaseMode==EnumFacing.NORTH ? -W_OFFSET: 0);
+					this.getCoordBaseMode()==EnumFacing.SOUTH ? W_OFFSET : this.getCoordBaseMode()==EnumFacing.NORTH ? -W_OFFSET: 0);
     		
     		// Additional stuff to be used in the construction
             if (start!=null)
@@ -17517,7 +17519,7 @@ public class SwampStructures
             	{1,4,3, 1,4,3}, {1,4,1, 1,4,1}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
             }
             
             
@@ -17527,7 +17529,7 @@ public class SwampStructures
             	{1,4,4, 1,4,4}, {1,4,0, 1,4,0}, 
             	})
             {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);	
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeWoodSlabBottomState, biomeWoodSlabBottomState, false);
             }
             
     		
@@ -17555,12 +17557,12 @@ public class SwampStructures
 	/**
 	 * Returns a list of blocks and coordinates used to construct a decor piece
 	 */
-	public static ArrayList<BlueprintData> getRandomSwampDecorBlueprint(MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, EnumFacing coordBaseMode, Random random)
+	public static ArrayList<BlueprintData> getRandomSwampDecorBlueprint(MaterialType materialType, boolean disallowModSubs, Biome biome, EnumFacing coordBaseMode, Random random)
 	{
 		int decorCount = 7;
 		return getSwampDecorBlueprint(random.nextInt(decorCount), materialType, disallowModSubs, biome, coordBaseMode, random);
 	}
-	public static ArrayList<BlueprintData> getSwampDecorBlueprint(int decorType, MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, EnumFacing coordBaseMode, Random random)
+	public static ArrayList<BlueprintData> getSwampDecorBlueprint(int decorType, MaterialType materialType, boolean disallowModSubs, Biome biome, EnumFacing coordBaseMode, Random random)
 	{
 		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
 		

@@ -4504,7 +4504,7 @@ public class TaigaStructures
             
             
             // Attempt to add GardenCore Compost Bins. If this fails, place a pumpkin instead.
-            IBlockState compostBinState = ModObjects.chooseModComposter();
+            IBlockState compostBinState = ModObjects.chooseModComposterState();
             for(int[] uvw : new int[][]{
             	{3,1,2}, 
             	})
@@ -4890,7 +4890,7 @@ public class TaigaStructures
             
             
             // Attempt to add GardenCore Compost Bins. If this fails, place a pumpkin instead.
-            IBlockState compostBinState = ModObjects.chooseModComposter();
+            IBlockState compostBinState = ModObjects.chooseModComposterState();
             for(int[] uvw : new int[][]{
             	{5,1,0}, 
             	})
@@ -9068,7 +9068,7 @@ public class TaigaStructures
             
             
             // Attempt to add GardenCore Compost Bins. If this fails, place a pumpkin instead.
-            IBlockState compostBinState = ModObjects.chooseModComposter();
+            IBlockState compostBinState = ModObjects.chooseModComposterState();
             for(int[] uvw : new int[][]{
             	{2,2,3}, 
             	})

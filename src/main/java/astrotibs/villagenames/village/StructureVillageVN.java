@@ -23,9 +23,11 @@ import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import astrotibs.villagenames.village.biomestructures.BlueprintData;
 import astrotibs.villagenames.village.biomestructures.DesertStructures;
+import astrotibs.villagenames.village.biomestructures.JungleStructures;
 import astrotibs.villagenames.village.biomestructures.PlainsStructures;
 import astrotibs.villagenames.village.biomestructures.SavannaStructures;
 import astrotibs.villagenames.village.biomestructures.SnowyStructures;
+import astrotibs.villagenames.village.biomestructures.SwampStructures;
 import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
@@ -78,6 +80,25 @@ public class StructureVillageVN
 {
 	public static final int VILLAGE_RADIUS_BUFFER = 112;
 
+	// Indexed by [orientation][horizIndex]
+	// 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	public static final int[][] HANGING_META_ARRAY = new int[][]{
+		{0,1,2,3}, // Fore-facing (away from you)
+		{3,0,3,0}, // Right-facing
+		{2,3,0,1}, // Back-facing (toward you)
+		{1,2,1,2}, // Left-facing
+	//   N E S W
+	};
+
+	// Indexed by [orientation][horizIndex]
+	public static final int[][] VINE_META_ARRAY = new int[][]{
+		{4,8,1,2}, // Forward
+		{2,4,2,4}, // Right
+		{1,2,4,8}, // Back
+		{8,1,8,1}, // Left
+	   //N E S W
+	};
+	
 	// Indexed by [orientation]
 	public static final int[] LADDER_META_ARRAY = new int[]{2,5,3,4};
 	
@@ -2086,7 +2107,7 @@ public class StructureVillageVN
             	}
             	else if (this.villageType==FunctionsVN.VillageType.JUNGLE)
             	{
-            		decorBlueprint = JungleStructures.getJungleDecorBlueprint(2+randomFromXYZ.nextInt(6), this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            		decorBlueprint = JungleStructures.getJungleDecorBlueprint(2+randomFromXYZ.nextInt(6), this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
             	}
             	else if (this.villageType==FunctionsVN.VillageType.SWAMP)
             	{
@@ -2266,7 +2287,24 @@ public class StructureVillageVN
         }
     }
     
-    
+    /**
+	 * hangingOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 * -X: returns the value X - used for things like upright barrels
+	 */
+	public static int chooseHangingMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		if (orientation<0) {return -orientation;}
+		return HANGING_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+    /**
+	 * vineOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int chooseVineMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		return VINE_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
     /**
 	 * furnaceOrientation:
 	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
@@ -2382,9 +2420,9 @@ public class StructureVillageVN
 	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
 	 * stage is growth stage: 0-2. This results in an additional meta of +0/+4/+8
 	 */
-	public static int getCocoaPodOrientationMeta(int relativeOrientation, int coordBaseMode, int stage)
+	public static int getCocoaPodOrientationMeta(int relativeOrientation, EnumFacing coordBaseMode, int stage)
 	{
-		return BED_META_ARRAY[relativeOrientation][coordBaseMode] + (stage*4);
+		return BED_META_ARRAY[relativeOrientation][coordBaseMode.getHorizontalIndex()] + (stage*4);
 	}
 	
 	
@@ -2556,9 +2594,9 @@ public class StructureVillageVN
 		case SNOWY:
 			return SnowyStructures.getRandomSnowyDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		case JUNGLE:
-			return JungleStructures.getRandomJungleDecorBlueprint(materialType, disallowModSubs, biome, horizIndex, random);
+			return JungleStructures.getRandomJungleDecorBlueprint(villageType, materialType, disallowModSubs, biome, coordBaseMode, random);
 		case SWAMP:
-			return SwampStructures.getRandomSwampDecorBlueprint(materialType, disallowModSubs, biome, horizIndex, random);
+			return SwampStructures.getRandomSwampDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		}
 	}
 	
@@ -2598,7 +2636,9 @@ public class StructureVillageVN
     {
         if (box.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.FLOWER_POT)
         {
-            world.setBlockState(pos, Blocks.FLOWER_POT.getDefaultState(), 2);
+        	IBlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState();
+        	
+            world.setBlockState(pos, flowerPotState, 2);
             
             // This is here just in case a flower pot can't be placed at the given position
             TileEntityFlowerPot tileentityflowerpot = (TileEntityFlowerPot)world.getTileEntity(pos);
@@ -2616,9 +2656,9 @@ public class StructureVillageVN
                     
                     tileentityflowerpot.markDirty();
 
-                    if (!world.setBlockState(pos, Blocks.FLOWER_POT.getDefaultState(), 2))
+                    if (!world.setBlockState(pos, flowerPotState, 2))
                     {
-                    	world.markBlockForUpdate(pos);
+                    	world.notifyBlockUpdate(pos, flowerPotState, flowerPotState, 2);
                     }
                     
                     return true;
