@@ -711,7 +711,7 @@ public class StructureVillageVN
 																	   break;
 													     	   }
         	if (block == Blocks.cobblestone_wall)              {blockstate=Blocks.cobblestone_wall.getStateFromMeta(1); break;} // Mossy cobblestone wall
-        	if (block != null && block == ModObjects.chooseModStoneBrickWallState().getBlock())
+        	if (block != null && ModObjects.chooseModStoneBrickWallState()!=null && block == ModObjects.chooseModStoneBrickWallState().getBlock())
 													     	   {
 																	   IBlockState modstate = ModObjects.chooseModMossyStoneBrickWallState();
 																	   if (modstate!=null) {blockstate=ModObjects.chooseModMossyStoneBrickWallState();}
@@ -908,7 +908,7 @@ public class StructureVillageVN
 			if (block != null && block == ModObjects.chooseModMossyCobblestoneStairsBlock()) {blockstate = Blocks.stone_stairs.getDefaultState(); break;}
 			if (block != null && block == ModObjects.choosModMossyStoneBrickStairsBlock()) {blockstate = Blocks.stone_brick_stairs.getDefaultState(); break;}
         	if (block == Blocks.cobblestone_wall && meta==1)   {blockstate=Blocks.cobblestone_wall.getStateFromMeta(0); break;} // Mossy cobblestone wall into regular
-        	if (block != null && block == ModObjects.chooseModMossyStoneBrickWallState().getBlock())
+        	if (block != null && ModObjects.chooseModMossyStoneBrickWallState()!=null && block == ModObjects.chooseModMossyStoneBrickWallState().getBlock())
 													     	   {
 																	   IBlockState modstate = ModObjects.chooseModStoneBrickWallState();
 																	   if (modstate!=null) {blockstate=ModObjects.chooseModStoneBrickWallState();}
@@ -2073,11 +2073,11 @@ public class StructureVillageVN
             	}
             	else if (this.villageType==FunctionsVN.VillageType.SNOWY)
             	{
-            		decorBlueprint = SnowyStructures.getSnowyDecorBlueprint(randomFromXYZ.nextInt(3), this.villageType, this.materialType, this.disallowModSubs, this.biome, this.coordBaseMode, randomFromXYZ);
+            		decorBlueprint = SnowyStructures.getSnowyDecorBlueprint(randomFromXYZ.nextInt(3), this.materialType, this.disallowModSubs, this.biome, this.coordBaseMode, randomFromXYZ);
             	}
             	else if (this.villageType==FunctionsVN.VillageType.JUNGLE)
             	{
-            		decorBlueprint = JungleStructures.getJungleDecorBlueprint(2+randomFromXYZ.nextInt(6), this.materialType, this.disallowModSubs, this.biome, this.coordBaseMode, randomFromXYZ);
+            		decorBlueprint = JungleStructures.getJungleDecorBlueprint(2+randomFromXYZ.nextInt(6), this.villageType, this.materialType, this.disallowModSubs, this.biome, this.coordBaseMode, randomFromXYZ);
             	}
             	else if (this.villageType==FunctionsVN.VillageType.SWAMP)
             	{
@@ -2881,9 +2881,9 @@ public class StructureVillageVN
 		case SNOWY:
 			return SnowyStructures.getRandomSnowyDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		case JUNGLE:
-			return JungleStructures.getRandomJungleDecorBlueprint(villageType, materialType, disallowModSubs, biome, horizIndex, random);
+			return JungleStructures.getRandomJungleDecorBlueprint(villageType, materialType, disallowModSubs, biome, coordBaseMode, random);
 		case SWAMP:
-			return SwampStructures.getRandomSwampDecorBlueprint(materialType, disallowModSubs, biome, horizIndex, random);
+			return SwampStructures.getRandomSwampDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		}
 	}
 	

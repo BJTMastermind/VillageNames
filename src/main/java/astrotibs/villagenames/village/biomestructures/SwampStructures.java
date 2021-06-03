@@ -317,7 +317,7 @@ public class SwampStructures
             
             
         	// Stripped Log (Across)
-            IBlockState biomeLogHorAcrossState = Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2!=0? 4:0));
+            IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
         	biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.coordBaseMode.getHorizontalIndex()%2!=0? 1:0));
@@ -1047,7 +1047,7 @@ public class SwampStructures
 			int bannerW = 1;
     		if (GeneralConfig.villageBanners)
     		{
-    			int bannerO = 12; // Facing toward you
+    			int bannerO = 12;
     			boolean hanging=false;
     			
     			int bannerX = this.getXWithOffset(bannerU, bannerW);
@@ -1057,7 +1057,7 @@ public class SwampStructures
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
-                world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(4, this.coordBaseMode.getHorizontalIndex(), false)), 2);
+                world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(bannerO, this.coordBaseMode.getHorizontalIndex(), hanging)), 2);
 
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -1345,10 +1345,9 @@ public class SwampStructures
         	int signU = 2;
 			int signV = 3;
 			int signW = 1;
-            IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+            IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.wall_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
             if (GeneralConfig.nameSign)
             {
-
     			int signO = 2;
                 int signX = this.getXWithOffset(signU, signW);
                 int signY = this.getYWithOffset(signV);
@@ -1723,7 +1722,7 @@ public class SwampStructures
         	
         	
             // Sign
-            IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+            IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.wall_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
             if (GeneralConfig.nameSign)
             {
             	int signU = 6;
@@ -1769,7 +1768,7 @@ public class SwampStructures
         			this.setBlockState(world, biomeCobblestoneState, uvwo[0], uvwo[1]-1, uvwo[2], structureBB);
 
                 	// Set the banner and its orientation
-    				world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(4, this.coordBaseMode.getHorizontalIndex(), false)), 2);
+    				world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwo[3], this.coordBaseMode.getHorizontalIndex(), false)), 2);
     				
     				// Set the tile entity
     				TileEntity tilebanner = new TileEntityBanner();
@@ -2513,7 +2512,7 @@ public class SwampStructures
         		{10,1,9}, 
         		})
             {
-        		this.setBlockState(world, Blocks.hay_block.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2!=0? 0:4)), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.hay_block.getStateFromMeta(0), this.coordBaseMode.getHorizontalIndex(), false), uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
     		
@@ -4864,7 +4863,7 @@ public class SwampStructures
 				}
 				else
 				{
-					modifystanding.setInteger("Base", uvwoc[4]);
+					modifystanding.setInteger("Base", 15 - uvwoc[4]);
     				tilebanner.readFromNBT(modifystanding);
 				}
 				
@@ -5163,7 +5162,7 @@ public class SwampStructures
             
             
         	// Stripped Log (Across)
-        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2!=0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), true);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAcrossState.getBlock()==Blocks.log || biomeStrippedLogHorizAcrossState.getBlock()==Blocks.log2)
@@ -6012,7 +6011,7 @@ public class SwampStructures
         	int chestW = 6;
         	int chestO = 0; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
+        	world.setBlockState(chestPos, Blocks.trapped_chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.coordBaseMode)), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -7100,8 +7099,26 @@ public class SwampStructures
             	{6,0,9, 7,3,random.nextInt(3)}, {7,0,9, 7,3,random.nextInt(3)}, {8,0,9, 7,3,random.nextInt(3)}, {9,0,9, 7,3,random.nextInt(3)}, {10,0,9, 7,3,random.nextInt(3)}, 
             	})
             {
+    			int cropProgressMeta = uvwfcp[5]; // Isolate the crop's age meta value
+    			IBlockState cropState;
+    			
+    			while(true)
+    			{
+    				try {cropState = ((uvwfcp[4]/2==0?cropPair1:cropPair2)[uvwfcp[4]%2]).getStateFromMeta(cropProgressMeta);}
+    				catch (IllegalArgumentException e)
+    				{
+    					// The assignment failed with a meta of 0. IDK what's happening so just have wheat
+    					if (cropProgressMeta==0) {cropState = Blocks.wheat.getStateFromMeta(uvwfcp[5]);}
+    					// The crop is not allowed to have this value. Cut it in half and try again.
+    					else {cropProgressMeta /= 2; continue;}
+    				}
+    				
+    				// Finally, assign the working crop
+					this.setBlockState(world, cropState, uvwfcp[0], uvwfcp[1]+1, uvwfcp[2], structureBB);
+    				break;
+    			}
+    			
             	this.setBlockState(world, Blocks.farmland.getStateFromMeta(uvwfcp[3]), uvwfcp[0], uvwfcp[1], uvwfcp[2], structureBB);
-            	this.setBlockState(world, (uvwfcp[4]/2==0?cropPair1:cropPair2)[uvwfcp[4]%2].getStateFromMeta(uvwfcp[5]), uvwfcp[0], uvwfcp[1]+1, uvwfcp[2], structureBB);
             }
     		
     		
@@ -7181,7 +7198,7 @@ public class SwampStructures
         		{3,4,7}, 
         		})
             {
-        		this.setBlockState(world, Blocks.hay_block.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.hay_block.getStateFromMeta(0), this.coordBaseMode.getHorizontalIndex(), false), uvw[0], uvw[1], uvw[2], structureBB);
             }
     		
     		
@@ -7550,7 +7567,7 @@ public class SwampStructures
     		
     		
     		// Logs (Across)
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
     		for(int[] uuvvww : new int[][]{
     			// Outside roots
     			{1,0,10, 1,0,10}, {8,0,10, 8,0,10}, 
@@ -7562,7 +7579,7 @@ public class SwampStructures
     		
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
     		for(int[] uuvvww : new int[][]{
     			// Longer log
     			{2,0,10, 2,0,10}, {7,0,10, 7,0,10}, 
@@ -8721,7 +8738,7 @@ public class SwampStructures
     			// Floor
     			{1,0,1, 5,0,2}, 
     			{1,0,3, 2,0,6}, {4,0,3, 5,0,6}, 
-    			{1,0,7, 4,0,9}, 
+    			{1,0,7, 4,0,9}, {1,0,10, 1,0,10}, 
     			{4,0,10, 5,0,10}, 
     			})
     		{
@@ -8735,7 +8752,7 @@ public class SwampStructures
     			// Outline
     			{0,0,2, 0,0,3}, {0,0,6, 0,0,8}, 
     			{1,0,11, 4,0,11}, {2,0,10, 3,0,10}, 
-    			{6,0,9, 6,0,10}, {6,0,3, 6,0,7}, {5,0,8, 5,0,9}, 
+    			{6,0,9, 6,0,10}, {6,0,2, 6,0,7}, {5,0,8, 5,0,9}, 
     			{1,0,0, 2,0,0}, {5,0,0, 5,0,0}, 
     			})
     		{
@@ -9614,7 +9631,7 @@ public class SwampStructures
 				}
 				else
 				{
-					modifystanding.setInteger("Base", uvwoc[4]);
+					modifystanding.setInteger("Base", 15 - uvwoc[4]);
     				tilebanner.readFromNBT(modifystanding);
 				}
 				
@@ -9906,7 +9923,7 @@ public class SwampStructures
             
             
         	// Stripped Logs (Across)
-        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2!=0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), true);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAcrossState.getBlock()==Blocks.log || biomeStrippedLogHorizAcrossState.getBlock()==Blocks.log2)
@@ -10397,7 +10414,7 @@ public class SwampStructures
     		}
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4 + ((this.coordBaseMode.getHorizontalIndex() % 2 == 0) ? 4 : 0)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), false);
     		for (int[] uuvvww : new int[][] { { 1, 6, 1, 1, 6, 7 }, { 7, 6, 1, 7, 6, 7 } })
     		{
     			fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false); 
@@ -11099,7 +11116,7 @@ public class SwampStructures
 				NBTTagCompound modifystanding = new NBTTagCompound();
 				tilebanner.writeToNBT(modifystanding);
 				modifystanding.setBoolean("IsStanding", false);
-				modifystanding.setInteger("Base", uvwoc[4]);
+				modifystanding.setInteger("Base", 15 - uvwoc[4]);
 				tilebanner.readFromNBT(modifystanding);
 				
         		world.setTileEntity(bannerPos, tilebanner);
@@ -11860,7 +11877,8 @@ public class SwampStructures
     		
     		
     		// Logs (Across)
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
     		for(int[] uuvvww : new int[][]{
     			// Side
     			{0,3,10, 0,3,10}, {6,3,10, 6,3,10}, 
@@ -12434,7 +12452,7 @@ public class SwampStructures
             
             
         	// Stripped Logs (Across)
-        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2!=0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), true);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAcrossState.getBlock()==Blocks.log || biomeStrippedLogHorizAcrossState.getBlock()==Blocks.log2)
@@ -12458,7 +12476,7 @@ public class SwampStructures
             
             
         	// Stripped Logs (Along)
-        	IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
         	IBlockState biomeStrippedLogHorizAlongState = biomeLogHorAlongState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAlongState.getBlock()==Blocks.log || biomeStrippedLogHorizAlongState.getBlock()==Blocks.log2)
@@ -14269,7 +14287,7 @@ public class SwampStructures
         		{4,3,2}, {7,3,5}, 
         		})
             {
-        		this.setBlockState(world, Blocks.hay_block.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2!=0? 0:4)), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.hay_block.getStateFromMeta(0), this.coordBaseMode.getHorizontalIndex(), false), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -14279,7 +14297,7 @@ public class SwampStructures
         		{7,3,6}, {7,4,6}, 
         		})
             {
-        		this.setBlockState(world, Blocks.hay_block.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, StructureVillageVN.getHorizontalPillarState(Blocks.hay_block.getStateFromMeta(0), this.coordBaseMode.getHorizontalIndex(), true), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -15149,7 +15167,7 @@ public class SwampStructures
     		
     		
     		// Logs (Across)
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
     		for(int[] uuvvww : new int[][]{
     			{2,3,1, 5,3,1}, 
     			})
@@ -15648,7 +15666,7 @@ public class SwampStructures
             
         	// Stripped Log (Along)
     		IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
         	IBlockState biomeStrippedLogHorizAlongState = biomeLogHorAlongState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAlongState.getBlock()==Blocks.log || biomeStrippedLogHorizAlongState.getBlock()==Blocks.log2)
@@ -15671,7 +15689,7 @@ public class SwampStructures
             
             
         	// Stripped Log (Across)
-        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2!=0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), true);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAcrossState.getBlock()==Blocks.log || biomeStrippedLogHorizAcrossState.getBlock()==Blocks.log2)
@@ -16734,7 +16752,25 @@ public class SwampStructures
             	})
             {
             	this.setBlockState(world, Blocks.farmland.getStateFromMeta(uvwfcp[3]), uvwfcp[0], uvwfcp[1], uvwfcp[2], structureBB);
-            	this.setBlockState(world, (uvwfcp[4]/2==0?cropPair1:cropPair2)[uvwfcp[4]%2].getStateFromMeta(uvwfcp[5]), uvwfcp[0], uvwfcp[1]+1, uvwfcp[2], structureBB);
+            	
+            	int cropProgressMeta = uvwfcp[5]; // Isolate the crop's age meta value
+    			IBlockState cropState;
+    			
+    			while(true)
+    			{
+    				try {cropState = ((uvwfcp[4]/2==0?cropPair1:cropPair2)[uvwfcp[4]%2]).getStateFromMeta(cropProgressMeta);}
+    				catch (IllegalArgumentException e)
+    				{
+    					// The assignment failed with a meta of 0. IDK what's happening so just have wheat
+    					if (cropProgressMeta==0) {cropState = Blocks.wheat.getStateFromMeta(uvwfcp[5]);}
+    					// The crop is not allowed to have this value. Cut it in half and try again.
+    					else {cropProgressMeta /= 2; continue;}
+    				}
+    				
+    				// Finally, assign the working crop
+					this.setBlockState(world, cropState, uvwfcp[0], uvwfcp[1]+1, uvwfcp[2], structureBB);
+    				break;
+    			}
             }
     		
     		
@@ -16795,7 +16831,25 @@ public class SwampStructures
             	else
             	{
                 	this.setBlockState(world, Blocks.farmland.getStateFromMeta(7), uvw[0], uvw[1]-1, uvw[2], structureBB);
-                	this.setBlockState(world, cropPair1[1].getStateFromMeta(random.nextInt(6)), uvw[0], uvw[1], uvw[2], structureBB);
+                	
+                	int cropProgressMeta = random.nextInt(6); // Isolate the crop's age meta value
+        			IBlockState cropState;
+        			
+        			while(true)
+        			{
+        				try {cropState = cropPair1[1].getStateFromMeta(cropProgressMeta);}
+        				catch (IllegalArgumentException e)
+        				{
+        					// The assignment failed with a meta of 0. IDK what's happening so just have wheat
+        					if (cropProgressMeta==0) {cropState = Blocks.wheat.getStateFromMeta(cropProgressMeta);}
+        					// The crop is not allowed to have this value. Cut it in half and try again.
+        					else {cropProgressMeta /= 2; continue;}
+        				}
+        				
+        				// Finally, assign the working crop
+    					this.setBlockState(world, cropState, uvw[0], uvw[1], uvw[2], structureBB);
+        				break;
+        			}
             	}
     		}
             
@@ -16900,7 +16954,7 @@ public class SwampStructures
     			int[] farmerPosition = farmerPositions[random.nextInt(farmerPositions.length)];
     			
     			int u = farmerPosition[0];
-    			int v = farmerPosition[1]+2;
+    			int v = farmerPosition[1]+1;
     			int w = farmerPosition[2];
 
     			EntityVillager entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, 0, 1, 0); // Farmer
@@ -17503,12 +17557,12 @@ public class SwampStructures
 	/**
 	 * Returns a list of blocks and coordinates used to construct a decor piece
 	 */
-	public static ArrayList<BlueprintData> getRandomSwampDecorBlueprint(MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, int horizIndex, Random random)
+	public static ArrayList<BlueprintData> getRandomSwampDecorBlueprint(MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, EnumFacing coordBaseMode, Random random)
 	{
 		int decorCount = 7;
-		return getSwampDecorBlueprint(random.nextInt(decorCount), materialType, disallowModSubs, biome, horizIndex, random);
+		return getSwampDecorBlueprint(random.nextInt(decorCount), materialType, disallowModSubs, biome, coordBaseMode, random);
 	}
-	public static ArrayList<BlueprintData> getSwampDecorBlueprint(int decorType, MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, int horizIndex, Random random)
+	public static ArrayList<BlueprintData> getSwampDecorBlueprint(int decorType, MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, EnumFacing coordBaseMode, Random random)
 	{
 		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
 		
@@ -17541,31 +17595,31 @@ public class SwampStructures
         	}
     	}
         // Stripped Log (Across)
-    	IBlockState biomeStrippedLogHorizAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(horizIndex%2!=0? 4:0)), materialType, biome, disallowModSubs);
+    	IBlockState biomeStrippedLogHorizAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), true);
     	// Try to see if stripped logs exist
     	if (biomeStrippedLogHorizAcrossState.getBlock()==Blocks.log || biomeStrippedLogHorizAcrossState.getBlock()==Blocks.log2)
     	{
         	if (biomeLogVertState.getBlock() == Blocks.log)
         	{
-        		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(horizIndex%2!=0? 1:0));
+        		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(coordBaseMode.getHorizontalIndex()%2!=0? 1:0));
         	}
         	else if (biomeLogVertState.getBlock() == Blocks.log2)
         	{
-        		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(horizIndex%2!=0? 1:0));
+        		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(coordBaseMode.getHorizontalIndex()%2!=0? 1:0));
         	}
     	}
     	// Stripped Log (Along)
-    	IBlockState biomeStrippedLogHorizAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(horizIndex%2==0? 4:0)), materialType, biome, disallowModSubs);
+    	IBlockState biomeStrippedLogHorizAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), false);
     	// Try to see if stripped logs exist
     	if (biomeStrippedLogHorizAlongState.getBlock()==Blocks.log || biomeStrippedLogHorizAlongState.getBlock()==Blocks.log2)
     	{
         	if (biomeLogVertState.getBlock() == Blocks.log)
         	{
-        		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(horizIndex%2==0? 1:0));
+        		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(coordBaseMode.getHorizontalIndex()%2==0? 1:0));
         	}
         	else if (biomeLogVertState.getBlock() == Blocks.log2)
         	{
-        		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(horizIndex%2==0? 1:0));
+        		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(coordBaseMode.getHorizontalIndex()%2==0? 1:0));
         	}
     	}
     	

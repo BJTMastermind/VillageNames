@@ -4203,9 +4203,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleArmorerHouse.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleArmorerHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleArmorerHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4227,9 +4227,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleButcherShop.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleButcherShop.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleButcherShop.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4251,9 +4251,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleCartographerHouse1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleCartographerHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleCartographerHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4275,9 +4275,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleCartographerHouse2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleCartographerHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleCartographerHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4299,9 +4299,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleFisherCottage.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleFisherCottage.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleFisherCottage.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4323,9 +4323,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleFletcherHouse1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleFletcherHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleFletcherHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4347,9 +4347,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleFletcherHouse2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleFletcherHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleFletcherHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4371,9 +4371,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleLargeHouse.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleLargeHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleLargeHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4395,9 +4395,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleLibrary.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleLibrary.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleLibrary.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4419,9 +4419,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleMasonHouse.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleMasonHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleMasonHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4443,9 +4443,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleMediumHouse1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleMediumHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleMediumHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4467,9 +4467,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleMediumHouse2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleMediumHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleMediumHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4491,9 +4491,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleMediumHouse3.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleMediumHouse3.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleMediumHouse3.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4515,9 +4515,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleMediumHouse4.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleMediumHouse4.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleMediumHouse4.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4539,9 +4539,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleShepherdHouse.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleShepherdHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleShepherdHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4563,9 +4563,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleSmallHouse1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleSmallHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleSmallHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4587,9 +4587,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleSmallHouse2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleSmallHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleSmallHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4611,9 +4611,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleSmallHouse3.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleSmallHouse3.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleSmallHouse3.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4635,9 +4635,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleSmallHouse4.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleSmallHouse4.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleSmallHouse4.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4659,9 +4659,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleSmallHouse5.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleSmallHouse5.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleSmallHouse5.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4683,9 +4683,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleSmallHouse6.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleSmallHouse6.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleSmallHouse6.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4707,9 +4707,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleSmallHouse7.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleSmallHouse7.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleSmallHouse7.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4731,9 +4731,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleSmallHouse8.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleSmallHouse8.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleSmallHouse8.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4755,9 +4755,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleStable.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleStable.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleStable.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4779,9 +4779,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleSteppedFarm.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleSteppedFarm.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleSteppedFarm.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4803,9 +4803,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleStoneAnimalPen.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleStoneAnimalPen.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleStoneAnimalPen.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4827,9 +4827,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleTamedFarm.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleTamedFarm.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleTamedFarm.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4851,9 +4851,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleTannery1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleTannery1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleTannery1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4875,9 +4875,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleTannery2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleTannery2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleTannery2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4899,9 +4899,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleTemple.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleTemple.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleTemple.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4923,9 +4923,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleToolSmithy1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleToolSmithy1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleToolSmithy1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4947,9 +4947,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleToolSmithy2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleToolSmithy2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleToolSmithy2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4971,9 +4971,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleWeaponSmithy.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleWeaponSmithy.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleWeaponSmithy.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -4995,9 +4995,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleWildFarm.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleWildFarm.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleWildFarm.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5019,9 +5019,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleWoodAnimalPen.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleWoodAnimalPen.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleWoodAnimalPen.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5043,9 +5043,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleStreetDecor.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleStreetDecor.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleStreetDecor.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5067,9 +5067,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleRoadAccent1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleRoadAccent1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleRoadAccent1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5091,9 +5091,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return JungleRoadAccent2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return JungleRoadAccent2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return JungleRoadAccent2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5115,9 +5115,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampAnimalPen1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampAnimalPen1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampAnimalPen1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5139,9 +5139,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampAnimalPen2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampAnimalPen2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampAnimalPen2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5163,9 +5163,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampArmorerHouse.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampArmorerHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampArmorerHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5187,9 +5187,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampButcherShop.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampButcherShop.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampButcherShop.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5211,9 +5211,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampCartographerHouse.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampCartographerHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampCartographerHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5235,9 +5235,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampFisherCottage1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampFisherCottage1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampFisherCottage1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5259,9 +5259,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampFisherCottage2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampFisherCottage2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampFisherCottage2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5283,9 +5283,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampFletcherHouse.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampFletcherHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampFletcherHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5307,9 +5307,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampHutFarm.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampHutFarm.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampHutFarm.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5331,9 +5331,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampHorribleSecret.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampHorribleSecret.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampHorribleSecret.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5355,9 +5355,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampLargeHouse.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampLargeHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampLargeHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5379,9 +5379,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampLibrary.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampLibrary.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampLibrary.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5403,9 +5403,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampMasonHouse.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampMasonHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampMasonHouse.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5427,9 +5427,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampMediumHouse1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampMediumHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampMediumHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5451,9 +5451,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampMediumHouse2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampMediumHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampMediumHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5475,9 +5475,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampShepherdHouse1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampShepherdHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampShepherdHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5499,9 +5499,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampShepherdHouse2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampShepherdHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampShepherdHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5523,9 +5523,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampStable.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampStable.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampStable.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5547,9 +5547,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampSmallHouse1.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampSmallHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampSmallHouse1.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5571,9 +5571,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampSmallHouse2.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampSmallHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampSmallHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5595,9 +5595,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampSmallHouse3.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampSmallHouse3.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampSmallHouse3.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5619,9 +5619,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampSmallHouse4.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampSmallHouse4.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampSmallHouse4.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5643,9 +5643,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampSmallHouse5.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampSmallHouse5.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampSmallHouse5.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5667,9 +5667,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampTannery.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampTannery.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampTannery.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5691,9 +5691,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampTemple.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampTemple.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampTemple.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5715,9 +5715,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampToolSmithy.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampToolSmithy.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampToolSmithy.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5739,9 +5739,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampWeaponSmithy.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampWeaponSmithy.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampWeaponSmithy.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5763,9 +5763,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampWildFarm.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampWildFarm.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampWildFarm.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5787,9 +5787,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampStreetDecor.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampStreetDecor.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampStreetDecor.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5811,9 +5811,9 @@ public class StructureCreationHandlers
 	    public Class<?> getComponentClass() {return SwampRoadAccent.class;}
 	    
 	    @Override
-	    public Object buildComponent(PieceWeight villagePiece, Start startPiece, List pieces, Random random, int x, int y, int z, int horizIndex, int componentType)
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
-	    	if (startPiece instanceof StartVN) {return SwampRoadAccent.buildComponent((StartVN)startPiece, pieces, random, x, y, z, horizIndex, componentType);} return null;
+	    	if (startPiece instanceof StartVN) {return SwampRoadAccent.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 }

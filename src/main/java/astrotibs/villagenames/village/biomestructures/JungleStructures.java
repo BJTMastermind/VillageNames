@@ -318,7 +318,7 @@ public class JungleStructures
             	
             	// Polished diorite blocks
             	biomePolishedDioriteBlockState = Blocks.stone.getStateFromMeta(4);
-            	if (useOnlyStone) {biomePolishedDioriteBlockState = Blocks.stonebrick.getStateFromMeta(0);} // Set to stone brick
+            	if (useOnlyStone) {biomePolishedDioriteBlockState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stonebrick.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);} // Set to stone brick
             	            	
                 
             	// Regular diorite stairs
@@ -333,7 +333,7 @@ public class JungleStructures
             	
             	// Diorite blocks
             	biomeDioriteBlockState = Blocks.stone.getStateFromMeta(3);
-            	if (useOnlyStone) {biomeDioriteBlockState = Blocks.cobblestone.getDefaultState();} // Set to cobblestone
+            	if (useOnlyStone) {biomeDioriteBlockState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.cobblestone.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);} // Set to cobblestone
             	
             	
             	// Diorite wall
@@ -597,7 +597,7 @@ public class JungleStructures
     			for(int capeU : new int[]{5, 6})
                 {
                     int bannerU = capeU;
-        			int bannerV = 6;
+        			int bannerV = 7;
         			int bannerW = 6;
         			int bannerO = 0; // Facing away from you
         			boolean hanging=true;
@@ -1038,7 +1038,7 @@ public class JungleStructures
                 int bannerU = 8;
     			int bannerV = 1;
     			int bannerW = 2;
-    			int bannerO = 8; // Facing toward you
+    			int bannerO = 8;
     			boolean hanging=false;
     			
                 // Cobblestone foundation
@@ -1052,7 +1052,7 @@ public class JungleStructures
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
 
             	// Set the banner and its orientation
-				world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(4, this.coordBaseMode.getHorizontalIndex(), false)), 2);
+				world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(bannerO, this.coordBaseMode.getHorizontalIndex(), false)), 2);
 				
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -1696,7 +1696,7 @@ public class JungleStructures
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
-                world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(4, this.coordBaseMode.getHorizontalIndex(), false)), 2);
+                world.setBlockState(bannerPos, Blocks.standing_banner.getStateFromMeta(StructureVillageVN.getSignRotationMeta(bannerO, this.coordBaseMode.getHorizontalIndex(), false)), 2);
 
 				// Set the tile entity
 				TileEntity tilebanner = new TileEntityBanner();
@@ -2746,7 +2746,7 @@ public class JungleStructures
     		
     		
     		// Logs (Across)
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
     		for(int[] uuvvww : new int[][]{
     			// Ceiling support
     			{2,4,6, 6,4,6}, 
@@ -2758,7 +2758,7 @@ public class JungleStructures
     		
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
     		for(int[] uuvvww : new int[][]{
     			// Ceiling support
     			{1,4,3, 1,4,5}, 
@@ -2991,7 +2991,7 @@ public class JungleStructures
 				NBTTagCompound modifystanding = new NBTTagCompound();
 				tilebanner.writeToNBT(modifystanding);
 				modifystanding.setBoolean("IsStanding", false);
-				modifystanding.setInteger("Base", uvwoc[4]);
+				modifystanding.setInteger("Base", 15 - uvwoc[4]);
 				tilebanner.readFromNBT(modifystanding);
 				
         		world.setTileEntity(bannerPos, tilebanner);
@@ -3380,7 +3380,7 @@ public class JungleStructures
     		
     		
     		// Logs (Across)
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
     		for(int[] uuvvww : new int[][]{
     			// House support
     			{2,4,8, 7,4,8}, 
@@ -3392,7 +3392,7 @@ public class JungleStructures
     		
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
     		for(int[] uuvvww : new int[][]{
     			// Ceiling support
     			{1,4,2, 1,4,7}, 
@@ -3600,13 +3600,7 @@ public class JungleStructures
         		{7,1,6, 7,1,6}, 
             	})
             {
-            	// Grab a random crop
-            	Block cropBlock = StructureVillageVN.chooseCropPair(random)[0];
-            	
-            	for (int i=0; i<2; i++)
-            	{
-            		this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.carrots.getStateFromMeta(7), Blocks.carrots.getStateFromMeta(7), false);
-            	}
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.carrots.getStateFromMeta(7), Blocks.carrots.getStateFromMeta(7), false);
             }
             
             
@@ -3756,7 +3750,7 @@ public class JungleStructures
     	public static final int STRUCTURE_HEIGHT = 7;
     	// Values for lining things up
     	private static final int GROUND_LEVEL = 0; // Spaces above the bottom of the structure considered to be "ground level"
-    	public static final byte MEDIAN_BORDERS = 1 + 2 + 4 + 8; // Sides of the bounding box to count toward ground level median. +1: front; +2: left; +4: back; +8: right;
+    	public static final byte MEDIAN_BORDERS = 1 + 2; // Sides of the bounding box to count toward ground level median. +1: front; +2: left; +4: back; +8: right;
     	private static final int INCREASE_MIN_U = 0;
     	private static final int DECREASE_MAX_U = 1;
     	private static final int INCREASE_MIN_W = 0;
@@ -6613,7 +6607,7 @@ public class JungleStructures
             
             
         	// Stripped Log (Along)
-        	IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
         	IBlockState biomeStrippedLogHorizAlongState = biomeLogHorAlongState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAlongState.getBlock()==Blocks.log || biomeStrippedLogHorizAlongState.getBlock()==Blocks.log2)
@@ -7304,7 +7298,8 @@ public class JungleStructures
     		
     		
     		// Logs (Across)
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
     		for(int[] uuvvww : new int[][]{
     			// Ceiling support
     			{1,7,8, 9,7,8}, 
@@ -7370,7 +7365,6 @@ public class JungleStructures
     		
     		
     		// Logs (Vertical)
-    		IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			// Top of front columns
     			{4,5,1, 4,5,1}, {6,5,1, 6,5,1}, 
@@ -9272,7 +9266,7 @@ public class JungleStructures
 				}
 				else
 				{
-					modifystanding.setInteger("Base", uvwoc[4]);
+					modifystanding.setInteger("Base", 15 - uvwoc[4]);
     				tilebanner.readFromNBT(modifystanding);
 				}
 				
@@ -9640,7 +9634,7 @@ public class JungleStructures
     		
     		
     		// Logs (Across)
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
     		for(int[] uuvvww : new int[][]{
     			{3,3,4, 7,3,4}, 
     			{3,3,12, 7,3,12}, 
@@ -9651,7 +9645,7 @@ public class JungleStructures
     		
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
     		for(int[] uuvvww : new int[][]{
     			{0,3,7, 0,3,9}, {10,3,7, 10,3,9}, 
     			})
@@ -10157,7 +10151,7 @@ public class JungleStructures
     		
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
     		for(int[] uuvvww : new int[][]{
     			{3,5,2, 3,5,6}, {5,5,2, 5,5,6}, 
     			})
@@ -10722,7 +10716,8 @@ public class JungleStructures
     		
     		
     		// Logs (Across)
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
     		for(int[] uuvvww : new int[][]{
     			// Shed
     			{4,4,6, 7,4,6}, 
@@ -10734,7 +10729,7 @@ public class JungleStructures
     		
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
     		for(int[] uuvvww : new int[][]{
     			// Longer log
     			{3,4,2, 3,4,5}, {8,4,2, 8,4,5}, 
@@ -10745,7 +10740,6 @@ public class JungleStructures
     		
     		
     		// For stripped logs specifically
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		IBlockState biomeStrippedLogVertState = biomeLogVertState;
     		// Try to see if stripped logs exist
     		biomeStrippedLogVertState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 0);
@@ -11712,7 +11706,8 @@ public class JungleStructures
     		
     		
     		// Logs (Across)
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
     		for(int[] uuvvww : new int[][]{
     			// Shed
     			{1,3,5, 3,3,5}, 
@@ -11736,7 +11731,7 @@ public class JungleStructures
     		
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
     		for(int[] uuvvww : new int[][]{
     			// Longer log
     			{1,3,6, 1,3,7}, 
@@ -14954,7 +14949,7 @@ public class JungleStructures
     		
     		
     		// Logs (Across)
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 0:4)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), true);
     		for(int[] uuvvww : new int[][]{
     			// Ceiling support
     			{1,1,7, 3,1,7}, 
@@ -15528,7 +15523,26 @@ public class JungleStructures
             {
             	this.replaceAirAndLiquidDownwards(world, biomeFillerState, uvwmcp[0], uvwmcp[1]-1, uvwmcp[2], structureBB);
             	//this.clearCurrentPositionBlocksUpwards(world, uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB);
-            	this.setBlockState(world, cropBlocks[uvwmcp[4]].getStateFromMeta(uvwmcp[5]), uvwmcp[0], uvwmcp[1]+1, uvwmcp[2], structureBB); 
+            	
+            	int cropProgressMeta = uvwmcp[5]; // Isolate the crop's age meta value
+            	IBlockState cropState;
+            	
+    			while(true)
+    			{
+    				try {cropState = cropBlocks[0].getStateFromMeta(cropProgressMeta);}
+    				catch (IllegalArgumentException e)
+    				{
+    					// The assignment failed with a meta of 0. IDK what's happening so just have wheat
+    					if (cropProgressMeta==0) {cropState = Blocks.wheat.getStateFromMeta(uvwmcp[5]);}
+    					// The crop is not allowed to have this value. Cut it in half and try again.
+    					else {cropProgressMeta /= 2; continue;}
+    				}
+    				
+    				// Finally, assign the working crop
+					this.setBlockState(world, cropState, uvwmcp[0], uvwmcp[1]+1, uvwmcp[2], structureBB);
+    				break;
+    			}
+            	
             	this.setBlockState(world, Blocks.farmland.getStateFromMeta(uvwmcp[3]), uvwmcp[0], uvwmcp[1], uvwmcp[2], structureBB); // 7 is moist
             }
             
@@ -16314,7 +16328,26 @@ public class JungleStructures
             {
             	this.replaceAirAndLiquidDownwards(world, biomeFillerState, uvwmcp[0], uvwmcp[1]-1, uvwmcp[2], structureBB);
             	//this.clearCurrentPositionBlocksUpwards(world, uvwpmc[0], uvwpmc[1]+1, uvwpmc[2], structureBB);
-            	this.setBlockState(world, cropBlocks[uvwmcp[4]].getStateFromMeta(uvwmcp[5]), uvwmcp[0], uvwmcp[1]+1, uvwmcp[2], structureBB); 
+            	
+            	int cropProgressMeta = uvwmcp[5]; // Isolate the crop's age meta value
+            	IBlockState cropState;
+            	
+    			while(true)
+    			{
+    				try {cropState = cropBlocks[0].getStateFromMeta(cropProgressMeta);}
+    				catch (IllegalArgumentException e)
+    				{
+    					// The assignment failed with a meta of 0. IDK what's happening so just have wheat
+    					if (cropProgressMeta==0) {cropState = Blocks.wheat.getStateFromMeta(uvwmcp[5]);}
+    					// The crop is not allowed to have this value. Cut it in half and try again.
+    					else {cropProgressMeta /= 2; continue;}
+    				}
+    				
+    				// Finally, assign the working crop
+					this.setBlockState(world, cropState, uvwmcp[0], uvwmcp[1]+1, uvwmcp[2], structureBB);
+    				break;
+    			}
+            	
             	this.setBlockState(world, Blocks.farmland.getStateFromMeta(uvwmcp[3]), uvwmcp[0], uvwmcp[1], uvwmcp[2], structureBB); // 7 is moist
             }
     		
@@ -17259,7 +17292,8 @@ public class JungleStructures
     		
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
     		for(int[] uuvvww : new int[][]{
     			// Longer log
     			{1,6,5, 1,6,5}, {6,6,5, 6,6,5}, 
@@ -18046,7 +18080,7 @@ public class JungleStructures
     		
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(this.coordBaseMode.getHorizontalIndex()%2==0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.coordBaseMode.getHorizontalIndex(), false);
     		for(int[] uuvvww : new int[][]{
     			// Longer log
     			{2,1,0, 2,1,1}, 
@@ -21333,7 +21367,7 @@ public class JungleStructures
 				}
 				else
 				{
-					modifystanding.setInteger("Base", uvwoc[4]);
+					modifystanding.setInteger("Base", 15 - uvwoc[4]);
     				tilebanner.readFromNBT(modifystanding);
 				}
 				
@@ -21384,12 +21418,12 @@ public class JungleStructures
 	/**
 	 * Returns a list of blocks and coordinates used to construct a decor piece
 	 */
-	public static ArrayList<BlueprintData> getRandomJungleDecorBlueprint(VillageType villageType, MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, int horizIndex, Random random)
+	public static ArrayList<BlueprintData> getRandomJungleDecorBlueprint(VillageType villageType, MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, EnumFacing coordBaseMode, Random random)
 	{
 		int decorCount = 8;
-		return getJungleDecorBlueprint(random.nextInt(decorCount), villageType, materialType, disallowModSubs, biome, horizIndex, random);
+		return getJungleDecorBlueprint(random.nextInt(decorCount), villageType, materialType, disallowModSubs, biome, coordBaseMode, random);
 	}
-	public static ArrayList<BlueprintData> getJungleDecorBlueprint(int decorType, VillageType villageType, MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, int horizIndex, Random random)
+	public static ArrayList<BlueprintData> getJungleDecorBlueprint(int decorType, VillageType villageType, MaterialType materialType, boolean disallowModSubs, BiomeGenBase biome, EnumFacing coordBaseMode, Random random)
 	{
 		ArrayList<BlueprintData> blueprint = new ArrayList(); // The blueprint to export
 		
@@ -21416,86 +21450,86 @@ public class JungleStructures
         {
     	case 0: // Hay bales by Roadhog360 and AstroTibs
     		
-    		Block hayBlock = Blocks.hay_block; // Meta: 0 for vertical, 4 for E/W, 8 for N/S
+    		IBlockState hayBlockstate = Blocks.hay_block.getStateFromMeta(0); // Meta: 0 for vertical, 4 for E/W, 8 for N/S
     		
-    		BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, hayBlock.getStateFromMeta(0));
+    		BlueprintData.addPlaceBlock(blueprint, 0, 1, 0, hayBlockstate);
     		BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
     		
     		switch (random.nextInt(4))
     		{
     		case 0: // Facing you
     			// Bale in center
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), false));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
     			// Bale in front
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), false));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeFillerState); // Foundation
     			// Back-left corner
-    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 1, hayBlock.getStateFromMeta(0));
+    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 1, hayBlockstate);
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, 1, biomeFillerState); // Foundation
     			// Back-right corner
-    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 1, hayBlock.getStateFromMeta(0));
+    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 1, hayBlockstate);
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, 1, biomeFillerState); // Foundation
     			// Right side
-    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), false));
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeFillerState); // Foundation
     			break;
     		case 1: // Facing left
     			// Bale in center
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), true));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
     			// Bale in front
-    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), true));
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeFillerState); // Foundation
     			// Back-left corner
-    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 1, hayBlock.getStateFromMeta(0));
+    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 1, hayBlockstate);
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, 1, biomeFillerState); // Foundation
     			// Back-right corner
-    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 1, hayBlock.getStateFromMeta(0));
-    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 1, biomeFillerState); // Foundation
+    			BlueprintData.addPlaceBlock(blueprint, 1, 0, -1, hayBlockstate);
+    			BlueprintData.addFillBelowTo(blueprint, 1, -1, -1, biomeFillerState); // Foundation
     			// Right side
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), true));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeFillerState); // Foundation
     			break;
     		case 2: // Facing away
     			// Bale in center
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), false));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
     			// Bale in front
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), false));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeFillerState); // Foundation
     			// Back-left corner
-    			BlueprintData.addPlaceBlock(blueprint, 1, 0, -1, hayBlock.getStateFromMeta(0));
+    			BlueprintData.addPlaceBlock(blueprint, 1, 0, -1, hayBlockstate);
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, -1, biomeFillerState); // Foundation
     			// Back-right corner
-    			BlueprintData.addPlaceBlock(blueprint, -1, 0, -1, hayBlock.getStateFromMeta(0));
+    			BlueprintData.addPlaceBlock(blueprint, -1, 0, -1, hayBlockstate);
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, -1, biomeFillerState); // Foundation
     			// Right side
-    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), false));
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeFillerState); // Foundation
     			break;
     		case 3: // Facing right
     			// Bale in center
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), true));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
     			// Bale in front
-    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), true));
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeFillerState); // Foundation
     			// Back-left corner
-    			BlueprintData.addPlaceBlock(blueprint, -1, 0, -1, hayBlock.getStateFromMeta(0));
+    			BlueprintData.addPlaceBlock(blueprint, -1, 0, -1, hayBlockstate);
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, -1, biomeFillerState); // Foundation
     			// Back-right corner
-    			BlueprintData.addPlaceBlock(blueprint, 1, 0, -1, hayBlock.getStateFromMeta(0));
-    			BlueprintData.addFillBelowTo(blueprint, 1, -1, -1, biomeFillerState); // Foundation
+    			BlueprintData.addPlaceBlock(blueprint, -1, 0, 1, hayBlockstate);
+    			BlueprintData.addFillBelowTo(blueprint, -1, -1, 1, biomeFillerState); // Foundation
     			// Right side
-    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, hayBlock.getStateFromMeta(horizIndex%2==0?8:4));
+    			BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, StructureVillageVN.getHorizontalPillarState(hayBlockstate, coordBaseMode.getHorizontalIndex(), true));
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeFillerState); // Foundation
     			break;
     		}
     		break;
 
     	case 1: // Campfire on cobblestone by jss2a98aj
-        	IBlockState campfireState = ModObjects.chooseModCampfireBlockState(random.nextInt(4), EnumFacing.getHorizontal(horizIndex));
+        	IBlockState campfireState = ModObjects.chooseModCampfireBlockState(random.nextInt(4), coordBaseMode);
     		BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
     		BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeFillerState); // Foundation
     		BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeFillerState); // Foundation
@@ -21524,9 +21558,9 @@ public class JungleStructures
         	if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
         	{ // 0 and 2 are ok
         		for (int[] xyzo : new int[][]{ // Orientation - 1:north, 2:east, 4:south, 8:west
-        			{0,0,-1, StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex))}, // Front
-        			{1,0,0, StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex))}, // Right
-        			{-1,0,0, StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex))}, // Left
+        			{0,0,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, // Front
+        			{1,0,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, // Right
+        			{-1,0,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, // Left
             		})
                 {
         			BlueprintData.addPlaceBlock(blueprint, xyzo[0], xyzo[1], xyzo[2], Blocks.vine.getStateFromMeta(xyzo[3]));
@@ -21548,10 +21582,10 @@ public class JungleStructures
         		if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
             	{
             		for (int[] xyzo : new int[][]{ // Orientation - 1:north, 2:east, 4:south, 8:west
-            			{0,0,-1, StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex))}, {0,1,-1, StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex))}, // Front
-            			{1,0,0, StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex))}, // Right
-            			{0,0,1, StructureVillageVN.chooseVineMeta(0, EnumFacing.getHorizontal(horizIndex))}, // Back
-            			{-1,1,0, StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex))}, // Left
+            			{0,0,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, {0,1,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, // Front
+            			{1,0,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, // Right
+            			{0,0,1, StructureVillageVN.chooseVineMeta(0, coordBaseMode)}, // Back
+            			{-1,1,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, // Left
                 		})
                     {
             			BlueprintData.addPlaceBlock(blueprint, xyzo[0], xyzo[1], xyzo[2], Blocks.vine.getStateFromMeta(xyzo[3]));
@@ -21563,10 +21597,10 @@ public class JungleStructures
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
             	{
             		for (int[] xyzo : new int[][]{ // Orientation - 1:north, 2:east, 4:south, 8:west
-            			{-1,0,0, StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex))}, {-1,1,0, StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex))}, // Front
-            			{0,0,-1, StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex))}, // Right
-            			{1,0,0, StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex))}, // Back
-            			{0,1,1, StructureVillageVN.chooseVineMeta(0, EnumFacing.getHorizontal(horizIndex))}, // Left
+            			{-1,0,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, {-1,1,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, // Front
+            			{0,0,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, // Right
+            			{1,0,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, // Back
+            			{0,1,1, StructureVillageVN.chooseVineMeta(0, coordBaseMode)}, // Left
                 		})
                     {
             			BlueprintData.addPlaceBlock(blueprint, xyzo[0], xyzo[1], xyzo[2], Blocks.vine.getStateFromMeta(xyzo[3]));
@@ -21578,10 +21612,10 @@ public class JungleStructures
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
             	{
             		for (int[] xyzo : new int[][]{ // Orientation - 1:north, 2:east, 4:south, 8:west
-            			{0,0,1, StructureVillageVN.chooseVineMeta(0, EnumFacing.getHorizontal(horizIndex))}, {0,1,1, StructureVillageVN.chooseVineMeta(0, EnumFacing.getHorizontal(horizIndex))}, // Front
-            			{-1,0,0, StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex))}, // Right
-            			{0,0,-1, StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex))}, // Back
-            			{1,1,0, StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex))}, // Left
+            			{0,0,1, StructureVillageVN.chooseVineMeta(0, coordBaseMode)}, {0,1,1, StructureVillageVN.chooseVineMeta(0, coordBaseMode)}, // Front
+            			{-1,0,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, // Right
+            			{0,0,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, // Back
+            			{1,1,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, // Left
                 		})
                     {
             			BlueprintData.addPlaceBlock(blueprint, xyzo[0], xyzo[1], xyzo[2], Blocks.vine.getStateFromMeta(xyzo[3]));
@@ -21593,10 +21627,10 @@ public class JungleStructures
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
             	{
             		for (int[] xyzo : new int[][]{ // Orientation - 1:north, 2:east, 4:south, 8:west
-            			{1,0,0, StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex))}, {1,1,0, StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex))}, // Front
-            			{0,0,1, StructureVillageVN.chooseVineMeta(0, EnumFacing.getHorizontal(horizIndex))}, // Right
-            			{-1,0,0, StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex))}, // Back
-            			{0,1,-1, StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex))}, // Left
+            			{1,0,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, {1,1,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, // Front
+            			{0,0,1, StructureVillageVN.chooseVineMeta(0, coordBaseMode)}, // Right
+            			{-1,0,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, // Back
+            			{0,1,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, // Left
                 		})
                     {
             			BlueprintData.addPlaceBlock(blueprint, xyzo[0], xyzo[1], xyzo[2], Blocks.vine.getStateFromMeta(xyzo[3]));
@@ -21615,10 +21649,10 @@ public class JungleStructures
     		// Belt of vines
     		if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
         	{
-        		BlueprintData.addPlaceBlock(blueprint, 0, 1, 1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(0, EnumFacing.getHorizontal(horizIndex))));
-        		BlueprintData.addPlaceBlock(blueprint, 1, 1, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex))));
-        		BlueprintData.addPlaceBlock(blueprint, 0, 1, -1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex))));
-        		BlueprintData.addPlaceBlock(blueprint, -1, 1, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex))));
+        		BlueprintData.addPlaceBlock(blueprint, 0, 1, 1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(0, coordBaseMode)));
+        		BlueprintData.addPlaceBlock(blueprint, 1, 1, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(1, coordBaseMode)));
+        		BlueprintData.addPlaceBlock(blueprint, 0, 1, -1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(2, coordBaseMode)));
+        		BlueprintData.addPlaceBlock(blueprint, -1, 1, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(3, coordBaseMode)));
         	}
     		
     		genericInt = random.nextInt(4);
@@ -21634,10 +21668,10 @@ public class JungleStructures
 			// Vines
     		if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
         	{
-        		BlueprintData.addPlaceBlock(blueprint, genericInt%2!=0?-1:0, 2, genericInt%2!=0?0:-1, Blocks.vine.getStateFromMeta(genericInt%2!=0?StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex)):StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex))));
-        		BlueprintData.addPlaceBlock(blueprint, genericInt%2!=0?1:0, 2, genericInt%2!=0?0:1, Blocks.vine.getStateFromMeta(genericInt%2!=0?StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex)):StructureVillageVN.chooseVineMeta(0, EnumFacing.getHorizontal(horizIndex))));
+        		BlueprintData.addPlaceBlock(blueprint, genericInt%2!=0?-1:0, 2, genericInt%2!=0?0:-1, Blocks.vine.getStateFromMeta(genericInt%2!=0?StructureVillageVN.chooseVineMeta(3, coordBaseMode):StructureVillageVN.chooseVineMeta(2, coordBaseMode)));
+        		BlueprintData.addPlaceBlock(blueprint, genericInt%2!=0?1:0, 2, genericInt%2!=0?0:1, Blocks.vine.getStateFromMeta(genericInt%2!=0?StructureVillageVN.chooseVineMeta(1, coordBaseMode):StructureVillageVN.chooseVineMeta(0, coordBaseMode)));
         		
-        		BlueprintData.addPlaceBlock(blueprint, genericInt==1?-1:genericInt==3?1:0, 3, genericInt==0?-1:genericInt==2?1:0, Blocks.vine.getStateFromMeta(genericInt==0?StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex)):genericInt==1?StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex)):genericInt==2?StructureVillageVN.chooseVineMeta(0, EnumFacing.getHorizontal(horizIndex)):StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex))));
+        		BlueprintData.addPlaceBlock(blueprint, genericInt==1?-1:genericInt==3?1:0, 3, genericInt==0?-1:genericInt==2?1:0, Blocks.vine.getStateFromMeta(genericInt==0?StructureVillageVN.chooseVineMeta(2, coordBaseMode):genericInt==1?StructureVillageVN.chooseVineMeta(3, coordBaseMode):genericInt==2?StructureVillageVN.chooseVineMeta(0, coordBaseMode):StructureVillageVN.chooseVineMeta(1, coordBaseMode)));
         	}
     		
     		break;
@@ -21650,8 +21684,8 @@ public class JungleStructures
     		break;
     		
     	case 6: // Lantern on a log by jss2a98aj
-    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(horizIndex%2!=0? 4:0)), materialType, biome, disallowModSubs);
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(4+(horizIndex%2==0? 4:0)), materialType, biome, disallowModSubs);
+    		IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), true);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), false);
     		
     		BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
     		
@@ -21659,53 +21693,53 @@ public class JungleStructures
     		{
     		case 0: // Facing you
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, 0, biomeFillerState); // Foundation
-    			BlueprintData.addFillWithBlocks(blueprint, 0,0,0, 1,0,0, biomeLogHorAlongState);
+    			BlueprintData.addFillWithBlocks(blueprint, 0,0,0, 1,0,0, biomeLogHorAcrossState);
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, 1, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, -1, 0, 1, biomeLogVertState);
     			// Vines
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP) // Orientation - 1:north, 2:east, 4:south, 8:west
             	{
-            		BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex)))); // Front
-            		BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex)))); // Right
+            		BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(2, coordBaseMode))); // Front
+            		BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(1, coordBaseMode))); // Right
             	}
     			break;
     			
     		case 1: // Facing left
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, -1, biomeFillerState); // Foundation
-    			BlueprintData.addFillWithBlocks(blueprint, 0,0,-1, 0,0,0, biomeLogHorAcrossState);
+    			BlueprintData.addFillWithBlocks(blueprint, 0,0,-1, 0,0,0, biomeLogHorAlongState);
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, 1, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, 1, 0, 1, biomeLogVertState);
     			// Vines
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP) // Orientation - 1:north, 2:east, 4:south, 8:west
             	{
-            		BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex)))); // Front
-            		BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(2, EnumFacing.getHorizontal(horizIndex)))); // Right
+            		BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(3, coordBaseMode))); // Front
+            		BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(2, coordBaseMode))); // Right
             	}
     			break;
     			
     		case 2: // Facing away
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, 0, biomeFillerState); // Foundation
-    			BlueprintData.addFillWithBlocks(blueprint, -1,0,0, 0,0,0, biomeLogHorAlongState);
+    			BlueprintData.addFillWithBlocks(blueprint, -1,0,0, 0,0,0, biomeLogHorAcrossState);
     			BlueprintData.addFillBelowTo(blueprint, 1, -1, -1, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, 1, 0, -1, biomeLogVertState);
     			// Vines
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP) // Orientation - 1:north, 2:east, 4:south, 8:west
             	{
-            		BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(0, EnumFacing.getHorizontal(horizIndex)))); // Front
-            		BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(3, EnumFacing.getHorizontal(horizIndex)))); // Right
+            		BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(0, coordBaseMode))); // Front
+            		BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(3, coordBaseMode))); // Right
             	}
     			break;
     			
     		case 3: // Facing right
     			BlueprintData.addFillBelowTo(blueprint, 0, -1, 1, biomeFillerState); // Foundation
-    			BlueprintData.addFillWithBlocks(blueprint, 0,0,0, 0,0,1, biomeLogHorAcrossState);
+    			BlueprintData.addFillWithBlocks(blueprint, 0,0,0, 0,0,1, biomeLogHorAlongState);
     			BlueprintData.addFillBelowTo(blueprint, -1, -1, -1, biomeFillerState); // Foundation
     			BlueprintData.addPlaceBlock(blueprint, -1, 0, -1, biomeLogVertState);
     			// Vines
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP) // Orientation - 1:north, 2:east, 4:south, 8:west
             	{
-            		BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(1, EnumFacing.getHorizontal(horizIndex)))); // Front
-            		BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(0, EnumFacing.getHorizontal(horizIndex)))); // Right
+            		BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(1, coordBaseMode))); // Front
+            		BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, Blocks.vine.getStateFromMeta(StructureVillageVN.chooseVineMeta(0, coordBaseMode))); // Right
             	}
     			break;
     		}

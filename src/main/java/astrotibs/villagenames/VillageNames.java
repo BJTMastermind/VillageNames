@@ -196,6 +196,14 @@ public final class VillageNames
 	        MapGenStructureIO.registerStructureComponent(SnowyStructures.SnowyMeetingPoint1.class, "VNSnMP1"); // Snowy Ice Spire
 	        MapGenStructureIO.registerStructureComponent(SnowyStructures.SnowyMeetingPoint2.class, "VNSnMP2"); // Frozen Fountain
 	        MapGenStructureIO.registerStructureComponent(SnowyStructures.SnowyMeetingPoint3.class, "VNSnMP3"); // Snowy Pavilion
+	        MapGenStructureIO.registerStructureComponent(JungleStructures.JungleStatue.class, "VNJuSta"); // Jungle Statue
+	        MapGenStructureIO.registerStructureComponent(JungleStructures.JungleCocoaTree.class, "VNJuTre"); // Jungle Tree
+	        MapGenStructureIO.registerStructureComponent(JungleStructures.JungleGarden.class, "VNJuGar"); // Jungle Garden
+	        MapGenStructureIO.registerStructureComponent(JungleStructures.JungleVilla.class, "VNJuVil"); // Jungle Villa
+	        MapGenStructureIO.registerStructureComponent(SwampStructures.SwampWillow.class, "VNSwWil"); // Swamp Willow
+	        MapGenStructureIO.registerStructureComponent(SwampStructures.SwampStatue.class, "VNSwSta"); // Swamp Statue
+	        MapGenStructureIO.registerStructureComponent(SwampStructures.SwampPavilion.class, "VNSwPav"); // Swamp Pavilion
+	        MapGenStructureIO.registerStructureComponent(SwampStructures.SwampMonolith.class, "VNSwMon"); // Swamp Monolith
 	        
 	        // Village Structures
 	        registerVillageComponentBuilding(PlainsStructures.PlainsAccessory1.class, "VNPlAcc1", new StructureCreationHandlers.PlainsAccessory1_Handler());

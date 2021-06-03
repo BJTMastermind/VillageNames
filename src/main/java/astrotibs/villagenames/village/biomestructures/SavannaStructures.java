@@ -4714,7 +4714,7 @@ public class SavannaStructures
 				}
 				else
 				{
-					modifystanding.setInteger("Base", uvwoc[4]);
+					modifystanding.setInteger("Base", 15 - uvwoc[4]);
     				tilebanner.readFromNBT(modifystanding);
 				}
 				
@@ -4765,7 +4765,7 @@ public class SavannaStructures
 				}
 				else
 				{
-					modifystanding.setInteger("Base", uvwoc[4]);
+					modifystanding.setInteger("Base", 15 - uvwoc[4]);
     				tilebanner.readFromNBT(modifystanding);
 				}
 				
@@ -5752,7 +5752,7 @@ public class SavannaStructures
 				NBTTagCompound modifystanding = new NBTTagCompound();
 				tilebanner.writeToNBT(modifystanding);
 				modifystanding.setBoolean("IsStanding", false);
-				modifystanding.setInteger("Base", uvwoc[4]);
+				modifystanding.setInteger("Base", 15 - uvwoc[4]);
 				tilebanner.readFromNBT(modifystanding);
 				
         		world.setTileEntity(bannerPos, tilebanner);
@@ -11340,7 +11340,7 @@ public class SavannaStructures
 				NBTTagCompound modifystanding = new NBTTagCompound();
 				tilebanner.writeToNBT(modifystanding);
 				modifystanding.setBoolean("IsStanding", false);
-				modifystanding.setInteger("Base", uvwoc[4]);
+				modifystanding.setInteger("Base", 15 - uvwoc[4]);
 				tilebanner.readFromNBT(modifystanding);
 				
         		world.setTileEntity(bannerPos, tilebanner);
@@ -13620,7 +13620,7 @@ public class SavannaStructures
 				NBTTagCompound modifystanding = new NBTTagCompound();
 				tilebanner.writeToNBT(modifystanding);
 				modifystanding.setBoolean("IsStanding", false);
-				modifystanding.setInteger("Base", uvwoc[4]);
+				modifystanding.setInteger("Base", 15 - uvwoc[4]);
 				tilebanner.readFromNBT(modifystanding);
 				
         		world.setTileEntity(bannerPos, tilebanner);
@@ -14210,7 +14210,7 @@ public class SavannaStructures
 				}
 				else
 				{
-					modifystanding.setInteger("Base", uvwoc[4]);
+					modifystanding.setInteger("Base", 15 - uvwoc[4]);
     				tilebanner.readFromNBT(modifystanding);
 				}
 				
@@ -15096,7 +15096,7 @@ public class SavannaStructures
 				NBTTagCompound modifystanding = new NBTTagCompound();
 				tilebanner.writeToNBT(modifystanding);
 				modifystanding.setBoolean("IsStanding", false);
-				modifystanding.setInteger("Base", uvwoc[4]);
+				modifystanding.setInteger("Base", 15 - uvwoc[4]);
 				tilebanner.readFromNBT(modifystanding);
 				
         		world.setTileEntity(bannerPos, tilebanner);
@@ -15602,7 +15602,7 @@ public class SavannaStructures
 				NBTTagCompound modifystanding = new NBTTagCompound();
 				tilebanner.writeToNBT(modifystanding);
 				modifystanding.setBoolean("IsStanding", false);
-				modifystanding.setInteger("Base", uvwoc[4]);
+				modifystanding.setInteger("Base", 15 - uvwoc[4]);
 				tilebanner.readFromNBT(modifystanding);
 				
         		world.setTileEntity(bannerPos, tilebanner);
