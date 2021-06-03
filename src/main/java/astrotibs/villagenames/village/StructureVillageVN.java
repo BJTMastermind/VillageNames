@@ -46,9 +46,11 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -581,7 +583,7 @@ public class StructureVillageVN
         													   {blockstate=Blocks.SPRUCE_DOOR.getStateFromMeta(meta); break;}
         	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, true), meta/4}; break;}
-        	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, false), meta}; break;}
+        	//if (block == Blocks.WALL_SIGN)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1}; break;}
@@ -626,7 +628,7 @@ public class StructureVillageVN
 			   												   {blockstate=Blocks.BIRCH_DOOR.getStateFromMeta(meta); break;}
         	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(2, true), meta/4}; break;}
-        	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(2, false), meta}; break;}
+        	//if (block == Blocks.WALL_SIGN)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(2, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogBirchUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 2}; break;}
@@ -693,7 +695,7 @@ public class StructureVillageVN
         													   {blockstate=Blocks.JUNGLE_DOOR.getStateFromMeta(meta); break;}
         	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, true), meta/4}; break;}
-        	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, false), meta}; break;}
+        	//if (block == Blocks.WALL_SIGN)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogJungleUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 3}; break;}
@@ -743,7 +745,7 @@ public class StructureVillageVN
 			   												   {blockstate=Blocks.ACACIA_DOOR.getStateFromMeta(meta); break;}
         	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(4, true), meta/4}; break;}
-        	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(4, false), meta}; break;}
+        	//if (block == Blocks.WALL_SIGN)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(4, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogAcaciaUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog2EF), 4*meta + 0}; break;}
@@ -789,7 +791,7 @@ public class StructureVillageVN
 			   												   {blockstate=Blocks.DARK_OAK_DOOR.getStateFromMeta(meta); break;}
         	if (block == Blocks.TRAPDOOR)                      {blockstate=ModObjects.chooseModWoodenTrapdoor(woodMeta).getStateFromMeta(meta); break;}
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(5, true), meta/4}; break;}
-        	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(5, false), meta}; break;}
+        	//if (block == Blocks.WALL_SIGN)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(5, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogDarkOakUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog2EF), 4*meta + 1}; break;}
@@ -852,7 +854,7 @@ public class StructureVillageVN
         	if (block == Blocks.STONE_SLAB)                    {blockstate=Blocks.STONE_SLAB.getStateFromMeta(meta==3? 1: meta==11? 9 : meta); break;} // Sandstone slab
         	//if (block == Blocks.DOUBLE_STONE_SLAB)             {blockstate=Blocks.DOUBLE_STONE_SLAB.getStateFromMeta(4); break;} // Brick double slab
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, true), meta/4}; break;}
-        	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, false), meta}; break;}
+        	//if (block == Blocks.WALL_SIGN)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(3, false), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.barkEF)) {blockstate=new Object[]{block, 3}; break;} // Jungle bark
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogJungleUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 3}; break;}
@@ -924,7 +926,7 @@ public class StructureVillageVN
         														   break;
 												        	   }
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, true), meta/4}; break;}
-        	//if (block == Blocks.wall_sign)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, false), meta}; break;}
+        	//if (block == Blocks.WALL_SIGN)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLogOakUTD)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLogSpruceUTD), meta}; break;}
         	//if (block != null && block == Block.getBlockFromName(ModObjects.strippedLog1EF)) {blockstate=new Object[]{Block.getBlockFromName(ModObjects.strippedLog1EF), 4*meta + 1}; break;}
@@ -2082,6 +2084,14 @@ public class StructureVillageVN
             	{
             		decorBlueprint = SnowyStructures.getSnowyDecorBlueprint(randomFromXYZ.nextInt(3), this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
             	}
+            	else if (this.villageType==FunctionsVN.VillageType.JUNGLE)
+            	{
+            		decorBlueprint = JungleStructures.getJungleDecorBlueprint(2+randomFromXYZ.nextInt(6), this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	}
+            	else if (this.villageType==FunctionsVN.VillageType.SWAMP)
+            	{
+            		decorBlueprint = SwampStructures.getSwampDecorBlueprint(randomFromXYZ.nextInt(7), this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	}
             	else // Plains
             	{
             		decorBlueprint = PlainsStructures.getPlainsDecorBlueprint(0, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
@@ -2545,6 +2555,10 @@ public class StructureVillageVN
 			return SavannaStructures.getRandomSavannaDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		case SNOWY:
 			return SnowyStructures.getRandomSnowyDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
+		case JUNGLE:
+			return JungleStructures.getRandomJungleDecorBlueprint(materialType, disallowModSubs, biome, horizIndex, random);
+		case SWAMP:
+			return SwampStructures.getRandomSwampDecorBlueprint(materialType, disallowModSubs, biome, horizIndex, random);
 		}
 	}
 	
@@ -2575,4 +2589,61 @@ public class StructureVillageVN
 			if (GeneralConfig.debugMessages) {LogHelper.info("Cleaned "+list.size()+" Entity items within " + aabb.toString());}
         }
 	}
+	
+	
+    /**
+     * Used to generate flower pots with contents that are tougher to access than just meta data alone
+     */
+    public static boolean generateStructureFlowerPot(World world, StructureBoundingBox box, Random random, BlockPos pos, Block block, int meta)
+    {
+        if (box.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.FLOWER_POT)
+        {
+            world.setBlockState(pos, Blocks.FLOWER_POT.getDefaultState(), 2);
+            
+            // This is here just in case a flower pot can't be placed at the given position
+            TileEntityFlowerPot tileentityflowerpot = (TileEntityFlowerPot)world.getTileEntity(pos);
+            
+            if (tileentityflowerpot != null)
+            {
+                if (!isNotPlaceableIntoPot(block, meta))
+                {
+                    return false;
+                }
+                else
+                {
+                	// Sets the flower pot's item and meta
+                    tileentityflowerpot.setFlowerPotData(Item.getItemFromBlock(block), meta);
+                    
+                    tileentityflowerpot.markDirty();
+
+                    if (!world.setBlockState(pos, Blocks.FLOWER_POT.getDefaultState(), 2))
+                    {
+                    	world.markBlockForUpdate(pos);
+                    }
+                    
+                    return true;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+	
+    /**
+     * Returns "true" if the block is not something that can be placed into a flower pot.
+     */
+    private static boolean isNotPlaceableIntoPot(Block block, int meta)
+    {
+    	return     block != Blocks.YELLOW_FLOWER
+        		&& block != Blocks.RED_FLOWER
+        		&& block != Blocks.CACTUS
+        		&& block != Blocks.BROWN_MUSHROOM
+        		&& block != Blocks.RED_MUSHROOM
+        		&& block != Blocks.SAPLING
+        		&& block != Blocks.DEADBUSH ? block == Blocks.TALLGRASS && meta == 2 : true;
+    }
 }

@@ -221,6 +221,16 @@ public class ModObjects {
 		
 		return null;
 	}
+	public static Block chooseModAndesiteBrickStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.andesiteBrickStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		// TODO - Botania available in 1.10
+		return null;
+	}
 
 	// Bamboo
 	public static IBlockState chooseModBambooStalk()
@@ -386,16 +396,6 @@ public class ModObjects {
 	 */
 	// Diorite Stairs
 	// Added in 1.14
-	public static Block chooseModAndesiteBrickStairsBlock()
-	{
-		Block modblock=null;
-		
-		modblock = Block.getBlockFromName(ModObjects.andesiteBrickStairs_Qu);
-		if (modblock != null) {return modblock;}
-		
-		// TODO - Botania available in 1.10
-		return null;
-	}
 	public static Block chooseModDioriteStairsBlock()
 	{
 		Block modblock=null;
@@ -454,13 +454,37 @@ public class ModObjects {
 		
 		return null;
 	}
-	
+	public static Block chooseModPolishedDioriteStairsBlock()
+	{
+		return null;
+	}
+	public static IBlockState chooseModDioriteSlabState(boolean upper)
+	{
+		return null;
+	}
+	public static IBlockState chooseModPolishedDioriteSlabState(boolean upper)
+	{
+		return null;
+	}
 	
 	// Fletching Table
 	public static IBlockState chooseModFletchingTableState()
 	{
 		return Blocks.CRAFTING_TABLE.getDefaultState();
 	}
+	
+	
+	// Flowers
+	public static IBlockState chooseModCornflower()
+	{
+		return null;
+	}
+	public static IBlockState chooseModLilyOfTheValley()
+	{
+		return null;
+	}
+	
+	
 	
 	
 	// Glazed Terracotta
