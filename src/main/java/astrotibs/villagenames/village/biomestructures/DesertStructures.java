@@ -143,19 +143,16 @@ public class DesertStructures
         {
         	if (this.field_143015_k < 0)
             {
-            	if (this.field_143015_k < 0)
-                {
-            		this.field_143015_k = StructureVillageVN.getMedianGroundLevel(world,
-            				// Set the bounding box version as this bounding box but with Y going from 0 to 512
-            				new StructureBoundingBox(
-            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.coordBaseMode.getHorizontalIndex()]),
-            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.coordBaseMode.getHorizontalIndex()])),
-            				true, (byte)7, this.coordBaseMode.getHorizontalIndex());
-            		
-                    if (this.field_143015_k < 0) {return true;} // Do not construct in a void
+        		this.field_143015_k = StructureVillageVN.getMedianGroundLevel(world,
+        				// Set the bounding box version as this bounding box but with Y going from 0 to 512
+        				new StructureBoundingBox(
+        						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.coordBaseMode.getHorizontalIndex()]),
+        						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.coordBaseMode.getHorizontalIndex()])),
+        				true, (byte)7, this.coordBaseMode.getHorizontalIndex());
+        		
+                if (this.field_143015_k < 0) {return true;} // Do not construct in a void
 
-                    this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.minY - GROUND_LEVEL, 0);
-                }
+                this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.minY - GROUND_LEVEL, 0);
             }
         	
         	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -496,19 +493,16 @@ public class DesertStructures
         {
         	if (this.field_143015_k < 0)
             {
-            	if (this.field_143015_k < 0)
-                {
-            		this.field_143015_k = StructureVillageVN.getMedianGroundLevel(world,
-            				// Set the bounding box version as this bounding box but with Y going from 0 to 512
-            				new StructureBoundingBox(
-            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.coordBaseMode.getHorizontalIndex()]),
-            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.coordBaseMode.getHorizontalIndex()])),
-            				true, (byte)15, this.coordBaseMode.getHorizontalIndex());
-            		
-                    if (this.field_143015_k < 0) {return true;} // Do not construct in a void
+        		this.field_143015_k = StructureVillageVN.getMedianGroundLevel(world,
+        				// Set the bounding box version as this bounding box but with Y going from 0 to 512
+        				new StructureBoundingBox(
+        						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.coordBaseMode.getHorizontalIndex()]),
+        						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.coordBaseMode.getHorizontalIndex()])),
+        				true, (byte)15, this.coordBaseMode.getHorizontalIndex());
+        		
+                if (this.field_143015_k < 0) {return true;} // Do not construct in a void
 
-                    this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.minY - GROUND_LEVEL, 0);
-                }
+                this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.minY - GROUND_LEVEL, 0);
             }
         	
         	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -856,19 +850,16 @@ public class DesertStructures
         {
         	if (this.field_143015_k < 0)
             {
-            	if (this.field_143015_k < 0)
-                {
-            		this.field_143015_k = StructureVillageVN.getMedianGroundLevel(world,
-            				// Set the bounding box version as this bounding box but with Y going from 0 to 512
-            				new StructureBoundingBox(
-            						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.coordBaseMode.getHorizontalIndex()]),
-            						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.coordBaseMode.getHorizontalIndex()])),
-            				true, (byte)14, this.coordBaseMode.getHorizontalIndex());
-            		
-                    if (this.field_143015_k < 0) {return true;} // Do not construct in a void
+        		this.field_143015_k = StructureVillageVN.getMedianGroundLevel(world,
+        				// Set the bounding box version as this bounding box but with Y going from 0 to 512
+        				new StructureBoundingBox(
+        						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.coordBaseMode.getHorizontalIndex()]),
+        						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.coordBaseMode.getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.coordBaseMode.getHorizontalIndex()])),
+        				true, (byte)14, this.coordBaseMode.getHorizontalIndex());
+        		
+                if (this.field_143015_k < 0) {return true;} // Do not construct in a void
 
-                    this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.minY - GROUND_LEVEL, 0);
-                }
+                this.boundingBox.offset(0, this.field_143015_k - this.boundingBox.minY - GROUND_LEVEL, 0);
             }
         	
         	IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.standing_sign.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
