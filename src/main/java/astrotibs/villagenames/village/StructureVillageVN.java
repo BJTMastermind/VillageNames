@@ -90,14 +90,8 @@ public class StructureVillageVN
 	//   N E S W
 	};
 
-	// Indexed by [orientation][horizIndex]
-	public static final int[][] VINE_META_ARRAY = new int[][]{
-		{4,8,1,2}, // Forward
-		{2,4,2,4}, // Right
-		{1,2,4,8}, // Back
-		{8,1,8,1}, // Left
-	   //N E S W
-	};
+	// Indexed by [orientation]
+	public static final int[] VINE_META_ARRAY = new int[]{1,2,4,8};
 	
 	// Indexed by [orientation]
 	public static final int[] LADDER_META_ARRAY = new int[]{2,5,3,4};
@@ -2303,7 +2297,7 @@ public class StructureVillageVN
 	 */
 	public static int chooseVineMeta(int orientation, EnumFacing coordBaseMode)
 	{
-		return VINE_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+		return VINE_META_ARRAY[orientation];
 	}
     /**
 	 * furnaceOrientation:

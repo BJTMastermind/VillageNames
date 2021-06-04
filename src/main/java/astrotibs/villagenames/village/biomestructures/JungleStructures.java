@@ -2571,18 +2571,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -3157,18 +3157,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -3796,18 +3796,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -4297,18 +4297,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -4823,18 +4823,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -5339,18 +5339,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -5826,18 +5826,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -6393,18 +6393,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -6574,18 +6574,18 @@ public class JungleStructures
     		
             
         	// Stripped Log (Across)
-        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(4+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 4:0)), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(4), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAcrossState.getBlock()==Blocks.LOG || biomeStrippedLogHorizAcrossState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -6614,11 +6614,11 @@ public class JungleStructures
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 1:0));
+            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 2);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 1:0));
+            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 2);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -7145,18 +7145,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -7665,18 +7665,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -8002,13 +8002,13 @@ public class JungleStructures
     			// Left rail
     			{7,1,4, StructureVillageVN.chooseFurnaceMeta(1, this.getCoordBaseMode())},
     			{7,2,3, StructureVillageVN.chooseFurnaceMeta(1, this.getCoordBaseMode())},
-    			{7,3,2, this.getCoordBaseMode().getHorizontalIndex()%2==0? 1:0}, // Along
+    			{7,3,2, 1}, // Along
     			{7,2,1, StructureVillageVN.chooseFurnaceMeta(3, this.getCoordBaseMode())},
     			{7,1,0, StructureVillageVN.chooseFurnaceMeta(3, this.getCoordBaseMode())},
     			// Right rail
     			{9,1,4, StructureVillageVN.chooseFurnaceMeta(1, this.getCoordBaseMode())},
     			{9,2,3, StructureVillageVN.chooseFurnaceMeta(1, this.getCoordBaseMode())},
-    			{9,3,2, this.getCoordBaseMode().getHorizontalIndex()%2==0? 1:0}, // Along
+    			{9,3,2, 1}, // Along
     			{9,2,1, StructureVillageVN.chooseFurnaceMeta(3, this.getCoordBaseMode())},
     			{9,1,0, StructureVillageVN.chooseFurnaceMeta(3, this.getCoordBaseMode())},
     			})
@@ -8162,18 +8162,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -8752,18 +8752,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -9476,18 +9476,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -9981,18 +9981,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -10527,18 +10527,18 @@ public class JungleStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -11028,18 +11028,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -11523,18 +11523,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -12053,18 +12053,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -12476,18 +12476,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -12916,18 +12916,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -13331,18 +13331,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -13827,18 +13827,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -14324,18 +14324,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -14791,18 +14791,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -15210,20 +15210,20 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	if (this.averageGroundLvl < 0)
+        	if (this.averageGroundLevel < 0)
     		{
-    			if (this.averageGroundLvl < 0)
+    			if (this.averageGroundLevel < 0)
     			{
-    				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+    				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
     						// Set the bounding box version as this bounding box but with Y going from 0 to 512
     						new StructureBoundingBox(
     								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
     								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
     						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
     				
-    				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+    				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
     				
-    				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+    				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
     			}
     		}
     		
@@ -15744,18 +15744,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -16099,20 +16099,20 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	if (this.averageGroundLvl < 0)
+        	if (this.averageGroundLevel < 0)
     		{
-    			if (this.averageGroundLvl < 0)
+    			if (this.averageGroundLevel < 0)
     			{
-    				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+    				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
     						// Set the bounding box version as this bounding box but with Y going from 0 to 512
     						new StructureBoundingBox(
     								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
     								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
     						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
     				
-    				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+    				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
     				
-    				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+    				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
     			}
     		}
     		
@@ -16655,18 +16655,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -17103,18 +17103,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -17520,18 +17520,18 @@ public class JungleStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -17948,18 +17948,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -18410,18 +18410,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -18871,18 +18871,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -19379,18 +19379,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -19895,18 +19895,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -20284,18 +20284,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	if (this.averageGroundLvl < 0)
+        	if (this.averageGroundLevel < 0)
             {
-        		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+        		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
         				// Set the bounding box version as this bounding box but with Y going from 0 to 512
         				new StructureBoundingBox(
         						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
         						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
         				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
         		
-                if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+                if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 
-                this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+                this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
             }
         	
         	// In the event that this village construction is resuming after being unloaded
@@ -20600,20 +20600,20 @@ public class JungleStructures
 		@Override
 		public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
 		{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				if (this.averageGroundLvl < 0)
+				if (this.averageGroundLevel < 0)
 				{
-					this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+					this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 							// Set the bounding box version as this bounding box but with Y going from 0 to 512
 							new StructureBoundingBox(
 									this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 									this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 							true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 					
-					if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+					if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 					
-					this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+					this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 				}
 			}
 			
@@ -21009,18 +21009,18 @@ public class JungleStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded

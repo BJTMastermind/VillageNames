@@ -34,9 +34,12 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.tileentity.TileEntityChest;
@@ -50,6 +53,7 @@ import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 public class SwampStructures
 {
@@ -320,7 +324,7 @@ public class SwampStructures
             IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
-        	biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+        	biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1);
             for(int[] uuvvww : new int[][]{
             	{2,7,4, 3,7,4}, 
             	{5,6,4, 5,6,4}, 
@@ -1512,7 +1516,7 @@ public class SwampStructures
 			// Eastward
 			StructureVillageVN.generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.minZ + new int[]{4,5,5,4}[this.getCoordBaseMode().getHorizontalIndex()], EnumFacing.EAST, this.getComponentType());
 			// Southward
-			StructureVillageVN.generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX + new int[]{3,5,5,4}[this.getCoordBaseMode().getHorizontalIndex()], this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
+			StructureVillageVN.generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX + new int[]{4,5,5,4}[this.getCoordBaseMode().getHorizontalIndex()], this.boundingBox.minY, this.boundingBox.maxZ + 1, EnumFacing.SOUTH, this.getComponentType());
 			// Westward
 			StructureVillageVN.generateAndAddRoadPiece((StructureVillagePieces.Start)start, components, random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.minZ + new int[]{5,4,4,5}[this.getCoordBaseMode().getHorizontalIndex()], EnumFacing.WEST, this.getComponentType());
 		}
@@ -1898,18 +1902,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -2264,18 +2268,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -2691,18 +2695,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -3307,18 +3311,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -3869,18 +3873,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -4367,18 +4371,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -5024,18 +5028,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -5162,18 +5166,18 @@ public class SwampStructures
             
             
         	// Stripped Log (Across)
-        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), true);
+        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAcrossState.getBlock()==Blocks.LOG || biomeStrippedLogHorizAcrossState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -5251,7 +5255,7 @@ public class SwampStructures
             	{3,2,2, 3,2,8}, 
             	{4,2,3, 4,3,5}, {4,2,7, 4,2,7}, {4,4,3, 4,4,3}, {4,4,5, 4,4,5}, {4,5,3, 4,5,5}, 
             	{5,2,2, 5,2,8}, {5,3,2, 5,3,2}, {5,6,6, 5,6,6}, 
-            	{6,2,2, 6,2,5}, {6,2,7, 6,2,7}, {6,3,2, 6,4,2}, {5,6,2, 7,6,2}, 
+            	{6,2,2, 6,2,5}, {6,2,7, 6,2,7}, {6,3,2, 6,4,2}, {5,6,2, 7,6,2}, {6,7,2, 6,7,2}, 
             	{7,2,2, 7,2,8}, {7,3,2, 7,3,2}, {7,3,6, 7,3,6}, {7,6,6, 7,6,6}, 
             	{8,2,3, 8,3,5}, {8,4,3, 8,4,3}, {8,4,5, 8,4,5}, {8,5,3, 8,5,5}, {8,2,7, 8,2,7}, 
             	{9,2,6, 9,2,8}, 
@@ -5547,18 +5551,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -6000,7 +6004,7 @@ public class SwampStructures
         	for (int[] uvw : new int[][]{
             	{6,3,6}, 
             	}) {
-            	this.setBlockState(world, Blocks.tnt.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+            	this.setBlockState(world, Blocks.TNT.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
             }
         	
         	
@@ -6011,7 +6015,7 @@ public class SwampStructures
         	int chestW = 6;
         	int chestO = 0; // 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
-        	world.setBlockState(chestPos, Blocks.trapped_chest.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
+        	world.setBlockState(chestPos, Blocks.TRAPPED_CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
@@ -6161,9 +6165,9 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
@@ -6171,9 +6175,9 @@ public class SwampStructures
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
 				if (this.averageGroundLevel <= this.STRUCTURE_HEIGHT+5) {return true;} // Do not construct if ground level is too low
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		    		
     		// In the event that this village construction is resuming after being unloaded
@@ -6515,7 +6519,7 @@ public class SwampStructures
     			{1,2,4, 1}, 
     			{3,1,2, 0}, 
     			}) {
-    			this.setBlockState(world, Blocks.redstone_torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+    			this.setBlockState(world, Blocks.REDSTONE_TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
         	
         	
@@ -6541,9 +6545,9 @@ public class SwampStructures
             	
                 // Set contents
             	BlockPos pos = new BlockPos(x, y, z);
-                if (structureBB.isVecInside(pos) && world.getBlockState(pos) != Blocks.dispenser)
+                if (structureBB.isVecInside(pos) && world.getBlockState(pos) != Blocks.DISPENSER)
                 {
-                	world.setBlockState(new BlockPos(uvwo[0], uvwo[1], uvwo[2]), Blocks.dispenser.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
+                	world.setBlockState(pos, Blocks.DISPENSER.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode())), 2);
                 	//world.setBlockMetadataWithNotify(x, y, z, StructureVillageVN.chooseFurnaceMeta(uvwo[3], this.getCoordBaseMode()), 2);
                 	
                     TileEntityDispenser tileentitydispenser = (TileEntityDispenser)world.getTileEntity(pos);
@@ -6551,21 +6555,25 @@ public class SwampStructures
                     if (tileentitydispenser != null)
                     {
                     	// Potion IDs taken from https://www.minecraftinfo.com/IDList.htm
-                    	int potionID;
-                    	
-                    	switch(random.nextInt(5))
+                    	PotionType potionID;
+
+                    	int number_of_potions = 2; // How many attempts to add potions to a slot. Sometimes there's slot overlap
+                    	for (int i=0; i<number_of_potions; i++)
                     	{
-                    	default:
-                    	case 0: potionID = 16385; break; // Splash potion of Regeneration (33 sec)
-                    	case 1: potionID = 16389; break; // Splash potion of Healing
-                    	case 2: potionID = 16392; break; // Splash potion of Weakness (1m07s)
-                    	case 3: potionID = 16394; break; // Splash potion of Slowness (1m07s)
-                    	case 4: potionID = 16396; break; // Splash potion of Harming
+                        	switch(random.nextInt(5))
+                        	{
+                        	default:
+                        	case 0: potionID = PotionTypes.REGENERATION; break;
+                        	case 1: potionID = PotionTypes.HEALING; break;
+                        	case 2: potionID = PotionTypes.WEAKNESS; break;
+                        	case 3: potionID = PotionTypes.SLOWNESS; break;
+                        	case 4: potionID = PotionTypes.HARMING; break;
+                        	}
+                        	
+                        	ItemStack dispenserItem = PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), potionID);
+                        	
+                        	tileentitydispenser.setInventorySlotContents(random.nextInt(tileentitydispenser.getSizeInventory()), dispenserItem);
                     	}
-                    	
-                    	ItemStack dispenserItem = new ItemStack(Items.potionitem, 1, potionID);
-                    	
-                    	tileentitydispenser.setInventorySlotContents(random.nextInt(tileentitydispenser.getSizeInventory()), dispenserItem);
                     }
                 }
             }
@@ -6665,7 +6673,7 @@ public class SwampStructures
                 		(double)z + 0.5D,
                 		random.nextFloat()*360, 0.0F);
                 zombie.enablePersistence();
-                zombie.setVillager(true);
+                VillagerRegistry.setRandomProfession(zombie, random);
                 
                 if (GeneralConfig.nameEntities)
             	{
@@ -6781,18 +6789,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -7156,7 +7164,7 @@ public class SwampStructures
             	{4,1,5}, {4,1,6}, {4,1,7}, 
             	})
             {
-            	this.setBlockState(world, Blocks.pumpkin.getStateFromMeta(random.nextInt(3)), uvw[0], uvw[1], uvw[2], structureBB); // Random pumpkin orientation
+            	this.setBlockState(world, Blocks.PUMPKIN.getStateFromMeta(random.nextInt(3)), uvw[0], uvw[1], uvw[2], structureBB); // Random pumpkin orientation
             	this.setBlockState(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB); 
             }
             
@@ -7429,18 +7437,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -7988,18 +7996,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -8133,7 +8141,7 @@ public class SwampStructures
     		for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward, -1:upright;
     			{6,3,5, -1}, {6,3,8, -1}, 
     			}) {
-    			this.setBlockState(world, Blocks.redstone_torch.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+    			this.setBlockState(world, Blocks.REDSTONE_TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		
@@ -8399,7 +8407,7 @@ public class SwampStructures
             	{6,3,11, GeneralConfig.useVillageColors ? this.townColor2 : 13}, // Green
         		})
             {
-            	this.setBlockState(world, Blocks.STAINED_GLASS_pane.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
+            	this.setBlockState(world, Blocks.STAINED_GLASS_PANE.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
             }
             
     		
@@ -8607,18 +8615,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -8831,7 +8839,7 @@ public class SwampStructures
     			{1,1,8, 1,1,8}, 
     			})
     		{
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.clay.getDefaultState(), Blocks.clay.getDefaultState(), false);
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CLAY.getDefaultState(), Blocks.CLAY.getDefaultState(), false);
     		}
     		
     		
@@ -9178,18 +9186,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -9787,18 +9795,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -9923,18 +9931,18 @@ public class SwampStructures
             
             
         	// Stripped Logs (Across)
-        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), true);
+        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAcrossState.getBlock()==Blocks.LOG || biomeStrippedLogHorizAcrossState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -10216,7 +10224,7 @@ public class SwampStructures
     	public String namePrefix = "";
     	public String nameRoot = "";
     	public String nameSuffix = "";
-    	public BiomeGenBase biome = null;
+    	public Biome biome = null;
     	
     	private static final String[] foundationPattern = new String[]{
 				"         ", 
@@ -10278,18 +10286,18 @@ public class SwampStructures
     	
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
 			// In the event that this village construction is resuming after being unloaded
@@ -10414,7 +10422,7 @@ public class SwampStructures
     		}
     		
     		// Logs (Along)
-    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), false);
+    		IBlockState biomeLogHorAlongState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), false);
     		for (int[] uuvvww : new int[][] { { 1, 6, 1, 1, 6, 7 }, { 7, 6, 1, 7, 6, 7 } })
     		{
     			fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeLogHorAlongState, biomeLogHorAlongState, false); 
@@ -10440,7 +10448,7 @@ public class SwampStructures
     		Block biomeWoodStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_STAIRS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
     		for (int[] uvwo : new int[][] { { 4, 3, 5, 3 }, { 4, 2, 4, 3 }, { 4, 1, 3, 3 } })
     		{
-    			this.setBlockState(world, biomeWoodStairsState.getBlock().getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
+    			this.setBlockState(world, biomeWoodStairsBlock.getStateFromMeta(uvwo[3]%4+(uvwo[3]/4)*4), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		// Wooden Slabs (Bottom)
@@ -10474,7 +10482,7 @@ public class SwampStructures
     		// Torches
     		for (int[] uvwo : new int[][] { { 2, 6, 4, 1 }, { 6, 6, 4, 3 } })
     		{
-    			setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3], this.getCoordBaseMode().getHorizontalIndex())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+    			setBlockState(world, Blocks.TORCH.getStateFromMeta(StructureVillageVN.getTorchRotationMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
     		}
     		
     		// Trapdoors (Top Horizontal)
@@ -10702,20 +10710,20 @@ public class SwampStructures
 		@Override
 		public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
 		{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				if (this.averageGroundLvl < 0)
+				if (this.averageGroundLevel < 0)
 				{
-					this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+					this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 							// Set the bounding box version as this bounding box but with Y going from 0 to 512
 							new StructureBoundingBox(
 									this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 									this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 							true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 					
-					if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+					if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 					
-					this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+					this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 				}
 			}
 			
@@ -11302,18 +11310,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -11756,18 +11764,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -12261,18 +12269,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -12452,18 +12460,18 @@ public class SwampStructures
             
             
         	// Stripped Logs (Across)
-        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), true);
+        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAcrossState.getBlock()==Blocks.LOG || biomeStrippedLogHorizAcrossState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -12483,11 +12491,11 @@ public class SwampStructures
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 1:0));
+            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 2);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 1:0));
+            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 2);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -12811,18 +12819,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -13336,18 +13344,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -13693,7 +13701,7 @@ public class SwampStructures
         		{2,1,5}, 
         		})
             {
-        		this.setBlockState(world, Blocks.pumpkin.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
+        		this.setBlockState(world, Blocks.PUMPKIN.getDefaultState(), uvw[0], uvw[1], uvw[2], structureBB);
             }
             
             
@@ -13908,18 +13916,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -14458,18 +14466,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -14897,18 +14905,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -15250,7 +15258,7 @@ public class SwampStructures
             	{6,2,8 , GeneralConfig.useVillageColors ? this.townColor2 : 13}, // Green
         		})
             {
-            	this.setBlockState(world, Blocks.STAINED_GLASS_pane.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
+            	this.setBlockState(world, Blocks.STAINED_GLASS_PANE.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
             }
             
     		
@@ -15455,18 +15463,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -15638,6 +15646,9 @@ public class SwampStructures
     			{3,2,4, 3,3,4}, 
     			{3,2,3, 3,3,3}, 
     			{3,3,1, 4,4,2}, 
+    			// Next to the tree
+    			{2,1,-1, 2,2,4}, 
+    			{3,1,-1, 3,2,-1}, 
     			})
     		{
             	this.fillWithAir(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5]);
@@ -15673,11 +15684,11 @@ public class SwampStructures
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 1:0));
+            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 2);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(this.getCoordBaseMode().getHorizontalIndex()%2==0? 1:0));
+            		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 2);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -15689,18 +15700,18 @@ public class SwampStructures
             
             
         	// Stripped Log (Across)
-        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, coordBaseMode.getHorizontalIndex(), true);
+        	IBlockState biomeLogHorAcrossState = StructureVillageVN.getHorizontalPillarState(biomeLogVertState, this.getCoordBaseMode().getHorizontalIndex(), true);
         	IBlockState biomeStrippedLogHorizAcrossState = biomeLogHorAcrossState;
         	// Try to see if stripped logs exist
         	if (biomeStrippedLogHorizAcrossState.getBlock()==Blocks.LOG || biomeStrippedLogHorizAcrossState.getBlock()==Blocks.LOG2)
         	{
             	if (biomeLogVertState.getBlock() == Blocks.LOG)
             	{
-            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1);
             	}
             	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
             	{
-            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(this.getCoordBaseMode().getHorizontalIndex()%2!=0? 1:0));
+            		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1);
             	}
         	}
             for(int[] uuvvww : new int[][]{
@@ -16101,18 +16112,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -16557,18 +16568,18 @@ public class SwampStructures
     	@Override
     	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
     	{
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -16805,7 +16816,7 @@ public class SwampStructures
             
             
             // Clay
-        	IBlockState biomeClayState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.clay.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	IBlockState biomeClayState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.CLAY.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
             for(int[] uuvvww : new int[][]{
             	{5,0,1, 6,0,1}, {6,0,2, 7,0,2}, {7,0,3, 7,0,3}, 
             	{2,0,4, 2,0,4}, {3,0,3, 4,0,4}, {5,0,4, 5,0,5}, 
@@ -17056,18 +17067,18 @@ public class SwampStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-        	if (this.averageGroundLvl < 0)
+        	if (this.averageGroundLevel < 0)
             {
-        		this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+        		this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
         				// Set the bounding box version as this bounding box but with Y going from 0 to 512
         				new StructureBoundingBox(
         						this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
         						this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
         				true, (byte)1, this.getCoordBaseMode().getHorizontalIndex());
         		
-                if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+                if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 
-                this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+                this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
             }
         	
         	// In the event that this village construction is resuming after being unloaded
@@ -17372,18 +17383,18 @@ public class SwampStructures
         @Override
         public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBB)
         {
-			if (this.averageGroundLvl < 0)
+			if (this.averageGroundLevel < 0)
 			{
-				this.averageGroundLvl = StructureVillageVN.getMedianGroundLevel(world,
+				this.averageGroundLevel = StructureVillageVN.getMedianGroundLevel(world,
 						// Set the bounding box version as this bounding box but with Y going from 0 to 512
 						new StructureBoundingBox(
 								this.boundingBox.minX+(new int[]{INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U,INCREASE_MIN_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.minZ+(new int[]{INCREASE_MIN_W,INCREASE_MIN_U,DECREASE_MAX_W,INCREASE_MIN_U}[this.getCoordBaseMode().getHorizontalIndex()]),
 								this.boundingBox.maxX-(new int[]{DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U,DECREASE_MAX_W}[this.getCoordBaseMode().getHorizontalIndex()]), this.boundingBox.maxZ-(new int[]{DECREASE_MAX_W,DECREASE_MAX_U,INCREASE_MIN_W,DECREASE_MAX_U}[this.getCoordBaseMode().getHorizontalIndex()])),
 						true, MEDIAN_BORDERS, this.getCoordBaseMode().getHorizontalIndex());
 				
-				if (this.averageGroundLvl < 0) {return true;} // Do not construct in a void
+				if (this.averageGroundLevel < 0) {return true;} // Do not construct in a void
 				
-				this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.minY - GROUND_LEVEL, 0);
+				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
     		
     		// In the event that this village construction is resuming after being unloaded
@@ -17601,11 +17612,11 @@ public class SwampStructures
     	{
         	if (biomeLogVertState.getBlock() == Blocks.LOG)
         	{
-        		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(coordBaseMode.getHorizontalIndex()%2!=0? 1:0));
+        		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1);
         	}
         	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
         	{
-        		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(coordBaseMode.getHorizontalIndex()%2!=0? 1:0));
+        		biomeStrippedLogHorizAcrossState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1);
         	}
     	}
     	// Stripped Log (Along)
@@ -17615,11 +17626,11 @@ public class SwampStructures
     	{
         	if (biomeLogVertState.getBlock() == Blocks.LOG)
         	{
-        		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 1+(coordBaseMode.getHorizontalIndex()%2==0? 1:0));
+        		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState), 2);
         	}
         	else if (biomeLogVertState.getBlock() == Blocks.LOG2)
         	{
-        		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 1+(coordBaseMode.getHorizontalIndex()%2==0? 1:0));
+        		biomeStrippedLogHorizAlongState = ModObjects.chooseModStrippedLogState(biomeLogVertState.getBlock().getMetaFromState(biomeLogVertState)+4, 2);
         	}
     	}
     	

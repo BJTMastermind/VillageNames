@@ -235,6 +235,14 @@ public class ModObjects {
 		// TODO - Botania available in 1.10
 		return null;
 	}
+	public static Block chooseModAndesiteStairsBlock()
+	{
+		return null;
+	}
+	public static Block chooseModPolishedAndesiteStairsBlock()
+	{
+		return null;
+	}
 
 	// Bamboo
 	public static IBlockState chooseModBambooStalk()
