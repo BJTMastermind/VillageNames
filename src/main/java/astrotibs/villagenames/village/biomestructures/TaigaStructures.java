@@ -191,8 +191,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -508,8 +514,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -1322,8 +1334,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -1727,8 +1745,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -2133,8 +2157,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -2705,8 +2735,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -3311,8 +3347,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -3928,8 +3970,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -4404,8 +4452,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -4808,8 +4862,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -5271,8 +5331,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -5834,8 +5900,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -6254,8 +6326,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -6828,8 +6906,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -7290,8 +7374,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -7872,8 +7962,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -8355,8 +8451,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -8928,8 +9030,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -9323,8 +9431,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -9776,8 +9890,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -10220,8 +10340,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -10670,8 +10796,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -11141,8 +11273,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -11568,8 +11706,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -12007,8 +12151,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -12608,8 +12758,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -13098,8 +13254,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -13592,8 +13754,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -13980,8 +14148,14 @@ public class TaigaStructures
         		}
         		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
         		{
+        			// If the space is blank and the block itself is dirt, add dirt foundation
+        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
+        		}
+        		
+        		// Then, if the top is dirt with a non-full cube above it, make it grass
+        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).getBlock().isNormalCube())
+        		{
         			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
         			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
         		}
             }}
@@ -14133,6 +14307,8 @@ public class TaigaStructures
     	// Establish top and filler blocks, substituting Grass and Dirt if they're null
     	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.dirt.getDefaultState(), materialType, biome, disallowModSubs);
     	IBlockState biomeFillerState=biomeDirtState; if (biome!=null && biome.fillerBlock!=null) {biomeFillerState=biome.fillerBlock;}
+    	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.grass.getDefaultState(), materialType, biome, disallowModSubs);
+    	IBlockState biomeTopState=biomeGrassState; if (biome!=null && biome.topBlock!=null) {biomeTopState=biome.topBlock;}
     	
 		IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.cobblestone.getDefaultState(), materialType, biome, disallowModSubs);
     	IBlockState biomeStoneStairsState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.stone_stairs.getDefaultState(), materialType, biome, disallowModSubs);
@@ -14159,12 +14335,16 @@ public class TaigaStructures
     			
     			// Left
     			BlueprintData.addFillWithBlocks(blueprint, -1, 0, -2+(shift?1:0), -1, 0, 1+(shift?1:0), biomeTrapdoorState.getBlock().getStateFromMeta(horizIndex%2==0 ? 6 : 4));
+    			BlueprintData.addFillWithBlocks(blueprint, -1, -1, -2+(shift?1:0), -1, 1, 1+(shift?1:0), biomeTopState);
     			// Right
     			BlueprintData.addFillWithBlocks(blueprint, 1, 0, -2+(shift?1:0), 1, 0, 1+(shift?1:0), biomeTrapdoorState.getBlock().getStateFromMeta(horizIndex%2==0 ? 7 : 5));
+    			BlueprintData.addFillWithBlocks(blueprint, 1, -1, -2+(shift?1:0), 1, -1, 1+(shift?1:0), biomeTopState);
     			// Front
     			BlueprintData.addFillWithBlocks(blueprint, 0, 0, -3+(shift?1:0), 0, 0, -3+(shift?1:0), biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{4, 7, 5, 6})[horizIndex]));
+    			BlueprintData.addFillWithBlocks(blueprint, 0, -1, -3+(shift?1:0), 0, -1, -3+(shift?1:0), biomeTopState);
     			// Back
     			BlueprintData.addFillWithBlocks(blueprint, 0, 0, 2+(shift?1:0), 0, 0, 2+(shift?1:0), biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{5, 6, 4, 7})[horizIndex]));
+    			BlueprintData.addFillWithBlocks(blueprint, 0, -1, 2+(shift?1:0), 0, -1, 2+(shift?1:0), biomeTopState);
     			
     			break;
     			
@@ -14176,12 +14356,16 @@ public class TaigaStructures
     			
     			// Left
     			BlueprintData.addFillWithBlocks(blueprint, -3+(shift?1:0), 0, 0, -3+(shift?1:0), 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(horizIndex%2==0 ? 6 : 4));
+    			BlueprintData.addFillWithBlocks(blueprint, -3+(shift?1:0), -1, 0, -3+(shift?1:0), -1, 0, biomeTopState);
     			// Right
     			BlueprintData.addFillWithBlocks(blueprint, 2+(shift?1:0), 0, 0, 2+(shift?1:0), 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(horizIndex%2==0 ? 7 : 5));
+    			BlueprintData.addFillWithBlocks(blueprint, 2+(shift?1:0), -1, 0, 2+(shift?1:0), -1, 0, biomeTopState);
     			// Front
     			BlueprintData.addFillWithBlocks(blueprint, -2+(shift?1:0), 0, -1, 1+(shift?1:0), 0, -1, biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{4, 7, 5, 6})[horizIndex]));
+    			BlueprintData.addFillWithBlocks(blueprint, -2+(shift?1:0), -1, -1, 1+(shift?1:0), -1, -1, biomeTopState);
     			// Back
     			BlueprintData.addFillWithBlocks(blueprint, -2+(shift?1:0), 0, 1, 1+(shift?1:0), 0, 1, biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{5, 6, 4, 7})[horizIndex]));
+    			BlueprintData.addFillWithBlocks(blueprint, -2+(shift?1:0), -1, 1, 1+(shift?1:0), -1, 1, biomeTopState);
     			break;
     		}
     		break;
@@ -14261,10 +14445,10 @@ public class TaigaStructures
         		}
         		else if (biomeCobblestoneBlock==Blocks.sandstone)
         		{
-        			// Try a sandstone wall--use a slab otherwise
-        			// TODO - mod sandstone slabs?
-        			boulderTopperBlock=null;
-        			if (boulderTopperBlock==null) {boulderTopperBlock = Blocks.sandstone;}
+        			// Try a sandstone wall--use a block otherwise
+        			IBlockState testState = ModObjects.chooseModSandstoneWall(materialType==MaterialType.MESA);
+        			if (testState==null) {boulderTopperBlock = Blocks.sandstone;}
+        			else {boulderTopperBlock = testState.getBlock(); boulderTopperMeta = testState.getBlock().getMetaFromState(testState);}
         		}
         		else if (biomeCobblestoneBlock!=Blocks.cobblestone)
         		{
@@ -14304,16 +14488,11 @@ public class TaigaStructures
     	case 4: // Campfire
     		
     		BlueprintData.addPlaceBlockAndClearAbove(blueprint, 0, 0, 0, campfireState);
+    		BlueprintData.addPlaceBlock(blueprint, 0, -1, 0, biomeTopState);
     		
     		break;
     		
     	case 5: // Campfire over hay in bin
-    		
-    		// Foundation
-    		//for (int i=-1 ; i<=1; i++) {for (int l=-1 ; l<=1; l++) {if (i==0 || l==0) {
-    		//	BlueprintData.addFillBelowTo(blueprint, i, -2, l, biomeFillerState);
-    		//	BlueprintData.addPlaceBlock(blueprint, i, -1, l, biomeGrassState);
-    		//}}}
     		
 			// Left
 			BlueprintData.addPlaceBlockAndClearAbove(blueprint, -1, 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(horizIndex%2==0 ? 6 : 4));
@@ -14341,10 +14520,10 @@ public class TaigaStructures
     		}
     		else if (biomeCobblestoneState.getBlock()==Blocks.sandstone)
     		{
-    			// Try a sandstone wall--use a slab otherwise
-    			// TODO - mod standstone slab?
-    			boulderTopperBlock=null;
-    			if (boulderTopperBlock==null) {boulderTopperBlock = Blocks.sandstone;}
+    			// Try a sandstone wall--use a block otherwise
+    			IBlockState testState = ModObjects.chooseModSandstoneWall(materialType==MaterialType.MESA);
+    			if (testState==null) {boulderTopperBlock = Blocks.sandstone;}
+    			else {boulderTopperBlock = testState.getBlock(); boulderTopperMeta = testState.getBlock().getMetaFromState(testState);}
     		}
     		else if (biomeCobblestoneState.getBlock()!=Blocks.cobblestone)
     		{
@@ -14353,6 +14532,7 @@ public class TaigaStructures
     		
     		BlueprintData.addPlaceBlock(blueprint, 0, 0, 0, boulderTopperBlock.getStateFromMeta(boulderTopperMeta));
     		BlueprintData.addPlaceBlockAndClearAbove(blueprint, 0, 1, 0, Blocks.torch.getStateFromMeta(0));
+    		BlueprintData.addPlaceBlock(blueprint, 0, -1, 0, biomeTopState);
     		
     		break;
         }
