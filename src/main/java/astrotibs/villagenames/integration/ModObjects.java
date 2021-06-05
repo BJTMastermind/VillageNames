@@ -791,6 +791,19 @@ public class ModObjects {
 	}
 	
 	
+	// Flowers
+	public static IBlockState chooseModCornflower()
+	{
+		return null;
+	}
+	public static IBlockState chooseModLilyOfTheValley()
+	{
+		return null;
+	}
+	
+	
+	
+	
 	// Glazed Terracotta
 	public static IBlockState chooseModGlazedTerracottaState(int colorMeta, int facingMeta)
 	{
