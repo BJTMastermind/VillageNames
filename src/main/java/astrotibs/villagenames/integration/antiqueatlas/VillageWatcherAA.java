@@ -132,6 +132,16 @@ public class VillageWatcherAA
 	SNOWY_ICE_SPIRE = "VNSnMP1", // Snowy Ice Spire
 	SNOWY_FOUNTAIN = "VNSnMP2", // Snowy Fountain
 	SNOWY_PAVILION = "VNSnMP3", // Snowy Pavilion
+			
+	JUNGLE_STATUE = "VNJuSta", // Jungle Statue
+	JUNGLE_TREE = "VNJuTre", // Jungle Tree
+	JUNGLE_GARDEN = "VNJuGar", // Jungle Garden
+	JUNGLE_VILLA = "VNJuVil", // Jungle Villa
+	
+	SWAMP_WILLOW = "VNSwWil", // Swamp Willow
+	SWAMP_STATUE = "VNSwSta", // Swamp Statue
+	SWAMP_PAVILION = "VNSwPav", // Swamp Pavilion
+	SWAMP_MONOLITH = "VNSwMon", // Swamp Monolith
 
 	// Village Structures
 	PLAINS_FLOWER_PLANTER = "VNPlAcc1", // Plains Flower Planter
@@ -301,7 +311,79 @@ public class VillageWatcherAA
 	SNOWY_TEMPLE = "VNSnTem1", // Snowy Temple
 	SNOWY_TOOL_SMITHY = "VNSnTSm1", // Snowy Tool Smithy
 	SNOWY_WEAPON_SMITHY = "VNSnWSm1", // Snowy Weapon Smithy
-	SNOWY_ROAD_DECOR = "VNSnStD1"; // Snowy Road Decor
+	SNOWY_ROAD_DECOR = "VNSnStD1", // Snowy Road Decor
+			
+	JUNGLE_ARMORER_HOUSE = "VNJuArmH", // Jungle Armorer House
+	JUNGLE_BUTCHER_SHOP = "VNJuButS", // Jungle Butcher Shop
+	JUNGLE_CARTOGRAPHER_HOUSE_1 = "VNJuCaH1", // Jungle Cartographer House 1
+	JUNGLE_CARTOGRAPHER_HOUSE_2 = "VNJuCaH2", // Jungle Cartographer House 2
+	JUNGLE_FISHER_COTTAGE = "VNJuFshC", // Jungle Fisher Cottage
+	JUNGLE_FLETCHER_HOUSE_1 = "VNJuFlH1", // Jungle Fletcher House 1
+	JUNGLE_FLETCHER_HOUSE_2 = "VNJuFlH2", // Jungle Fletcher House 2
+	JUNGLE_LARGE_HOUSE = "VNJuLaHo", // Jungle Large House
+	JUNGLE_LIBRARY = "VNJuLibr", // Jungle Library
+	JUNGLE_MASON_HOUSE = "VNJuMasH", // Jungle Mason House
+	JUNGLE_MEDIUM_HOUSE_1 = "VNJuMeH1", // Jungle Medium House 1
+	JUNGLE_MEDIUM_HOUSE_2 = "VNJuMeH2", // Jungle Medium House 2
+	JUNGLE_MEDIUM_HOUSE_3 = "VNJuMeH3", // Jungle Medium House 3
+	JUNGLE_MEDIUM_HOUSE_4 = "VNJuMeH4", // Jungle Medium House 4
+	JUNGLE_SHEPHERD_HOUSE = "VNJuShpH", // Jungle Shepherd House
+	JUNGLE_SMALL_HOUSE_1 = "VNJuSmH1", // Jungle Small House 1
+	JUNGLE_SMALL_HOUSE_2 = "VNJuSmH2", // Jungle Small House 2
+	JUNGLE_SMALL_HOUSE_3 = "VNJuSmH3", // Jungle Small House 3
+	JUNGLE_SMALL_HOUSE_4 = "VNJuSmH4", // Jungle Small House 4
+	JUNGLE_SMALL_HOUSE_5 = "VNJuSmH5", // Jungle Small House 5
+	JUNGLE_SMALL_HOUSE_6 = "VNJuSmH6", // Jungle Small House 6
+	JUNGLE_SMALL_HOUSE_7 = "VNJuSmH7", // Jungle Small House 7
+	JUNGLE_SMALL_HOUSE_8 = "VNJuSmH8", // Jungle Small House 8
+	JUNGLE_STABLE = "VNJuStbl", // Jungle Stable
+	JUNGLE_STONE_ANIMAL_PEN = "VNJuStAP", // Jungle Stone Animal Pen
+	JUNGLE_STEPPED_FARM = "VNJuStFa", // Jungle Stepped Farm
+	JUNGLE_TAMED_FARM = "VNJuTaFa", // Jungle Tamed Farm
+	JUNGLE_TANNERY_1 = "VNJuTan1", // Jungle Tannery 1
+	JUNGLE_TANNERY_2 = "VNJuTan2", // Jungle Tannery 2
+	JUNGLE_TEMPLE = "VNJuTemp", // Jungle Temple
+	JUNGLE_TOOL_SMITHY_1 = "VNJuTSm1", // Jungle Tool Smithy 1
+	JUNGLE_TOOL_SMITHY_2 = "VNJuTSm2", // Jungle Tool Smithy 2
+	JUNGLE_WEAPON_SMITHY = "VNJuWpSm", // Jungle Weapon Smithy
+	JUNGLE_WILD_FARM = "VNJuWiFa", // Jungle Wild Farm
+	JUNGLE_WOOD_ANIMAL_PEN = "VNJuWdAP", // Jungle Wood Animal Pen
+	JUNGLE_ROAD_DECOR = "VNJuStDe", // Jungle Road Decor
+	JUNGLE_ROAD_ACCENT_1 = "VNJuRdA1", // Jungle Well
+	JUNGLE_ROAD_ACCENT_2 = "VNJuRdA2", // Jungle Treehouse
+	
+	SWAMP_ANIMAL_PEN_1 = "VNSwAnP1", // Swamp Animal Pen 1
+	SWAMP_ANIMAL_PEN_2 = "VNSwAnP2", // Swamp Animal Pen 2
+	SWAMP_ARMORER_HOUSE = "VNSwArHo", // Swamp Armorer House
+	SWAMP_BUTCHER_SHOP = "VNSwBuSh", // Swamp Butcher Shop
+	SWAMP_CARTOGRAPHER_HOUSE = "VNSwCaHo", // Swamp Cartographer House
+	SWAMP_FISHER_COTTAGE_1 = "VNSwFiC1", // Swamp Fisher Cottage 1
+	SWAMP_FISHER_COTTAGE_2 = "VNSwFiC2", // Swamp Fisher Cottage 2
+	SWAMP_FLETCHER_HOUSE = "VNSwFlHo", // Swamp Fletcher House
+	SWAMP_HORRIBLE_SECRET = "VNSwHoSe", // Swamp Horrible Secret - NO MAPPING for this because it's supposed to be a secret!
+	SWAMP_HUT_FARM = "VNSwHuFa", // Swamp Hut Farm
+	SWAMP_LARGE_HOUSE = "VNSwLaHo", // Swamp Large House
+	SWAMP_LIBRARY = "VNSwLibr", // Swamp Library
+	SWAMP_MASON_HOUSE = "VNSwMaHo", // Swamp Mason House
+	SWAMP_MEDIUM_HOUSE_1 = "VNSwMeH1", // Swamp Medium House 1
+	SWAMP_MEDIUM_HOUSE_2 = "VNSwMeH2", // Swamp Medium House 2
+	SWAMP_SHEPHERD_HOUSE_1 = "VNSwShH1", // Swamp Shepherd House 1
+	SWAMP_SHEPHERD_HOUSE_2 = "VNSwShH2", // Swamp Shepherd House 2
+	SWAMP_SMALL_HOUSE_1 = "VNSwSmH1", // Swamp Small House 1
+	SWAMP_SMALL_HOUSE_2 = "VNSwSmH2", // Swamp Small House 2
+	SWAMP_SMALL_HOUSE_3 = "VNSwSmH3", // Swamp Small House 3
+	SWAMP_SMALL_HOUSE_4 = "VNSwSmH4", // Swamp Small House 4
+	SWAMP_SMALL_HOUSE_5 = "VNSwSmH5", // Swamp Small House 5
+	SWAMP_STABLE = "VNSwStb;", // Swamp Stable
+	SWAMP_TANNERY = "VNSwTann", // Swamp Tannery
+	SWAMP_TEMPLE = "VNSwTemp", // Swamp Temple
+	SWAMP_TOOL_SMITHY = "VNSwToSm", // Swamp Tool Smithy
+	SWAMP_WEAPON_SMITHY = "VNSwWeSm", // Swamp Weapon Smithy
+	SWAMP_WILD_FARM = "VNSwWiFa", // Swamp Wild Farm
+	SWAMP_ROAD_DECOR = "VNSwStDe", // Swamp Road Decor
+	SWAMP_ROAD_ACCENT = "VNSwRdAc", // Swamp Road Accent
+	
+	PLACEHOLDER = "plcholdr"; // TODO - placeholder while you add other components to the list
 	
 		
 	// Associates village structure components with an AA map icon
@@ -520,10 +602,76 @@ public class VillageWatcherAA
 		builder.put(SNOWY_WEAPON_SMITHY, TILE_VILLAGE_SMITHY);
 		builder.put(SNOWY_ROAD_DECOR, TILE_VILLAGE_TORCH);
 		
-		// TODO - Jungle
+		// Jungle
+		builder.put(JUNGLE_ARMORER_HOUSE, TILE_VILLAGE_HUT);
+		builder.put(JUNGLE_BUTCHER_SHOP, TILE_VILLAGE_BUTCHERS_SHOP);
+		builder.put(JUNGLE_CARTOGRAPHER_HOUSE_1, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(JUNGLE_CARTOGRAPHER_HOUSE_2, TILE_VILLAGE_L_HOUSE);
+		builder.put(JUNGLE_FISHER_COTTAGE, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(JUNGLE_FLETCHER_HOUSE_1, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(JUNGLE_FLETCHER_HOUSE_2, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(JUNGLE_MASON_HOUSE, TILE_VILLAGE_SMITHY);
+		builder.put(JUNGLE_LARGE_HOUSE, TILE_VILLAGE_HOUSE);
+		builder.put(JUNGLE_LIBRARY, TILE_VILLAGE_LIBRARY);
+		builder.put(JUNGLE_MEDIUM_HOUSE_1, TILE_VILLAGE_HOUSE);
+		builder.put(JUNGLE_MEDIUM_HOUSE_2, TILE_VILLAGE_HOUSE);
+		builder.put(JUNGLE_MEDIUM_HOUSE_3, TILE_VILLAGE_HUT);
+		builder.put(JUNGLE_MEDIUM_HOUSE_4, TILE_VILLAGE_HOUSE);
+		builder.put(JUNGLE_SHEPHERD_HOUSE, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(JUNGLE_SMALL_HOUSE_1, TILE_VILLAGE_L_HOUSE);
+		builder.put(JUNGLE_SMALL_HOUSE_2, TILE_VILLAGE_L_HOUSE);
+		builder.put(JUNGLE_SMALL_HOUSE_3, TILE_VILLAGE_HUT);
+		builder.put(JUNGLE_SMALL_HOUSE_4, TILE_VILLAGE_HUT);
+		builder.put(JUNGLE_SMALL_HOUSE_5, TILE_VILLAGE_HUT);
+		builder.put(JUNGLE_SMALL_HOUSE_6, TILE_VILLAGE_HUT);
+		builder.put(JUNGLE_SMALL_HOUSE_7, TILE_VILLAGE_HUT);
+		builder.put(JUNGLE_SMALL_HOUSE_8, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(JUNGLE_STABLE, TILE_VILLAGE_BUTCHERS_SHOP);
+		builder.put(JUNGLE_STEPPED_FARM, TILE_VILLAGE_FARMLAND_LARGE);
+		builder.put(JUNGLE_STONE_ANIMAL_PEN, TILE_VILLAGE_FENCE);
+		builder.put(JUNGLE_TAMED_FARM, TILE_VILLAGE_FARMLAND_LARGE);
+		builder.put(JUNGLE_TANNERY_1, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(JUNGLE_TANNERY_2, TILE_VILLAGE_HUT);
+		builder.put(JUNGLE_TEMPLE, TILE_VILLAGE_CHURCH);
+		builder.put(JUNGLE_TOOL_SMITHY_1, TILE_VILLAGE_HUT);
+		builder.put(JUNGLE_TOOL_SMITHY_2, TILE_VILLAGE_SMITHY);
+		builder.put(JUNGLE_WEAPON_SMITHY, TILE_VILLAGE_SMITHY);
+		builder.put(JUNGLE_WILD_FARM, TILE_VILLAGE_FARMLAND_LARGE);
+		builder.put(JUNGLE_WOOD_ANIMAL_PEN, TILE_VILLAGE_FENCE);
+		builder.put(JUNGLE_ROAD_DECOR, TILE_VILLAGE_TORCH);
+		builder.put(JUNGLE_ROAD_ACCENT_1, TILE_VILLAGE_WELL);
+		builder.put(JUNGLE_ROAD_ACCENT_2, TILE_VILLAGE_TREE);
 		
-		// TODO - Swamp
-		
+		// Swamp
+		builder.put(SWAMP_ANIMAL_PEN_1, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_ANIMAL_PEN_2, TILE_VILLAGE_FENCE);
+		builder.put(SWAMP_ARMORER_HOUSE, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_BUTCHER_SHOP, TILE_VILLAGE_HUT);
+		builder.put(SWAMP_CARTOGRAPHER_HOUSE, TILE_VILLAGE_LIBRARY);
+		builder.put(SWAMP_FISHER_COTTAGE_1, TILE_VILLAGE_HOUSE);
+		builder.put(SWAMP_FISHER_COTTAGE_2, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_FLETCHER_HOUSE, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_HUT_FARM, TILE_VILLAGE_FARMLAND_SMALL);
+		builder.put(SWAMP_LARGE_HOUSE, TILE_VILLAGE_HOUSE);
+		builder.put(SWAMP_LIBRARY, TILE_VILLAGE_LIBRARY);
+		builder.put(SWAMP_MASON_HOUSE, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_MEDIUM_HOUSE_1, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_MEDIUM_HOUSE_2, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_SHEPHERD_HOUSE_1, TILE_VILLAGE_HOUSE);
+		builder.put(SWAMP_SHEPHERD_HOUSE_2, TILE_VILLAGE_HUT);
+		builder.put(SWAMP_SMALL_HOUSE_1, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_SMALL_HOUSE_2, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_SMALL_HOUSE_3, TILE_VILLAGE_HUT);
+		builder.put(SWAMP_SMALL_HOUSE_4, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_SMALL_HOUSE_5, TILE_VILLAGE_SMALL_HOUSE);
+		builder.put(SWAMP_STABLE, TILE_VILLAGE_BUTCHERS_SHOP);
+		builder.put(SWAMP_TANNERY, TILE_VILLAGE_L_HOUSE);
+		builder.put(SWAMP_TEMPLE, TILE_VILLAGE_CHURCH);
+		builder.put(SWAMP_TOOL_SMITHY, TILE_VILLAGE_HOUSE);
+		builder.put(SWAMP_WEAPON_SMITHY, TILE_VILLAGE_SMITHY);
+		builder.put(SWAMP_WILD_FARM, TILE_VILLAGE_FARMLAND_LARGE);
+		builder.put(SWAMP_ROAD_DECOR, TILE_VILLAGE_TORCH);
+		builder.put(SWAMP_ROAD_ACCENT, TILE_VILLAGE_TORCH);
 		
 		COMPONENT_TO_TILE_MAP = builder.build();
 	}
@@ -797,7 +945,14 @@ public class VillageWatcherAA
 				|| SNOWY_ICE_SPIRE.equals(childID)
 				|| SNOWY_FOUNTAIN.equals(childID)
 				|| SNOWY_PAVILION.equals(childID)
-				// TODO - Add Jungle/Swamp centers
+				|| JUNGLE_STATUE.equals(childID)
+				|| JUNGLE_TREE.equals(childID)
+				|| JUNGLE_GARDEN.equals(childID)
+				|| JUNGLE_VILLA.equals(childID)
+				|| SWAMP_WILLOW.equals(childID)
+				|| SWAMP_STATUE.equals(childID)
+				|| SWAMP_PAVILION.equals(childID)
+				|| SWAMP_MONOLITH.equals(childID)
 				;
 	}
 }

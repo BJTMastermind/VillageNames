@@ -6,7 +6,7 @@ public class Reference
 	public static final String
 	MOD_ID = "villagenames",
 	MOD_NAME = "Village Names",
-	VERSION = "4.2.0",
+	VERSION = "4.3.0 DEV",
 	URL = "https://www.curseforge.com/minecraft/mc-mods/village-names",
 	VERSION_CHECKER_URL = "https://gitgud.io/AstroTibs/VillageNames/raw/1.11.2/CURRENT_VERSION",
 	MOD_CHANNEL = "vnChannel",
@@ -78,5 +78,7 @@ public class Reference
     DESERT_BUILDING_STUB =  "DesertStructures$Desert",
     TAIGA_BUILDING_STUB =   "TaigaStructures$Taiga",
     SAVANNA_BUILDING_STUB = "SavannaStructures$Savanna",
-    SNOWY_BUILDING_STUB =   "SnowyStructures$Snowy";
+    SNOWY_BUILDING_STUB =   "SnowyStructures$Snowy",
+    JUNGLE_BUILDING_STUB =   "JungleStructures$Jungle",
+    SWAMP_BUILDING_STUB =   "SwampStructures$Swamp";
 }

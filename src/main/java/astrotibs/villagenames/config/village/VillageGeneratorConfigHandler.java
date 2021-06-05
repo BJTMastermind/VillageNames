@@ -38,7 +38,19 @@ public class VillageGeneratorConfigHandler
 	public static String componentLegacyField2_string; public static ArrayList<Double> componentLegacyField2_vals;
 	public static String componentLegacyHouse2_string; public static ArrayList<Double> componentLegacyHouse2_vals;
 	public static String componentLegacyHouse3_string; public static ArrayList<Double> componentLegacyHouse3_vals;
+	
 	// Modern Village buildings
+	
+	// Town centers
+	public static int 
+	componentModernPlainsFountain, componentModernPlainsWell, componentModernPlainsMarket, componentModernPlainsOakTree,
+	componentModernDesertFountain, componentModernDesertWell, componentModernDesertMarket, 
+	componentModernTaigaSquare, componentModernTaigaWell,
+	componentModernSavannaMarket, componentModernSavannaFountain, componentModernSavannaDoubleWell, componentModernSavannaWell, 
+	componentModernSnowyIceSpire, componentModernSnowyFountain, componentModernSnowyPavilion, 
+	componentModernJungleStatue, componentModernJungleCocoaTree, componentModernJungleGarden, componentModernJungleVilla, 
+	componentModernSwampWillow, componentModernSwampStatue, componentModernSwampPavilion, componentModernSwampMonolith; 
+	
 	public static String componentModernPlainsAccessory1_string; public static ArrayList<Double> componentModernPlainsAccessory1_vals;
 	public static String componentModernPlainsAnimalPen1_string; public static ArrayList<Double> componentModernPlainsAnimalPen1_vals;
 	public static String componentModernPlainsAnimalPen2_string; public static ArrayList<Double> componentModernPlainsAnimalPen2_vals;
@@ -208,6 +220,76 @@ public class VillageGeneratorConfigHandler
 	public static String componentModernSnowyWeaponSmith1_string; public static ArrayList<Double> componentModernSnowyWeaponSmith1_vals;
 	public static String componentModernSnowyStreetDecor1_string; public static ArrayList<Double> componentModernSnowyStreetDecor1_vals;
 	
+	public static String componentModernJungleArmorerHouse_string; public static ArrayList<Double> componentModernJungleArmorerHouse_vals;
+	public static String componentModernJungleButcherShop_string; public static ArrayList<Double> componentModernJungleButcherShop_vals;
+	public static String componentModernJungleCartographerHouse1_string; public static ArrayList<Double> componentModernJungleCartographerHouse1_vals;
+	public static String componentModernJungleCartographerHouse2_string; public static ArrayList<Double> componentModernJungleCartographerHouse2_vals;
+	public static String componentModernJungleFisherCottage_string; public static ArrayList<Double> componentModernJungleFisherCottage_vals;
+	public static String componentModernJungleFletcherHouse1_string; public static ArrayList<Double> componentModernJungleFletcherHouse1_vals;
+	public static String componentModernJungleFletcherHouse2_string; public static ArrayList<Double> componentModernJungleFletcherHouse2_vals;
+	public static String componentModernJungleLargeHouse_string; public static ArrayList<Double> componentModernJungleLargeHouse_vals;
+	public static String componentModernJungleLibrary_string; public static ArrayList<Double> componentModernJungleLibrary_vals;
+	public static String componentModernJungleMasonHouse_string; public static ArrayList<Double> componentModernJungleMasonHouse_vals;
+	public static String componentModernJungleMediumHouse1_string; public static ArrayList<Double> componentModernJungleMediumHouse1_vals;
+	public static String componentModernJungleMediumHouse2_string; public static ArrayList<Double> componentModernJungleMediumHouse2_vals;
+	public static String componentModernJungleMediumHouse3_string; public static ArrayList<Double> componentModernJungleMediumHouse3_vals;
+	public static String componentModernJungleMediumHouse4_string; public static ArrayList<Double> componentModernJungleMediumHouse4_vals;
+	public static String componentModernJungleSmallHouse1_string; public static ArrayList<Double> componentModernJungleSmallHouse1_vals;
+	public static String componentModernJungleSmallHouse2_string; public static ArrayList<Double> componentModernJungleSmallHouse2_vals;
+	public static String componentModernJungleSmallHouse3_string; public static ArrayList<Double> componentModernJungleSmallHouse3_vals;
+	public static String componentModernJungleSmallHouse4_string; public static ArrayList<Double> componentModernJungleSmallHouse4_vals;
+	public static String componentModernJungleSmallHouse5_string; public static ArrayList<Double> componentModernJungleSmallHouse5_vals;
+	public static String componentModernJungleSmallHouse6_string; public static ArrayList<Double> componentModernJungleSmallHouse6_vals;
+	public static String componentModernJungleSmallHouse7_string; public static ArrayList<Double> componentModernJungleSmallHouse7_vals;
+	public static String componentModernJungleSmallHouse8_string; public static ArrayList<Double> componentModernJungleSmallHouse8_vals;
+	public static String componentModernJungleShepherdHouse_string; public static ArrayList<Double> componentModernJungleShepherdHouse_vals;
+	public static String componentModernJungleStable_string; public static ArrayList<Double> componentModernJungleStable_vals;
+	public static String componentModernJungleSteppedFarm_string; public static ArrayList<Double> componentModernJungleSteppedFarm_vals;
+	public static String componentModernJungleStoneAnimalPen_string; public static ArrayList<Double> componentModernJungleStoneAnimalPen_vals;
+	public static String componentModernJungleTamedFarm_string; public static ArrayList<Double> componentModernJungleTamedFarm_vals;
+	public static String componentModernJungleTannery1_string; public static ArrayList<Double> componentModernJungleTannery1_vals;
+	public static String componentModernJungleTannery2_string; public static ArrayList<Double> componentModernJungleTannery2_vals;
+	public static String componentModernJungleTemple_string; public static ArrayList<Double> componentModernJungleTemple_vals;
+	public static String componentModernJungleToolSmithy1_string; public static ArrayList<Double> componentModernJungleToolSmithy1_vals;
+	public static String componentModernJungleToolSmithy2_string; public static ArrayList<Double> componentModernJungleToolSmithy2_vals;
+	public static String componentModernJungleWeaponSmithy_string; public static ArrayList<Double> componentModernJungleWeaponSmithy_vals;
+	public static String componentModernJungleWildFarm_string; public static ArrayList<Double> componentModernJungleWildFarm_vals;
+	public static String componentModernJungleWoodAnimalPen_string; public static ArrayList<Double> componentModernJungleWoodAnimalPen_vals;
+	public static String componentModernJungleStreetDecor_string; public static ArrayList<Double> componentModernJungleStreetDecor_vals;
+	public static String componentModernJungleRoadAccent1_string; public static ArrayList<Double> componentModernJungleRoadAccent1_vals;
+	public static String componentModernJungleRoadAccent2_string; public static ArrayList<Double> componentModernJungleRoadAccent2_vals;
+	
+	public static String componentModernSwampAnimalPen1_string; public static ArrayList<Double> componentModernSwampAnimalPen1_vals;
+	public static String componentModernSwampAnimalPen2_string; public static ArrayList<Double> componentModernSwampAnimalPen2_vals;
+	public static String componentModernSwampArmorerHouse_string; public static ArrayList<Double> componentModernSwampArmorerHouse_vals;
+	public static String componentModernSwampButcherShop_string; public static ArrayList<Double> componentModernSwampButcherShop_vals;
+	public static String componentModernSwampCartographerHouse_string; public static ArrayList<Double> componentModernSwampCartographerHouse_vals;
+	public static String componentModernSwampFisherCottage1_string; public static ArrayList<Double> componentModernSwampFisherCottage1_vals;
+	public static String componentModernSwampFisherCottage2_string; public static ArrayList<Double> componentModernSwampFisherCottage2_vals;
+	public static String componentModernSwampFletcherHouse_string; public static ArrayList<Double> componentModernSwampFletcherHouse_vals;
+	public static String componentModernSwampHutFarm_string; public static ArrayList<Double> componentModernSwampHutFarm_vals;
+	public static String componentModernSwampLargeHouse_string; public static ArrayList<Double> componentModernSwampLargeHouse_vals;
+	public static String componentModernSwampHorribleSecret_string; public static ArrayList<Double> componentModernSwampHorribleSecret_vals;
+	public static String componentModernSwampLibrary_string; public static ArrayList<Double> componentModernSwampLibrary_vals;
+	public static String componentModernSwampMasonHouse_string; public static ArrayList<Double> componentModernSwampMasonHouse_vals;
+	public static String componentModernSwampMediumHouse1_string; public static ArrayList<Double> componentModernSwampMediumHouse1_vals;
+	public static String componentModernSwampMediumHouse2_string; public static ArrayList<Double> componentModernSwampMediumHouse2_vals;
+	public static String componentModernSwampShepherdHouse1_string; public static ArrayList<Double> componentModernSwampShepherdHouse1_vals;
+	public static String componentModernSwampShepherdHouse2_string; public static ArrayList<Double> componentModernSwampShepherdHouse2_vals;
+	public static String componentModernSwampSmallHouse1_string; public static ArrayList<Double> componentModernSwampSmallHouse1_vals;
+	public static String componentModernSwampSmallHouse2_string; public static ArrayList<Double> componentModernSwampSmallHouse2_vals;
+	public static String componentModernSwampSmallHouse3_string; public static ArrayList<Double> componentModernSwampSmallHouse3_vals;
+	public static String componentModernSwampSmallHouse4_string; public static ArrayList<Double> componentModernSwampSmallHouse4_vals;
+	public static String componentModernSwampSmallHouse5_string; public static ArrayList<Double> componentModernSwampSmallHouse5_vals;
+	public static String componentModernSwampStable_string; public static ArrayList<Double> componentModernSwampStable_vals;
+	public static String componentModernSwampTannery_string; public static ArrayList<Double> componentModernSwampTannery_vals;
+	public static String componentModernSwampTemple_string; public static ArrayList<Double> componentModernSwampTemple_vals;
+	public static String componentModernSwampToolSmithy_string; public static ArrayList<Double> componentModernSwampToolSmithy_vals;
+	public static String componentModernSwampWeaponSmithy_string; public static ArrayList<Double> componentModernSwampWeaponSmithy_vals;
+	public static String componentModernSwampWildFarm_string; public static ArrayList<Double> componentModernSwampWildFarm_vals;
+	public static String componentModernSwampStreetDecor_string; public static ArrayList<Double> componentModernSwampStreetDecor_vals;
+	public static String componentModernSwampRoadAccent_string; public static ArrayList<Double> componentModernSwampRoadAccent_vals;
+	
 	// Default values used to restrict modern vanilla components to specific village biome types
 	public static final String[] MODERN_VANILLA_COMPONENT_VILLAGE_TYPE_DEFAULTS = new String[] {
 			// Village Names 1.14 buildings
@@ -375,6 +457,75 @@ public class VillageGeneratorConfigHandler
 			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SNOWY_BUILDING_STUB + "ToolSmith1|snowy",
 			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SNOWY_BUILDING_STUB + "WeaponSmith1|snowy",
 			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SNOWY_BUILDING_STUB + "StreetDecor1|snowy",
+			// Custom buildings
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "ArmorerHouse|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "ButcherShop|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "CartographerHouse1|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "CartographerHouse2|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "FisherCottage|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "FletcherHouse1|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "FletcherHouse2|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "LargeHouse|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "Library|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "MasonHouse|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "MediumHouse1|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "MediumHouse2|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "MediumHouse3|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "MediumHouse4|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "ShepherdHouse|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "SmallHouse1|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "SmallHouse2|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "SmallHouse3|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "SmallHouse4|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "SmallHouse5|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "SmallHouse6|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "SmallHouse7|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "SmallHouse8|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "Stable|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "SteppedFarm|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "StoneAnimalPen|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "TamedFarm|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "Tannery1|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "Tannery2|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "Temple|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "ToolSmithy1|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "ToolSmithy2|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "WeaponSmithy|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "WildFarm|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "WoodAnimalPen|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "StreetDecor|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "RoadAccent1|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.JUNGLE_BUILDING_STUB + "RoadAccent2|jungle",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "AnimalPen1|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "AnimalPen2|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "ArmorerHouse|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "ButcherShop|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "CartographerHouse|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "FisherCottage1|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "FisherCottage2|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "FletcherHouse|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "HorribleSecret|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "HutFarm|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "LargeHouse|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "Library|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "MasonHouse|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "MediumHouse1|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "MediumHouse2|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "ShepherdHouse1|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "ShepherdHouse2|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "SmallHouse1|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "SmallHouse2|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "SmallHouse3|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "SmallHouse4|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "SmallHouse5|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "Stable|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "Tannery|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "Temple|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "ToolSmithy|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "WeaponSmithy|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "WildFarm|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "StreetDecor|swamp",
+			Reference.VN_BUILDING_CLASSPATH_STUB + Reference.SWAMP_BUILDING_STUB + "RoadAccent|swamp",
 			};
 	
 	// Decor
@@ -404,6 +555,7 @@ public class VillageGeneratorConfigHandler
 		// --- New Villages --- //
 		String componentLegacy = "Component: Legacy ";
 		String componentModern = "Component: Modern ";
+		String townCenter = "Town Center - ";
 		String generationStatsForL = "Generation stats for this component in all villages. Vanilla weight is ";
 		String generationStatsForM = "Generation stats for this component in ";
 		String plainsVillages = "plains villages";
@@ -411,6 +563,8 @@ public class VillageGeneratorConfigHandler
 		String taigaVillages = "taiga villages";
 		String savannaVillages = "savanna villages";
 		String snowyVillages = "snowy villages";
+		String jungleVillages = "jungle villages";
+		String swampVillages = "swamp villages";
 		
 		newVillageGenerator = config.getBoolean("Activate New Village Generator", Reference.CATEGORY_VILLAGE_GENERATOR, true, "Use replacement village generation system. You may need to deactivate village generation from other mods. All other settings in this section require this to be true.");
 
@@ -490,6 +644,80 @@ public class VillageGeneratorConfigHandler
 		
 		// Modern Village components
 		
+		// Town centers
+		componentModernPlainsFountain = config.getInt(componentModern+"Plains "+townCenter+"Fountain", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Plains village's town center instead of other Plains town centers. Set to 0 to disable.");
+		
+		componentModernPlainsWell = config.getInt(componentModern+"Plains "+townCenter+"Well", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Plains village's town center instead of other Plains town centers. Set to 0 to disable.");
+		
+		componentModernPlainsMarket = config.getInt(componentModern+"Plains "+townCenter+"Market", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Plains village's town center instead of other Plains town centers. Set to 0 to disable.");
+		
+		componentModernPlainsOakTree = config.getInt(componentModern+"Plains "+townCenter+"Oak Tree", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Plains village's town center instead of other Plains town centers. Set to 0 to disable.");
+		
+		componentModernDesertFountain = config.getInt(componentModern+"Desert "+townCenter+"Fountain", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Desert village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernDesertWell = config.getInt(componentModern+"Desert "+townCenter+"Well", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Desert village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernDesertMarket = config.getInt(componentModern+"Desert "+townCenter+"Market", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Desert village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernTaigaSquare = config.getInt(componentModern+"Taiga "+townCenter+"Square", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Taiga village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernTaigaWell = config.getInt(componentModern+"Taiga "+townCenter+"Well", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Taiga village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSavannaMarket = config.getInt(componentModern+"Savanna "+townCenter+"Market", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Savanna village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSavannaFountain = config.getInt(componentModern+"Savanna "+townCenter+"Fountain", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Savanna village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSavannaDoubleWell = config.getInt(componentModern+"Savanna "+townCenter+"Double Well", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Savanna village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSavannaWell = config.getInt(componentModern+"Savanna "+townCenter+"Well", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Savanna village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSnowyIceSpire = config.getInt(componentModern+"Snowy "+townCenter+"Ice Spire", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Snowy village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSnowyFountain = config.getInt(componentModern+"Snowy "+townCenter+"Fountain", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Snowy village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSnowyPavilion = config.getInt(componentModern+"Snowy "+townCenter+"Pavilion", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Snowy village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernJungleStatue = config.getInt(componentModern+"Jungle "+townCenter+"Statue", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Jungle village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernJungleCocoaTree = config.getInt(componentModern+"Jungle "+townCenter+"Cocoa Tree", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Jungle village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernJungleGarden = config.getInt(componentModern+"Jungle "+townCenter+"Garden", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Jungle village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernJungleVilla = config.getInt(componentModern+"Jungle "+townCenter+"Villa", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Jungle village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSwampWillow = config.getInt(componentModern+"Swamp "+townCenter+"Willow", Reference.CATEGORY_VILLAGE_GENERATOR, 6, 0, 10000,
+				"Weighted chance to select this component as a Swamp village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSwampStatue = config.getInt(componentModern+"Swamp "+townCenter+"Statue", Reference.CATEGORY_VILLAGE_GENERATOR, 1, 0, 10000,
+				"Weighted chance to select this component as a Swamp village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSwampPavilion = config.getInt(componentModern+"Swamp "+townCenter+"Pavilion", Reference.CATEGORY_VILLAGE_GENERATOR, 6, 0, 10000,
+				"Weighted chance to select this component as a Swamp village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		componentModernSwampMonolith = config.getInt(componentModern+"Swamp "+townCenter+"Monolith", Reference.CATEGORY_VILLAGE_GENERATOR, 3, 0, 10000,
+				"Weighted chance to select this component as a Swamp village's town center instead of other Desert town centers. Set to 0 to disable.");
+		
+		
 		ArrayList<Double> modernDefaults = new ArrayList<Double>(Arrays.asList(
 				(91D/9), //= 10.11111111111111
 				((76D/91) * 9D/(152D/5)), //=  0.24725274725274726
@@ -506,9 +734,13 @@ public class VillageGeneratorConfigHandler
 		int taigaHouses = 27;
 		int savannaHouses = 31;
 		int snowyHouses = 30;
+		int jungleHouses = 35;  
+		int swampHouses = 28;  
 		
 		int desertStreetsAndEndcaps = 11+2;
 		int savannaStreetsAndEndcaps = 19+1;
+		int jungleStreetsAndEndcaps = 16; // Arbitrary
+		int swampStreetsAndEndcaps = 17; // Arbitrary
 		
 		double plainsDecorToHouseRatio = 19D/13D;
 		
@@ -521,6 +753,12 @@ public class VillageGeneratorConfigHandler
 		double savannaStreetToHouseRatio = 31D/17D; // 17 house attachments and 51 street attachments across 19 streets and 1 street endcaps = (51-(19+1))/17 = 31/17
 		
 		double snowyDecorToHouseRatio = 28D/24D; 
+		
+		double jungleDecorToHouseRatio = 2D; // Arbitrary
+		double jungleStreetToHouseRatio = 20D/17D; // Arbitrary
+
+		double swampDecorToHouseRatio = 2D; // Arbitrary
+		double swampStreetToHouseRatio = 26D/17D; // Arbitrary
 		
 		
 		// Plains components
@@ -1042,6 +1280,220 @@ public class VillageGeneratorConfigHandler
 		for (int i=1; i<modernDefaults.size(); i++) {modifiedDefaults.set(i, modernDefaults.get(i)*snowyHouses * snowyDecorToHouseRatio);}
 		componentModernSnowyStreetDecor1_string = config.getString(componentModern+"Snowy Road Decor", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modifiedDefaults), generationStatsForM+snowyVillages);
 		componentModernSnowyStreetDecor1_vals = parseDoubleArray(componentModernSnowyStreetDecor1_string, modifiedDefaults);
+		
+		componentModernJungleArmorerHouse_string = config.getString(componentModern+"Jungle Armorer House", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleArmorerHouse_vals = parseDoubleArray(componentModernJungleArmorerHouse_string, modernDefaults);
+		
+		componentModernJungleButcherShop_string = config.getString(componentModern+"Jungle Butcher Shop", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleButcherShop_vals = parseDoubleArray(componentModernJungleButcherShop_string, modernDefaults);
+		
+		componentModernJungleCartographerHouse1_string = config.getString(componentModern+"Jungle Cartographer House 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleCartographerHouse1_vals = parseDoubleArray(componentModernJungleCartographerHouse1_string, modernDefaults);
+
+		componentModernJungleCartographerHouse2_string = config.getString(componentModern+"Jungle Cartographer House 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleCartographerHouse2_vals = parseDoubleArray(componentModernJungleCartographerHouse2_string, modernDefaults);
+		
+		componentModernJungleFisherCottage_string = config.getString(componentModern+"Jungle Fisher Cottage", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleFisherCottage_vals = parseDoubleArray(componentModernJungleFisherCottage_string, modernDefaults);
+
+		componentModernJungleFletcherHouse1_string = config.getString(componentModern+"Jungle Fletcher House 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleFletcherHouse1_vals = parseDoubleArray(componentModernJungleFletcherHouse1_string, modernDefaults);
+
+		componentModernJungleFletcherHouse2_string = config.getString(componentModern+"Jungle Fletcher House 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleFletcherHouse2_vals = parseDoubleArray(componentModernJungleFletcherHouse2_string, modernDefaults);
+		
+		componentModernJungleLargeHouse_string = config.getString(componentModern+"Jungle Large House", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleLargeHouse_vals = parseDoubleArray(componentModernJungleLargeHouse_string, modernDefaults);
+		
+		componentModernJungleLibrary_string = config.getString(componentModern+"Jungle Library", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleLibrary_vals = parseDoubleArray(componentModernJungleLibrary_string, modernDefaults);
+		
+		componentModernJungleMasonHouse_string = config.getString(componentModern+"Jungle Mason House", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleMasonHouse_vals = parseDoubleArray(componentModernJungleMasonHouse_string, modernDefaults);
+		
+		componentModernJungleMediumHouse1_string = config.getString(componentModern+"Jungle Medium House 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleMediumHouse1_vals = parseDoubleArray(componentModernJungleMediumHouse1_string, modernDefaults);
+		
+		componentModernJungleMediumHouse2_string = config.getString(componentModern+"Jungle Medium House 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleMediumHouse2_vals = parseDoubleArray(componentModernJungleMediumHouse2_string, modernDefaults);
+
+		componentModernJungleMediumHouse3_string = config.getString(componentModern+"Jungle Medium House 3", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleMediumHouse3_vals = parseDoubleArray(componentModernJungleMediumHouse3_string, modernDefaults);
+
+		componentModernJungleMediumHouse4_string = config.getString(componentModern+"Jungle Medium House 4", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleMediumHouse4_vals = parseDoubleArray(componentModernJungleMediumHouse4_string, modernDefaults);
+
+		componentModernJungleShepherdHouse_string = config.getString(componentModern+"Jungle Shepherd House", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleShepherdHouse_vals = parseDoubleArray(componentModernJungleShepherdHouse_string, modernDefaults);
+		
+		componentModernJungleSmallHouse1_string = config.getString(componentModern+"Jungle Small House 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleSmallHouse1_vals = parseDoubleArray(componentModernJungleSmallHouse1_string, modernDefaults);
+
+		componentModernJungleSmallHouse2_string = config.getString(componentModern+"Jungle Small House 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleSmallHouse2_vals = parseDoubleArray(componentModernJungleSmallHouse2_string, modernDefaults);
+
+		componentModernJungleSmallHouse3_string = config.getString(componentModern+"Jungle Small House 3", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleSmallHouse3_vals = parseDoubleArray(componentModernJungleSmallHouse4_string, modernDefaults);
+
+		componentModernJungleSmallHouse4_string = config.getString(componentModern+"Jungle Small House 4", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleSmallHouse4_vals = parseDoubleArray(componentModernJungleSmallHouse4_string, modernDefaults);
+		
+		componentModernJungleSmallHouse5_string = config.getString(componentModern+"Jungle Small House 5", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleSmallHouse5_vals = parseDoubleArray(componentModernJungleSmallHouse5_string, modernDefaults);
+		
+		componentModernJungleSmallHouse6_string = config.getString(componentModern+"Jungle Small House 6", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleSmallHouse6_vals = parseDoubleArray(componentModernJungleSmallHouse6_string, modernDefaults);
+		
+		componentModernJungleSmallHouse7_string = config.getString(componentModern+"Jungle Small House 7", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleSmallHouse7_vals = parseDoubleArray(componentModernJungleSmallHouse7_string, modernDefaults);
+		
+		componentModernJungleSmallHouse8_string = config.getString(componentModern+"Jungle Small House 8", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleSmallHouse8_vals = parseDoubleArray(componentModernJungleSmallHouse8_string, modernDefaults);
+
+		componentModernJungleStable_string = config.getString(componentModern+"Jungle Stone Animal Pen", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleStable_vals = parseDoubleArray(componentModernJungleStable_string, modernDefaults);
+		
+		componentModernJungleSteppedFarm_string = config.getString(componentModern+"Jungle Stepped Farm", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleSteppedFarm_vals = parseDoubleArray(componentModernJungleSteppedFarm_string, modernDefaults);
+
+		componentModernJungleStoneAnimalPen_string = config.getString(componentModern+"Jungle Stone Animal Pen", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleStoneAnimalPen_vals = parseDoubleArray(componentModernJungleStoneAnimalPen_string, modernDefaults);
+		
+		componentModernJungleTamedFarm_string = config.getString(componentModern+"Jungle Tamed Farm", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleTamedFarm_vals = parseDoubleArray(componentModernJungleTamedFarm_string, modernDefaults);
+
+		componentModernJungleTannery1_string = config.getString(componentModern+"Jungle Tannery 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleTannery1_vals = parseDoubleArray(componentModernJungleTannery1_string, modernDefaults);
+
+		componentModernJungleTannery2_string = config.getString(componentModern+"Jungle Tannery 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleTannery2_vals = parseDoubleArray(componentModernJungleTannery2_string, modernDefaults);
+		
+		componentModernJungleTemple_string = config.getString(componentModern+"Jungle Temple", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleTemple_vals = parseDoubleArray(componentModernJungleTemple_string, modernDefaults);
+		
+		componentModernJungleToolSmithy1_string = config.getString(componentModern+"Jungle Tool Smithy 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleToolSmithy1_vals = parseDoubleArray(componentModernJungleToolSmithy1_string, modernDefaults);
+		
+		componentModernJungleToolSmithy2_string = config.getString(componentModern+"Jungle Tool Smithy 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleToolSmithy2_vals = parseDoubleArray(componentModernJungleToolSmithy2_string, modernDefaults);
+
+		componentModernJungleWeaponSmithy_string = config.getString(componentModern+"Jungle Weapon Smithy", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleWeaponSmithy_vals = parseDoubleArray(componentModernJungleWeaponSmithy_string, modernDefaults);
+		
+		componentModernJungleWildFarm_string = config.getString(componentModern+"Jungle Wild Farm", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleWildFarm_vals = parseDoubleArray(componentModernJungleWildFarm_string, modernDefaults);
+
+		componentModernJungleWoodAnimalPen_string = config.getString(componentModern+"Jungle Wood Animal Pen", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleWoodAnimalPen_vals = parseDoubleArray(componentModernJungleWoodAnimalPen_string, modernDefaults);
+		
+		modifiedDefaults.set(0, modernDefaults.get(0)*9D * jungleDecorToHouseRatio); 
+		for (int i=1; i<modernDefaults.size(); i++) {modifiedDefaults.set(i, modernDefaults.get(i)*jungleHouses * jungleDecorToHouseRatio);}
+		componentModernJungleStreetDecor_string = config.getString(componentModern+"Jungle Road Decor", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modifiedDefaults), generationStatsForM+jungleVillages);
+		componentModernJungleStreetDecor_vals = parseDoubleArray(componentModernJungleStreetDecor_string, modifiedDefaults);
+		
+		modifiedDefaults.set(0, modernDefaults.get(0)*9D * jungleStreetToHouseRatio/jungleStreetsAndEndcaps);
+		for (int i=1; i<modernDefaults.size(); i++) {modifiedDefaults.set(i, modernDefaults.get(i)*jungleHouses * jungleStreetToHouseRatio/jungleStreetsAndEndcaps);}
+		componentModernJungleRoadAccent1_string = config.getString(componentModern+"Jungle Road Accent 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modifiedDefaults), generationStatsForM+savannaVillages);
+		componentModernJungleRoadAccent1_vals = parseDoubleArray(componentModernJungleRoadAccent1_string, modifiedDefaults);
+		
+		modifiedDefaults.set(0, modernDefaults.get(0)*9D * jungleStreetToHouseRatio/jungleStreetsAndEndcaps);
+		for (int i=1; i<modernDefaults.size(); i++) {modifiedDefaults.set(i, modernDefaults.get(i)*jungleHouses * jungleStreetToHouseRatio/jungleStreetsAndEndcaps);}
+		componentModernJungleRoadAccent2_string = config.getString(componentModern+"Jungle Road Accent 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modifiedDefaults), generationStatsForM+savannaVillages);
+		componentModernJungleRoadAccent2_vals = parseDoubleArray(componentModernJungleRoadAccent2_string, modifiedDefaults);
+		
+		componentModernSwampAnimalPen1_string = config.getString(componentModern+"Swamp Animal Pen 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampAnimalPen1_vals = parseDoubleArray(componentModernSwampAnimalPen1_string, modernDefaults);
+		
+		componentModernSwampAnimalPen2_string = config.getString(componentModern+"Swamp Animal Pen 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampAnimalPen2_vals = parseDoubleArray(componentModernSwampAnimalPen2_string, modernDefaults);
+		
+		componentModernSwampArmorerHouse_string = config.getString(componentModern+"Swamp Armorer House", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampArmorerHouse_vals = parseDoubleArray(componentModernSwampArmorerHouse_string, modernDefaults);
+		
+		componentModernSwampButcherShop_string = config.getString(componentModern+"Swamp Butcher Shop", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampButcherShop_vals = parseDoubleArray(componentModernSwampButcherShop_string, modernDefaults);
+		
+		componentModernSwampCartographerHouse_string = config.getString(componentModern+"Swamp Cartographer House", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampCartographerHouse_vals = parseDoubleArray(componentModernSwampCartographerHouse_string, modernDefaults);
+
+		componentModernSwampFisherCottage1_string = config.getString(componentModern+"Swamp Fisher Cottage 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampFisherCottage1_vals = parseDoubleArray(componentModernSwampFisherCottage1_string, modernDefaults);
+
+		componentModernSwampFisherCottage2_string = config.getString(componentModern+"Swamp Fisher Cottage 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampFisherCottage2_vals = parseDoubleArray(componentModernSwampFisherCottage2_string, modernDefaults);
+
+		componentModernSwampFletcherHouse_string = config.getString(componentModern+"Swamp Fletcher House", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampFletcherHouse_vals = parseDoubleArray(componentModernSwampFletcherHouse_string, modernDefaults);
+		
+		componentModernSwampHutFarm_string = config.getString(componentModern+"Swamp Hut Farm", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampHutFarm_vals = parseDoubleArray(componentModernSwampHutFarm_string, modernDefaults);
+		
+		componentModernSwampHorribleSecret_string = config.getString(componentModern+"Swamp Horrible Secret", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampHorribleSecret_vals = parseDoubleArray(componentModernSwampLargeHouse_string, modernDefaults);
+		
+		componentModernSwampLargeHouse_string = config.getString(componentModern+"Swamp Large House", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampLargeHouse_vals = parseDoubleArray(componentModernSwampLargeHouse_string, modernDefaults);
+		
+		componentModernSwampLibrary_string = config.getString(componentModern+"Swamp Library", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampLibrary_vals = parseDoubleArray(componentModernSwampLibrary_string, modernDefaults);
+		
+		componentModernSwampMasonHouse_string = config.getString(componentModern+"Swamp Mason House", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampMasonHouse_vals = parseDoubleArray(componentModernSwampMasonHouse_string, modernDefaults);
+		
+		componentModernSwampMediumHouse1_string = config.getString(componentModern+"Swamp Medium House 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampMediumHouse1_vals = parseDoubleArray(componentModernSwampMediumHouse1_string, modernDefaults);
+		
+		componentModernSwampMediumHouse2_string = config.getString(componentModern+"Swamp Medium House 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampMediumHouse2_vals = parseDoubleArray(componentModernSwampMediumHouse2_string, modernDefaults);
+		
+		componentModernSwampShepherdHouse1_string = config.getString(componentModern+"Swamp Shepherd House 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampShepherdHouse1_vals = parseDoubleArray(componentModernSwampShepherdHouse1_string, modernDefaults);
+		
+		componentModernSwampShepherdHouse2_string = config.getString(componentModern+"Swamp Shepherd House 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampShepherdHouse2_vals = parseDoubleArray(componentModernSwampShepherdHouse2_string, modernDefaults);
+		
+		componentModernSwampSmallHouse1_string = config.getString(componentModern+"Swamp Small House 1", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampSmallHouse1_vals = parseDoubleArray(componentModernSwampSmallHouse1_string, modernDefaults);
+		
+		componentModernSwampSmallHouse2_string = config.getString(componentModern+"Swamp Small House 2", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampSmallHouse2_vals = parseDoubleArray(componentModernSwampSmallHouse2_string, modernDefaults);
+		
+		componentModernSwampSmallHouse3_string = config.getString(componentModern+"Swamp Small House 3", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampSmallHouse3_vals = parseDoubleArray(componentModernSwampSmallHouse3_string, modernDefaults);
+		
+		componentModernSwampSmallHouse4_string = config.getString(componentModern+"Swamp Small House 4", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampSmallHouse4_vals = parseDoubleArray(componentModernSwampSmallHouse4_string, modernDefaults);
+		
+		componentModernSwampSmallHouse5_string = config.getString(componentModern+"Swamp Small House 5", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampSmallHouse5_vals = parseDoubleArray(componentModernSwampSmallHouse5_string, modernDefaults);
+		
+		componentModernSwampStable_string = config.getString(componentModern+"Swamp Stable", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampStable_vals = parseDoubleArray(componentModernSwampStable_string, modernDefaults);
+		
+		componentModernSwampTannery_string = config.getString(componentModern+"Swamp Tannery", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampTannery_vals = parseDoubleArray(componentModernSwampTannery_string, modernDefaults);
+		
+		componentModernSwampTemple_string = config.getString(componentModern+"Swamp Temple", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampTemple_vals = parseDoubleArray(componentModernSwampTemple_string, modernDefaults);
+		
+		componentModernSwampToolSmithy_string = config.getString(componentModern+"Swamp Tool Smithy", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampToolSmithy_vals = parseDoubleArray(componentModernSwampToolSmithy_string, modernDefaults);
+		
+		componentModernSwampWeaponSmithy_string = config.getString(componentModern+"Swamp Weapon Smithy", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampWeaponSmithy_vals = parseDoubleArray(componentModernSwampWeaponSmithy_string, modernDefaults);
+		
+		componentModernSwampWildFarm_string = config.getString(componentModern+"Swamp Wild Farm", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
+		componentModernSwampWildFarm_vals = parseDoubleArray(componentModernSwampWildFarm_string, modernDefaults);
+		
+		modifiedDefaults.set(0, modernDefaults.get(0)*9D * swampDecorToHouseRatio); 
+		for (int i=1; i<modernDefaults.size(); i++) {modifiedDefaults.set(i, modernDefaults.get(i)*swampHouses * swampDecorToHouseRatio);}
+		componentModernSwampStreetDecor_string = config.getString(componentModern+"Swamp Road Decor", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modifiedDefaults), generationStatsForM+swampVillages);
+		componentModernSwampStreetDecor_vals = parseDoubleArray(componentModernSwampStreetDecor_string, modifiedDefaults);
+		
+		modifiedDefaults.set(0, modernDefaults.get(0)*9D * swampStreetToHouseRatio/swampStreetsAndEndcaps);
+		for (int i=1; i<modernDefaults.size(); i++) {modifiedDefaults.set(i, modernDefaults.get(i)*swampHouses * swampStreetToHouseRatio/swampStreetsAndEndcaps);}
+		componentModernSwampRoadAccent_string = config.getString(componentModern+"Swamp Road Accent", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modifiedDefaults), generationStatsForM+savannaVillages);
+		componentModernSwampRoadAccent_vals = parseDoubleArray(componentModernSwampRoadAccent_string, modifiedDefaults);
 		
 		
 		// --- Decor --- //

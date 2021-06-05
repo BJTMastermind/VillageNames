@@ -2085,6 +2085,14 @@ public class StructureVillageVN
             	{
             		decorBlueprint = SnowyStructures.getSnowyDecorBlueprint(randomFromXYZ.nextInt(3), this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
             	}
+            	else if (this.villageType==FunctionsVN.VillageType.JUNGLE)
+            	{
+            		decorBlueprint = JungleStructures.getJungleDecorBlueprint(2+randomFromXYZ.nextInt(6), this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	}
+            	else if (this.villageType==FunctionsVN.VillageType.SWAMP)
+            	{
+            		decorBlueprint = SwampStructures.getSwampDecorBlueprint(randomFromXYZ.nextInt(7), this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            	}
             	else // Plains
             	{
             		decorBlueprint = PlainsStructures.getPlainsDecorBlueprint(0, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
@@ -2655,6 +2663,10 @@ public class StructureVillageVN
 			return SavannaStructures.getRandomSavannaDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		case SNOWY:
 			return SnowyStructures.getRandomSnowyDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
+		case JUNGLE:
+			return JungleStructures.getRandomJungleDecorBlueprint(materialType, disallowModSubs, biome, horizIndex, random);
+		case SWAMP:
+			return SwampStructures.getRandomSwampDecorBlueprint(materialType, disallowModSubs, biome, horizIndex, random);
 		}
 	}
 	
