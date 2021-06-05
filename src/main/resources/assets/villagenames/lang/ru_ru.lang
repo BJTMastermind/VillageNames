@@ -1,0 +1,66 @@
+# 1.12.2 version
+
+# Items
+item.villagenames:codex.name=Кодекс
+item.villagenames:villagebook.name=Книга деревни
+item.villagenames:strongholdbook.name=Книга крепости
+item.villagenames:templebook.name=Книга храма
+item.villagenames:mineshaftbook.name=Книга заброшенных шахт
+item.villagenames:monumentbook.name=Книга монумента
+item.villagenames:mansionbook.name=Книга особняка
+item.villagenames:fortressbook.name=Книга адской крепости
+item.villagenames:endcitybook.name=Книга города края
+item.villagenames:jungletemplebook.name=Книга храма джунглей
+item.villagenames:desertpyramidbook.name=Книга пустыного храма
+item.villagenames:swamphutbook.name=Книга домика вндьмы
+item.villagenames:igloobook.name=Книга иглу
+item.villagenames:moonvillagebook.name=Книга лунной деревни
+item.villagenames:koentusvillagebook.name=Книга деревни коэнтус
+item.villagenames:fronosvillagebook.name=Книга деревни фронос
+item.villagenames:nibiruvillagebook.name=Книга деревни нибиру
+item.villagenames:abandonedbasebook.name=Книга заброшенной базы
+
+
+# Custom Blocks
+tile.villagenames:lunaringoldbrick.name=Золотой кирпич лунаринского стиля
+tile.villagenames:lunarinironbrick.name=Железный кирпич лунаринского стиля
+
+
+# Villager careers/professions
+entity.Villager.farmer=Фермер
+entity.Villager.fisherman=Рыбак
+entity.Villager.shepherd=Пастух
+entity.Villager.fletcher=Лучник
+entity.Villager.librarian=Библиотекарь
+entity.Villager.cleric=Священник
+entity.Villager.armor=Бронник
+entity.Villager.weapon=Оружейник
+entity.Villager.tool=Инструментальщик
+entity.Villager.butcher=Мясник
+entity.Villager.leather=Кожевник
+entity.Villager.nitwit=Нищий
+entity.Villager.cartographer=Картограф
+# This one's custom because there was no such title in vanilla
+entity.Villager.blacksmith=Кузнец
+entity.Villager.mason=Каменщик
+
+
+# Config Menu
+config.villagenames.global.tooltip=Управляет всем, кроме именных слогов и генератором деревень.
+config.villagenames.villagegenerator.tooltip=Настройки для системы генерации деревни
+config.villagenames.syllables.tooltip=Коллекция пулов слогов, доступных генератору имен
+
+
+# Advancements
+advancements.villagenames.description=О, дивный новый мир, в котором есть такие люди!
+# Root quote: William Shakespeare, The Tempest
+advancements.maxrep.title=§aИзумрудный стандарт
+advancements.maxrep.description=Получите максимальную репутацию в деревне
+advancements.archaeologist.title=§6Археолог
+advancements.archaeologist.description=Определите несколько различных типов структур
+advancements.minrep.title=§4Ты монстр
+advancements.minrep.description=Получите минимальную репутацию в деревне
+advancements.ghosttown.title=Город призраков
+advancements.ghosttown.description=Создайте деревенскую книгу для пустой деревни
+advancements.laputa.title=§cВерность
+advancements.laputa.description=Подружитесь с одиноким големом

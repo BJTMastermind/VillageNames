@@ -357,7 +357,7 @@ public class GeneralConfig {
 				+ "profession is displayed if that config flag is enabled. It can be left blank for no profession.\n"
 				+ "classPath is the mod's address to the entity class.\n"
 								+ "nameType options:\n"
-								+ "villager, dragon, golem, alien, angel, demon, goblin, custom\n"
+								+ "villager, dragon, golem, alien, angel, demon, goblin, pet, custom\n"
 				+ "addOrRemove - type \"add\" to automatically add names tags to ALL COPIES of this entity upon spawning, or \"remove\" to automatically remove.\n"
 				+ "Be VERY CAUTIOUS about what entities you choose to add to this list!"
 								);
@@ -420,7 +420,7 @@ public class GeneralConfig {
 				+ "profession is displayed if that config flag is enabled. It can be left blank for no profession.\n"
 				+ "classPath is mod's address to the entity class.\n"
 								+ "nameType options:\n"
-								+ "villager, dragon, golem, alien, angel, demon, goblin, custom\n"
+								+ "villager, dragon, golem, alien, angel, demon, goblin, pet, custom\n"
 								);
 		
 		
