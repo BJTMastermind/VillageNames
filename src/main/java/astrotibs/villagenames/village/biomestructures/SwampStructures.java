@@ -405,7 +405,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -1351,7 +1351,7 @@ public class SwampStructures
         		{4,4,4, 2, GeneralConfig.useVillageColors ? this.townColor3 : 10}, // Purple
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -2134,7 +2134,7 @@ public class SwampStructures
     		
     		
     		// Mossy Cobblestone Slab (lower)
-    		IBlockState biomeMossyCobblestoneSlabLowerState = ModObjects.chooseModMossyStoneSlabState(false);
+    		IBlockState biomeMossyCobblestoneSlabLowerState = ModObjects.chooseModMossyCobblestoneSlabState(false);
     		if (biomeMossyCobblestoneSlabLowerState != null)
     		{
     			biomeMossyCobblestoneSlabLowerState = StructureVillageVN.getBiomeSpecificBlockState(biomeMossyCobblestoneSlabLowerState, this.materialType, this.biome, this.disallowModSubs);
@@ -2907,7 +2907,9 @@ public class SwampStructures
     		IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			// Floor
-    			{0,0,4, 8,0,7}, 
+    			{0,0,4, 8,0,4}, 
+    			{0,0,5, 0,0,6}, {8,0,5, 8,0,6}, 
+    			{0,0,7, 8,0,7}, 
     			})
     		{
     			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
@@ -2952,7 +2954,7 @@ public class SwampStructures
         		{5,2,4, 0, GeneralConfig.useVillageColors ? this.townColor2 : 13}, // Green
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -3147,12 +3149,12 @@ public class SwampStructures
             }
             
             
-        	// Carpet
+        	// Wool - carpet in front of the door prevents villagers from passing through
         	for(int[] uuvvww : new int[][]{
-        		{2,1,5, 6,1,6, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
+        		{1,0,5, 7,0,6, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
         		})
             {
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
+    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.WOOL.getStateFromMeta(uuvvww[6]), Blocks.WOOL.getStateFromMeta(uuvvww[6]), false);
             }
             
             
@@ -3219,7 +3221,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -4093,7 +4095,7 @@ public class SwampStructures
             	// Porch
             	{0,3,0, 0,3,1}, {1,3,0, 8,3,0}, {8,3,1, 8,3,3}, {8,3,5, 8,3,8}, {9,3,4, 9,3,5}, {6,3,8, 7,3,8}, 
             	// Left wall
-            	{0,4,2, 0,5,8}, 
+            	{0,3,2, 0,5,8}, 
             	// Right wall
             	{6,4,2, 6,5,4}, {6,4,6, 6,5,8}, 
             	})
@@ -4218,7 +4220,7 @@ public class SwampStructures
         		{5,4,7, 2, GeneralConfig.useVillageColors ? this.townColor3 : 10}, // Purple
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -4309,7 +4311,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -4958,7 +4960,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -5441,7 +5443,7 @@ public class SwampStructures
         		{7,3,3, 3, GeneralConfig.useVillageColors ? this.townColor2 : 13}, // Green
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -6069,7 +6071,7 @@ public class SwampStructures
         		{4,3,3, 3, GeneralConfig.useVillageColors ? this.townColor4 : 14}, // Red
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -6141,7 +6143,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -6272,7 +6274,9 @@ public class SwampStructures
 				
 				this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.minY - GROUND_LEVEL, 0);
 			}
-    		    		
+    		
+			//LogHelper.info("HORRIBLE SECRET! At x " + (this.boundingBox.maxX+this.boundingBox.minX)/2 + " " + (this.boundingBox.maxZ+this.boundingBox.minZ)/2);
+			
     		// In the event that this village construction is resuming after being unloaded
     		// you may need to reestablish the village name/color/type info
     		if (
@@ -7891,7 +7895,7 @@ public class SwampStructures
         		{4,3,7, 4,8,7, 2}, 
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6])), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6])), false);
             }
             
             
@@ -7966,7 +7970,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -8228,8 +8232,7 @@ public class SwampStructures
             
                     	
             // Polished Granite
-            IBlockState polishedGraniteState = ModObjects.chooseModPolishedGraniteBlockState();
-            if (polishedGraniteState==null) {polishedGraniteState = ModObjects.chooseModSmoothStoneBlockState();} // Guarantees a vanilla stone if this fails
+            IBlockState polishedGraniteState = Blocks.STONE.getStateFromMeta(2);
         	for (int[] uuvvww : new int[][]{
         		{2,1,3, 6,1,10}, 
         		})
@@ -8550,7 +8553,9 @@ public class SwampStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.getCoordBaseMode(),
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
         	
         	
@@ -8598,7 +8603,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -8895,7 +8900,7 @@ public class SwampStructures
         		{3,0,6, 2, GeneralConfig.useVillageColors ? this.townColor : 15}, // Black
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -9177,7 +9182,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -9794,7 +9799,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -9863,17 +9868,16 @@ public class SwampStructures
     	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
-    			" F     F    ",
     			"            ",
     			"            ",
     			"            ",
-    			" F     F    ",
     			"            ",
     			"            ",
-    			"  F   F  FF ",
+    			"            ",
+    			"            ",
+    			"         FF ",
     			"         F  ",
-    			"  F F F  FF ",
-
+    			"         FF ",
         };
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = foundationPattern[0].length();
@@ -10209,13 +10213,14 @@ public class SwampStructures
             }
             
             
-        	// Carpet
-        	for(int[] uuvvww : new int[][]{
-        		// Lower
-        		{3,2,3, 5,2,4, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
+        	// Carpet (Black)
+        	for(int[] uvwm : new int[][]{
+        		// Carpet in front of the door prevents villagers from passing through
+        		{3,2,4}, {5,2,4}, 
+        		{4,2,3}, 
         		})
             {
-    			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
+    			this.setBlockState(world, Blocks.CARPET.getStateFromMeta((GeneralConfig.useVillageColors ? this.townColor : 15)), uvwm[0], uvwm[1], uvwm[2], structureBB);
             }
         	
         	
@@ -10226,7 +10231,7 @@ public class SwampStructures
         		{4,5,0, 2, GeneralConfig.useVillageColors ? this.townColor4 : 14}, // Red
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -10694,7 +10699,12 @@ public class SwampStructures
     		}
     		
     		// Carpet
-    		for (int[] uuvvww : new int[][] { { 6, 4, 3, 6, 4, 6, GeneralConfig.useVillageColors ? this.townColor4 : 14 }, { 5, 4, 2, 5, 4, 6, GeneralConfig.useVillageColors ? this.townColor4 : 14 } })
+    		for (int[] uuvvww : new int[][]
+    		{
+    			// Carpet in front of the door prevents villagers from passing through
+    			{6,4,3, 6,4,5, GeneralConfig.useVillageColors ? this.townColor4 : 14 }, 
+    			{5,4,2, 5,4,5, GeneralConfig.useVillageColors ? this.townColor4 : 14 }
+    		})
     		{
     			fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
     		}
@@ -11091,8 +11101,7 @@ public class SwampStructures
 				{6,0,5, 6,3,9}, 
 				{1,0,5, 2,3,5}, {4,0,5, 5,3,5}, 
 				// Floor
-				{2,0,9, 4,0,9}, 
-				{1,0,6, 5,0,8}, 
+				{1,0,6, 1,0,8}, {5,0,6, 5,0,8}, 
 				{3,0,4, 3,0,5}, 
 				// Left entrance wall
 				{2,1,3, 2,3,4}, {4,1,3, 4,3,4}, 
@@ -11213,36 +11222,30 @@ public class SwampStructures
 			}
 			
 			
-			// Wool
+			// Wool - carpet in front of the door prevents villagers from passing through
 			for (int[] uvwo : new int[][]{
 				{1,1,6, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
+				
+        		// Floor carpeting
+        		{2,0,9, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
+        		{3,0,9, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
+        		{4,0,9, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
+        		
+        		{2,0,8, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
+        		{3,0,8, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
+        		{4,0,8, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
+        		
+        		{2,0,7, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
+        		{3,0,7, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
+        		{4,0,7, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
+        		
+        		{2,0,6, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
+        		{3,0,6, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
+        		{4,0,6, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
 			})
 			{
 				this.setBlockState(world, Blocks.WOOL.getStateFromMeta(uvwo[3]), uvwo[0], uvwo[1], uvwo[2], structureBB);
 			}
-			
-			
-			// Carpet
-        	for(int[] uvwc : new int[][]{
-        		{2,1,9, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
-        		{3,1,9, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
-        		{4,1,9, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
-        		
-        		{2,1,8, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
-        		{3,1,8, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
-        		{4,1,8, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
-        		
-        		{2,1,7, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
-        		{3,1,7, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
-        		{4,1,7, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
-        		
-        		{2,1,6, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
-        		{3,1,6, (GeneralConfig.useVillageColors ? this.townColor4 : 14)}, // Red
-        		{4,1,6, (GeneralConfig.useVillageColors ? this.townColor : 15)}, // Black
-        		})
-            {
-            	this.setBlockState(world, Blocks.CARPET.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
-            }
         	
         	
 			// Solid color banners
@@ -12064,7 +12067,7 @@ public class SwampStructures
         	IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.PLANKS.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
             for(int[] uuvvww : new int[][]{
     			// Entry/floor
-    			{1,0,3, 5,0,10}, 
+            	{1,0,3, 5,0,5}, {1,0,6, 1,0,7}, {5,0,6, 5,0,7}, {1,0,8, 5,0,10}, 
     			// Front wall
     			{1,1,5, 2,3,5}, {3,3,5, 3,3,5}, {4,1,5, 5,3,5}, {2,4,6, 4,4,6},
     			// Left wall
@@ -12189,18 +12192,18 @@ public class SwampStructures
             }
             
             
-        	// Carpet
+        	// Wool - carpet in front of the door prevents villagers from passing through
         	for(int[] uvwc : new int[][]{
         		// Lower
-        		{2,1,7, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
-        		{3,1,6, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
-        		{4,1,7, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
-        		{2,1,6, (GeneralConfig.useVillageColors ? this.townColor2 : 13)}, // Green
-        		{3,1,7, (GeneralConfig.useVillageColors ? this.townColor2 : 13)}, // Green
-        		{4,1,6, (GeneralConfig.useVillageColors ? this.townColor2 : 13)}, // Green
+        		{2,0,7, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
+        		{3,0,6, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
+        		{4,0,7, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
+        		{2,0,6, (GeneralConfig.useVillageColors ? this.townColor2 : 13)}, // Green
+        		{3,0,7, (GeneralConfig.useVillageColors ? this.townColor2 : 13)}, // Green
+        		{4,0,6, (GeneralConfig.useVillageColors ? this.townColor2 : 13)}, // Green
         		})
             {
-            	this.setBlockState(world, Blocks.CARPET.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
+            	this.setBlockState(world, Blocks.WOOL.getStateFromMeta(uvwc[3]), uvwc[0], uvwc[1], uvwc[2], structureBB);
             }
             
     		
@@ -12297,7 +12300,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -12692,8 +12695,7 @@ public class SwampStructures
             
                     	
             // Polished Granite
-            IBlockState polishedGraniteState = ModObjects.chooseModPolishedGraniteBlockState();
-            if (polishedGraniteState==null) {polishedGraniteState = ModObjects.chooseModSmoothStoneBlockState();} // Guarantees a vanilla stone if this fails
+            IBlockState polishedGraniteState = Blocks.STONE.getStateFromMeta(2);
         	for (int[] uvw : new int[][]{
         		{3,1,6}, 
         		})
@@ -13396,7 +13398,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -13982,7 +13984,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -14531,7 +14533,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -14895,7 +14897,7 @@ public class SwampStructures
         		{1,1,3, 1,3,3, 0}, 
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6])), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6])), false);
             }
             
     		
@@ -14950,7 +14952,7 @@ public class SwampStructures
         		{6,0,3, 3, GeneralConfig.useVillageColors ? this.townColor : 15}, // Black
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -14995,7 +14997,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -15008,9 +15010,9 @@ public class SwampStructures
     			
     			int s = random.nextInt(16);
     			
-    			int u = s==15 ? 1 : 5+(s/3);
+    			int u = s==15 ? 10 : 5+(s/3);
     			int v = 1;
-    			int w = s==15 ? 3 : 5+(s%3);
+    			int w = s==15 ? 4 : 3+(s%3);
     			
     			EntityVillager entityvillager = StructureVillageVN.makeVillagerWithProfession(world, random, 4, 2, 0); // Leatherworker
     			
@@ -15446,8 +15448,8 @@ public class SwampStructures
             
         	// Carpet
         	for(int[] uuvvww : new int[][]{
-        		// Lower
-        		{3,1,2, 4,1,7, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
+        		// Carpet in front of the door prevents villagers from passing through
+        		{3,1,3, 4,1,7, (GeneralConfig.useVillageColors ? this.townColor3 : 10)}, // Purple
         		})
             {
     			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
@@ -15562,7 +15564,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -16144,7 +16146,9 @@ public class SwampStructures
         	
         	// First try polished Andesite
         	IBlockState polishedAndesiteSlabUpperState = ModObjects.chooseModPolishedAndesiteSlabState(true);
+        	if (polishedAndesiteSlabUpperState==null) {polishedAndesiteSlabUpperState = ModObjects.chooseModAndesiteBrickSlabState(true);} // Try Andesite Brick stairs
         	Block polishedAndesiteStairsBlock = ModObjects.chooseModPolishedAndesiteStairsBlock();
+        	if (polishedAndesiteStairsBlock==null) {polishedAndesiteStairsBlock = ModObjects.chooseModAndesiteBrickStairsBlock();} // Try Andesite Brick stairs
         	if (polishedAndesiteSlabUpperState==null || polishedAndesiteStairsBlock==null)
         	{
         		// Try regular Andesite
@@ -16226,7 +16230,7 @@ public class SwampStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -16580,7 +16584,7 @@ public class SwampStructures
         		{4,5,4, 0, GeneralConfig.useVillageColors ? this.townColor : 15}, // Black
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -17464,7 +17468,7 @@ public class SwampStructures
 	            	}
             	}
             	
-            	this.replaceAirAndLiquidDownwards(world, biomeFillerState, uvw[0], decorHeightY-1, uvw[2], structureBB);
+            	//this.replaceAirAndLiquidDownwards(world, biomeFillerState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], decorHeightY+1, uvw[2], structureBB);
             	
             	// Get ground level
@@ -17953,8 +17957,7 @@ public class SwampStructures
     		}
     		
     		// Post
-    		BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
-    		BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeFillerState); // Foundation
+    		BlueprintData.addFillBelowTo(blueprint, 0, -1, 0, biomeStrippedLogVertState); // Foundation
     		BlueprintData.addFillWithBlocks(blueprint, 0,0,0, 0,postheight-1,0, biomeStrippedLogVertState);
     		break;
     		

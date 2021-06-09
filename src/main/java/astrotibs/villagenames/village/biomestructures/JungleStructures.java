@@ -312,11 +312,14 @@ public class JungleStructures
             	else
             	{
             		biomePolishedDioriteStairsBlock = ModObjects.chooseModPolishedDioriteStairsBlock(); 
-                	
-                	if (biomePolishedDioriteStairsBlock==null) // Try regular diorite stairs
+                	if (biomePolishedDioriteStairsBlock==null) // Try diorite brick stairs
                 	{
-                		biomePolishedDioriteStairsBlock = ModObjects.chooseModDioriteStairsBlock();
-                		if (biomePolishedDioriteStairsBlock==null) {useOnlyStone=true; continue;} // Trigger flag and reset
+                		biomePolishedDioriteStairsBlock = ModObjects.chooseModDioriteBrickStairsBlock();
+                		if (biomePolishedDioriteStairsBlock==null) // Try regular diorite brick stairs
+                    	{
+                    		biomePolishedDioriteStairsBlock = ModObjects.chooseModDioriteStairsBlock();
+                    		if (biomePolishedDioriteStairsBlock==null) {useOnlyStone=true; continue;} // Trigger flag and reset
+                    	}
                 	}
             	}
             	biomePolishedDioriteStairsBlock = StructureVillageVN.getBiomeSpecificBlockState(biomePolishedDioriteStairsBlock.getDefaultState(), this.materialType, this.biome, this.disallowModSubs).getBlock();
@@ -958,7 +961,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -1456,10 +1459,14 @@ public class JungleStructures
         	
         	// Polished diorite slabs lower
         	IBlockState biomePolishedDioriteSlabLowerState = ModObjects.chooseModPolishedDioriteSlabState(false);
-        	if (biomePolishedDioriteSlabLowerState==null) // Set to regular diorite slab
+        	if (biomePolishedDioriteSlabLowerState==null)
         	{
-        		biomePolishedDioriteSlabLowerState = ModObjects.chooseModDioriteSlabState(false);
-            	if (biomePolishedDioriteSlabLowerState==null) {biomePolishedDioriteSlabLowerState = Blocks.STONE_SLAB.getStateFromMeta(0);} // Set to polished stone slab
+        		biomePolishedDioriteSlabLowerState = ModObjects.chooseModDioriteBrickSlabState(false); // Try diorite brick slab
+        		if (biomePolishedDioriteSlabLowerState==null) // Set to regular diorite slab
+            	{
+            		biomePolishedDioriteSlabLowerState = ModObjects.chooseModDioriteSlabState(false);
+                	if (biomePolishedDioriteSlabLowerState==null) {biomePolishedDioriteSlabLowerState = Blocks.STONE_SLAB.getStateFromMeta(0);} // Set to polished stone slab
+            	}
         	}
         	biomePolishedDioriteSlabLowerState = StructureVillageVN.getBiomeSpecificBlockState(biomePolishedDioriteSlabLowerState, this.materialType, this.biome, this.disallowModSubs);
         	for (int[] uuvvww : new int[][]{
@@ -1604,7 +1611,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -2058,7 +2065,7 @@ public class JungleStructures
         		{12,1,11, 1, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -2956,7 +2963,7 @@ public class JungleStructures
         		{5,0,5, 3, GeneralConfig.useVillageColors ? this.townColor5 : 1}, // Orange
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -3063,7 +3070,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -3691,7 +3698,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -4206,7 +4213,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -4493,8 +4500,8 @@ public class JungleStructures
     		// Cobblestone
     		IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
-    			{5,0,0, 9,0,4},
-    			{0,0,5, 4,0,9}, 
+    			{5,0,0, 5,0,4}, {6,0,0, 7,0,1}, {6,0,4, 7,0,4}, {8,0,0, 9,0,4}, 
+    			{0,0,5, 0,0,9}, {1,0,5, 3,0,5}, {1,0,9, 3,0,9}, {4,0,5, 4,0,9}, 
     			})
     		{
     			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);
@@ -4637,25 +4644,26 @@ public class JungleStructures
             }
             
             
-        	// Carpet
+        	// Wool - carpet prevented villagers from going through the door
         	for(int[] uvwm : new int[][]{
         		// Back-left
-        		{1,1,8, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
-        		{2,1,8, GeneralConfig.useVillageColors ? this.townColor4 : 9}, // Cyan
-        		{3,1,8, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
-        		{2,1,7, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
-        		{3,1,7, GeneralConfig.useVillageColors ? this.townColor4 : 9}, // Cyan
-        		{1,1,6, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
-        		{2,1,6, GeneralConfig.useVillageColors ? this.townColor4 : 9}, // Cyan
-        		{3,1,6, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
+        		{1,0,8, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
+        		{2,0,8, GeneralConfig.useVillageColors ? this.townColor4 : 9}, // Cyan
+        		{3,0,8, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
+        		{1,0,7, GeneralConfig.useVillageColors ? this.townColor4 : 9}, // Cyan
+        		{2,0,7, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
+        		{3,0,7, GeneralConfig.useVillageColors ? this.townColor4 : 9}, // Cyan
+        		{1,0,6, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
+        		{2,0,6, GeneralConfig.useVillageColors ? this.townColor4 : 9}, // Cyan
+        		{3,0,6, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
         		// Front-right
-        		{6,1,3, GeneralConfig.useVillageColors ? this.townColor5 : 1}, // Orange
-        		{7,1,3, GeneralConfig.useVillageColors ? this.townColor3 : 14}, // Red
-        		{6,1,2, GeneralConfig.useVillageColors ? this.townColor3 : 14}, // Red
-        		{7,1,2, GeneralConfig.useVillageColors ? this.townColor5 : 1}, // Orange
+        		{6,0,3, GeneralConfig.useVillageColors ? this.townColor5 : 1}, // Orange
+        		{7,0,3, GeneralConfig.useVillageColors ? this.townColor3 : 14}, // Red
+        		{6,0,2, GeneralConfig.useVillageColors ? this.townColor3 : 14}, // Red
+        		{7,0,2, GeneralConfig.useVillageColors ? this.townColor5 : 1}, // Orange
         		})
             {
-        		this.setBlockState(world, Blocks.CARPET.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB); 
+        		this.setBlockState(world, Blocks.WOOL.getStateFromMeta(uvwm[3]), uvwm[0], uvwm[1], uvwm[2], structureBB); 
             }
         	
         	
@@ -5268,7 +5276,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -7356,7 +7364,9 @@ public class JungleStructures
     		IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
     		for(int[] uuvvww : new int[][]{
     			// Floor
-    			{1,0,2, 9,0,11}, 
+    			{2,0,11, 8,0,11}, 
+    			{1,0,2, 1,0,11}, {9,0,2, 9,0,11}, 
+    			{2,0,2, 8,0,2}, 
     			// Wall foundation
     			{1,1,2, 4,1,2}, {6,1,2, 9,1,2}, 
     			{1,1,3, 1,1,10}, {9,1,3, 9,1,10},
@@ -7590,7 +7600,9 @@ public class JungleStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.getCoordBaseMode(),
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
     		
     		
@@ -7619,16 +7631,13 @@ public class JungleStructures
             }
             
             
-        	// Red Carpet
-            int carpetMeta = (GeneralConfig.useVillageColors ? this.townColor3 : 14);
+        	// Wool - carpet in front of the door prevents villagers from passing through
+            int woolMeta = (GeneralConfig.useVillageColors ? this.townColor3 : 14); // Red
         	for(int[] uvwm : new int[][]{
-        		{2,1,4, 2,1,5}, {2,1,8, 2,1,9}, 
-        		{3,1,10, 4,1,10}, {6,1,10, 7,1,10}, 
-        		{8,1,4, 8,1,5}, {8,1,8, 8,1,9}, 
-        		{3,1,3, 7,1,9}, 
+        		{2,0,3, 8,0,10}, 
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uvwm[0], uvwm[1], uvwm[2], uvwm[3], uvwm[4], uvwm[5], Blocks.CARPET.getStateFromMeta(carpetMeta), Blocks.CARPET.getStateFromMeta(carpetMeta), false);
+        		this.fillWithBlocks(world, structureBB, uvwm[0], uvwm[1], uvwm[2], uvwm[3], uvwm[4], uvwm[5], Blocks.WOOL.getStateFromMeta(woolMeta), Blocks.WOOL.getStateFromMeta(woolMeta), false);
             }
     		
     		
@@ -8718,7 +8727,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -9064,7 +9073,7 @@ public class JungleStructures
         		{7,0,3, 3, GeneralConfig.useVillageColors ? this.townColor : 0}, // White
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -9083,7 +9092,7 @@ public class JungleStructures
     			{1,9,3, 1,9,3}, {1,10,5, 1,10,5}, {1,10,7, 1,10,7}, {1,9,9, 1,9,9}, 
     			{11,9,3, 11,9,3}, {11,10,5, 11,10,5}, {11,10,7, 11,10,7}, {11,9,9, 11,9,9}, 
     			// Floor
-    			{2,1,3, 5,1,9}, {6,1,5, 7,1,9}, {8,1,3, 8,1,9}, {9,1,8, 10,1,9}, 
+    			{2,1,3, 5,1,9}, {6,1,5, 7,1,9}, {8,1,3, 8,1,9}, 
     			})
     		{
     			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomePlankState, biomePlankState, false);
@@ -9287,8 +9296,7 @@ public class JungleStructures
             
                     	
             // Polished Granite
-            IBlockState polishedGraniteState = ModObjects.chooseModPolishedGraniteBlockState();
-            if (polishedGraniteState==null) {polishedGraniteState = ModObjects.chooseModSmoothStoneBlockState();} // Guarantees a vanilla stone if this fails
+            IBlockState polishedGraniteState = Blocks.STONE.getStateFromMeta(2);
         	for (int[] uvw : new int[][]{
         		{3,2,9}, 
         		})
@@ -9320,7 +9328,7 @@ public class JungleStructures
             // Wool
             IBlockState woolBlockState = Blocks.WOOL.getStateFromMeta(GeneralConfig.useVillageColors ? this.townColor : 0); // White
             for (int[] uuvvww : new int[][]{
-        		{9,1,3, 10,1,7}, 
+            	{9,1,3, 10,1,9}, 
         		})
             {
             	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], woolBlockState, woolBlockState, false);
@@ -10482,7 +10490,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -10515,7 +10523,7 @@ public class JungleStructures
                 
             	// Painting
                 for(int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
-                	{0,3,4, 1}, 
+                	{1,3,4, 1}, 
                 	})
                 {
                 	int x = this.getXWithOffset(uvwo[0], uvwo[2]);
@@ -10525,7 +10533,7 @@ public class JungleStructures
                 	
                 	if (painting.onValidSurface())
                 	{
-                    	// Set art
+                		// Set art
                 		EntityPainting.EnumArt[] a_1x1_paintings = new EntityPainting.EnumArt[]{
                     			EntityPainting.EnumArt.KEBAB,
                     			EntityPainting.EnumArt.AZTEC,
@@ -10824,6 +10832,37 @@ public class JungleStructures
             {
             	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
             }
+        	
+    		
+    		// Unkempt Grass
+    		for (int[] uvwg : new int[][]{
+    			{1,1,3, 0}, {2,1,3, 0}, 
+    			{1,1,4, 0}, {2,1,4, 0}, 
+    			{1,1,5, 0}, {2,1,5, 0}, 
+    			{1,1,6, 0}, {2,1,6, 0}, 
+    			{2,1,7, 0}, {3,1,7, 0}, {4,1,7, 0}, {5,1,7, 0}, {6,1,7, 0}, 
+    			{3,1,8, 0}, {4,1,8, 0}, {5,1,8, 0}, {6,1,8, 0}, 
+    			})
+    		{
+    			if (uvwg[3] == 0) // Tall grass
+    			{
+    				setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(1), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    			}
+    			else if (uvwg[3] == 1) // Double-tall grass
+    			{
+    				setBlockState(world, Blocks.DOUBLE_PLANT.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				setBlockState(world, Blocks.DOUBLE_PLANT.getStateFromMeta(11), uvwg[0], uvwg[1] + 1, uvwg[2], structureBB);
+    			}
+    			else if (uvwg[3] == 2) // Fern
+    			{
+    				setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(2), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    			}
+    			else // Tall fern
+    			{
+    				setBlockState(world, Blocks.DOUBLE_PLANT.getStateFromMeta(3), uvwg[0], uvwg[1], uvwg[2], structureBB);
+    				setBlockState(world, Blocks.DOUBLE_PLANT.getStateFromMeta(11), uvwg[0], uvwg[1] + 1, uvwg[2], structureBB);
+    			} 
+    		}
     		
     		
     		// Torches
@@ -11005,7 +11044,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -12837,8 +12876,8 @@ public class JungleStructures
             
         	// Carpet
         	for(int[] uuvvww : new int[][]{
-        		// Lower
-        		{3,1,2, 4,1,3, (GeneralConfig.useVillageColors ? this.townColor : 0)}, // White
+        		// Carpet in front of the door prevents villagers from passing through
+        		{3,1,3, 3,1,3, (GeneralConfig.useVillageColors ? this.townColor : 0)}, // White 
         		})
             {
     			this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], Blocks.CARPET.getStateFromMeta(uuvvww[6]), Blocks.CARPET.getStateFromMeta(uuvvww[6]), false);
@@ -13856,7 +13895,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -14152,7 +14191,7 @@ public class JungleStructures
         		{4,1,4, 3, GeneralConfig.useVillageColors ? this.townColor3 : 14}, // Red
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -14361,7 +14400,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -14841,7 +14880,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -15258,7 +15297,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -15791,9 +15830,9 @@ public class JungleStructures
         		{7,0,13, 7,2,13, 1},  
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6])), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6])), false);
             }
-    		
+        	
     		
         	// Vines
         	if (this.villageType==FunctionsVN.VillageType.JUNGLE || this.villageType==FunctionsVN.VillageType.SWAMP)
@@ -15816,7 +15855,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -16738,7 +16777,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -17191,7 +17230,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -17475,7 +17514,7 @@ public class JungleStructures
         		{3,2,6, 2, GeneralConfig.useVillageColors ? this.townColor2 : 4}, // Yellow
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -17952,9 +17991,13 @@ public class JungleStructures
     		
     		// Polished Andesite Slab (Lower)
     		IBlockState biomePolishedAndesiteSlabBottomState = ModObjects.chooseModPolishedAndesiteSlabState(false);
-    		if (biomePolishedAndesiteSlabBottomState==null) // Use basic polished stone slab
+    		if (biomePolishedAndesiteSlabBottomState==null) // Try brick slab
     		{
-    			biomePolishedAndesiteSlabBottomState = Blocks.STONE_SLAB.getStateFromMeta(0);
+    			biomePolishedAndesiteSlabBottomState = ModObjects.chooseModAndesiteBrickSlabState(false);
+        		if (biomePolishedAndesiteSlabBottomState==null) // Use basic polished stone slab
+        		{
+        			biomePolishedAndesiteSlabBottomState = Blocks.STONE_SLAB.getStateFromMeta(0);
+        		};
     		};
     		biomePolishedAndesiteSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(biomePolishedAndesiteSlabBottomState, this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvw : new int[][]{
@@ -18974,7 +19017,7 @@ public class JungleStructures
         		{5,0,6, 3, GeneralConfig.useVillageColors ? this.townColor4 : 9}, // Cyan
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -19407,7 +19450,7 @@ public class JungleStructures
         		{2,1,8, 2,4,8, 2}, 
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6])), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6])), false);
             }
             
             
@@ -19435,9 +19478,13 @@ public class JungleStructures
         	
     		// Polished Andesite Slab (Lower)
     		IBlockState biomePolishedAndesiteSlabBottomState = ModObjects.chooseModPolishedAndesiteSlabState(false);
-    		if (biomePolishedAndesiteSlabBottomState==null) // Use basic polished stone slab
+    		if (biomePolishedAndesiteSlabBottomState==null) // Try brick slab
     		{
-    			biomePolishedAndesiteSlabBottomState = Blocks.STONE_SLAB.getStateFromMeta(0);
+    			biomePolishedAndesiteSlabBottomState = ModObjects.chooseModAndesiteBrickSlabState(false);
+        		if (biomePolishedAndesiteSlabBottomState==null) // Use basic polished stone slab
+        		{
+        			biomePolishedAndesiteSlabBottomState = Blocks.STONE_SLAB.getStateFromMeta(0);
+        		};
     		};
     		biomePolishedAndesiteSlabBottomState = StructureVillageVN.getBiomeSpecificBlockState(biomePolishedAndesiteSlabBottomState, this.materialType, this.biome, this.disallowModSubs);
     		for (int[] uvw : new int[][]{
@@ -20015,7 +20062,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -21535,7 +21582,7 @@ public class JungleStructures
         		{2,1,1, 2,3,1, 1},    
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.getCoordBaseMode())), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6])), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6])), false);
             }
             
             
@@ -21658,7 +21705,7 @@ public class JungleStructures
         			// Replace only when air to prevent overwriting stuff outside the bb
         			if (world.isAirBlock(new BlockPos(this.getXWithOffset(uvwo[0], uvwo[2]), this.getYWithOffset(uvwo[1]), this.getZWithOffset(uvwo[0], uvwo[2]))))
         			{
-        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3], this.getCoordBaseMode())), uvwo[0], uvwo[1], uvwo[2], structureBB);
+        				this.setBlockState(world, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(uvwo[3])), uvwo[0], uvwo[1], uvwo[2], structureBB);
         			}
                 }
         	}
@@ -21826,9 +21873,9 @@ public class JungleStructures
         	if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
         	{ // 0 and 2 are ok
         		for (int[] xyzo : new int[][]{ // Orientation - 1:north, 2:east, 4:south, 8:west
-        			{0,0,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, // Front
-        			{1,0,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, // Right
-        			{-1,0,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, // Left
+        			{0,0,-1, StructureVillageVN.chooseVineMeta(2)}, // Front
+        			{1,0,0, StructureVillageVN.chooseVineMeta(1)}, // Right
+        			{-1,0,0, StructureVillageVN.chooseVineMeta(3)}, // Left
             		})
                 {
         			BlueprintData.addPlaceBlock(blueprint, xyzo[0], xyzo[1], xyzo[2], Blocks.VINE.getStateFromMeta(xyzo[3]));
@@ -21850,10 +21897,10 @@ public class JungleStructures
         		if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
             	{
             		for (int[] xyzo : new int[][]{ // Orientation - 1:north, 2:east, 4:south, 8:west
-            			{0,0,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, {0,1,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, // Front
-            			{1,0,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, // Right
-            			{0,0,1, StructureVillageVN.chooseVineMeta(0, coordBaseMode)}, // Back
-            			{-1,1,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, // Left
+            			{0,0,-1, StructureVillageVN.chooseVineMeta(2)}, {0,1,-1, StructureVillageVN.chooseVineMeta(2)}, // Front
+            			{1,0,0, StructureVillageVN.chooseVineMeta(1)}, // Right
+            			{0,0,1, StructureVillageVN.chooseVineMeta(0)}, // Back
+            			{-1,1,0, StructureVillageVN.chooseVineMeta(3)}, // Left
                 		})
                     {
             			BlueprintData.addPlaceBlock(blueprint, xyzo[0], xyzo[1], xyzo[2], Blocks.VINE.getStateFromMeta(xyzo[3]));
@@ -21865,10 +21912,10 @@ public class JungleStructures
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
             	{
             		for (int[] xyzo : new int[][]{ // Orientation - 1:north, 2:east, 4:south, 8:west
-            			{-1,0,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, {-1,1,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, // Front
-            			{0,0,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, // Right
-            			{1,0,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, // Back
-            			{0,1,1, StructureVillageVN.chooseVineMeta(0, coordBaseMode)}, // Left
+            			{-1,0,0, StructureVillageVN.chooseVineMeta(3)}, {-1,1,0, StructureVillageVN.chooseVineMeta(3)}, // Front
+            			{0,0,-1, StructureVillageVN.chooseVineMeta(2)}, // Right
+            			{1,0,0, StructureVillageVN.chooseVineMeta(1)}, // Back
+            			{0,1,1, StructureVillageVN.chooseVineMeta(0)}, // Left
                 		})
                     {
             			BlueprintData.addPlaceBlock(blueprint, xyzo[0], xyzo[1], xyzo[2], Blocks.VINE.getStateFromMeta(xyzo[3]));
@@ -21880,10 +21927,10 @@ public class JungleStructures
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
             	{
             		for (int[] xyzo : new int[][]{ // Orientation - 1:north, 2:east, 4:south, 8:west
-            			{0,0,1, StructureVillageVN.chooseVineMeta(0, coordBaseMode)}, {0,1,1, StructureVillageVN.chooseVineMeta(0, coordBaseMode)}, // Front
-            			{-1,0,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, // Right
-            			{0,0,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, // Back
-            			{1,1,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, // Left
+            			{0,0,1, StructureVillageVN.chooseVineMeta(0)}, {0,1,1, StructureVillageVN.chooseVineMeta(0)}, // Front
+            			{-1,0,0, StructureVillageVN.chooseVineMeta(3)}, // Right
+            			{0,0,-1, StructureVillageVN.chooseVineMeta(2)}, // Back
+            			{1,1,0, StructureVillageVN.chooseVineMeta(1)}, // Left
                 		})
                     {
             			BlueprintData.addPlaceBlock(blueprint, xyzo[0], xyzo[1], xyzo[2], Blocks.VINE.getStateFromMeta(xyzo[3]));
@@ -21895,10 +21942,10 @@ public class JungleStructures
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
             	{
             		for (int[] xyzo : new int[][]{ // Orientation - 1:north, 2:east, 4:south, 8:west
-            			{1,0,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, {1,1,0, StructureVillageVN.chooseVineMeta(1, coordBaseMode)}, // Front
-            			{0,0,1, StructureVillageVN.chooseVineMeta(0, coordBaseMode)}, // Right
-            			{-1,0,0, StructureVillageVN.chooseVineMeta(3, coordBaseMode)}, // Back
-            			{0,1,-1, StructureVillageVN.chooseVineMeta(2, coordBaseMode)}, // Left
+            			{1,0,0, StructureVillageVN.chooseVineMeta(1)}, {1,1,0, StructureVillageVN.chooseVineMeta(1)}, // Front
+            			{0,0,1, StructureVillageVN.chooseVineMeta(0)}, // Right
+            			{-1,0,0, StructureVillageVN.chooseVineMeta(3)}, // Back
+            			{0,1,-1, StructureVillageVN.chooseVineMeta(2)}, // Left
                 		})
                     {
             			BlueprintData.addPlaceBlock(blueprint, xyzo[0], xyzo[1], xyzo[2], Blocks.VINE.getStateFromMeta(xyzo[3]));
@@ -21917,10 +21964,10 @@ public class JungleStructures
     		// Belt of vines
     		if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
         	{
-        		BlueprintData.addPlaceBlock(blueprint, 0, 1, 1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(0, coordBaseMode)));
-        		BlueprintData.addPlaceBlock(blueprint, 1, 1, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(1, coordBaseMode)));
-        		BlueprintData.addPlaceBlock(blueprint, 0, 1, -1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(2, coordBaseMode)));
-        		BlueprintData.addPlaceBlock(blueprint, -1, 1, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(3, coordBaseMode)));
+        		BlueprintData.addPlaceBlock(blueprint, 0, 1, 1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(0)));
+        		BlueprintData.addPlaceBlock(blueprint, 1, 1, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(1)));
+        		BlueprintData.addPlaceBlock(blueprint, 0, 1, -1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(2)));
+        		BlueprintData.addPlaceBlock(blueprint, -1, 1, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(3)));
         	}
     		
     		genericInt = random.nextInt(4);
@@ -21936,10 +21983,10 @@ public class JungleStructures
 			// Vines
     		if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP)
         	{
-        		BlueprintData.addPlaceBlock(blueprint, genericInt%2!=0?-1:0, 2, genericInt%2!=0?0:-1, Blocks.VINE.getStateFromMeta(genericInt%2!=0?StructureVillageVN.chooseVineMeta(3, coordBaseMode):StructureVillageVN.chooseVineMeta(2, coordBaseMode)));
-        		BlueprintData.addPlaceBlock(blueprint, genericInt%2!=0?1:0, 2, genericInt%2!=0?0:1, Blocks.VINE.getStateFromMeta(genericInt%2!=0?StructureVillageVN.chooseVineMeta(1, coordBaseMode):StructureVillageVN.chooseVineMeta(0, coordBaseMode)));
+        		BlueprintData.addPlaceBlock(blueprint, genericInt%2!=0?-1:0, 2, genericInt%2!=0?0:-1, Blocks.VINE.getStateFromMeta(genericInt%2!=0?StructureVillageVN.chooseVineMeta(3):StructureVillageVN.chooseVineMeta(2)));
+        		BlueprintData.addPlaceBlock(blueprint, genericInt%2!=0?1:0, 2, genericInt%2!=0?0:1, Blocks.VINE.getStateFromMeta(genericInt%2!=0?StructureVillageVN.chooseVineMeta(1):StructureVillageVN.chooseVineMeta(0)));
         		
-        		BlueprintData.addPlaceBlock(blueprint, genericInt==1?-1:genericInt==3?1:0, 3, genericInt==0?-1:genericInt==2?1:0, Blocks.VINE.getStateFromMeta(genericInt==0?StructureVillageVN.chooseVineMeta(2, coordBaseMode):genericInt==1?StructureVillageVN.chooseVineMeta(3, coordBaseMode):genericInt==2?StructureVillageVN.chooseVineMeta(0, coordBaseMode):StructureVillageVN.chooseVineMeta(1, coordBaseMode)));
+        		BlueprintData.addPlaceBlock(blueprint, genericInt==1?-1:genericInt==3?1:0, 3, genericInt==0?-1:genericInt==2?1:0, Blocks.VINE.getStateFromMeta(genericInt==0?StructureVillageVN.chooseVineMeta(2):genericInt==1?StructureVillageVN.chooseVineMeta(3):genericInt==2?StructureVillageVN.chooseVineMeta(0):StructureVillageVN.chooseVineMeta(1)));
         	}
     		
     		break;
@@ -21967,8 +22014,8 @@ public class JungleStructures
     			// Vines
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP) // Orientation - 1:north, 2:east, 4:south, 8:west
             	{
-            		BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(2, coordBaseMode))); // Front
-            		BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(1, coordBaseMode))); // Right
+            		BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(2))); // Front
+            		BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(1))); // Right
             	}
     			break;
     			
@@ -21980,8 +22027,8 @@ public class JungleStructures
     			// Vines
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP) // Orientation - 1:north, 2:east, 4:south, 8:west
             	{
-            		BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(3, coordBaseMode))); // Front
-            		BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(2, coordBaseMode))); // Right
+            		BlueprintData.addPlaceBlock(blueprint, 0, 0, 1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(3))); // Front
+            		BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(2))); // Right
             	}
     			break;
     			
@@ -21993,8 +22040,8 @@ public class JungleStructures
     			// Vines
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP) // Orientation - 1:north, 2:east, 4:south, 8:west
             	{
-            		BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(0, coordBaseMode))); // Front
-            		BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(3, coordBaseMode))); // Right
+            		BlueprintData.addPlaceBlock(blueprint, 1, 0, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(0))); // Front
+            		BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(3))); // Right
             	}
     			break;
     			
@@ -22006,8 +22053,8 @@ public class JungleStructures
     			// Vines
     			if (villageType==FunctionsVN.VillageType.JUNGLE || villageType==FunctionsVN.VillageType.SWAMP) // Orientation - 1:north, 2:east, 4:south, 8:west
             	{
-            		BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(1, coordBaseMode))); // Front
-            		BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(0, coordBaseMode))); // Right
+            		BlueprintData.addPlaceBlock(blueprint, 0, 0, -1, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(1))); // Front
+            		BlueprintData.addPlaceBlock(blueprint, -1, 0, 0, Blocks.VINE.getStateFromMeta(StructureVillageVN.chooseVineMeta(0))); // Right
             	}
     			break;
     		}

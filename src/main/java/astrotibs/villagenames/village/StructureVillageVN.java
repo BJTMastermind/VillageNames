@@ -694,7 +694,7 @@ public class StructureVillageVN
 																	   break;
 													     	   }
         	if (block == Blocks.COBBLESTONE_WALL)              {blockstate=Blocks.COBBLESTONE_WALL.getStateFromMeta(1); break;} // Mossy COBBLESTONE wall
-        	if (block != null && block == ModObjects.chooseModStoneBrickWallState().getBlock())
+        	if (block != null && ModObjects.chooseModStoneBrickWallState()!=null && block == ModObjects.chooseModStoneBrickWallState().getBlock())
 													     	   {
 																	   IBlockState modstate = ModObjects.chooseModMossyStoneBrickWallState();
 																	   if (modstate!=null) {blockstate=ModObjects.chooseModMossyStoneBrickWallState();}
@@ -934,12 +934,12 @@ public class StructureVillageVN
 			if (block != null && block == ModObjects.chooseModMossyCobblestoneStairsBlock()) {blockstate = Blocks.STONE_STAIRS.getDefaultState(); break;}
 			if (block != null && block == ModObjects.chooseModMossyStoneBrickStairsBlock()) {blockstate = Blocks.STONE_BRICK_STAIRS.getDefaultState(); break;}
         	if (block == Blocks.COBBLESTONE_WALL && meta==1)   {blockstate=Blocks.COBBLESTONE_WALL.getStateFromMeta(0); break;} // Mossy cobblestone wall into regular
-        	if (block != null && block == ModObjects.chooseModMossyStoneBrickWallState().getBlock())
-												        	   {
-        														   IBlockState modstate = ModObjects.chooseModStoneBrickWallState();
-        														   if (modstate!=null) {blockstate=ModObjects.chooseModStoneBrickWallState();}
-        														   break;
-												        	   }
+        	if (block != null && ModObjects.chooseModMossyStoneBrickWallState()!=null && block == ModObjects.chooseModMossyStoneBrickWallState().getBlock())
+													     	   {
+																	   IBlockState modstate = ModObjects.chooseModStoneBrickWallState();
+																	   if (modstate!=null) {blockstate=ModObjects.chooseModStoneBrickWallState();}
+																	   break;
+													     	   }
         	//if (block == Blocks.standing_sign)                 {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, true), meta/4}; break;}
         	//if (block == Blocks.WALL_SIGN)                     {blockstate=new Object[]{ModObjects.chooseModWoodenSign(1, false), meta}; break;}
         	if (block != null && block == Block.getBlockFromName(ModObjects.barkQu)) {blockstate=block.getStateFromMeta(woodMeta); break;}
@@ -2288,14 +2288,14 @@ public class StructureVillageVN
 	 */
 	public static int chooseHangingMeta(int orientation, EnumFacing coordBaseMode)
 	{
-		if (orientation<0) {return -orientation;}
+		//if (orientation<0) {return -orientation;}
 		return HANGING_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
 	}
     /**
 	 * vineOrientation:
 	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
 	 */
-	public static int chooseVineMeta(int orientation, EnumFacing coordBaseMode)
+	public static int chooseVineMeta(int orientation)
 	{
 		return VINE_META_ARRAY[orientation];
 	}
