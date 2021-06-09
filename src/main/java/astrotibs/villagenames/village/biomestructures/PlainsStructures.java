@@ -371,7 +371,7 @@ public class PlainsStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -732,7 +732,7 @@ public class PlainsStructures
                 // Place a cobblestone foundation
                 this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeCobblestoneState, biomeCobblestoneState, false);
                 this.replaceAirAndLiquidDownwards(world, biomeFillerState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
-// Line the well with cobblestone                
+                // Line the well with cobblestone                
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
@@ -742,7 +742,7 @@ public class PlainsStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -1093,7 +1093,7 @@ public class PlainsStructures
                 // Place a grass foundation
                 this.setBlockState(world, biomeGrassState, bannerXBB, bannerYBB-1, bannerZBB, structureBB);
                 this.replaceAirAndLiquidDownwards(world, biomeFillerState, bannerXBB, bannerYBB-2, bannerZBB, structureBB);
-// Line the well with cobblestone                
+                // Line the well with cobblestone                
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
@@ -1103,7 +1103,7 @@ public class PlainsStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -1522,7 +1522,7 @@ public class PlainsStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -6751,7 +6751,9 @@ public class PlainsStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.getCoordBaseMode(),
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
             
             
@@ -7235,7 +7237,9 @@ public class PlainsStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.getCoordBaseMode(),
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
             
             // Doors

@@ -447,7 +447,7 @@ public class SavannaStructures
                 // Place a grass foundation
                 this.setBlockState(world, biomeGrassState, bannerXBB, bannerYBB-1, bannerZBB, structureBB);
                 this.replaceAirAndLiquidDownwards(world, biomeFillerState, bannerXBB, bannerYBB-2, bannerZBB, structureBB);
-// Line the well with cobblestone                
+                // Line the well with cobblestone                
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
@@ -457,7 +457,7 @@ public class SavannaStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -845,7 +845,7 @@ public class SavannaStructures
     				tilebanner.readFromNBT(modifystanding);
     				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
     				
-        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
 				}
 				else
 				{
@@ -1151,7 +1151,7 @@ public class SavannaStructures
                 // Place a cobblestone foundation
                 this.fillWithBlocks(world, structureBB, bannerXBB, bannerYBB-2, bannerZBB, bannerXBB, bannerYBB-1, bannerZBB, biomeCobblestoneState, biomeCobblestoneState, false);
                 this.replaceAirAndLiquidDownwards(world, biomeFillerState, bannerXBB, bannerYBB-3, bannerZBB, structureBB);
-// Line the well with cobblestone                
+                // Line the well with cobblestone                
                 BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
                 
             	// Set the banner and its orientation
@@ -1161,7 +1161,7 @@ public class SavannaStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -1500,7 +1500,7 @@ public class SavannaStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -3129,7 +3129,7 @@ public class SavannaStructures
         		{3,2,4, 2, GeneralConfig.useVillageColors ? this.townColor2 : 1}, // Orange
            		})
         	{
-        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -4764,7 +4764,7 @@ public class SavannaStructures
     				ItemStack villageBanner = new ItemStack(Items.BANNER);
     				villageBanner.setTagInfo("BlockEntityTag", villageNBTtag.getCompoundTag("BlockEntityTag"));
     				
-        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
 				}
 				else
 				{
@@ -4815,7 +4815,7 @@ public class SavannaStructures
     				ItemStack villageBanner = new ItemStack(Items.BANNER);
     				villageBanner.setTagInfo("BlockEntityTag", villageNBTtag.getCompoundTag("BlockEntityTag"));
     				
-        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
 				}
 				else
 				{
@@ -7100,7 +7100,9 @@ public class SavannaStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.getCoordBaseMode(),
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
             
             
@@ -7527,7 +7529,7 @@ public class SavannaStructures
         		{7,3,2, 0, GeneralConfig.useVillageColors ? this.townColor : 4}, // Yellow
            		})
         	{
-        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -14381,7 +14383,7 @@ public class SavannaStructures
     				ItemStack villageBanner = new ItemStack(Items.BANNER);
     				villageBanner.setTagInfo("BlockEntityTag", villageNBTtag.getCompoundTag("BlockEntityTag"));
     				
-        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
 				}
 				else
 				{

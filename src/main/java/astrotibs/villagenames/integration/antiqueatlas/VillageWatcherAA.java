@@ -312,7 +312,7 @@ public class VillageWatcherAA
 	SNOWY_TOOL_SMITHY = "VNSnTSm1", // Snowy Tool Smithy
 	SNOWY_WEAPON_SMITHY = "VNSnWSm1", // Snowy Weapon Smithy
 	SNOWY_ROAD_DECOR = "VNSnStD1", // Snowy Road Decor
-			
+	
 	JUNGLE_ARMORER_HOUSE = "VNJuArmH", // Jungle Armorer House
 	JUNGLE_BUTCHER_SHOP = "VNJuButS", // Jungle Butcher Shop
 	JUNGLE_CARTOGRAPHER_HOUSE_1 = "VNJuCaH1", // Jungle Cartographer House 1

@@ -11,6 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -197,10 +198,9 @@ public class ModObjects {
 	public static final String smoothStoneQu = DOM_QUARK + ":polished_stone";
 	
 	// Stairs
+	public static final String andesiteStairs_Qu = DOM_QUARK + ":stone_andesite_stairs";
 	public static final String dioriteStairs_Qu = DOM_QUARK + ":stone_diorite_stairs";
-	public static final String dioriteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsdiorite";
 	public static final String graniteStairs_Qu = DOM_QUARK + ":stone_granite_stairs";
-	public static final String graniteStairs_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsgranite";
 	public static final String smoothSandstoneStairs_white_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairssandstonesmooth";
 	public static final String smoothSandstoneStairs_red_VBE = DOM_VANILLABUILDERSEXTENSION + ":stairsredsandstonesmooth";
 	public static final String andesiteBrickStairs_Qu = DOM_QUARK + ":stone_andesite_bricks_stairs";
@@ -333,6 +333,19 @@ public class ModObjects {
 
 	
 	// Andesite
+	public static Block chooseModAndesiteStairsBlock()
+	{
+		Block modblock=null;
+		
+		modblock = Block.getBlockFromName(ModObjects.andesiteStairs_Qu);
+		if (modblock != null) {return modblock;}
+		
+		return null;
+	}
+	public static Block chooseModPolishedAndesiteStairsBlock()
+	{
+		return null;
+	}
 	public static Block chooseModAndesiteBrickStairsBlock()
 	{
 		Block modblock=null;
@@ -358,6 +371,10 @@ public class ModObjects {
 		modobject = Block.getBlockFromName(ModObjects.andesiteBrickSlab_Qu);
 		if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
 		
+		return null;
+	}
+	public static IBlockState chooseModPolishedAndesiteSlabState(boolean upper)
+	{
 		return null;
 	}
 	
@@ -511,6 +528,13 @@ public class ModObjects {
 	}
 	
 	
+	// Blackstone
+	public static Block chooseModPolishedBlackstoneButton()
+	{
+		return null;
+	}
+	
+	
 	// Blast Furnace
 	/**
 	 * furnaceOrientation:
@@ -532,6 +556,13 @@ public class ModObjects {
     	// None are found, so return ordinary packed ice
     	return Blocks.PACKED_ICE.getDefaultState();
     }
+	
+    
+	// Brick Wall
+	public static IBlockState chooseModBrickWallState()
+	{
+		return null;
+	}
 	
 	
 	// Campfire
@@ -583,7 +614,7 @@ public class ModObjects {
 	
 	
 	// Concrete
-	public static IBlockState chooseModConcrete(int color)
+	public static IBlockState chooseModConcreteState(int color)
 	{
 		if (GeneralConfig.addConcrete)
 		{
@@ -607,24 +638,15 @@ public class ModObjects {
 	// Added in 1.14
 	public static Block chooseModDioriteStairsBlock()
 	{
-		String[] modprioritylist = GeneralConfig.modBountifulStone;
+		Block modblock=null;
 		
-		for (String mod : modprioritylist)
-		{
-			Block modblock=null;
-			
-			if (mod.toLowerCase().equals("quark"))
-			{
-				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_Qu);
-				if (modblock != null) {return modblock;}
-			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
-			{
-				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_VBE);
-				if (modblock != null) {return modblock;}
-			}
-		}
+		modblock = Block.getBlockFromName(ModObjects.dioriteStairs_Qu);
+		if (modblock != null) {return modblock;}
 		
+		return null;
+	}
+	public static Block chooseModPolishedDioriteStairsBlock()
+	{
 		return null;
 	}
 	public static Block chooseModDioriteBrickStairsBlock()
@@ -676,6 +698,10 @@ public class ModObjects {
 		
 		return null;
 	}
+	public static IBlockState chooseModPolishedDioriteSlabState(boolean upper)
+	{
+		return null;
+	}
 	
 	
 	// Fletching Table
@@ -714,24 +740,19 @@ public class ModObjects {
 	// Added in 1.14
 	public static Block chooseModGraniteStairsBlock()
 	{
-		String[] modprioritylist = GeneralConfig.modBountifulStone;
+		Block modblock=null;
 		
-		for (String mod : modprioritylist)
-		{
-			Block modblock=null;
-			
-			if (mod.toLowerCase().equals("quark"))
-			{
-				modblock = Block.getBlockFromName(ModObjects.graniteStairs_Qu);
-				if (modblock != null) {return modblock;}
-			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
-			{
-				modblock = Block.getBlockFromName(ModObjects.graniteStairs_VBE);
-				if (modblock != null) {return modblock;}
-			}
-		}
+		modblock = Block.getBlockFromName(ModObjects.graniteStairs_Qu);
+		if (modblock != null) {return modblock;}
 		
+		return null;
+	}
+	public static IBlockState chooseModPolishedGraniteBlockState()
+	{
+		return null;
+	}
+	public static Block chooseModPolishedGraniteStairsBlock()
+	{
 		return null;
 	}
 	public static Block chooseModGraniteBrickStairsBlock()
@@ -783,7 +804,8 @@ public class ModObjects {
 	
 	
 	// Lectern
-	public static void setModLecternState(World world, int x, int y, int z, int orientation, EnumFacing coordBaseMode, int woodMeta)
+	// Carpet color only applies to Bibliocraft writing desks. Set to -1 for no carpet.
+	public static void setModLecternState(World world, int x, int y, int z, int orientation, EnumFacing coordBaseMode, int woodMeta, int carpetColor)
 	{
 		Block modblock=null;
 		boolean setTE = false; // Flagged as true if you need to set a tile entity
@@ -807,6 +829,21 @@ public class ModObjects {
         	TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
         	tileentity.writeToNBT(nbtCompound);
         	nbtCompound.setInteger("angle", StructureVillageVN.chooseBibliocraftDeskMeta(orientation, coordBaseMode));
+        	
+        	// Add carpet
+        	if (carpetColor!=-1)
+        	{
+        		// Add carpet as an inventory item
+        		NBTTagCompound deskinvo = new NBTTagCompound();
+        		deskinvo.setByte("Count", (byte)1);
+        		deskinvo.setByte("Slot", (byte)9);
+        		deskinvo.setShort("Damage", (short)carpetColor);
+        		deskinvo.setString("id", "minecraft:carpet");
+        		NBTTagList taglist = new NBTTagList();
+        		taglist.appendTag(deskinvo);
+        		nbtCompound.setTag("Inventory", taglist);
+        	}
+        	
         	tileentity.readFromNBT(nbtCompound);
         	world.setTileEntity(new BlockPos(x, y, z), tileentity);
 		}
@@ -852,7 +889,7 @@ public class ModObjects {
 		
 		return null;
 	}
-	public static IBlockState chooseModMossyCobblestoneSlab(boolean upper)
+	public static IBlockState chooseModMossyCobblestoneSlabState(boolean upper)
 	{
 		Block modobject=null;
 		
@@ -890,7 +927,7 @@ public class ModObjects {
 	/**
 	 * Returns regular sandstone slab on a failure
 	 */
-	public static IBlockState chooseModPrismarineSlab(boolean upper)
+	public static IBlockState chooseModPrismarineSlabState(boolean upper)
 	{
 		Block modobject=null;
 		
