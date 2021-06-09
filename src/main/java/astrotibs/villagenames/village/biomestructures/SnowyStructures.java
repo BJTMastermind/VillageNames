@@ -6654,7 +6654,9 @@ public class SnowyStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.coordBaseMode,
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
             
             

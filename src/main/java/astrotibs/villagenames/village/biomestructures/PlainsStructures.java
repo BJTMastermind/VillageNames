@@ -6715,7 +6715,9 @@ public class PlainsStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.coordBaseMode,
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
             
             
@@ -7198,7 +7200,9 @@ public class PlainsStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.coordBaseMode,
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
             
             // Doors
@@ -12740,7 +12744,7 @@ public class PlainsStructures
             
             // Ladder
         	IBlockState biomeLadderState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.ladder.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-            this.fillWithBlocks(world, structureBB, 2, 2, 4, 2, 4, 4, biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(1, this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(1, this.coordBaseMode)), false);
+            this.fillWithBlocks(world, structureBB, 2, 2, 4, 2, 4, 4, biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(1, this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(1, this.coordBaseMode)), false);
             
             // Beds
             for (int[] uvwo : new int[][]{ // Orientation - 0:forward, 1:rightward, 2:backward (toward you), 3:leftward
@@ -16321,7 +16325,7 @@ public class PlainsStructures
         		{4,1,4, 4,10,4, 3},  
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6], this.coordBaseMode)), false);
             }
             
             

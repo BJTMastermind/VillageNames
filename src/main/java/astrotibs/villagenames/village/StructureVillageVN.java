@@ -2620,6 +2620,7 @@ public class StructureVillageVN
 	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
 	 * -X: returns the value X - used for things like upright barrels
 	 */
+	public static int chooseLadderMeta(int orientation, EnumFacing coordBaseMode) {return chooseFurnaceMeta(orientation, coordBaseMode);} // Same as Furnace in 1.7 and 1.8
 	public static int chooseFurnaceMeta(int orientation, EnumFacing coordBaseMode)
 	{
 		if (orientation<0) {return -orientation;}

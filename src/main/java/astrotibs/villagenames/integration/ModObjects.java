@@ -11,6 +11,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -484,7 +485,10 @@ public class ModObjects {
 		return (StructureVillageVN.ANVIL_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()]+2)%4;
 	}
 	
-	public static void setModLecternState(World world, int x, int y, int z, int orientation, EnumFacing coordBaseMode, int woodMeta)
+	
+	// Lectern
+	// Carpet color only applies to Bibliocraft writing desks. Set to -1 for no carpet.
+	public static void setModLecternState(World world, int x, int y, int z, int orientation, EnumFacing coordBaseMode, int woodMeta, int carpetColor)
 	{
 		Block modblock=null;
 		boolean setTE = false; // Flagged as true if you need to set a tile entity
@@ -508,6 +512,21 @@ public class ModObjects {
         	TileEntity tileentity = world.getTileEntity(new BlockPos(x, y, z));
         	tileentity.writeToNBT(nbtCompound);
         	nbtCompound.setInteger("angle", chooseBibliocraftDeskMeta(orientation, coordBaseMode));
+        	
+        	// Add carpet
+        	if (carpetColor!=-1)
+        	{
+        		// Add carpet as an inventory item
+        		NBTTagCompound deskinvo = new NBTTagCompound();
+        		deskinvo.setByte("Count", (byte)1);
+        		deskinvo.setByte("Slot", (byte)9);
+        		deskinvo.setShort("Damage", (short)carpetColor);
+        		deskinvo.setString("id", "minecraft:carpet");
+        		NBTTagList taglist = new NBTTagList();
+        		taglist.appendTag(deskinvo);
+        		nbtCompound.setTag("Inventory", taglist);
+        	}
+        	
         	tileentity.readFromNBT(nbtCompound);
         	world.setTileEntity(new BlockPos(x, y, z), tileentity);
 		}
@@ -539,10 +558,6 @@ public class ModObjects {
 		return null;
 	}
 	public static IBlockState chooseModMossyCobblestoneSlabState(boolean upper)
-	{
-		return null;
-	}
-	public static IBlockState chooseModMossyStoneSlabState(boolean upper)
 	{
 		return null;
 	}

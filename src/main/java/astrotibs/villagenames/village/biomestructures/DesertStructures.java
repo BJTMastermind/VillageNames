@@ -1052,16 +1052,16 @@ public class DesertStructures
     		if (GeneralConfig.addConcrete)
         	{
         		// Square under square awning
-        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor:0, (0 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex()<2 ? 1 : 0))%4), 5, 1, 13, structureBB);
-        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor:0, (1 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex()<2 ? 3 : 0))%4), 6, 1, 13, structureBB);
-        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor:0, (2 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex()<2 ? 1 : 0))%4), 6, 1, 12, structureBB);
-        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor:0, (3 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex()<2 ? 3 : 0))%4), 5, 1, 12, structureBB);
+        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor:0, StructureVillageVN.chooseGlazedTerracottaMeta(0, this.coordBaseMode)), 5, 1, 13, structureBB);
+        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor:0, StructureVillageVN.chooseGlazedTerracottaMeta(1, this.coordBaseMode)), 6, 1, 13, structureBB);
+        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor:0, StructureVillageVN.chooseGlazedTerracottaMeta(2, this.coordBaseMode)), 6, 1, 12, structureBB);
+        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor:0, StructureVillageVN.chooseGlazedTerracottaMeta(3, this.coordBaseMode)), 5, 1, 12, structureBB);
         		
         		// Halved square under strip awning
-        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor2:0, (0 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex()<2 ? 1 : 0))%4), 8, 1, 2, structureBB);
-        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor2:0, (1 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex()<2 ? 3 : 0))%4), 9, 1, 2, structureBB);
-        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor2:0, (2 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex()<2 ? 1 : 0))%4), 9, 1, 0, structureBB);
-        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor2:0, (3 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex()<2 ? 3 : 0))%4), 8, 1, 0, structureBB);
+        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor2:0, StructureVillageVN.chooseGlazedTerracottaMeta(0, this.coordBaseMode)), 8, 1, 2, structureBB);
+        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor2:0, StructureVillageVN.chooseGlazedTerracottaMeta(1, this.coordBaseMode)), 9, 1, 2, structureBB);
+        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor2:0, StructureVillageVN.chooseGlazedTerracottaMeta(2, this.coordBaseMode)), 9, 1, 0, structureBB);
+        		this.setBlockState(world, FunctionsVN.getGlazedTerracotaFromMetas(GeneralConfig.useVillageColors? townColor2:0, StructureVillageVN.chooseGlazedTerracottaMeta(3, this.coordBaseMode)), 8, 1, 0, structureBB);
         	}
         	else
         	{
@@ -4811,7 +4811,7 @@ public class DesertStructures
         		{10,1,3, 10,6,3, 3},  
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6], this.coordBaseMode)), false);
             }
         	
         	
@@ -5658,7 +5658,9 @@ public class DesertStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.coordBaseMode,
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
         	
         	// Bookshelves
@@ -6923,7 +6925,7 @@ public class DesertStructures
         		{6,2,4, 6,3,4, 1},  
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6], this.coordBaseMode)), false);
             }
             
             
@@ -11807,20 +11809,20 @@ public class DesertStructures
         	
     		// Glazed terracotta
         	int gtColor = GeneralConfig.useVillageColors ? this.townColor2 : 0; // White
-    		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (0 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 1 : 0))%4);
+    		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, StructureVillageVN.chooseGlazedTerracottaMeta(0, this.coordBaseMode));
     		
         	if (tryGlazedTerracottaState != null)
         	{
         		// Square under square awning
         		this.setBlockState(world, tryGlazedTerracottaState, 4, 0, 6, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (1 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 3 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, StructureVillageVN.chooseGlazedTerracottaMeta(1, this.coordBaseMode));
         		this.setBlockState(world, tryGlazedTerracottaState, 5, 0, 6, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (2 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, StructureVillageVN.chooseGlazedTerracottaMeta(2, this.coordBaseMode));
         		this.setBlockState(world, tryGlazedTerracottaState, 5, 0, 5, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (3 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 3 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, StructureVillageVN.chooseGlazedTerracottaMeta(3, this.coordBaseMode));
         		this.setBlockState(world, tryGlazedTerracottaState, 4, 0, 5, structureBB);
         	}
         	else
@@ -12259,20 +12261,20 @@ public class DesertStructures
         	
     		// Glazed terracotta
         	int gtColor = GeneralConfig.useVillageColors ? this.townColor : 5; // Lime
-    		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (0 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 1 : 0))%4);
+    		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, StructureVillageVN.chooseGlazedTerracottaMeta(0, this.coordBaseMode));
         	
         	if (tryGlazedTerracottaState != null)
         	{
         		// Square under square awning
         		this.setBlockState(world, tryGlazedTerracottaState, 5, 0, 7, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (1 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 3 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, StructureVillageVN.chooseGlazedTerracottaMeta(1, this.coordBaseMode));
         		this.setBlockState(world, tryGlazedTerracottaState, 6, 0, 7, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (2 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, StructureVillageVN.chooseGlazedTerracottaMeta(2, this.coordBaseMode));
         		this.setBlockState(world, tryGlazedTerracottaState, 6, 0, 6, structureBB);
         		
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, (3 + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 3 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(gtColor, StructureVillageVN.chooseGlazedTerracottaMeta(3, this.coordBaseMode));
         		this.setBlockState(world, tryGlazedTerracottaState, 5, 0, 6, structureBB);
         	}
         	else
@@ -12740,7 +12742,7 @@ public class DesertStructures
         		{2,0,7, 3, GeneralConfig.useVillageColors ? this.townColor5 : 3}, // Light Blue
            		})
         	{
-        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.coordBaseMode));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);

@@ -3130,7 +3130,7 @@ public class SavannaStructures
         		{3,2,4, 2, GeneralConfig.useVillageColors ? this.townColor2 : 1}, // Orange
            		})
         	{
-        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.coordBaseMode));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -7100,7 +7100,9 @@ public class SavannaStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.coordBaseMode,
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
             
             
@@ -7527,7 +7529,7 @@ public class SavannaStructures
         		{7,3,2, 0, GeneralConfig.useVillageColors ? this.townColor : 4}, // Yellow
            		})
         	{
-        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], (uvwoc[3] + this.coordBaseMode.getHorizontalIndex() + (this.coordBaseMode.getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		IBlockState tryGlazedTerracottaState = ModObjects.chooseModGlazedTerracottaState(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.coordBaseMode));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);

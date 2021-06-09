@@ -2983,7 +2983,7 @@ public class TaigaStructures
         		{4,2,5, 4,3,5, 2},  
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6], this.coordBaseMode)), false);
             }
         	
         	
@@ -5479,7 +5479,9 @@ public class TaigaStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.coordBaseMode,
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
             
             // Bookshelves
@@ -12302,7 +12304,7 @@ public class TaigaStructures
         		{7,2,7, 7,5,7, 2},  
         		})
             {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(uuvvwwo[6], this.coordBaseMode)), false);
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6], this.coordBaseMode)), biomeLadderState.getBlock().getStateFromMeta(StructureVillageVN.chooseLadderMeta(uuvvwwo[6], this.coordBaseMode)), false);
             }
         	
 
