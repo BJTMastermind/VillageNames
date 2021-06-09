@@ -23,9 +23,11 @@ import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import astrotibs.villagenames.village.biomestructures.BlueprintData;
 import astrotibs.villagenames.village.biomestructures.DesertStructures;
+import astrotibs.villagenames.village.biomestructures.JungleStructures;
 import astrotibs.villagenames.village.biomestructures.PlainsStructures;
 import astrotibs.villagenames.village.biomestructures.SavannaStructures;
 import astrotibs.villagenames.village.biomestructures.SnowyStructures;
+import astrotibs.villagenames.village.biomestructures.SwampStructures;
 import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
@@ -47,9 +49,11 @@ import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -78,7 +82,20 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 public class StructureVillageVN
 {
 	public static final int VILLAGE_RADIUS_BUFFER = 112;
-
+	
+	// Indexed by [orientation][horizIndex]
+	// 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	public static final int[][] HANGING_META_ARRAY = new int[][]{
+		{0,1,2,3}, // Fore-facing (away from you)
+		{3,0,3,0}, // Right-facing
+		{2,3,0,1}, // Back-facing (toward you)
+		{1,2,1,2}, // Left-facing
+	//   N E S W
+	};
+	
+	// Indexed by [orientation]
+	public static final int[] VINE_META_ARRAY = new int[]{1,2,4,8};
+	
 	// Indexed by [orientation]
 	public static final int[] LADDER_META_ARRAY = new int[]{2,5,3,4};
 	
@@ -721,6 +738,12 @@ public class StructureVillageVN
 																	   break;
 													     	   }
         	if (block == Blocks.COBBLESTONE_WALL)              {blockstate=Blocks.COBBLESTONE_WALL.getStateFromMeta(1); break;} // Mossy COBBLESTONE wall
+        	if (block != null && ModObjects.chooseModStoneBrickWallState()!=null && block == ModObjects.chooseModStoneBrickWallState().getBlock())
+													     	   {
+																	   IBlockState modstate = ModObjects.chooseModMossyStoneBrickWallState();
+																	   if (modstate!=null) {blockstate=ModObjects.chooseModMossyStoneBrickWallState();}
+																	   break;
+													     	   }
         	if (block == Blocks.PLANKS)                        {blockstate=Blocks.PLANKS.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.OAK_FENCE)					   {blockstate=Blocks.JUNGLE_FENCE.getDefaultState(); break;}
         	if (block == Blocks.OAK_FENCE_GATE)				   {blockstate=Blocks.JUNGLE_FENCE_GATE.getDefaultState(); break;}
@@ -998,7 +1021,7 @@ public class StructureVillageVN
 			if (block != null && block == ModObjects.chooseModMossyCobblestoneStairsBlock()) {blockstate = Blocks.STONE_STAIRS.getDefaultState(); break;}
 			if (block != null && block == ModObjects.chooseModMossyStoneBrickStairsBlock()) {blockstate = Blocks.STONE_BRICK_STAIRS.getDefaultState(); break;}
         	if (block == Blocks.COBBLESTONE_WALL && meta==1)   {blockstate=Blocks.COBBLESTONE_WALL.getStateFromMeta(0); break;} // Mossy cobblestone wall into regular
-        	if (block != null && block == ModObjects.chooseModMossyStoneBrickWallState().getBlock())
+        	if (block != null && ModObjects.chooseModMossyStoneBrickWallState()!=null && block == ModObjects.chooseModMossyStoneBrickWallState().getBlock())
 													     	   {
 																	   IBlockState modstate = ModObjects.chooseModStoneBrickWallState();
 																	   if (modstate!=null) {blockstate=ModObjects.chooseModStoneBrickWallState();}
@@ -2177,7 +2200,7 @@ public class StructureVillageVN
             	}
             	else if (this.villageType==FunctionsVN.VillageType.JUNGLE)
             	{
-            		decorBlueprint = JungleStructures.getJungleDecorBlueprint(2+randomFromXYZ.nextInt(6), this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
+            		decorBlueprint = JungleStructures.getJungleDecorBlueprint(2+randomFromXYZ.nextInt(6), this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ);
             	}
             	else if (this.villageType==FunctionsVN.VillageType.SWAMP)
             	{
@@ -2356,8 +2379,24 @@ public class StructureVillageVN
             return true;
         }
     }
-	
     
+    /**
+	 * hangingOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 * -X: returns the value X - used for things like upright barrels
+	 */
+	public static int chooseHangingMeta(int orientation, EnumFacing coordBaseMode)
+	{
+		return HANGING_META_ARRAY[orientation][coordBaseMode.getHorizontalIndex()];
+	}
+    /**
+	 * vineOrientation:
+	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+	 */
+	public static int chooseVineMeta(int orientation)
+	{
+		return VINE_META_ARRAY[orientation];
+	}
 	public static int chooseLadderMeta(int orientation)
 	{
 		if (orientation<0) {return -orientation;}
@@ -2594,9 +2633,9 @@ public class StructureVillageVN
 	 * 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
 	 * stage is growth stage: 0-2. This results in an additional meta of +0/+4/+8
 	 */
-	public static int getCocoaPodOrientationMeta(int relativeOrientation, int coordBaseMode, int stage)
+	public static int getCocoaPodOrientationMeta(int relativeOrientation, EnumFacing coordBaseMode, int stage)
 	{
-		return BED_META_ARRAY[relativeOrientation][coordBaseMode] + (stage*4);
+		return BED_META_ARRAY[relativeOrientation][coordBaseMode.getHorizontalIndex()] + (stage*4);
 	}
 	
 	
@@ -2791,9 +2830,9 @@ public class StructureVillageVN
 		case SNOWY:
 			return SnowyStructures.getRandomSnowyDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		case JUNGLE:
-			return JungleStructures.getRandomJungleDecorBlueprint(materialType, disallowModSubs, biome, horizIndex, random);
+			return JungleStructures.getRandomJungleDecorBlueprint(villageType, materialType, disallowModSubs, biome, coordBaseMode, random);
 		case SWAMP:
-			return SwampStructures.getRandomSwampDecorBlueprint(materialType, disallowModSubs, biome, horizIndex, random);
+			return SwampStructures.getRandomSwampDecorBlueprint(materialType, disallowModSubs, biome, coordBaseMode, random);
 		}
 	}
 	
@@ -2824,4 +2863,68 @@ public class StructureVillageVN
 			if (GeneralConfig.debugMessages) {LogHelper.info("Cleaned "+list.size()+" Entity items within " + aabb.toString());}
         }
 	}
+	
+	
+    /**
+     * Used to generate flower pots with contents that are tougher to access than just meta data alone
+     */
+    public static boolean generateStructureFlowerPot(World world, StructureBoundingBox box, Random random, BlockPos pos, Block block, int meta)
+    {
+        if (box.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.FLOWER_POT)
+        {
+        	IBlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState();
+        	
+            world.setBlockState(pos, flowerPotState, 2);
+            
+            // This is here just in case a flower pot can't be placed at the given position
+            TileEntityFlowerPot tileentityflowerpot = (TileEntityFlowerPot)world.getTileEntity(pos);
+            
+            if (tileentityflowerpot != null)
+            {
+                if (!isNotPlaceableIntoPot(block, meta))
+                {
+                    return false;
+                }
+                else
+                {
+                	// Sets the flower pot's item and meta
+                	if (block==null) {return false;}
+                	Item potContentItem = Item.getItemFromBlock(block);
+                	if (potContentItem==null) {return false;}
+                	ItemStack potContentItemStack = new ItemStack(potContentItem);
+                	
+                    tileentityflowerpot.setItemStack(potContentItemStack);
+                    
+                    tileentityflowerpot.markDirty();
+
+                    if (!world.setBlockState(pos, flowerPotState, 2))
+                    {
+                    	world.notifyBlockUpdate(pos, flowerPotState, flowerPotState, 2);
+                    }
+                    
+                    return true;
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+	
+    /**
+     * Returns "true" if the block is not something that can be placed into a flower pot.
+     */
+    private static boolean isNotPlaceableIntoPot(Block block, int meta)
+    {
+    	return     block != Blocks.YELLOW_FLOWER
+        		&& block != Blocks.RED_FLOWER
+        		&& block != Blocks.CACTUS
+        		&& block != Blocks.BROWN_MUSHROOM
+        		&& block != Blocks.RED_MUSHROOM
+        		&& block != Blocks.SAPLING
+        		&& block != Blocks.DEADBUSH ? block == Blocks.TALLGRASS && meta == 2 : true;
+    }
 }

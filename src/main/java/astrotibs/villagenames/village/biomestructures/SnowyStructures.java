@@ -344,7 +344,7 @@ public class SnowyStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -747,7 +747,7 @@ public class SnowyStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -1109,7 +1109,7 @@ public class SnowyStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -6650,7 +6650,9 @@ public class SnowyStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.getCoordBaseMode(),
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1
+        				);
             }
             
             

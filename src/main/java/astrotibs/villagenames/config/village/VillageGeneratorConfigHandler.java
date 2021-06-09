@@ -754,10 +754,10 @@ public class VillageGeneratorConfigHandler
 		
 		double snowyDecorToHouseRatio = 28D/24D; 
 		
-		double jungleDecorToHouseRatio = 2D; // Arbitrary
+		double jungleDecorToHouseRatio = 5D/3D; // Arbitrary
 		double jungleStreetToHouseRatio = 20D/17D; // Arbitrary
 
-		double swampDecorToHouseRatio = 2D; // Arbitrary
+		double swampDecorToHouseRatio = 4D/3D; // Arbitrary
 		double swampStreetToHouseRatio = 26D/17D; // Arbitrary
 		
 		

@@ -458,7 +458,7 @@ public class SavannaStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -846,7 +846,7 @@ public class SavannaStructures
     				tilebanner.readFromNBT(modifystanding);
     				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
     				
-        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
 				}
 				else
 				{
@@ -1163,7 +1163,7 @@ public class SavannaStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -1502,7 +1502,7 @@ public class SavannaStructures
 				TileEntity tilebanner = new TileEntityBanner();
 				ItemStack villageBanner = BannerGenerator.makeBanner(villageNBTtag.getCompoundTag("BlockEntityTag"), (namePrefix + " " + nameRoot + " " + nameSuffix).trim());
 				
-    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+    			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
         		
         		world.setTileEntity(bannerPos, tilebanner);
     		}
@@ -3131,7 +3131,7 @@ public class SavannaStructures
         		{3,2,4, 2, GeneralConfig.useVillageColors ? this.townColor2 : 1}, // Orange
            		})
         	{
-        		IBlockState tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		IBlockState tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -4780,7 +4780,7 @@ public class SavannaStructures
     				ItemStack villageBanner = new ItemStack(Items.BANNER);
     				villageBanner.setTagInfo("BlockEntityTag", villageNBTtag.getCompoundTag("BlockEntityTag"));
     				
-        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
 				}
 				else
 				{
@@ -4831,7 +4831,7 @@ public class SavannaStructures
     				ItemStack villageBanner = new ItemStack(Items.BANNER);
     				villageBanner.setTagInfo("BlockEntityTag", villageNBTtag.getCompoundTag("BlockEntityTag"));
     				
-        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
 				}
 				else
 				{
@@ -7113,7 +7113,9 @@ public class SavannaStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.getCoordBaseMode(),
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1
+        				);
             }
             
             
@@ -7540,7 +7542,7 @@ public class SavannaStructures
         		{7,3,2, 0, GeneralConfig.useVillageColors ? this.townColor : 4}, // Yellow
            		})
         	{
-        		IBlockState tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(uvwoc[4], (uvwoc[3] + this.getCoordBaseMode().getHorizontalIndex() + (this.getCoordBaseMode().getHorizontalIndex() < 2 ? 1 : 0))%4);
+        		IBlockState tryGlazedTerracottaState = FunctionsVN.getGlazedTerracotaFromMetas(uvwoc[4], StructureVillageVN.chooseGlazedTerracottaMeta(uvwoc[3], this.getCoordBaseMode()));
         		if (tryGlazedTerracottaState != null)
             	{
         			this.setBlockState(world, tryGlazedTerracottaState, uvwoc[0], uvwoc[1], uvwoc[2], structureBB);
@@ -14394,7 +14396,7 @@ public class SavannaStructures
     				ItemStack villageBanner = new ItemStack(Items.BANNER);
     				villageBanner.setTagInfo("BlockEntityTag", villageNBTtag.getCompoundTag("BlockEntityTag"));
     				
-        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, false);
+        			((TileEntityBanner) tilebanner).setItemValues(villageBanner, true);
 				}
 				else
 				{

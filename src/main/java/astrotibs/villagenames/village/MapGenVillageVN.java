@@ -13,9 +13,11 @@ import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
 import astrotibs.villagenames.village.biomestructures.DesertStructures;
+import astrotibs.villagenames.village.biomestructures.JungleStructures;
 import astrotibs.villagenames.village.biomestructures.PlainsStructures;
 import astrotibs.villagenames.village.biomestructures.SavannaStructures;
 import astrotibs.villagenames.village.biomestructures.SnowyStructures;
+import astrotibs.villagenames.village.biomestructures.SwampStructures;
 import astrotibs.villagenames.village.biomestructures.TaigaStructures;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -299,18 +301,18 @@ public class MapGenVillageVN extends MapGenVillage
             
             StructureVillageVN.StartVN[] jungleStarters = new StructureVillageVN.StartVN[]
             {
-            		new JungleStructures.JungleStatue(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Statue
-            		new JungleStructures.JungleCocoaTree(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Cocoa Tree
-            		new JungleStructures.JungleGarden(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Garden
-            		new JungleStructures.JungleVilla(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Villa
+            		new JungleStructures.JungleStatue(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Statue
+            		new JungleStructures.JungleCocoaTree(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Cocoa Tree
+            		new JungleStructures.JungleGarden(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Garden
+            		new JungleStructures.JungleVilla(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Jungle Villa
             };
             
             StructureVillageVN.StartVN[] swampStarters = new StructureVillageVN.StartVN[]
             {
-                	new SwampStructures.SwampWillow(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Willow
-                	new SwampStructures.SwampStatue(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Statue
-                	new SwampStructures.SwampPavilion(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Pavilion
-                	new SwampStructures.SwampMonolith(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Monolith
+                	new SwampStructures.SwampWillow(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Willow
+                	new SwampStructures.SwampStatue(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Statue
+                	new SwampStructures.SwampPavilion(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Pavilion
+                	new SwampStructures.SwampMonolith(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize), // Swamp Monolith
             };
             
             double[] townCenterWeightArray;
@@ -392,7 +394,7 @@ public class MapGenVillageVN extends MapGenVillage
         	
         	
             // === FORCE A SPECIFIC STARTER FOR TESTING PURPOSES === //
-        	//start = new JungleStructures.JungleCocoaTree(world.getWorldChunkManager(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize);
+        	//start = new JungleStructures.JungleCocoaTree(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize);
             
         	
         	
