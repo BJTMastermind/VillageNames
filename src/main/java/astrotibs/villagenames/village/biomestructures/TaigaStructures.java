@@ -5478,7 +5478,9 @@ public class TaigaStructures
             			this.getZWithOffset(uvwo[0], uvwo[2]),
             			uvwo[3],
             			this.getCoordBaseMode(),
-            			biomePlankState.getBlock().getMetaFromState(biomePlankState));
+            			biomePlankState.getBlock().getMetaFromState(biomePlankState),
+            			-1 // Carpet color
+        				);
             }
             
             // Bookshelves

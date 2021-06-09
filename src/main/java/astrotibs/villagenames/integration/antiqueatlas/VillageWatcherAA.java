@@ -311,8 +311,8 @@ public class VillageWatcherAA
 	SNOWY_TEMPLE = "VNSnTem1", // Snowy Temple
 	SNOWY_TOOL_SMITHY = "VNSnTSm1", // Snowy Tool Smithy
 	SNOWY_WEAPON_SMITHY = "VNSnWSm1", // Snowy Weapon Smithy
-	SNOWY_ROAD_DECOR = "VNSnStD1", // Snowy Road Decor
-			
+SNOWY_ROAD_DECOR = "VNSnStD1", // Snowy Road Decor
+	
 	JUNGLE_ARMORER_HOUSE = "VNJuArmH", // Jungle Armorer House
 	JUNGLE_BUTCHER_SHOP = "VNJuButS", // Jungle Butcher Shop
 	JUNGLE_CARTOGRAPHER_HOUSE_1 = "VNJuCaH1", // Jungle Cartographer House 1
@@ -382,7 +382,7 @@ public class VillageWatcherAA
 	SWAMP_WILD_FARM = "VNSwWiFa", // Swamp Wild Farm
 	SWAMP_ROAD_DECOR = "VNSwStDe", // Swamp Road Decor
 	SWAMP_ROAD_ACCENT = "VNSwRdAc", // Swamp Road Accent
-	
+
 	PLACEHOLDER = "plcholdr"; // TODO - placeholder while you add other components to the list
 	
 		
