@@ -1332,7 +1332,7 @@ public class VillageGeneratorConfigHandler
 		componentModernJungleSmallHouse2_vals = parseDoubleArray(componentModernJungleSmallHouse2_string, modernDefaults);
 
 		componentModernJungleSmallHouse3_string = config.getString(componentModern+"Jungle Small House 3", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
-		componentModernJungleSmallHouse3_vals = parseDoubleArray(componentModernJungleSmallHouse4_string, modernDefaults);
+		componentModernJungleSmallHouse3_vals = parseDoubleArray(componentModernJungleSmallHouse3_string, modernDefaults);
 
 		componentModernJungleSmallHouse4_string = config.getString(componentModern+"Jungle Small House 4", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+jungleVillages);
 		componentModernJungleSmallHouse4_vals = parseDoubleArray(componentModernJungleSmallHouse4_string, modernDefaults);
@@ -1428,7 +1428,7 @@ public class VillageGeneratorConfigHandler
 		componentModernSwampHutFarm_vals = parseDoubleArray(componentModernSwampHutFarm_string, modernDefaults);
 		
 		componentModernSwampHorribleSecret_string = config.getString(componentModern+"Swamp Horrible Secret", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
-		componentModernSwampHorribleSecret_vals = parseDoubleArray(componentModernSwampLargeHouse_string, modernDefaults);
+		componentModernSwampHorribleSecret_vals = parseDoubleArray(componentModernSwampHorribleSecret_string, modernDefaults);
 		
 		componentModernSwampLargeHouse_string = config.getString(componentModern+"Swamp Large House", Reference.CATEGORY_VILLAGE_GENERATOR, convertDoubleArrayToString(modernDefaults), generationStatsForM+swampVillages);
 		componentModernSwampLargeHouse_vals = parseDoubleArray(componentModernSwampLargeHouse_string, modernDefaults);
