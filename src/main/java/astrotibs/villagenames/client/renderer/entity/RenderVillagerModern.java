@@ -374,7 +374,7 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 				// Profession levels
 				if (GeneralConfig.modernVillagerSkins)
 				{
-					final int profLevel = villager.isChild() ? 0 : villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getProfessionLevel();
+					final int profLevel = (villager.isChild() | villager.getProfession()==5) ? 0 : villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getProfessionLevel();
 					if (profLevel >= 5) {this.villagerLayerRenderer.bindTexture(villagerProfessionLevelDiamond);}
 					switch (profLevel)
 					{

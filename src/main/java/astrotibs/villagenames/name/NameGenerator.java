@@ -464,6 +464,7 @@ public class NameGenerator {
 		String r_prefix = "";
 		String r_suffix = "";
 		String rootName = "";
+		StringBuilder sb = new StringBuilder();
 		
 		int rootname_syllable_inserts = 1; // How many syllables are inserted between the name's starting and ending half-syllables
 		
