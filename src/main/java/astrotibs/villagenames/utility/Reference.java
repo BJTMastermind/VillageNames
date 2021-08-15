@@ -1,11 +1,14 @@
 package astrotibs.villagenames.utility;
 
+import net.minecraft.util.text.TextFormatting;
+
 public class Reference
 {
 	// Contains common constants for the mod
 	public static final String MOD_ID = "VillageNames";
 	public static final String MOD_NAME = "Village Names";
-	public static final String VERSION = "4.3.1";
+	public static final String MOD_NAME_COLORIZED = TextFormatting.GOLD + MOD_NAME;
+	public static final String VERSION = "4.3.2";
 	public static final String URL = "https://www.curseforge.com/minecraft/mc-mods/village-names";
 	public static final String VERSION_CHECKER_URL = "https://gitgud.io/AstroTibs/VillageNames/raw/1.10.2/CURRENT_VERSION";
 	public static final String MOD_CHANNEL = "vnChannel";
