@@ -225,7 +225,7 @@ public class GeneralConfig {
  				+ "limit is the maximum number of blocks in this group that will apply the group speedup effect."
  				);
  		
-	    versionChecker = config.getBoolean("Version Checker", Reference.CATEGORY_MISCELLANEOUS, false, "Displays a client-side chat message on login if there's an update available. If the URL pinged by the checker happens to be down, your game will freeze for a while on login. Turn this on at your own risk.");
+	    versionChecker = config.getBoolean("Version Checker", Reference.CATEGORY_MISCELLANEOUS, true, "Displays a client-side chat message on login if there's an update available.");
 	    codexChestLoot = config.getBoolean("Codex Chest Loot", Reference.CATEGORY_MISCELLANEOUS, true, "The Codex can appear as rare chest loot.");
 	    debugMessages = config.getBoolean("Debug messages", Reference.CATEGORY_MISCELLANEOUS, false, "Print debug messages to the console, print the class paths of entities and blocks you right-click.");
 	    swampHutMushroomPot = config.getBoolean("Swamp Hut Mushroom", Reference.CATEGORY_MISCELLANEOUS, true, "1.8+ has a bug where the clay pot in the Witch's swamp hut is empty. This flag will correctly place a red mushroom in the pot.");
