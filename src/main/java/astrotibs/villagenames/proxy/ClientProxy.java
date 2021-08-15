@@ -10,11 +10,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
-
-//import cpw.mods.fml.common.event.FMLInitializationEvent;
-//import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-//import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-
 public class ClientProxy extends CommonProxy {
 	
 	@Override
@@ -38,9 +33,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void registerItemVariantModel(Item item, String name, int metadata)
     {
-        //Preconditions.checkNotNull(item, "Cannot register models for null item " + name);
-        //Preconditions.checkArgument(item != Items.AIR, "Cannot register models for air (" + name + ")");
-
         ModelBakery.registerItemVariants(item, new ResourceLocation("villagenames:" + name));
         ModelLoader.setCustomModelResourceLocation(item, metadata, new ModelResourceLocation(Reference.MOD_ID + ":" + name, "inventory"));
     }

@@ -12,12 +12,10 @@ import astrotibs.villagenames.config.ConfigInit;
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.config.village.VillageGeneratorConfigHandler;
 import astrotibs.villagenames.handler.ChestLootHandler;
-import astrotibs.villagenames.handler.DevVersionWarning;
 import astrotibs.villagenames.handler.EntityMonitorHandler;
 import astrotibs.villagenames.handler.ReputationHandler;
 import astrotibs.villagenames.handler.ServerCleanExpired;
 import astrotibs.villagenames.handler.ServerTrackerStarter;
-import astrotibs.villagenames.handler.VersionChecker;
 import astrotibs.villagenames.handler.VillagerTradeHandler;
 import astrotibs.villagenames.init.InventoryRender;
 import astrotibs.villagenames.integration.antiqueatlas.VillageWatcherAA;
@@ -30,6 +28,8 @@ import astrotibs.villagenames.network.NetworkHelper;
 import astrotibs.villagenames.proxy.CommonProxy;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
+import astrotibs.villagenames.version.DevVersionWarning;
+import astrotibs.villagenames.version.VersionChecker;
 import astrotibs.villagenames.village.MapGenVillageVN;
 import astrotibs.villagenames.village.StructureCreationHandlers;
 import astrotibs.villagenames.village.StructureVillageVN;
@@ -93,20 +93,6 @@ public final class VillageNames
 	public static String currentConfigFolder = "VillageNames4";
 	public static String[] oldConfigFolders = new String[]{"VillageNames3", "VillageNames"};
 	
-    // instantiate achievements
-	/*
-	public static Achievement maxrep;
-	public static Achievement minrep;
-	public static Achievement ghosttown;
-	public static Achievement archaeologist;
-	public static Achievement laputa;
-	*/
-	
-	// Version checking instance
-	public static VersionChecker versionChecker = new VersionChecker();
-	public static boolean haveWarnedVersionOutOfDate = false;
-	public static boolean devVersionWarned = false;
-
 	/*
 	 * The number of structures you need to use the Codex on to trigger the achievement.
 	 * If the player does not use any mods that add valid searchable structures,
@@ -450,8 +436,8 @@ public final class VillageNames
         MinecraftForge.EVENT_BUS.register(new ReputationHandler());
         
         // Version check monitor
-        if (GeneralConfig.versionChecker) {MinecraftForge.EVENT_BUS.register(versionChecker);}
-        if ((Reference.VERSION).contains("DEV")) {MinecraftForge.EVENT_BUS.register(new DevVersionWarning());}
+        if ((Reference.VERSION).contains("DEV")) {MinecraftForge.EVENT_BUS.register(DevVersionWarning.instance);}
+        else if (GeneralConfig.versionChecker) {MinecraftForge.EVENT_BUS.register(VersionChecker.instance);}
 
 		// Establish the channel
         VNNetworkWrapper = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_CHANNEL);
@@ -495,7 +481,7 @@ public final class VillageNames
 	       		TextFormatting.GREEN +
 	       		"Generates random names for villages, villagers, and other structures and entities.";
        
-       event.getModMetadata().logoFile = "assets/villagenames/vn_banner.png";
+       event.getModMetadata().logoFile = "assets"+File.separator+"villagenames"+File.separator+"vn_banner.png";
        
        
        // --- New Villager Profession/Career stuff --- //
