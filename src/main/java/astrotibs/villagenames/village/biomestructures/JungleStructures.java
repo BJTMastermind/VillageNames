@@ -21642,52 +21642,52 @@ public class JungleStructures
     		
     		
         	// Patterned banners
-			for (int[] uvwoc : new int[][]{ // u, v, w, orientation, color
-				// 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
-				
-				{0,5,5, 3, 1}, // Orange
-			})
-			{
-    			int bannerXBB = uvwoc[0];
-    			int bannerYBB = uvwoc[1];
-    			int bannerZBB = uvwoc[2];
-    			
-    			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
-    			int bannerY = this.getYWithOffset(bannerYBB);
-                int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
-                
-                BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
-                
-            	// Set the banner and its orientation
-				world.setBlockState(bannerPos, Blocks.WALL_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwoc[3], this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
-				
-				// Set the tile entity
-				TileEntity tilebanner = new TileEntityBanner();
-				NBTTagCompound modifystanding = new NBTTagCompound();
-				tilebanner.writeToNBT(modifystanding);
-				modifystanding.setBoolean("IsStanding", false);
-				
-				if (GeneralConfig.useVillageColors)
-				{
-	            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-	            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-	            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-	            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-					
-    				tilebanner.readFromNBT(modifystanding);
-    				ItemStack villageBanner = new ItemStack(Items.BANNER);
-    				villageBanner.setTagInfo("BlockEntityTag", villageNBTtag.getCompoundTag("BlockEntityTag"));
-    				
-        			((TileEntityBanner) tilebanner).setItemValues(villageBanner);
-				}
-				else
-				{
-					modifystanding.setInteger("Base", 15 - uvwoc[4]);
-    				tilebanner.readFromNBT(modifystanding);
-				}
-				
-        		world.setTileEntity(bannerPos, tilebanner);
-			}
+//			for (int[] uvwoc : new int[][]{ // u, v, w, orientation, color
+//				// 0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
+//				
+//				{0,5,5, 3, 1}, // Orange
+//			})
+//			{
+//    			int bannerXBB = uvwoc[0];
+//    			int bannerYBB = uvwoc[1];
+//    			int bannerZBB = uvwoc[2];
+//    			
+//    			int bannerX = this.getXWithOffset(bannerXBB, bannerZBB);
+//    			int bannerY = this.getYWithOffset(bannerYBB);
+//                int bannerZ = this.getZWithOffset(bannerXBB, bannerZBB);
+//                
+//                BlockPos bannerPos = new BlockPos(bannerX, bannerY, bannerZ);
+//                
+//            	// Set the banner and its orientation
+//				world.setBlockState(bannerPos, Blocks.WALL_BANNER.getStateFromMeta(StructureVillageVN.getSignRotationMeta(uvwoc[3], this.getCoordBaseMode().getHorizontalIndex(), true)), 2);
+//				
+//				// Set the tile entity
+//				TileEntity tilebanner = new TileEntityBanner();
+//				NBTTagCompound modifystanding = new NBTTagCompound();
+//				tilebanner.writeToNBT(modifystanding);
+//				modifystanding.setBoolean("IsStanding", false);
+//				
+//				if (GeneralConfig.useVillageColors)
+//				{
+//	            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
+//	            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
+//	            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
+//	            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
+//					
+//    				tilebanner.readFromNBT(modifystanding);
+//    				ItemStack villageBanner = new ItemStack(Items.BANNER);
+//    				villageBanner.setTagInfo("BlockEntityTag", villageNBTtag.getCompoundTag("BlockEntityTag"));
+//    				
+//        			((TileEntityBanner) tilebanner).setItemValues(villageBanner);
+//				}
+//				else
+//				{
+//					modifystanding.setInteger("Base", 15 - uvwoc[4]);
+//    				tilebanner.readFromNBT(modifystanding);
+//				}
+//				
+//        		world.setTileEntity(bannerPos, tilebanner);
+//			}
     		
     		
         	// Vines
