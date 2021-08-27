@@ -1548,7 +1548,6 @@ public class VillageGeneratorConfigHandler
 						"Bayou",
 						"Bog",
 						"Boreal Forest",
-						"Canyon",
 						"Chaparral",
 						"Cherry Blossom Grove",
 						"Coniferous Forest",
