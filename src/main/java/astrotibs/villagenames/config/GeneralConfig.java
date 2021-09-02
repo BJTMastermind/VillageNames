@@ -100,6 +100,7 @@ public class GeneralConfig {
 	public static String[] modSuspiciousStew;
 	public static String[] modSweetBerries;
 	public static String[] modWood;
+	public static String[] modWoodenTable;
 	public static String[] modWoodenTrapdoor;
 	
 	public static String[] zombieCureCatalysts;
@@ -632,7 +633,20 @@ public class GeneralConfig {
  				},
  				"Priority order for referencing Wood blocks (bark on all sides) for village generation. The version highest on the list and registered in your game will be used."
  				);
-	    
+
+	    modWoodenTable = config.getStringList("Mod Priority: Table", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+	    		"chocolatequestrepoured",
+	    		"macawsfurniture",
+	    		"mrcrayfishsfurnituremod",
+	    		"rustic",
+	    		"variedcommodities",
+	    		"minecraft",
+	    		"bibliocraft",
+ 				},
+ 				"Priority order for referencing Wooden Tables for village generation. The version highest on the list and registered in your game will be used. "
+ 				+ "The \"minecraft\" entry refers to the vanilla-style pressure plate atop a fence post."
+ 				);
+		
 	    modWoodenTrapdoor = config.getStringList("Mod Priority: Smooth Stone", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
  				"quark",
 	    		"futureversions",
