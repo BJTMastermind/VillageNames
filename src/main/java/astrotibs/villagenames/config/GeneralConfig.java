@@ -74,6 +74,7 @@ public class GeneralConfig {
 	public static String[] modBamboo;
 	public static String[] modBountifulStone;
 	public static String[] modSandstone;
+	public static String[] modWoodenTable;
 	
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
@@ -405,7 +406,17 @@ public class GeneralConfig {
  				},
  				"Priority order for referencing sandstone variations for village generation. The version highest on the list and registered in your game will be used."
  				);
-	    
+
+	    modWoodenTable = config.getStringList("Mod Priority: Table", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+	    		"mrcrayfishsfurnituremod",
+	    		"rustic",
+	    		"variedcommodities",
+	    		"minecraft",
+	    		"bibliocraft",
+ 				},
+ 				"Priority order for referencing Wooden Tables for village generation. The version highest on the list and registered in your game will be used. "
+ 				+ "The \"minecraft\" entry refers to the vanilla-style pressure plate atop a fence post."
+ 				);
 		
 		// Mapping for modded structures, and the creatures that can name them
 		modStructureNames = config.getStringList("Mod Structures", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
