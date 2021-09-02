@@ -2027,8 +2027,6 @@ public class JungleStructures
             	{10,2,1, 10,3,1}, 
             	{12,2,1, 12,3,1}, 
             	{14,3,1, 14,3,1}, 
-            	// Tables
-            	{13,5,12, 13,5,12}, {13,5,6, 13,5,6}, 
         		})
             {
             	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
@@ -2193,14 +2191,17 @@ public class JungleStructures
             }
         	
         	
-            // Wooden pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for (int[] uvw : new int[][]{
-        		{13,6,12}, 
-        		{13,6,6}, 
+            // Table
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
+        		{13,5,12}, 
+        		{13,5,6}, 
         		})
             {
-        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
             }
             
             
@@ -3359,8 +3360,6 @@ public class JungleStructures
         		{3,6,8, 6,6,8}, 
         		{5,6,2, 5,6,3}, 
         		{8,6,6, 8,6,6}, 
-        		// Table
-        		{2,5,5, 2,5,5}, 
         		})
             {
             	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
@@ -3559,13 +3558,16 @@ public class JungleStructures
             }
             
                     	
-            // Wooden pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for (int[] uvw : new int[][]{
-        		{2,6,5}, 
+            // Table
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
+        		{2,5,5}, 
         		})
             {
-        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
             }
             
             
@@ -5644,8 +5646,6 @@ public class JungleStructures
         		{7,2,2, 7,2,3}, 
         		{6,2,1, 6,2,1}, 
         		{5,2,2, 5,2,2}, 
-        		// Table
-        		{5,1,7, 5,1,7}, 
         		// Ceiling supports
         		{1,4,4, 1,4,7}, 
         		{2,4,8, 5,4,8}, 
@@ -5713,13 +5713,16 @@ public class JungleStructures
         	this.setBlockState(world, fletchingTableState, 2, 1, 7, structureBB);
     		
     		
-            // Wooden pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for (int[] uvw : new int[][]{
-        		{5,2,7}, 
+            // Table
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
+        		{5,1,7}, 
         		})
             {
-        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
             }
             
     		
@@ -8067,26 +8070,6 @@ public class JungleStructures
     		}
     		
     		
-    		// Fences
-    		IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-    		for (int[] uvw : new int[][]{
-    			{3,2,9}, 
-    			})
-    		{
-    			this.setBlockState(world, biomeFenceState, uvw[0], uvw[1], uvw[2], structureBB);
-    		}
-    		
-    		
-            // Wooden pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for (int[] uvw : new int[][]{
-        		{3,3,9}, 
-        		})
-            {
-        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
-            }
-            
-            
             // Glass Panes
         	for (int[] uvw : new int[][]{
         		// Front wall
@@ -8136,6 +8119,19 @@ public class JungleStructures
         	
         	
     		IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.PLANKS.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+            // Table
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
+        		{3,2,9}, 
+        		})
+            {
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
+            }
+        	
+        	
             // Stone Cutter
         	// Orientation:0=fore-facing (away from you); 1=right-facing; 2=back-facing (toward you); 3=left-facing
         	IBlockState stonecutterState = ModObjects.chooseModStonecutterState(3);
@@ -9138,9 +9134,6 @@ public class JungleStructures
         	// Fence
         	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getDefaultState(), materialType, biome, disallowModSubs);
         	for (int[] uuvvww : new int[][]{
-        		// Downstairs tables
-        		{2,2,4, 2,2,4}, 
-        		{10,2,4, 10,2,4}, {10,2,6, 10,2,6}, 
         		// Ceiling lantern supports
         		{4,9,6, 4,10,6}, {8,9,6, 8,10,6}, 
         		})
@@ -9222,14 +9215,19 @@ public class JungleStructures
             	this.setBlockState(world, biomeTrapdoorBlock.getStateFromMeta(StructureVillageVN.getTrapdoorMeta(uuvvww[3], false, true)), uuvvww[0], uuvvww[1], uuvvww[2], structureBB);
             }
             
-                    	
-            // Wooden pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for (int[] uvw : new int[][]{
-        		{2,3,4}, {10,3,4}, {10,3,6}, 
+            
+            // Table
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
+        		{2,2,4}, 
+        		{10,2,4}, 
+        		{10,2,6}, 
         		})
             {
-        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
             }
             
         	
@@ -11413,8 +11411,6 @@ public class JungleStructures
         		{2,1,2, 2,2,2}, {4,1,2, 4,2,2}, {6,1,2, 6,2,2}, {7,1,0, 7,2,0}, {11,1,0, 11,2,0}, 
         		// Railing
         		{2,4,2, 2,4,3}, {3,4,2, 7,4,2}, {7,4,0, 7,4,1}, {8,4,0, 11,4,0}, {11,4,0, 11,4,8}, 
-        		// Table
-        		{10,1,7, 10,1,7}, 
         		})
             {
             	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeFenceState, biomeFenceState, false);
@@ -11524,13 +11520,16 @@ public class JungleStructures
             }
         	
         	
-            // Wooden pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for (int[] uvw : new int[][]{
-        		{10,2,7}, 
+            // Table
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
+        		{10,1,7}, 
         		})
             {
-        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1], uvw[2], structureBB);
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
             }
         	
         	

@@ -84,7 +84,7 @@ public class WriteBookHandler {
         
 		String targetClassPath = "";
 		// It's possible to pass a null entity (when using a Codex)
-		if (target != null) { targetClassPath = target.getClass().toString().substring(6); }
+		if (target != null) { targetClassPath = target.getClass().getCanonicalName(); }
 		
 				
 		//Here are the contents of the book up front
@@ -188,8 +188,8 @@ public class WriteBookHandler {
         // ----------------------- //
         if (target!=null) {
         			if ((target instanceof EntityVillager 
-            				|| target.getClass().toString().substring(6).equals(ModObjects.PMLostMinerClass)
-            				|| target.getClass().toString().substring(6).equals(ModObjects.PMTravelingMerchantClass)) 
+            				|| target.getClass().getCanonicalName().equals(ModObjects.PMLostMinerClass)
+            				|| target.getClass().getCanonicalName().equals(ModObjects.PMTravelingMerchantClass)) 
             		&&
             		((author != "" && author != null) || !GeneralConfig.nameEntities) ) {
             	

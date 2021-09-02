@@ -20,14 +20,15 @@ import net.minecraft.world.World;
 /**
  * A holder for string names for various mod items/blocks/etc for easy access
  */
-// Added in v3.1trades
 public class ModObjects {
 	
 	// Constantly referenced domain names
 	public static final String DOM_ANIMANIA = "animania";
 	public static final String DOM_BIOMESOPLENTY = "biomesoplenty";
 	public static final String DOM_HARVESTCRAFT = "harvestcraft";
+	public static final String DOM_MRCRAYFISHSFURNITUREMOD = "cfm";
 	public static final String DOM_QUARK = "quark";
+	public static final String DOM_RUSTIC = "rustic";
 	public static final String DOM_VANILLABUILDERSEXTENSION = "vbe";
 	
 
@@ -71,7 +72,6 @@ public class ModObjects {
 	public static final String TQVillageLordClass = "net.torocraft.toroquest.entities.EntityVillageLord";
 	
 	
-	// Added in v3.1trades
  	
 	// --------------------------------------------- //
 	// --- Blocks and items reference for trades --- //
@@ -257,6 +257,21 @@ public class ModObjects {
 	public static final String dioriteWall_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallDiorite";
 	public static final String graniteWall_Qu = DOM_QUARK + ":stone_granite_wall";
 	public static final String graniteWall_VBE = DOM_VANILLABUILDERSEXTENSION + ":wallGranite";
+
+	// Wooden Table
+	public static final String table_BC = "bibliocraft:Table";
+	public static final String table_oak_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_oak";
+	public static final String table_spruce_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_spruce";
+	public static final String table_birch_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_birch";
+	public static final String table_jungle_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_jungle";
+	public static final String table_acacia_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_acacia";
+	public static final String table_dark_oak_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_dark_oak";
+	public static final String table_oak_Rus = DOM_RUSTIC+":table_oak";
+	public static final String table_spruce_Rus = DOM_RUSTIC+":table_spruce";
+	public static final String table_birch_Rus = DOM_RUSTIC+":table_birch";
+	public static final String table_jungle_Rus = DOM_RUSTIC+":table_jungle";
+	public static final String table_acacia_Rus = DOM_RUSTIC+":table_acacia";
+	public static final String table_dark_oak_Rus = DOM_RUSTIC+":table_big_oak";
 	
 	
 	
@@ -432,12 +447,12 @@ public class ModObjects {
 		{
 			Block modblock=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.andesiteStairs_Qu);
 				if (modblock != null) {return modblock;}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.andesiteStairs_VBE);
 				if (modblock != null) {return modblock;}
@@ -472,12 +487,12 @@ public class ModObjects {
 		{
 			Block modobject=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modobject = Block.getBlockFromName(ModObjects.andesiteSlab_Qu);
 				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modobject = Block.getBlockFromName(ModObjects.andesiteSlab_VBE);
 				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
@@ -727,12 +742,12 @@ public class ModObjects {
 		{
 			Block modblock=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_Qu);
 				if (modblock != null) {return modblock;}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.dioriteStairs_VBE);
 				if (modblock != null) {return modblock;}
@@ -767,12 +782,12 @@ public class ModObjects {
 		{
 			Block modblock=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.dioriteWall_Qu);
 				if (modblock != null) {return modblock.getDefaultState();}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.dioriteWall_VBE);
 				if (modblock != null) {return modblock.getDefaultState();}
@@ -789,12 +804,12 @@ public class ModObjects {
 		{
 			Block modobject=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modobject = Block.getBlockFromName(ModObjects.dioriteSlab_Qu);
 				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modobject = Block.getBlockFromName(ModObjects.dioriteSlab_VBE);
 				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
@@ -866,12 +881,12 @@ public class ModObjects {
 		{
 			Block modblock=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.graniteStairs_Qu);
 				if (modblock != null) {return modblock;}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.graniteStairs_VBE);
 				if (modblock != null) {return modblock;}
@@ -910,12 +925,12 @@ public class ModObjects {
 		{
 			Block modblock=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.graniteWall_Qu);
 				if (modblock != null) {return modblock.getDefaultState();}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.graniteWall_VBE);
 				if (modblock != null) {return modblock.getDefaultState();}
@@ -1064,7 +1079,13 @@ public class ModObjects {
 	{
 		return null;
 	}
-	
+		
+	// Pressure Plate
+    public static Block chooseModPressurePlate(int materialMeta)
+	{
+    	return Blocks.WOODEN_PRESSURE_PLATE;
+	}
+    	
 	// Prismarine Stairs
 	public static Block chooseModPrismarineStairsBlock()
 	{
@@ -1074,12 +1095,12 @@ public class ModObjects {
 		{
 			Block modblock=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.prismarineStairs_Qu);
 				if (modblock != null) {return modblock;}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.prismarineStairs_VBE);
 				if (modblock != null) {return modblock;}
@@ -1101,12 +1122,12 @@ public class ModObjects {
 		{
 			Block modobject=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modobject = Block.getBlockFromName(ModObjects.prismarineSlab_Qu);
 				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modobject = Block.getBlockFromName(ModObjects.prismarineSlab_VBE);
 				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
@@ -1125,12 +1146,12 @@ public class ModObjects {
 		{
 			Block modblock=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.prismarineWall_Qu);
 				if (modblock != null) {return modblock.getDefaultState();}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.prismarineWall_VBE);
 				if (modblock != null) {return modblock.getDefaultState();}
@@ -1187,12 +1208,12 @@ public class ModObjects {
 		{
 			Block modobject=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modobject = Block.getBlockFromName(isred ? ModObjects.smoothRedSandstoneSlabQu : ModObjects.smoothSandstoneSlabQu);
 				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modobject = Block.getBlockFromName(isred ? ModObjects.smoothRedSandstoneSlabVBE : ModObjects.smoothSandstoneSlabVBE);
 				if (modobject != null) {return modobject.getStateFromMeta(upper?8:0);}
@@ -1225,11 +1246,11 @@ public class ModObjects {
 		{
 			Block modobject=null;
 			
-			if (mod.toLowerCase().equals("quark"))
+			if (mod.toLowerCase().trim().equals("quark"))
 			{
 				modobject = Block.getBlockFromName(isRed ? ModObjects.sandstoneWall_red_Qu : ModObjects.sandstoneWall_white_Qu);
 			}
-			else if (mod.toLowerCase().equals("vanillabuildersextension"))
+			else if (mod.toLowerCase().trim().equals("vanillabuildersextension"))
 			{
 				modobject = Block.getBlockFromName(isRed ? ModObjects.smoothSandstoneWall_red_VBE : ModObjects.smoothSandstoneWall_white_VBE);
 			}
@@ -1361,5 +1382,106 @@ public class ModObjects {
 		// Pass the original block if it's not a vanilla log
 		if (block!=Blocks.LOG && block!=Blocks.LOG2) {return blockstate;}
 		return chooseModBarkState(blockstate);
+	}
+	
+	
+	// Wooden table (Vanilla is a fence with a pressure plate on top)
+	public static IBlockState[] chooseModWoodenTable(int materialMeta)
+	{
+		String[] modprioritylist = GeneralConfig.modWoodenTable;
+		
+		Block modblock = null;
+		
+		for (String mod : modprioritylist)
+		{
+			if (mod.toLowerCase().trim().equals("mrcrayfishsfurnituremod"))
+			{
+				modblock=null;
+				
+				switch (materialMeta)
+				{
+				case 0: modblock = Block.getBlockFromName(ModObjects.table_oak_CFM); break;
+				case 1: modblock = Block.getBlockFromName(ModObjects.table_spruce_CFM); break;
+				case 2: modblock = Block.getBlockFromName(ModObjects.table_birch_CFM); break;
+				case 3: modblock = Block.getBlockFromName(ModObjects.table_jungle_CFM); break;
+				case 4: modblock = Block.getBlockFromName(ModObjects.table_acacia_CFM); break;
+				case 5: modblock = Block.getBlockFromName(ModObjects.table_dark_oak_CFM); break;
+				}
+				
+				if (modblock != null)
+				{
+					return new IBlockState[] {
+							Blocks.AIR.getDefaultState(),
+							modblock.getDefaultState()
+							};
+				}
+			}
+			else if (mod.toLowerCase().trim().equals("rustic"))
+			{
+				modblock=null;
+				
+				switch (materialMeta)
+				{
+				case 0: modblock = Block.getBlockFromName(ModObjects.table_oak_Rus); break;
+				case 1: modblock = Block.getBlockFromName(ModObjects.table_spruce_Rus); break;
+				case 2: modblock = Block.getBlockFromName(ModObjects.table_birch_Rus); break;
+				case 3: modblock = Block.getBlockFromName(ModObjects.table_jungle_Rus); break;
+				case 4: modblock = Block.getBlockFromName(ModObjects.table_acacia_Rus); break;
+				case 5: modblock = Block.getBlockFromName(ModObjects.table_dark_oak_Rus); break;
+				}
+				
+				if (modblock != null)
+				{
+					return new IBlockState[] {
+							Blocks.AIR.getDefaultState(),
+							modblock.getDefaultState()
+							};
+				}
+			}
+			else if (mod.toLowerCase().trim().equals("minecraft"))
+			{
+				return chooseVanillaWoodenTable(materialMeta);
+			}
+			else if (mod.toLowerCase().trim().equals("bibliocraft"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.table_BC);
+
+				if (modblock != null)
+				{
+					return new IBlockState[] {
+							Blocks.AIR.getDefaultState(),
+							modblock.getStateFromMeta(materialMeta)
+							};
+				}
+			}
+		}
+		// If all else fails, grab the vanilla version
+		return chooseVanillaWoodenTable(materialMeta);
+	}
+	public static IBlockState[] chooseVanillaWoodenTable(int materialMeta)
+	{
+		IBlockState fenceState;
+		
+		switch(materialMeta)
+		{
+		default:
+		case 0:
+			fenceState = Blocks.OAK_FENCE.getDefaultState(); break;
+		case 1:
+			fenceState = Blocks.SPRUCE_FENCE.getDefaultState(); break;
+		case 2:
+			fenceState = Blocks.BIRCH_FENCE.getDefaultState(); break;
+		case 3:
+			fenceState = Blocks.JUNGLE_FENCE.getDefaultState(); break;
+		case 4:
+			fenceState = Blocks.ACACIA_FENCE.getDefaultState(); break;
+		case 5:
+			fenceState = Blocks.DARK_OAK_FENCE.getDefaultState(); break;
+		}
+		
+		return new IBlockState[] {
+				ModObjects.chooseModPressurePlate(materialMeta).getDefaultState(),
+				fenceState
+				};
 	}
 }
