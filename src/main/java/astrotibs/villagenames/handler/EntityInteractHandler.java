@@ -76,7 +76,7 @@ public class EntityInteractHandler {
 			Block targetBlock = blockState.getBlock();
 			int targetBlockMeta = targetBlock.getMetaFromState(blockState);
 			String targetBlockUnlocName = targetBlock.getUnlocalizedName();
-			event.getEntityPlayer().addChatComponentMessage(new TextComponentString( "Class path of this block: " + targetBlock.getClass().toString().substring(6) ));
+			event.getEntityPlayer().addChatComponentMessage(new TextComponentString( "Class path of this block: " + targetBlock.getClass().getCanonicalName() ));
 			event.getEntityPlayer().addChatComponentMessage(new TextComponentString( "Unlocalized name: " + targetBlockUnlocName ));
 			event.getEntityPlayer().addChatComponentMessage(new TextComponentString( "Meta value: " + targetBlockMeta ));
 			event.getEntityPlayer().addChatComponentMessage(new TextComponentString( "" ));
@@ -142,7 +142,7 @@ public class EntityInteractHandler {
 			ItemStack itemstackMain = player.getHeldItemMainhand();
 			ItemStack itemstackOff = player.getHeldItemOffhand();
 			EntityLiving target = (EntityLiving)event.getTarget();							// The target
-			String targetClassPath = event.getTarget().getClass().toString().substring(6);	// The classpath string of the target
+			String targetClassPath = event.getTarget().getClass().getCanonicalName();	// The classpath string of the target
 			World world = player.worldObj;												// Reference to the world object
 			
 			// Hard-code workaround to allow reference to the Elder Guardian in the configs
@@ -391,6 +391,7 @@ public class EntityInteractHandler {
 								&& ((EntityTameable)target).isOwner(player))
 								||
 								(target instanceof EntityHorse
+								&& ((EntityHorse)target).getOwnerUniqueId()!=null
 								&& ((EntityHorse)target).getOwnerUniqueId().equals(player.getUniqueID()))
 							)
 							
@@ -1452,7 +1453,7 @@ public class EntityInteractHandler {
         	
         	if (event.getTarget() instanceof EntityVillager
         			|| event.getTarget() instanceof EntityIronGolem
-        			|| event.getTarget().getClass().getClass().toString().substring(6).equals(ModObjects.WitcheryGuardClass)
+        			|| event.getTarget().getClass().getCanonicalName().equals(ModObjects.WitcheryGuardClass)
         			) {
         		EntityMonitorHandler.tickRate = 10; // Abruptly speed up the checker to help sync for achievements.
         		Village villageNearTarget = target.worldObj.getVillageCollection().getNearestVillage(

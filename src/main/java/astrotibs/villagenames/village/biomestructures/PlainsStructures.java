@@ -3966,10 +3966,16 @@ public class PlainsStructures
             this.fillWithBlocks(world, structureBB, 5, 6, 8, 5, 7, 8, Blocks.COBBLESTONE_WALL.getStateFromMeta(0), Blocks.COBBLESTONE_WALL.getStateFromMeta(0), false);
             
             // Table
-            this.setBlockState(world, biomeFenceState, 2, 1, 3, structureBB);
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-            this.setBlockState(world, biomeWoodPressurePlateState, 2, 2, 3, structureBB);
-            
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
+            	{2,1,3},  
+        		})
+            {
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
+            }
             
             // 0: nuffin
             // 1: poppy
@@ -4924,12 +4930,19 @@ public class PlainsStructures
             
             
             // --- Interior --- //
-            
+        	
             // Table
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-            this.setBlockState(world, biomeFenceState, 2, 1, 3, structureBB);
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-            this.setBlockState(world, biomeWoodPressurePlateState, 2, 2, 3, structureBB);
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
+        		{2,1,3},
+        		})
+            {
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
+            }
+        	
             // Cartography Table
         	IBlockState cartographyTableState = ModObjects.chooseModCartographyTableState();
             this.setBlockState(world, cartographyTableState, 3, 1, 6, structureBB);
@@ -8177,19 +8190,20 @@ public class PlainsStructures
         		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeWoodStairsState.getBlock().getStateFromMeta(uuvvwwo[6]%4+(uuvvwwo[6]/4)*4), biomeWoodStairsState.getBlock().getStateFromMeta(uuvvwwo[6]%4+(uuvvwwo[6]/4)*4), false);
             }
         	
-        	
-            // Tables: fence with pressure plate
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for (int[] uvw : new int[][]{
+
+            // Table
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
     			{6,2,2},
     			{8,2,6},
     			{8,2,10},
     			{4,2,10},
         		})
             {
-        		this.setBlockState(world, biomeFenceState, uvw[0], uvw[1], uvw[2], structureBB);
-        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1]+1, uvw[2], structureBB);
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
             }
             
             
@@ -8705,17 +8719,18 @@ public class PlainsStructures
             {
         		this.setBlockState(world, Blocks.GLASS_PANE.getStateFromMeta(0), uvw[0], uvw[1], uvw[2], structureBB);
             }
-            
         	
-            // Tables: fence with pressure plate
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for (int[] uvw : new int[][]{
+
+            // Table
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
     			{3,1,4},
         		})
             {
-        		this.setBlockState(world, biomeFenceState, uvw[0], uvw[1], uvw[2], structureBB);
-        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1]+1, uvw[2], structureBB);
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
             }
             
             
@@ -17260,15 +17275,17 @@ public class PlainsStructures
             	this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeWoodStairsState.getBlock().getStateFromMeta(uuvvwwo[6]%4+(uuvvwwo[6]/4)*4), biomeWoodStairsState.getBlock().getStateFromMeta(uuvvwwo[6]%4+(uuvvwwo[6]/4)*4), false);	
             }
         	
-        	
-            // Tables: fence with pressure plate
-        	IBlockState biomeWoodPressurePlateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for (int[] uvw : new int[][]{
+
+            // Table
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+        	for (int[] uuvvww : new int[][]{
     			{7,1,5},
         		})
             {
-        		this.setBlockState(world, biomeFenceState, uvw[0], uvw[1], uvw[2], structureBB);
-        		this.setBlockState(world, biomeWoodPressurePlateState, uvw[0], uvw[1]+1, uvw[2], structureBB);
+        		for (int i=1; i>=0; i--)
+        		{
+        			this.setBlockState(world, tableComponentBlockstates[i], uuvvww[0], uuvvww[1]+1-i, uuvvww[2], structureBB);
+        		}
             }
         	
         	

@@ -20,12 +20,12 @@ import net.minecraft.world.World;
 /**
  * A holder for string names for various mod items/blocks/etc for easy access
  */
-// Added in v3.1trades
 public class ModObjects {
 	
 	// Constantly referenced domain names
 	public static final String DOM_BIOMESOPLENTY = "biomesoplenty";
 	public static final String DOM_HARVESTCRAFT = "harvestcraft";
+	public static final String DOM_MRCRAYFISHSFURNITUREMOD = "cfm";
 	public static final String DOM_QUARK = "quark";
 	
 	
@@ -49,8 +49,6 @@ public class ModObjects {
  	//public static final String WitcheryHunterClass = "com.emoniph.witchery.entity.EntityWitchHunter";
  	
  	
- 	
-	// Added in v3.1trades
  	
 	// --------------------------------------------- //
 	// --- Blocks and items reference for trades --- //
@@ -196,6 +194,15 @@ public class ModObjects {
 	public static final String sandstoneWall_red_Qu = DOM_QUARK + ":red_sandstone_wall"; 
 	public static final String dioriteWall_Qu = DOM_QUARK + ":stone_diorite_wall";
 	public static final String graniteWall_Qu = DOM_QUARK + ":stone_granite_wall";
+
+	// Wooden Table
+	public static final String table_BC = "bibliocraft:Table";
+	public static final String table_oak_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_oak";
+	public static final String table_spruce_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_spruce";
+	public static final String table_birch_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_birch";
+	public static final String table_jungle_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_jungle";
+	public static final String table_acacia_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_acacia";
+	public static final String table_dark_oak_CFM = DOM_MRCRAYFISHSFURNITUREMOD+":table_dark_oak";
 	
 	
 	
@@ -679,6 +686,13 @@ public class ModObjects {
 	}
 	
 	
+	// Pressure Plate
+    public static Block chooseModPressurePlate(int materialMeta)
+	{
+    	return Blocks.WOODEN_PRESSURE_PLATE;
+	}
+	
+	
 	// Prismarine
 	public static Block chooseModPrismarineStairsBlock()
 	{
@@ -911,5 +925,84 @@ public class ModObjects {
 		// Pass the original block if it's not a vanilla log
 		if (block!=Blocks.LOG && block!=Blocks.LOG2) {return blockstate;}
 		return chooseModBarkState(blockstate);
+	}
+	
+	
+	// Wooden table (Vanilla is a fence with a pressure plate on top)
+	public static IBlockState[] chooseModWoodenTable(int materialMeta)
+	{
+		String[] modprioritylist = GeneralConfig.modWoodenTable;
+		
+		Block modblock = null;
+		
+		for (String mod : modprioritylist)
+		{
+			if (mod.toLowerCase().trim().equals("mrcrayfishsfurnituremod"))
+			{
+				modblock=null;
+				
+				switch (materialMeta)
+				{
+				case 0: modblock = Block.getBlockFromName(ModObjects.table_oak_CFM); break;
+				case 1: modblock = Block.getBlockFromName(ModObjects.table_spruce_CFM); break;
+				case 2: modblock = Block.getBlockFromName(ModObjects.table_birch_CFM); break;
+				case 3: modblock = Block.getBlockFromName(ModObjects.table_jungle_CFM); break;
+				case 4: modblock = Block.getBlockFromName(ModObjects.table_acacia_CFM); break;
+				case 5: modblock = Block.getBlockFromName(ModObjects.table_dark_oak_CFM); break;
+				}
+				
+				if (modblock != null)
+				{
+					return new IBlockState[] {
+							Blocks.AIR.getDefaultState(),
+							modblock.getDefaultState()
+							};
+				}
+			}
+			else if (mod.toLowerCase().trim().equals("minecraft"))
+			{
+				return chooseVanillaWoodenTable(materialMeta);
+			}
+			else if (mod.toLowerCase().trim().equals("bibliocraft"))
+			{
+				modblock = Block.getBlockFromName(ModObjects.table_BC);
+
+				if (modblock != null)
+				{
+					return new IBlockState[] {
+							Blocks.AIR.getDefaultState(),
+							modblock.getStateFromMeta(materialMeta)
+							};
+				}
+			}
+		}
+		// If all else fails, grab the vanilla version
+		return chooseVanillaWoodenTable(materialMeta);
+	}
+	public static IBlockState[] chooseVanillaWoodenTable(int materialMeta)
+	{
+		IBlockState fenceState;
+		
+		switch(materialMeta)
+		{
+		default:
+		case 0:
+			fenceState = Blocks.OAK_FENCE.getDefaultState(); break;
+		case 1:
+			fenceState = Blocks.SPRUCE_FENCE.getDefaultState(); break;
+		case 2:
+			fenceState = Blocks.BIRCH_FENCE.getDefaultState(); break;
+		case 3:
+			fenceState = Blocks.JUNGLE_FENCE.getDefaultState(); break;
+		case 4:
+			fenceState = Blocks.ACACIA_FENCE.getDefaultState(); break;
+		case 5:
+			fenceState = Blocks.DARK_OAK_FENCE.getDefaultState(); break;
+		}
+		
+		return new IBlockState[] {
+				ModObjects.chooseModPressurePlate(materialMeta).getDefaultState(),
+				fenceState
+				};
 	}
 }

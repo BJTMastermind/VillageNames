@@ -67,6 +67,8 @@ public class GeneralConfig {
 	//public static boolean enableNitwit;
 	public static boolean writtenBookTrade;
 	public static boolean swampHutMushroomPot;
+
+	public static String[] modWoodenTable;
 	
 	public static String[] zombieCureCatalysts;
 	public static String[] zombieCureGroups;
@@ -357,6 +359,15 @@ public class GeneralConfig {
 
 		harvestcraftCropFarmRate = config.getFloat("Crop rate: Harvestcraft", Reference.CATEGORY_MOD_INTEGRATION, 0.25F, 0F, 1F, "Generate Harvestcraft crops in farms. Only used with Village Generator. Set to 0 for no HC crops.");
 		antiqueAtlasMarkerNames = config.getBoolean("Antique Atlas: Village Marker Names", Reference.CATEGORY_MOD_INTEGRATION, true, "Label a new village marker with the village's name in your Antique Atlases.");
+
+	    modWoodenTable = config.getStringList("Mod Priority: Table", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+	    		"mrcrayfishsfurnituremod",
+	    		"minecraft",
+	    		"bibliocraft",
+ 				},
+ 				"Priority order for referencing Wooden Tables for village generation. The version highest on the list and registered in your game will be used. "
+ 				+ "The \"minecraft\" entry refers to the vanilla-style pressure plate atop a fence post."
+ 				);
 		
 		// Mapping for modded structures, and the creatures that can name them
 		modStructureNames = config.getStringList("Mod Structures", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
