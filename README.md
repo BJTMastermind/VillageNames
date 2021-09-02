@@ -1,3 +1,5 @@
+Download the mod at: https://www.curseforge.com/minecraft/mc-mods/village-names
+
 This is a mod for Minecraft Forge that allows the user to generate random names for Villagers and villages.
 
 The config files allow you to generate names for nearly any vanilla or mod entity so long as you know the class path.
