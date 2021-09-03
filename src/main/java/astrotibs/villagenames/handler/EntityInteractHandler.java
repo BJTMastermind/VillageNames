@@ -76,7 +76,7 @@ public class EntityInteractHandler {
 			Block targetBlock = blockState.getBlock();
 			int targetBlockMeta = targetBlock.getMetaFromState(blockState);
 			String targetBlockUnlocName = targetBlock.getUnlocalizedName();
-			event.entityPlayer.addChatComponentMessage(new ChatComponentText( "Class path of this block: " + targetBlock.getClass().getCanonicalName() ));
+			event.entityPlayer.addChatComponentMessage(new ChatComponentText( "Class path of this block: " + targetBlock.getClass().toString().substring(6) ));
 			event.entityPlayer.addChatComponentMessage(new ChatComponentText( "Unlocalized name: " + targetBlockUnlocName ));
 			event.entityPlayer.addChatComponentMessage(new ChatComponentText( "Meta value: " + targetBlockMeta ));
 			event.entityPlayer.addChatComponentMessage(new ChatComponentText( "" ));
@@ -151,7 +151,7 @@ public class EntityInteractHandler {
 			EntityPlayer player = (EntityPlayer) event.entity; 							// The player
 			ItemStack itemstack = player.inventory.getCurrentItem();					// What the player is holding
 			EntityLiving target = (EntityLiving)event.target;							// The target
-			String targetClassPath = event.target.getClass().getCanonicalName();	// The classpath string of the target
+			String targetClassPath = event.target.getClass().toString().substring(6);	// The classpath string of the target
 			World world = player.worldObj;												// Reference to the world object
 			
 			// Hard-code workaround to allow reference to the Elder Guardian in the configs
@@ -1274,7 +1274,7 @@ public class EntityInteractHandler {
         	
         	if (event.target instanceof EntityVillager
         			|| event.target instanceof EntityIronGolem
-        			|| event.target.getClass().getCanonicalName().equals(ModObjects.WitcheryGuardClass)
+        			|| event.target.getClass().toString().substring(6).equals(ModObjects.WitcheryGuardClass)
         			) {
         		EntityMonitorHandler.tickRate = 10; // Abruptly speed up the checker to help sync for achievements.
         		Village villageNearTarget = target.worldObj.getVillageCollection().getNearestVillage(

@@ -108,7 +108,7 @@ public class EntityMonitorHandler
             }
             
             // Check if the player started tracking a village guard
-            else if (event.entity.getClass().getCanonicalName().equals(ModObjects.WitcheryGuardClass)) { // Removed not-remote condition and added ELSE - v3.1
+            else if (event.entity.getClass().toString().substring(6).equals(ModObjects.WitcheryGuardClass)) { // Removed not-remote condition and added ELSE - v3.1
                 //final EntityZombie zombie = (EntityZombie) event.target;
             	final EntityLiving guard = (EntityLiving) event.target;
 
@@ -366,7 +366,7 @@ public class EntityMonitorHandler
                                 	IBlockState blockState = zombie.worldObj.getBlockState(new BlockPos(k, l, i1));
                                 	Block block = blockState.getBlock();
                         			int blockmeta = block.getMetaFromState(blockState);
-                                    String blockClassPath = block.getClass().getCanonicalName();
+                                    String blockClassPath = block.getClass().toString().substring(6);
                                     String blockUnlocName = block.getUnlocalizedName();
                                     
                                     for ( int blocki=0 ; blocki < zombieCureCatalysts.get("Groups").size(); blocki++ ) { // Go through all the custom block entries
@@ -498,7 +498,7 @@ public class EntityMonitorHandler
         else if (
         		Loader.isModLoaded("witchery")
         		&& event.entity instanceof EntityLiving
-        		&& event.entity.getClass().getCanonicalName().equals(ModObjects.WitcheryGuardClass)
+        		&& event.entity.getClass().toString().substring(6).equals(ModObjects.WitcheryGuardClass)
         		&& (EventType.GUARD).getTracker().size() > 0
         		) {
         	
@@ -536,7 +536,7 @@ public class EntityMonitorHandler
         // --- Initialize villager trades and sync skin with client --- //
         
         else if (
-        		event.entity.getClass().getCanonicalName().equals(Reference.VILLAGER_CLASS) // Explicit vanilla villager class
+        		event.entity.getClass().toString().substring(6).equals(Reference.VILLAGER_CLASS) // Explicit vanilla villager class
 				&& !event.entity.worldObj.isRemote
         		)
         {
@@ -662,7 +662,7 @@ public class EntityMonitorHandler
         
         else if (
         		Loader.isModLoaded("witchery") &&
-        		event.entity.getClass().getCanonicalName().equals(ModObjects.WitcheryGuardClass)
+        		event.entity.getClass().toString().substring(6).equals(ModObjects.WitcheryGuardClass)
         		) {
         	
             EntityLiving guard = (EntityLiving)event.entity;
