@@ -74,7 +74,7 @@ public class EntityInteractHandler {
 			Block targetBlock = blockState.getBlock();
 			int targetBlockMeta = targetBlock.getMetaFromState(blockState);
 			String targetBlockUnlocName = targetBlock.getUnlocalizedName();
-			event.getEntityPlayer().sendMessage(new TextComponentString( "Class path of this block: " + targetBlock.getClass().getCanonicalName() ));
+			event.getEntityPlayer().sendMessage(new TextComponentString( "Class path of this block: " + targetBlock.getClass().toString().substring(6) ));
 			event.getEntityPlayer().sendMessage(new TextComponentString( "Unlocalized name: " + targetBlockUnlocName ));
 			event.getEntityPlayer().sendMessage(new TextComponentString( "Meta value: " + targetBlockMeta ));
 			event.getEntityPlayer().sendMessage(new TextComponentString( "" ));
@@ -140,7 +140,7 @@ public class EntityInteractHandler {
 			ItemStack itemstackMain = player.getHeldItemMainhand();
 			ItemStack itemstackOff = player.getHeldItemOffhand();
 			EntityLiving target = (EntityLiving)event.getTarget();							// The target
-			String targetClassPath = event.getTarget().getClass().getCanonicalName();	// The classpath string of the target
+			String targetClassPath = event.getTarget().getClass().toString().substring(6);	// The classpath string of the target
 			World world = player.world;
 			
 			// The coordinates of the target
@@ -354,9 +354,9 @@ public class EntityInteractHandler {
 								&& ((AbstractHorse)target).getOwnerUniqueId()!=null
 								&& ((AbstractHorse)target).getOwnerUniqueId().equals(player.getUniqueID()))
 								||
-								(target.getClass().getCanonicalName().equals(ModObjects.AM_DraftHorse_Stallion)
-									|| target.getClass().getCanonicalName().equals(ModObjects.AM_DraftHorse_Mare)
-									|| target.getClass().getCanonicalName().equals(ModObjects.AM_DraftHorse_Foal)
+								(target.getClass().toString().substring(6).equals(ModObjects.AM_DraftHorse_Stallion)
+									|| target.getClass().toString().substring(6).equals(ModObjects.AM_DraftHorse_Mare)
+									|| target.getClass().toString().substring(6).equals(ModObjects.AM_DraftHorse_Foal)
 									)
 							)
 							
@@ -1466,7 +1466,7 @@ public class EntityInteractHandler {
         	
         	if (event.getTarget() instanceof EntityVillager
         			|| event.getTarget() instanceof EntityIronGolem
-        			|| event.getTarget().getClass().getCanonicalName().equals(ModObjects.WitcheryGuardClass)
+        			|| event.getTarget().getClass().toString().substring(6).equals(ModObjects.WitcheryGuardClass)
         			) {
         		EntityMonitorHandler.tickRate = 10; // Abruptly speed up the checker to help sync for achievements.
         		Village villageNearTarget = target.world.getVillageCollection().getNearestVillage(
