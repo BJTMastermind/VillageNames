@@ -116,7 +116,7 @@ public class EntityMonitorHandler
             }
             
             // Check if the player started tracking a village guard
-            else if (event.getEntity().getClass().getCanonicalName().equals(ModObjects.WitcheryGuardClass)) {
+            else if (event.getEntity().getClass().toString().substring(6).equals(ModObjects.WitcheryGuardClass)) {
             	final EntityLiving guard = (EntityLiving) event.getTarget();
             	IModularSkin ims = guard.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
             	
@@ -367,7 +367,7 @@ public class EntityMonitorHandler
                                 	IBlockState blockState = zombie.worldObj.getBlockState(new BlockPos(k, l, i1));
                                 	Block block = blockState.getBlock();
                         			int blockmeta = block.getMetaFromState(blockState);
-                                    String blockClassPath = block.getClass().getCanonicalName();
+                                    String blockClassPath = block.getClass().toString().substring(6);
                                     String blockUnlocName = block.getUnlocalizedName();
                                     
                                     for ( int blocki=0 ; blocki < zombieCureCatalysts.get("Groups").size(); blocki++ ) { // Go through all the custom block entries
@@ -500,7 +500,7 @@ public class EntityMonitorHandler
         else if (
         		Loader.isModLoaded("witchery")
         		&& event.getEntity() instanceof EntityLiving
-        		&& event.getEntity().getClass().getCanonicalName().equals(ModObjects.WitcheryGuardClass)
+        		&& event.getEntity().getClass().toString().substring(6).equals(ModObjects.WitcheryGuardClass)
         		&& (EventType.GUARD).getTracker().size() > 0
         		) {
         	
@@ -538,7 +538,7 @@ public class EntityMonitorHandler
         // --- Initialize villager trades and sync skin with client --- //
         
         else if (
-        		event.getEntity().getClass().getCanonicalName().equals(Reference.VILLAGER_CLASS) // Explicit vanilla villager class - v3.2.4
+        		event.getEntity().getClass().toString().substring(6).equals(Reference.VILLAGER_CLASS) // Explicit vanilla villager class - v3.2.4
 				&& !event.getEntity().worldObj.isRemote
         		)
         {

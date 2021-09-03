@@ -82,7 +82,7 @@ public class WriteBookHandler {
         
 		String targetClassPath = "";
 		// It's possible to pass a null entity (when using a Codex)
-		if (target != null) { targetClassPath = target.getClass().getCanonicalName(); }
+		if (target != null) { targetClassPath = target.getClass().toString().substring(6); }
 		
 				
 		//Here are the contents of the book up front
