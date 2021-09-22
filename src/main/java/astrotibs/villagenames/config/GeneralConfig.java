@@ -3,7 +3,10 @@ package astrotibs.villagenames.config;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import astrotibs.villagenames.utility.Reference;
 import net.minecraftforge.common.config.Configuration;
@@ -37,11 +40,17 @@ public class GeneralConfig {
 	public static boolean nameGolems;
 	
 	public static String[] modNameMappingAutomatic;
+	public static Map<String, List> modNameMappingAutomatic_map = new HashMap<String, List>();
 	public static String[] modNameMappingClickable;
+	public static Map<String, List> modNameMappingClickable_map = new HashMap<String, List>();
+	public static String[] entitiesNameableLikePets;
+	public static Set<String> entitiesNameableLikePets_set = new HashSet<String>();
 	
 	public static String[] modProfessionMapping;
+	public static Map<String, List> modProfessionMapping_map = new HashMap<String, List>();
 	
 	public static String[] modStructureNames;
+	public static Map<String, List> modStructureNames_map = new HashMap<String, List>();
 	
 	public static boolean modernVillagerSkins;
 	
@@ -52,7 +61,7 @@ public class GeneralConfig {
 	public static ArrayList<String> moddedVillagerHeadwearBlacklist = new ArrayList<String>();
 
 	public static String[] moddedVillagerModularSkins;
-	public static Map<String, ArrayList> moddedVillagerCareerSkins;
+	public static Map<String, List> moddedVillagerCareerSkins_map = new HashMap<String, List>();
 	public static ArrayList<String> careerAsset_a;
 	public static ArrayList<String> zombieCareerAsset_a;
 	public static ArrayList<String> professionID_a;
@@ -71,7 +80,9 @@ public class GeneralConfig {
 	public static String[] modWoodenTable;
 	
 	public static String[] zombieCureCatalysts;
+	public static Map<String, List> zombieCureCatalysts_map = new HashMap<String, List>();
 	public static String[] zombieCureGroups;
+	public static Map<String, List> zombieCureGroups_map = new HashMap<String, List>();
 
 	public static float harvestcraftCropFarmRate;
 	public static boolean antiqueAtlasMarkerNames;
@@ -168,10 +179,10 @@ public class GeneralConfig {
 	    						+ "professionID: the ID associated with the mod profession.");
 	    
 	    // Assign the map now and immediately extract it into arrays for faster lookup
-	    moddedVillagerCareerSkins = GeneralConfig.unpackModVillagerSkins(GeneralConfig.moddedVillagerModularSkins);
-	    careerAsset_a = (ArrayList<String>)moddedVillagerCareerSkins.get("careerAsset");
-	    zombieCareerAsset_a = (ArrayList<String>)moddedVillagerCareerSkins.get("zombieCareerAsset");
-	    professionID_a = (ArrayList<String>)moddedVillagerCareerSkins.get("professionID");
+	    moddedVillagerCareerSkins_map = GeneralConfig.unpackModVillagerSkins(GeneralConfig.moddedVillagerModularSkins);
+	    careerAsset_a = (ArrayList<String>)moddedVillagerCareerSkins_map.get("careerAsset");
+	    zombieCareerAsset_a = (ArrayList<String>)moddedVillagerCareerSkins_map.get("zombieCareerAsset");
+	    professionID_a = (ArrayList<String>)moddedVillagerCareerSkins_map.get("professionID");
 
 
 	    villagerSkinTones = config.getBoolean("Display Skin Tones", Reference.CATEGORY_VILLAGER_SKIN_TONES, true, "Display Gaussian-distributed random skin tones assigned to villagers");
@@ -201,6 +212,9 @@ public class GeneralConfig {
  				+ "You can leave this blank to ignore it.\n"
  				+ "meta is integer meta value of the block. Enter -1 to ignore meta and count all blocks with that class path."
  				);
+		// Populate the hashmap
+	    zombieCureCatalysts_map.clear();
+	    zombieCureCatalysts_map = unpackZombieCureCatalysts(zombieCureCatalysts);
 	    
 	    zombieCureGroups = config.getStringList("Zombie Cure Groups", Reference.CATEGORY_GENERAL, new String[]{
  				"vanilla|0.3|14"
@@ -212,6 +226,9 @@ public class GeneralConfig {
  				+ "negative values will likewise reduce the conversion speed, making conversion take longer.\n"
  				+ "limit is the maximum number of blocks in this group that will apply the group speedup effect."
  				);
+		// Populate the hashmap
+	    zombieCureGroups_map.clear();
+	    zombieCureGroups_map = unpackZombieCureGroups(zombieCureGroups);
  		
 	    versionChecker = config.getBoolean("Version Checker", Reference.CATEGORY_MISCELLANEOUS, true, "Displays a client-side chat message on login if there's an update available.");
 	    codexChestLoot = config.getBoolean("Codex Chest Loot", Reference.CATEGORY_MISCELLANEOUS, true, "The Codex can appear as rare chest loot.");
@@ -303,6 +320,9 @@ public class GeneralConfig {
 				+ "addOrRemove - type \"add\" to automatically add names tags to ALL COPIES of this entity upon spawning, or \"remove\" to automatically remove.\n"
 				+ "Be VERY CAUTIOUS about what entities you choose to add to this list!"
 								);
+		// Populate the hashmap
+		modNameMappingAutomatic_map.clear();
+		modNameMappingAutomatic_map = unpackMappedNames(modNameMappingAutomatic);
 		
 	    
 
@@ -353,6 +373,21 @@ public class GeneralConfig {
 								+ "nameType options:\n"
 								+ "villager, dragon, golem, alien, angel, demon, goblin, pet, custom\n"
 								);
+		// Populate the hashmap
+		modNameMappingClickable_map.clear();
+		modNameMappingClickable_map = unpackMappedNames(modNameMappingClickable);
+
+		
+		// Forced pet names
+		entitiesNameableLikePets = config.getStringList("Entities Nameable Like Pets", Reference.CATEGORY_NAMING, new String[]{
+				},
+				"List of class paths of entities that receive a random Pet name when right-clicked with a blank nametag, irrespective of if they're tamed or who tamed them.\n"
+				+ "Use this for entities that can't receive a Pet name in the intended way (typically because owner ID is stored differently or not stored at all)."
+								);
+		// Populate hash set
+		entitiesNameableLikePets_set.clear();
+		for (int i=0; i< entitiesNameableLikePets.length; i++) {entitiesNameableLikePets_set.add(entitiesNameableLikePets[i]);}
+		
 		
 		
 		//--------------Mod Integration-----------------//
@@ -399,6 +434,9 @@ public class GeneralConfig {
 				+ "stronghold, fortress, monument, endcity, mansion, moonvillage, koentusvillage, fronosvillage, nibiruvillage, abandonedbase\n"
 				+ "entityClassPath is the mod's address to the entity class that will generate this book (when inside the structure). "
 					+ "It can be left blank, wherein the structure name can only be obtained via a Codex.\n");
+		// Populate the hashmap
+		modStructureNames_map.clear();
+		modStructureNames_map = unpackModStructures(modStructureNames);
 		
 		// New mod profession mapping
 		modProfessionMapping = config.getStringList("Mod Professions", Reference.CATEGORY_MOD_INTEGRATION, new String[]
@@ -438,6 +476,9 @@ public class GeneralConfig {
 								+ "3=Blacksmith\n"
 								+ "4=Butcher\n"
 								+ "5=Nitwit\n");
+		// Populate the hashmap
+		modProfessionMapping_map.clear();
+		modProfessionMapping_map = unpackMappedProfessions(modProfessionMapping);
 		
 	    
 	    if (config.hasChanged()) config.save();
@@ -448,10 +489,10 @@ public class GeneralConfig {
 	/**
 	 * Inputs a (Profession|ID|vanillaType) String list and breaks it into three array lists
 	 */
-	public static Map<String, ArrayList> unpackMappedProfessions(String[] inputList) {
-		ArrayList<String>  otherModProfessions = new ArrayList<String>();
-		ArrayList<String> otherModIDs = new ArrayList<String>(); // v3.2 - profession ints are deprecated
-		ArrayList<Integer> vanillaProfMaps = new ArrayList<Integer>();
+	public static Map<String, List> unpackMappedProfessions(String[] inputList) {
+		List<String>  otherModProfessions = new ArrayList<String>();
+		List<String> otherModIDs = new ArrayList<String>();
+		List<Integer> vanillaProfMaps = new ArrayList<Integer>();
 		
 		for (String entry : inputList) {
 			// Remove parentheses
@@ -462,22 +503,22 @@ public class GeneralConfig {
 			
 			// Initialize temp fields
 			String otherModProfession="";
-			String otherModID=""; // v3.2 - profession ints are deprecated
+			String otherModID="";
 			int vanillaProfMap=-1;
 			
 			// Place entries into variables
 			try {otherModProfession = splitEntry[0].trim();}               catch (Exception e) {otherModProfession="";}
-			try {otherModID = splitEntry[1].trim();}                       catch (Exception e) {otherModID="";} // v3.2 - profession ints are deprecated
+			try {otherModID = splitEntry[1].trim();}                       catch (Exception e) {otherModID="";}
 			try {vanillaProfMap = Integer.parseInt(splitEntry[2].trim());} catch (Exception e) {vanillaProfMap=-1;}
 			
-			if( !otherModProfession.equals("") && !otherModID.equals("") ) { // v3.2 - profession ints are deprecated
+			if( !otherModProfession.equals("") && !otherModID.equals("") ) {
 				otherModProfessions.add(otherModProfession);
 				otherModIDs.add(otherModID);
 				vanillaProfMaps.add(vanillaProfMap);
 			}
 		}
 		
-		Map<String,ArrayList> map =new HashMap();
+		Map<String, List> map = new HashMap();
 		map.put("Professions",otherModProfessions);
 		map.put("IDs",otherModIDs);
 		map.put("VanillaProfMaps",vanillaProfMaps);
@@ -491,14 +532,14 @@ public class GeneralConfig {
 	 * Loads the (nameType|structureType|structureTitle|dimensionName|bookType|entityClassPath) string lists from othermods.cfg > Mod Structures
 	 * and assigns them to this instance's variables.
 	 */
-	public static Map<String, ArrayList> unpackModStructures(String[] inputList) {
+	public static Map<String, List> unpackModStructures(String[] inputList) {
 		
-		ArrayList<String> otherModNameTypes = new ArrayList<String>();
-		ArrayList<String> otherModStructureTypes = new ArrayList<String>();
-		ArrayList<String> otherModStructureTitles = new ArrayList<String>();
-		ArrayList<String> otherModDimensionNames = new ArrayList<String>();
-		ArrayList<String> otherModBookTypes = new ArrayList<String>();
-		ArrayList<String> otherModClassPaths = new ArrayList<String>();
+		List<String> otherModNameTypes = new ArrayList<String>();
+		List<String> otherModStructureTypes = new ArrayList<String>();
+		List<String> otherModStructureTitles = new ArrayList<String>();
+		List<String> otherModDimensionNames = new ArrayList<String>();
+		List<String> otherModBookTypes = new ArrayList<String>();
+		List<String> otherModClassPaths = new ArrayList<String>();
 		
 		for (String entry : inputList) {
 			// Remove parentheses
@@ -533,7 +574,7 @@ public class GeneralConfig {
 				}
 		}
 
-		Map<String,ArrayList> map =new HashMap();
+		Map<String,List> map =new HashMap();
 		map.put("NameTypes",otherModNameTypes);
 		map.put("StructureTypes",otherModStructureTypes);
 		map.put("StructureTitles",otherModStructureTitles);
@@ -549,12 +590,12 @@ public class GeneralConfig {
 	 * Loads the (nameType|profession|classPath|AddOrRemove) string lists from othermods.cfg > Automatic Names and othermods.cfg > Clickable Names
 	 * and assigns them to this instance's variables.
 	 */
-	public static Map<String, ArrayList> unpackMappedNames(String[] inputList) {
+	public static Map<String, List> unpackMappedNames(String[] inputList) {
 		
-		ArrayList<String> otherModNameTypes = new ArrayList<String>();
-		ArrayList<String> otherModProfessions = new ArrayList<String>();
-		ArrayList<String> otherModClassPaths = new ArrayList<String>();
-		ArrayList<String> addOrRemoveA = new ArrayList<String>();
+		List<String> otherModNameTypes = new ArrayList<String>();
+		List<String> otherModProfessions = new ArrayList<String>();
+		List<String> otherModClassPaths = new ArrayList<String>();
+		List<String> addOrRemoveA = new ArrayList<String>();
 		
 		for (String entry : inputList) {
 			// Remove parentheses
@@ -585,7 +626,7 @@ public class GeneralConfig {
 				}
 		}
 
-		Map<String,ArrayList> map =new HashMap();
+		Map<String, List> map =new HashMap();
 		map.put("NameTypes",otherModNameTypes);
 		map.put("Professions",otherModProfessions);
 		map.put("ClassPaths",otherModClassPaths);
@@ -598,11 +639,11 @@ public class GeneralConfig {
 	/**
 	 * Loads the (group|classPath|unlocName|meta) string lists and assigns them to this instance's variables.
 	 */
-	public static Map<String, ArrayList> unpackZombieCureCatalysts(String[] inputList) {
-		ArrayList<String>  zombieCureCatalystGroups = new ArrayList<String>();
-		ArrayList<String> zombieCureCatalystClassPaths = new ArrayList<String>();
-		ArrayList<String> zombieCureCatalystUnlocNames = new ArrayList<String>();
-		ArrayList<Integer> zombieCureCatalystMetas = new ArrayList<Integer>();
+	public static Map<String, List> unpackZombieCureCatalysts(String[] inputList) {
+		List<String>  zombieCureCatalystGroups = new ArrayList<String>();
+		List<String> zombieCureCatalystClassPaths = new ArrayList<String>();
+		List<String> zombieCureCatalystUnlocNames = new ArrayList<String>();
+		List<Integer> zombieCureCatalystMetas = new ArrayList<Integer>();
 		
 		for (String entry : inputList) {
 			// Remove parentheses
@@ -634,7 +675,7 @@ public class GeneralConfig {
 			}
 		}
 		
-		Map<String,ArrayList> map = new HashMap();
+		Map<String, List> map = new HashMap();
 		map.put("Groups",zombieCureCatalystGroups);
 		map.put("ClassPaths",zombieCureCatalystClassPaths);
 		map.put("UnlocNames",zombieCureCatalystUnlocNames);
@@ -643,13 +684,14 @@ public class GeneralConfig {
 		return map;
 	}
 	
+	
 	/**
 	 * Loads the (group|speedup|limit) string lists and assigns them to this instance's variables.
 	 */
-	public static Map<String, ArrayList> unpackZombieCureGroups(String[] inputList) {
-		ArrayList<String>  zombieCureGroupGroups = new ArrayList<String>();
-		ArrayList<Double> zombieCureGroupSpeedups = new ArrayList<Double>();
-		ArrayList<Integer> zombieCureGroupLimits = new ArrayList<Integer>();
+	public static Map<String, List> unpackZombieCureGroups(String[] inputList) {
+		List<String>  zombieCureGroupGroups = new ArrayList<String>();
+		List<Double> zombieCureGroupSpeedups = new ArrayList<Double>();
+		List<Integer> zombieCureGroupLimits = new ArrayList<Integer>();
 		
 		for (String entry : inputList) {
 			// Remove parentheses
@@ -675,22 +717,22 @@ public class GeneralConfig {
 			}
 		}
 		
-		Map<String,ArrayList> map = new HashMap();
+		Map<String, List> map = new HashMap();
 		map.put("Groups",zombieCureGroupGroups);
 		map.put("Speedups",zombieCureGroupSpeedups);
 		map.put("Limits",zombieCureGroupLimits);
 		
 		return map;
 	}
-
-	// Added in v3.2
+	
+	
 	/**
 	 * Loads the (careerAsset|zombieCareerAsset|professionID) string lists and assigns them to this instance's variables.
 	 */
-	public static Map<String, ArrayList> unpackModVillagerSkins(String[] inputList) {
-		ArrayList<String>  careerAsset_a = new ArrayList<String>();
-		ArrayList<String> zombieCareerAsset_a = new ArrayList<String>();
-		ArrayList<String> professionID_a = new ArrayList<String>();
+	public static Map<String, List> unpackModVillagerSkins(String[] inputList) {
+		List<String>  careerAsset_a = new ArrayList<String>();
+		List<String> zombieCareerAsset_a = new ArrayList<String>();
+		List<String> professionID_a = new ArrayList<String>();
 		
 		for (String entry : inputList) {
 			// Remove slashes and double dots to prevent address abuse
@@ -717,7 +759,7 @@ public class GeneralConfig {
 			}
 		}
 		
-		Map<String,ArrayList> map = new HashMap();
+		Map<String, List> map = new HashMap();
 		map.put("careerAsset",careerAsset_a);
 		map.put("zombieCareerAsset",zombieCareerAsset_a);
 		map.put("professionID",professionID_a);

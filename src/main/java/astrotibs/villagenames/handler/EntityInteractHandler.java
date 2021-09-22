@@ -3,7 +3,6 @@ package astrotibs.villagenames.handler;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -183,15 +182,23 @@ public class EntityInteractHandler {
 			try{playerRep = ReputationHandler.getVNReputationForPlayer((EntityPlayerMP) player, ReputationHandler.getVillageTagPlayerIsIn((EntityPlayerMP) player), villageNearTarget);}
 			catch (Exception e) {}
 			
-			
-			// keys: "NameTypes", "Professions", "ClassPaths"
-			Map<String, ArrayList> mappedNamesAutomatic = GeneralConfig.unpackMappedNames(GeneralConfig.modNameMappingAutomatic);
-			Map<String, ArrayList> mappedNamesClickable = GeneralConfig.unpackMappedNames(GeneralConfig.modNameMappingClickable);
-			
-				
 			// Read the target's NBT data
 			NBTTagCompound compound = new NBTTagCompound();
-			target.writeEntityToNBT(compound);
+
+			// Wrapped this in a try/catch because non-standard entities (e.g. Robit, Pixelmon) cause a mysterious NPE crash
+			try
+			{
+				target.writeEntityToNBT(compound);
+			}
+			catch (Exception e)
+			{
+				if (GeneralConfig.debugMessages)
+				{
+					LogHelper.error("Error writing "+target+" to NBT:");
+					e.printStackTrace();
+				}
+			}
+			
 			targetProfession = compound.getInteger("Profession");
 			targetCareer = compound.getInteger("Career");
 			targetCareerLevel = compound.getInteger("CareerLevel");
@@ -203,8 +210,7 @@ public class EntityInteractHandler {
 					( ((EntityVillager)target).getRecipes(player) ).size() : 0;
 			
 			// Convert a non-vanilla profession into a vanilla one for the purposes of generating a hint page
-			Map<String, ArrayList> mappedProfessions = GeneralConfig.unpackMappedProfessions(GeneralConfig.modProfessionMapping);
-	    	 // If the below fails, do none
+	    	// If the below fails, do none
 
 			if (!world.isRemote
 					&& target instanceof EntityVillager)
@@ -212,7 +218,7 @@ public class EntityInteractHandler {
 		    	try {
 		    		villagerMappedProfession =  
 		    				(Integer) ((targetProfession >= 0 && targetProfession <= 4)
-		    				? targetProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(targetPName) )));
+		    				? targetProfession : ((GeneralConfig.modProfessionMapping_map.get("VanillaProfMaps")).get( GeneralConfig.modProfessionMapping_map.get("IDs").indexOf(targetPName) )));
 		    		}
 		    	catch (Exception e) {LogHelper.error("Error evaluating mod profession ID. Check your formatting!");}
 			}
@@ -341,8 +347,8 @@ public class EntityInteractHandler {
 						if (
 								(target instanceof EntityVillager && GeneralConfig.nameEntities)
 								|| (target instanceof EntityIronGolem && GeneralConfig.nameGolems && !targetPlayerCreated)
-								|| mappedNamesAutomatic.get("ClassPaths").contains(targetClassPath)
-								|| mappedNamesClickable.get("ClassPaths").contains(targetClassPath)
+								|| GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").contains(targetClassPath)
+								|| GeneralConfig.modNameMappingClickable_map.get("ClassPaths").contains(targetClassPath)
 								) {
 							// If so, you should be prevented from naming the entity.
 							event.setCanceled(true);
@@ -386,14 +392,16 @@ public class EntityInteractHandler {
 					if (
 							!world.isRemote
 							&& (
-								(target instanceof EntityTameable
-								&& ((EntityTameable)target).isTamed()
-								&& ((EntityTameable)target).isOwner(player))
-								||
-								(target instanceof EntityHorse
-								&& ((EntityHorse)target).getOwnerUniqueId()!=null
-								&& ((EntityHorse)target).getOwnerUniqueId().equals(player.getUniqueID()))
-							)
+									GeneralConfig.entitiesNameableLikePets_set.contains(target.getClass().toString().substring(6))
+									||
+									(target instanceof EntityTameable
+									&& ((EntityTameable)target).isTamed()
+									&& ((EntityTameable)target).isOwner(player))
+									||
+									(target instanceof EntityHorse
+									&& ((EntityHorse)target).getOwnerUniqueId()!=null
+									&& ((EntityHorse)target).getOwnerUniqueId().equals(player.getUniqueID()))
+								)
 							
 							&& !target.hasCustomName())
 					{
@@ -967,33 +975,30 @@ public class EntityInteractHandler {
 				     * Nibiru Villages:	NibiruVillage	villagenames_mpnv	NibiruVillages
 				     */
 					
-					// keys: "NameTypes", "StructureTypes", "StructureTitles", "DimensionNames", "BookTypes", "ClassPaths"
-					Map<String, ArrayList> mappedModStructureNames = GeneralConfig.unpackModStructures(GeneralConfig.modStructureNames);
-					
 					// What kind of name to be generated
 					
 					String nameType = "alienvillage";
-					try {nameType = (String) (mappedModStructureNames.get("NameTypes")).get( mappedModStructureNames.get("ClassPaths").indexOf(targetClassPath) );}
+					try {nameType = (String) (GeneralConfig.modStructureNames_map.get("NameTypes")).get( GeneralConfig.modStructureNames_map.get("ClassPaths").indexOf(targetClassPath) );}
 					catch (Exception e) {}
 					
 					// The name of the NBT structure file generated by the mod (e.g. "FronosVillage")
 					String structureType = "";
-					try {structureType = (String) (mappedModStructureNames.get("StructureTypes")).get( mappedModStructureNames.get("ClassPaths").indexOf(targetClassPath) );}
+					try {structureType = (String) (GeneralConfig.modStructureNames_map.get("StructureTypes")).get( GeneralConfig.modStructureNames_map.get("ClassPaths").indexOf(targetClassPath) );}
 					catch (Exception e) {structureType = "";}
 					
 					// The string name of the structure (e.g. "Fronos Village")
 					String structureTitle = "";
-					try {structureTitle = (String) (mappedModStructureNames.get("StructureTitles")).get( mappedModStructureNames.get("ClassPaths").indexOf(targetClassPath) );}
+					try {structureTitle = (String) (GeneralConfig.modStructureNames_map.get("StructureTitles")).get( GeneralConfig.modStructureNames_map.get("ClassPaths").indexOf(targetClassPath) );}
 					catch (Exception e) {}
 					
 					// The string name of the dimension the structure is in (e.g. "Fronos")
 					String dimensionName = "";
-					try {dimensionName = (String) (mappedModStructureNames.get("DimensionNames")).get( mappedModStructureNames.get("ClassPaths").indexOf(targetClassPath) );}
+					try {dimensionName = (String) (GeneralConfig.modStructureNames_map.get("DimensionNames")).get( GeneralConfig.modStructureNames_map.get("ClassPaths").indexOf(targetClassPath) );}
 					catch (Exception e) {}
 					
 					// The type of book to create: (e.g. "fronosvillage")
 					String bookType = "village";
-					try {bookType = (String) (mappedModStructureNames.get("BookTypes")).get( mappedModStructureNames.get("ClassPaths").indexOf(targetClassPath) );}
+					try {bookType = (String) (GeneralConfig.modStructureNames_map.get("BookTypes")).get( GeneralConfig.modStructureNames_map.get("ClassPaths").indexOf(targetClassPath) );}
 					catch (Exception e) {}
 					
 					// Now that the relevant info has been set, go through the motions
@@ -1217,7 +1222,7 @@ public class EntityInteractHandler {
 				String profForge = target instanceof EntityVillager ? ((EntityVillager)target).getProfessionForge().getRegistryName().toString() : "" ;
 				
 				// Entity is a custom clickable config entry.
-				if ( mappedNamesClickable.get("ClassPaths").contains(targetClassPath) ) {
+				if ( GeneralConfig.modNameMappingClickable_map.get("ClassPaths").contains(targetClassPath) ) {
 					
 					String PMTMUnloc = "Traveling Merchant";
 					String PMTMUnlocModern = "Traveling Merchant";
@@ -1251,7 +1256,7 @@ public class EntityInteractHandler {
 						String mappedNameType = "villager";
 						try {
 							// Get the index number where targetClassPath is located, and then pull the NameTypes of that same index
-							mappedNameType = (String) ((mappedNamesClickable.get("NameTypes")).get( mappedNamesClickable.get("ClassPaths").indexOf(targetClassPath) ));
+							mappedNameType = (String) ((GeneralConfig.modNameMappingClickable_map.get("NameTypes")).get( GeneralConfig.modNameMappingClickable_map.get("ClassPaths").indexOf(targetClassPath) ));
 						}
 						catch (Exception e) { // Your config file was poorly formatted
 							if(!world.isRemote) LogHelper.error("Your othermods.cfg > Clickable Names entries returned an error. Check to make sure they're formatted properly!");
@@ -1283,10 +1288,10 @@ public class EntityInteractHandler {
 					}
 				}
 				// Entity is a custom automatic config entry.
-				else if ( mappedNamesAutomatic.get("ClassPaths").contains(targetClassPath) ) {
+				else if ( GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").contains(targetClassPath) ) {
 					if ( ((customName.trim()).equals("") || customName.equals(null))
 							&&
-							!((String) ((mappedNamesAutomatic.get("AddOrRemove")).get( mappedNamesAutomatic.get("ClassPaths").indexOf(targetClassPath) ))).trim().equals("remove")
+							!((String) ((GeneralConfig.modNameMappingAutomatic_map.get("AddOrRemove")).get( GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").indexOf(targetClassPath) ))).trim().equals("remove")
 							) {
 						
 						// Generate a name type that's defined in the config entry
@@ -1294,7 +1299,7 @@ public class EntityInteractHandler {
 						String mappedNameType = "villager";
 						try {
 							// Get the index number where targetClassPath is located, and then pull the NameTypes of that same index
-							mappedNameType = (String) ((mappedNamesAutomatic.get("NameTypes")).get( mappedNamesAutomatic.get("ClassPaths").indexOf(targetClassPath) ));
+							mappedNameType = (String) ((GeneralConfig.modNameMappingAutomatic_map.get("NameTypes")).get( GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").indexOf(targetClassPath) ));
 						}
 						catch (Exception e) { // Your config file was poorly formatted
 							if(!world.isRemote) LogHelper.error("Your othermods.cfg > Automatic Names entries returned an error. Check to make sure they're formatted properly!");
