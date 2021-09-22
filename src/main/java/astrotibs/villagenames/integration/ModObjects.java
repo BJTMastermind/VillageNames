@@ -57,12 +57,12 @@ public class ModObjects {
 	public static final String TQGuardClass = "net.torocraft.toroquest.entities.EntityGuard";
 	public static final String TQSentryClass = "net.torocraft.toroquest.entities.EntitySentry";
 	public static final String TQVillageLordClass = "net.torocraft.toroquest.entities.EntityVillageLord";
+
+	public static final String AM_DraftHorse_Stallion_classpath = "com.animania.common.entities.horses.EntityStallionDraftHorse";
+	public static final String AM_DraftHorse_Mare_classpath = "com.animania.common.entities.horses.EntityMareDraftHorse";
+	public static final String AM_DraftHorse_Foal_classpath = "com.animania.common.entities.horses.EntityFoalDraftHorse";
 	
-	public static final String AM_DraftHorse_Stallion = "com.animania.common.entities.horses.EntityStallionDraftHorse";
-	public static final String AM_DraftHorse_Mare = "com.animania.common.entities.horses.EntityMareDraftHorse";
-	public static final String AM_DraftHorse_Foal = "com.animania.common.entities.horses.EntityFoalDraftHorse";
 	
- 	
 	
 	// --------------------------------------------- //
 	// --- Blocks and items reference for trades --- //
@@ -252,7 +252,7 @@ public class ModObjects {
 	// --- Animania animals --- //
 	// ------------------------ //
 	
-	// --- Chicken --- //
+	// --- Chicken --- // - There seems to be no summon namespace for these in 1.11?
 	// Male
 	// Female
 	// Baby
@@ -297,11 +297,11 @@ public class ModObjects {
 	public static final String kid_nigerian_dwarf = DOM_ANIMANIA + ":kid_nigerian_dwarf";
 	public static final String kid_pygmy = DOM_ANIMANIA + ":kid_pygmy";
 	
-	// --- Horse --- //
+	// --- Horse --- // - There seems to be no summon namespace for these in 1.11?
 	// Male
 	// Female
 	// Baby
-	
+		
 	// --- Pig --- //
 	// Male
 	// Female
@@ -330,7 +330,6 @@ public class ModObjects {
 	public static final String lamb_merino = DOM_ANIMANIA + ":lamb_merino";
 	public static final String lamb_suffolk = DOM_ANIMANIA + ":lamb_suffolk";
 	
-	
 	public static final String[] animania_goat = new String[]{
 		buck_fainting, buck_kiko, buck_kinder, buck_nigerian_dwarf, buck_pygmy,
 		doe_fainting, doe_kiko, doe_kinder, doe_nigerian_dwarf, doe_pygmy,
@@ -341,6 +340,11 @@ public class ModObjects {
 		ewe_dorper, ewe_dorset, ewe_friesian, ewe_jacob, ewe_merino, ewe_suffolk,
 		//lamb_dorper, lamb_dorset, lamb_friesian, lamb_jacob, lamb_merino, lamb_suffolk,
 	};
+	public static final String[] animania_cow = new String[]{
+			bull_highland, bull_jersey, 
+			cow_highland, cow_jersey, 
+			//calf_angus, calf_friesian, calf_hereford, calf_highland, calf_holstein, calf_jersey, calf_longhorn, 
+		};
 	public static final String[] animania_mooshroom = new String[]{
 		bull_mooshroom,
 		cow_mooshroom,

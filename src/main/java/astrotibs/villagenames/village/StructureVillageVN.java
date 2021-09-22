@@ -2407,8 +2407,11 @@ public class StructureVillageVN
 				// Nothing. Animania doesn't have horses in 1.11.
 			}
 			
-			// Add vanilla horses regardless
-			for (int i=0; i<horseWeight; i++) {arraylist_temp_animal.add(new EntityHorse(world));}
+			if (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<1)
+        	{
+				// Add vanilla horses regardless
+				for (int i=0; i<horseWeight; i++) {arraylist_temp_animal.add(new EntityHorse(world));}
+        	}
 		}
 		// Dump temp animals into main animal array
 		for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
@@ -2429,7 +2432,7 @@ public class StructureVillageVN
 				}
 			}
 			
-			if (arraylist_temp_animal.isEmpty()) {for (int i=0; i<sheepWeight; i++) {arraylist_temp_animal.add(new EntitySheep(world));}} 
+			if (arraylist_temp_animal.isEmpty() && VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<1) {for (int i=0; i<sheepWeight; i++) {arraylist_temp_animal.add(new EntitySheep(world));}} 
 		}
 		// Dump temp animals into main animal array
 		for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
@@ -2468,7 +2471,7 @@ public class StructureVillageVN
 			{
 				// Nothing. Animania doesn't have pigs in 1.11.
 			}
-			if (arraylist_temp_animal.isEmpty()) {for (int i=0; i<1; i++) {arraylist_animal.add(new EntityPig(world));}} 
+			if (arraylist_temp_animal.isEmpty() && VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<1) {for (int i=0; i<1; i++) {arraylist_animal.add(new EntityPig(world));}} 
 			// Dump temp animals into main animal array
 			for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
 			
@@ -2478,7 +2481,7 @@ public class StructureVillageVN
 			{
 				if (mooshroomsInsteadOfCows)
 				{
-					for (String animal_namespace : ModObjects.animania_mooshroom)
+					for (String animal_namespace : mooshroomsInsteadOfCows ? ModObjects.animania_mooshroom:ModObjects.animania_cow)
 					{
 						EntityLiving testEntity = null;
 						
@@ -2489,7 +2492,7 @@ public class StructureVillageVN
 					}
 				}
 			}
-			if (arraylist_temp_animal.isEmpty()) {for (int i=0; i<1; i++) {arraylist_temp_animal.add(mooshroomsInsteadOfCows ? new EntityMooshroom(world) : new EntityCow(world));}}
+			if (arraylist_temp_animal.isEmpty() && VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<1) {for (int i=0; i<1; i++) {arraylist_temp_animal.add(mooshroomsInsteadOfCows ? new EntityMooshroom(world) : new EntityCow(world));}}
 			
 			// Dump temp animals into main animal array
 			for (EntityLiving transfer_animal : arraylist_temp_animal) {arraylist_animal.add(transfer_animal);}
