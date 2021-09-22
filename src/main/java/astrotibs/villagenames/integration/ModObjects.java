@@ -80,9 +80,9 @@ public class ModObjects {
 	public static final String TQSentryClass = "net.torocraft.toroquest.entities.EntitySentry";
 	public static final String TQVillageLordClass = "net.torocraft.toroquest.entities.EntityVillageLord";
 	
-	public static final String AM_DraftHorse_Stallion = "com.animania.addons.farm.common.entity.horses.HorseDraft$EntityStallionDraftHorse";
-	public static final String AM_DraftHorse_Mare = "com.animania.addons.farm.common.entity.horses.HorseDraft$EntityMareDraftHorse";
-	public static final String AM_DraftHorse_Foal = "com.animania.addons.farm.common.entity.horses.HorseDraft$EntityFoalDraftHorse";
+	public static final String AM_DraftHorse_Stallion_classpath = "com.animania.addons.farm.common.entity.horses.HorseDraft$EntityStallionDraftHorse";
+	public static final String AM_DraftHorse_Mare_classpath = "com.animania.addons.farm.common.entity.horses.HorseDraft$EntityMareDraftHorse";
+	public static final String AM_DraftHorse_Foal_classpath = "com.animania.addons.farm.common.entity.horses.HorseDraft$EntityFoalDraftHorse";
 	
 	
  	

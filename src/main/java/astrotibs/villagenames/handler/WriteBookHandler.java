@@ -3,7 +3,6 @@ package astrotibs.villagenames.handler;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -310,7 +309,7 @@ public class WriteBookHandler {
         double dy;
         double dz;
         
-        // v3.2.1 - Initialize these as empty and assign values later as needed. Results in improved performance, especially with Open Terrain Generator.
+        // Initialize these as empty and assign values later as needed. Results in improved performance, especially with Open Terrain Generator.
     	int[] nearestMineshaftXYZ = new int[3];
     	int[] nearestStrongholdXYZ = new int[3];
     	int[] nearestTempleXYZ = new int[3];
@@ -318,14 +317,10 @@ public class WriteBookHandler {
     	int[] nearestMonumentXYZ = new int[3];
     	int[] nearestMansionXYZ = new int[3];
 
-    	// v3.2
 		final String profForge = event.getTarget() instanceof EntityVillager ? ((EntityVillager)event.getTarget()).getProfessionForge().getRegistryName().toString() : "" ;
     	
     	List vlist = event.getEntityPlayer().world.getVillageCollection().getVillageList();
 
-    	// keys: "Professions", "IDs", "VanillaProfMaps"
-    	Map<String, ArrayList> mappedProfessions = GeneralConfig.unpackMappedProfessions(GeneralConfig.modProfessionMapping);
-    	
     	// Go through list of villages and pick out the closest one that's not this one.
     	double vmaxr = Double.MAX_VALUE;
     	int radius = villageNearVillager.getVillageRadius();
@@ -440,7 +435,7 @@ public class WriteBookHandler {
     	try {
     		villagerMappedProfession =  
     				(Integer) ((villagerProfession >= 0 && villagerProfession <= 5)
-    				? villagerProfession : ((mappedProfessions.get("VanillaProfMaps")).get( mappedProfessions.get("IDs").indexOf(profForge) ))); // Changed in v3.2
+    				? villagerProfession : ((GeneralConfig.modProfessionMapping_map.get("VanillaProfMaps")).get( GeneralConfig.modProfessionMapping_map.get("IDs").indexOf(profForge) ))); // Changed in v3.2
     		}
     	catch (Exception e) {
     		if(!event.getEntityLiving().world.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");

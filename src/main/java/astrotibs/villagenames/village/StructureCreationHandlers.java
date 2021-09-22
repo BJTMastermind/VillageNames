@@ -281,7 +281,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(PlainsAnimalPen1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -305,7 +306,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(PlainsAnimalPen2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -329,7 +331,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(PlainsAnimalPen3.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -401,7 +404,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(PlainsButcherShop1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -425,7 +429,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(PlainsButcherShop2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -713,7 +718,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(PlainsShepherdsHouse1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -953,7 +959,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(PlainsStable1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -977,7 +984,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(PlainsStable2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -1145,7 +1153,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(DesertAnimalPen1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -1169,7 +1178,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(DesertAnimalPen2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -1217,7 +1227,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(DesertButcherShop1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -1481,7 +1492,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(DesertShepherdHouse1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -1913,7 +1925,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(TaigaAnimalPen1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -1985,7 +1998,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(TaigaButcherShop1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -2273,7 +2287,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(TaigaShepherdsHouse1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -2585,7 +2600,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SavannaAnimalPen1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -2609,7 +2625,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SavannaAnimalPen2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -2633,7 +2650,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SavannaAnimalPen3.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -2681,7 +2699,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SavannaButchersShop1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -2697,7 +2716,7 @@ public class StructureCreationHandlers
 	    }
 	}
 	
-	// Savanna Butcher Shop 3
+	// Savanna Butcher Shop 2
 	public static class SavannaButchersShop2_Handler implements IVillageCreationHandler
 	{
 		ArrayList<Double> ali = VillageGeneratorConfigHandler.componentModernSavannaButchersShop2_vals;
@@ -2705,7 +2724,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SavannaButchersShop2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -2945,7 +2965,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SavannaShepherd1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -3345,7 +3366,7 @@ public class StructureCreationHandlers
 	    }
 	}
 	
-	// Desert Roadside Farm 1
+	// Savanna Roadside Farm 1
 	public static class SavannaStreetSubstitute1_Handler implements IVillageCreationHandler
 	{
 		ArrayList<Double> ali = VillageGeneratorConfigHandler.componentModernSavannaStreetSubstitute1_vals;
@@ -3369,7 +3390,7 @@ public class StructureCreationHandlers
 	    }
 	}
 	
-	// Desert Roadside Farm 2
+	// Savanna Roadside Farm 2
 	public static class SavannaStreetSubstitute2_Handler implements IVillageCreationHandler
 	{
 		ArrayList<Double> ali = VillageGeneratorConfigHandler.componentModernSavannaStreetSubstitute2_vals;
@@ -3393,7 +3414,7 @@ public class StructureCreationHandlers
 	    }
 	}
 	
-	// Desert Roadside Farm 3
+	// Savanna Roadside Farm 3
 	public static class SavannaStreetSubstitute3_Handler implements IVillageCreationHandler
 	{
 		ArrayList<Double> ali = VillageGeneratorConfigHandler.componentModernSavannaStreetSubstitute3_vals;
@@ -3417,7 +3438,7 @@ public class StructureCreationHandlers
 	    }
 	}
 	
-	// Desert Roadside Farm 4
+	// Savanna Roadside Farm 4
 	public static class SavannaStreetSubstitute4_Handler implements IVillageCreationHandler
 	{
 		ArrayList<Double> ali = VillageGeneratorConfigHandler.componentModernSavannaStreetSubstitute4_vals;
@@ -3449,7 +3470,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SnowyAnimalPen1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -3473,7 +3495,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SnowyAnimalPen2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -3545,7 +3568,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SnowyButchersShop1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -3569,7 +3593,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SnowyButchersShop2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -3857,7 +3882,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SnowyShepherdsHouse1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -4217,7 +4243,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(JungleButcherShop.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -4745,7 +4772,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(JungleStable.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -4793,7 +4821,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(JungleStoneAnimalPen.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -5009,7 +5038,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(JungleWoodAnimalPen.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -5105,7 +5135,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SwampAnimalPen1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -5129,7 +5160,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SwampAnimalPen2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -5177,7 +5209,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SwampButcherShop.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -5465,7 +5498,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SwampShepherdHouse1.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -5489,7 +5523,8 @@ public class StructureCreationHandlers
 	    @Override
 	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
 	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
 	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
 	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
 	    	return new PieceWeight(SwampShepherdHouse2.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
@@ -5502,30 +5537,6 @@ public class StructureCreationHandlers
 	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
 	    	if (startPiece instanceof StartVN) {return SwampShepherdHouse2.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
-	    }
-	}
-	
-	// Swamp Stable
-	public static class SwampStable_Handler implements IVillageCreationHandler
-	{
-		ArrayList<Double> ali = VillageGeneratorConfigHandler.componentModernSwampStable_vals;
-		
-	    @Override
-	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
-	    {
-	    	double weightDouble = ali.get(0); int weightStochastic = MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0);
-	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
-	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
-	    	return new PieceWeight(SwampStable.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
-	    }
-	    
-	    @Override
-	    public Class<?> getComponentClass() {return SwampStable.class;}
-	    
-	    @Override
-	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
-	    {
-	    	if (startPiece instanceof StartVN) {return SwampStable.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
@@ -5646,6 +5657,31 @@ public class StructureCreationHandlers
 	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
 	    {
 	    	if (startPiece instanceof StartVN) {return SwampSmallHouse5.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
+	    }
+	}
+	
+	// Swamp Stable
+	public static class SwampStable_Handler implements IVillageCreationHandler
+	{
+		ArrayList<Double> ali = VillageGeneratorConfigHandler.componentModernSwampStable_vals;
+		
+	    @Override
+	    public PieceWeight getVillagePieceWeight(Random random, int villageSize)
+	    {
+	    	// This component spawns animals, so it might be switched off
+	    	double weightDouble = ali.get(0); int weightStochastic = (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<3) ? MathHelper.floor(weightDouble) + (random.nextDouble()<(weightDouble%1) ? 1:0) : 0;
+	    	double lowerLimitDouble = villageSize * ali.get(1) + ali.get(2); int lowerLimitStochastic = MathHelper.floor(lowerLimitDouble) + (random.nextDouble()<(lowerLimitDouble%1) ? 1:0);
+	    	double upperLimitDouble = villageSize * ali.get(3) + ali.get(4); int upperLimitStochastic = MathHelper.floor(upperLimitDouble) + (random.nextDouble()<(upperLimitDouble%1) ? 1:0);
+	    	return new PieceWeight(SwampStable.class, weightStochastic, MathHelper.getInt(random, lowerLimitStochastic, upperLimitStochastic));
+	    }
+	    
+	    @Override
+	    public Class<?> getComponentClass() {return SwampStable.class;}
+	    
+	    @Override
+	    public Village buildComponent(PieceWeight villagePiece, Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
+	    {
+	    	if (startPiece instanceof StartVN) {return SwampStable.buildComponent((StartVN)startPiece, pieces, random, x, y, z, coordBaseMode, componentType);} return null;
 	    }
 	}
 	
