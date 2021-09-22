@@ -70,6 +70,10 @@ public class ModObjects {
 	public static final String TQGuardClass = "net.torocraft.toroquest.entities.EntityGuard";
 	public static final String TQSentryClass = "net.torocraft.toroquest.entities.EntitySentry";
 	public static final String TQVillageLordClass = "net.torocraft.toroquest.entities.EntityVillageLord";
+
+	public static final String AM_DraftHorse_Stallion_classpath = "com.animania.entities.horses.EntityStallionDraftHorse";
+	public static final String AM_DraftHorse_Mare_classpath = "com.animania.entities.horses.EntityMareDraftHorse";
+	public static final String AM_DraftHorse_Foal_classpath = "com.animania.entities.horses.EntityFoalDraftHorse";
 	
 	
  	
@@ -425,6 +429,8 @@ public class ModObjects {
 		BullAngus, BullFriesian, BullHereford, BullHolstein, BullLonghorn, 
 		CowAngus, CowFriesian, CowHereford, CowHolstein, CowLonghorn, 
 		//CalfAngus, CalfFriesian, CalfHereford, CalfHolstein, CalfLonghorn, 
+	};
+	public static final String[] animania_mooshroom = new String[]{
 	};
 	public static final String[] animania_horse = new String[]{
 		StallionDraftHorse, 
