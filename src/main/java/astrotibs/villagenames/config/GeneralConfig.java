@@ -737,7 +737,7 @@ public class GeneralConfig {
 	public static Map<String, List> unpackModVillagerSkins(String[] inputList) {
 		List<String>  careerAsset_a = new ArrayList<String>();
 		List<String> zombieCareerAsset_a = new ArrayList<String>();
-		List<String> professionID_a = new ArrayList<String>();
+		List<Integer> professionID_a = new ArrayList<Integer>();
 		
 		for (String entry : inputList) {
 			// Remove slashes and double dots to prevent address abuse
@@ -750,12 +750,12 @@ public class GeneralConfig {
 			// Initialize temp fields
 			String careerAsset="";
 			String zombieCareerAsset="";
-			String professionID="";
+			Integer professionID=-1;
 			
 			// Place entries into variables
-			try {careerAsset = splitEntry[0].trim();}       catch (Exception e) {}
-			try {zombieCareerAsset = splitEntry[1].trim();} catch (Exception e) {}
-			try {professionID = splitEntry[2].trim();}     	catch (Exception e) {}
+			try {careerAsset = splitEntry[0].trim();}       			catch (Exception e) {}
+			try {zombieCareerAsset = splitEntry[1].trim();} 			catch (Exception e) {}
+			try {professionID = Integer.valueOf(splitEntry[2].trim());}	catch (Exception e) {}
 			
 			if(!careerAsset.equals("")) { // Something was actually assigned in the try block
 				careerAsset_a.add(careerAsset);

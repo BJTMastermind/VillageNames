@@ -91,8 +91,6 @@ public class ModelZombieVillagerModern extends ModelBiped
     @Override
     public void render(Entity entityIn, float p_78088_2_, float p_78088_3_, float p_78088_4_, float p_78088_5_, float p_78088_6_, float scale)
     {
-    	//super.render(entityIn, p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, scale);
-    	
         this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, scale, entityIn);
         GlStateManager.pushMatrix();
 
@@ -103,7 +101,6 @@ public class ModelZombieVillagerModern extends ModelBiped
             GlStateManager.translate(0.0F, 16.0F * scale, 0.0F);
             this.bipedHead.render(scale);
             
-            // Added in v3.2
             final ExtendedZombieVillager ezv = ExtendedZombieVillager.get(((EntityZombie)entityIn));
 			int prof = ezv.getProfession();
             if (
