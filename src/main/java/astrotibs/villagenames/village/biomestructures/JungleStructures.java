@@ -3751,9 +3751,7 @@ public class JungleStructures
 	        					if (testEntity != null) {for (int i=0; i<1; i++) {arraylist_animal.add((EntityLiving) testEntity);}}
 	        				}
 	        			}
-	        			if (arraylist_animal.isEmpty() && VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<1) {arraylist_animal.add(new EntityPig(world));} 
-	        			// Dump temp animals into main animal array
-	        			for (EntityLiving transfer_animal : arraylist_animal) {arraylist_animal.add(transfer_animal);}
+	        			if (arraylist_animal.isEmpty() && VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<1) {arraylist_animal.add(new EntityPig(world));}
 	        			
 	        			// Pick a random animal from the list
 	        			if (!arraylist_animal.isEmpty())
