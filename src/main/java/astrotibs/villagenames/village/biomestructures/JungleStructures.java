@@ -3752,9 +3752,7 @@ public class JungleStructures
 	        				}
 	        			}
 	        			if (arraylist_animal.isEmpty() && VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<1) {arraylist_animal.add(new EntityPig(world));}
-	        			// Dump temp animals into main animal array
-	        			for (EntityLiving transfer_animal : arraylist_animal) {arraylist_animal.add(transfer_animal);}
-
+	        			
 	        			// Pick a random animal from the list
 	        			if (!arraylist_animal.isEmpty())
 	        			{
