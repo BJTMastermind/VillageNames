@@ -3981,7 +3981,7 @@ public class PlainsStructures
             this.fillWithBlocks(world, structureBB, 5, 6, 8, 5, 7, 8, Blocks.COBBLESTONE_WALL.getStateFromMeta(0), Blocks.COBBLESTONE_WALL.getStateFromMeta(0), false);
             
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
             	{2,1,3},  
         		})
@@ -4953,7 +4953,7 @@ public class PlainsStructures
             // --- Interior --- //
             
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
     			{2,1,3},
         		})
@@ -8213,7 +8213,7 @@ public class PlainsStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
     			{6,2,2},
     			{8,2,6},
@@ -8743,7 +8743,7 @@ public class PlainsStructures
             
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
     			{3,1,4},
         		})
@@ -17308,7 +17308,7 @@ public class PlainsStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
     			{7,1,5},
         		})

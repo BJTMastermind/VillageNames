@@ -6490,7 +6490,7 @@ public class TaigaStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{4,6,3}, 
         		})
@@ -8657,7 +8657,7 @@ public class TaigaStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{8,2,3}, 
         		{8,2,4}, 

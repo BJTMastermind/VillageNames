@@ -5730,7 +5730,7 @@ public class SavannaStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{2,1,5}, 
         		{8,1,5}, 
@@ -7638,7 +7638,7 @@ public class SavannaStructures
             
             
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{3,1,2}, 
         		{6,1,2}, 
@@ -10101,7 +10101,7 @@ public class SavannaStructures
             
             
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{2,1,4}, 
         		})
@@ -11949,7 +11949,7 @@ public class SavannaStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{4,1,4}, 
         		})
@@ -16223,7 +16223,7 @@ public class SavannaStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{9,2,6}, 
         		})

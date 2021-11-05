@@ -3135,7 +3135,7 @@ public class SwampStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{7,1,6}, 
         		})
@@ -9659,7 +9659,7 @@ public class SwampStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{7,2,2}, 
         		})
@@ -10223,7 +10223,7 @@ public class SwampStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{6,2,6}, 
         		})
@@ -13283,7 +13283,7 @@ public class SwampStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.PLANKS.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.PLANKS ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{3,3,4}, 
         		})
