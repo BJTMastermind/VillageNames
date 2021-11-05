@@ -2185,7 +2185,7 @@ public class JungleStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.planks.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.planks ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{13,5,12}, 
         		{13,5,6}, 
@@ -3552,7 +3552,7 @@ public class JungleStructures
             
             
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.planks.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.planks ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{2,5,5}, 
         		})
@@ -5709,7 +5709,7 @@ public class JungleStructures
     		
     		
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.planks.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.planks ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{5,1,7}, 
         		})
@@ -8115,7 +8115,7 @@ public class JungleStructures
     		
     		IBlockState biomePlankState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.planks.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.planks.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.planks ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{3,2,9}, 
         		})
@@ -9212,7 +9212,7 @@ public class JungleStructures
             
             
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.planks.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.planks ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{2,2,4}, 
         		{10,2,4}, 
@@ -11512,7 +11512,7 @@ public class JungleStructures
         	
         	
             // Table
-            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(Blocks.planks.getMetaFromState(biomePlankState));
+            IBlockState[] tableComponentBlockstates = ModObjects.chooseModWoodenTable(biomePlankState.getBlock()==Blocks.planks ? biomePlankState.getBlock().getMetaFromState(biomePlankState) : 0);
         	for (int[] uuvvww : new int[][]{
         		{10,1,7}, 
         		})
