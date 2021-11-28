@@ -14,19 +14,15 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-/*
-// for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
-plugins {
-    id "net.minecraftforge.gradle.forge" version "2.0.2"
-}
-*/
-version = "DEV"
-group= "astrotibs.villagenames" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = file('CURRENT_VERSION').text.trim()
+group= "astrotibs.villagenames"
 archivesBaseName = "VillageNames-1.9.4"
 
 minecraft {
     version = "1.9.4-12.17.0.1976"
     runDir = "run"
+	replaceIn 'src/main/java/astrotibs/villagenames/utility/Reference.java'
+	replace '@VERSION@', project.version
     
     // the mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   snapshot are built nightly.
