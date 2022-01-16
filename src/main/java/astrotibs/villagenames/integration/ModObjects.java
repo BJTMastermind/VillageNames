@@ -139,6 +139,9 @@ public class ModObjects {
 	public static final String dyeWhiteBOP = DOM_BIOMESOPLENTY + ":white_dye";
 	public static final String dyeBlackBOP = DOM_BIOMESOPLENTY + ":black_dye";
 	
+	// Iron Nuggets
+	public static final String nuggetTC = "thaumcraft:nugget";
+	
 	// Kelp and Kelp Accessories
 	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
 	
@@ -447,12 +450,13 @@ public class ModObjects {
 	
 	
 	// Iron Nugget
-	// TODO - added in 1.11
 	public static ItemStack chooseModIronNugget()
 	{
-		// TODO - Railcraft available in 1.10
-		// TODO - Thermal Foundation available in 1.10
-		// TODO - Tinkers Construct available in 1.8
+		Item moditem=null;
+		
+		moditem = FunctionsVN.getItemFromName(ModObjects.nuggetTC);
+		if (moditem != null) {return new ItemStack(moditem, 1);}
+		
 		return null;
 	}
 	

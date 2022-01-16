@@ -1071,8 +1071,9 @@ public class StructureVillageVN
     		Block surfaceBlock = world.getBlockState(pos).getBlock();
     		
     		// Replace grass with grass path
-    		
-    		if ((surfaceBlock instanceof BlockGrass || surfaceBlock instanceof BlockDirt) && world.isAirBlock(new BlockPos(posX, surfaceY, posZ).up()))
+    		if ((surfaceBlock instanceof BlockGrass || surfaceBlock instanceof BlockDirt
+    				|| (surfaceBlock.getMaterial() == Material.grass && surfaceBlock.isBlockNormalCube()))
+    				&& world.isAirBlock(new BlockPos(posX, surfaceY, posZ).up()))
     		{
     	    	IBlockState grassPath = getBiomeSpecificBlockState(ModObjects.chooseModPathState(), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, grassPath, 2);

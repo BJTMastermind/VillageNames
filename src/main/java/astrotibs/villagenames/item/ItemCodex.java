@@ -2,6 +2,7 @@ package astrotibs.villagenames.item;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import astrotibs.villagenames.VillageNames;
@@ -14,6 +15,7 @@ import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.nbt.VNWorldDataStructure;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.Reference;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -30,6 +32,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.structure.MapGenStructureData;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCodex extends Item {
 	
@@ -54,6 +58,16 @@ public class ItemCodex extends Item {
     protected String getUnwrappedUnlocalizedName(String unlocalizedName)
     {
         return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    {
+    	super.addInformation(stack, playerIn, tooltip, advanced);
+        tooltip.add(I18n.format("itemtooltip.codex.1a"));
+        tooltip.add(I18n.format("itemtooltip.codex.1b"));
+        tooltip.add(I18n.format("itemtooltip.codex.2a"));
+        tooltip.add(I18n.format("itemtooltip.codex.2b"));
     }
     
     /**

@@ -496,7 +496,7 @@ public class GeneralConfig {
 	 */
 	public static Map<String, List> unpackMappedProfessions(String[] inputList) {
 		List<String>  otherModProfessions = new ArrayList<String>();
-		List<String> otherModIDs = new ArrayList<String>();
+		List<Integer> otherModIDs = new ArrayList<Integer>();
 		List<Integer> vanillaProfMaps = new ArrayList<Integer>();
 		
 		for (String entry : inputList) {
@@ -508,15 +508,15 @@ public class GeneralConfig {
 			
 			// Initialize temp fields
 			String otherModProfession="";
-			String otherModID="";
+			int otherModID=-1;
 			int vanillaProfMap=-1;
 			
 			// Place entries into variables
 			try {otherModProfession = splitEntry[0].trim();}               catch (Exception e) {otherModProfession="";}
-			try {otherModID = splitEntry[1].trim();}                       catch (Exception e) {otherModID="";}
+			try {otherModID = Integer.parseInt(splitEntry[1].trim());}                       catch (Exception e) {otherModID=-1;}
 			try {vanillaProfMap = Integer.parseInt(splitEntry[2].trim());} catch (Exception e) {vanillaProfMap=-1;}
 			
-			if( !otherModProfession.equals("") && !otherModID.equals("") ) {
+			if( !otherModProfession.equals("") && otherModID!=-1 ) {
 				otherModProfessions.add(otherModProfession);
 				otherModIDs.add(otherModID);
 				vanillaProfMaps.add(vanillaProfMap);
