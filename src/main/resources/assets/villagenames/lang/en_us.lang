@@ -20,6 +20,10 @@ item.villagenames:fronosvillagebook.name=Fronos Village Book
 item.villagenames:nibiruvillagebook.name=Nibiru Village Book
 item.villagenames:abandonedbasebook.name=Abandoned Base Book
 
+# Item tooltips
+itemtooltip.codex.1=Right-click when inside of a structure to discover its name.
+itemtooltip.codex.2=You must also have a blank book for recording the name.
+
 
 # Custom Blocks
 tile.villagenames:lunaringoldbrick.name=Lunarin Style Gold Brick

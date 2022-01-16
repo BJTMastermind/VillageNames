@@ -287,6 +287,9 @@ public class ModObjects {
 	public static final String flowerCornflowerFV = DOM_FUTUREVERSIONS + ":cornflower";
 	public static final String flowerLilyOfTheValleyFV = DOM_FUTUREVERSIONS + ":lilyofthevalley";
 	
+	// Grass
+	public static final String grass_BOP = DOM_BIOMESOPLENTY + ":grass"; // 2: Loamy Grass
+	
 	// Grindstone
 	public static final String grindstoneFMC = DOM_FUTUREMC + ":grindstone";
 	public static final String grindstoneFV = DOM_FUTUREVERSIONS + ":grindstone";
@@ -302,6 +305,9 @@ public class ModObjects {
 	
 	// Lectern
 	public static final String lecternFV = DOM_FUTUREVERSIONS + ":lectern";
+	
+	// Loamy Grass Path
+	public static final String loamyGrassPath_BoP = DOM_BIOMESOPLENTY + ":grass_path";
 	
 	// Loom
 	public static final String loomFMC = DOM_FUTUREMC + ":loom";
@@ -1801,7 +1807,7 @@ public class ModObjects {
 			else if (mod.toLowerCase().trim().equals("futuremc"))
 			{
 				modblock = Block.getBlockFromName(ModObjects.lanternFMC);
-				if (modblock != null) {return modblock.getStateFromMeta(isHanging? 0:1);}
+				if (modblock != null) {return modblock.getStateFromMeta(isHanging? 1:0);}
 			}
 			else if (mod.toLowerCase().trim().equals("futureversions"))
 			{
