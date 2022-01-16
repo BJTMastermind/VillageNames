@@ -261,7 +261,7 @@ public class EntityInteractHandler {
 					LogHelper.info(
 							  (GeneralConfig.modernVillagerSkins ? "Zombie Profession: " + (zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getProfession()
 									: "") 
-							+ ", ProfessionForge: " + zombie.getVillagerTypeForge().getRegistryName().toString()
+//							+ ", ProfessionForge: " + zombie.getVillagerTypeForge().getRegistryName().toString()
 							+ ", Career: " + (zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getCareer()
 							+ (GeneralConfig.modernVillagerSkins ? ", BiomeType: " + (zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getBiomeType()
 									: "")

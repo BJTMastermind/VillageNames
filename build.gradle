@@ -19,7 +19,7 @@ group= "astrotibs.villagenames"
 archivesBaseName = "VillageNames-1.9.4"
 
 minecraft {
-    version = "1.9.4-12.17.0.1976"
+    version = "1.9.4-12.17.0.2317-1.9.4"
     runDir = "run"
 	replaceIn 'src/main/java/astrotibs/villagenames/utility/Reference.java'
 	replace '@VERSION@', project.version

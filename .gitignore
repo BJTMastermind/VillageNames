@@ -19,16 +19,16 @@ build
 gradle*
 
 # forge
-CREDITS-fml.txt
-LICENSE-fml.txt
 MinecraftForge-Credits.txt
 MinecraftForge-License.txt
 forge-*
+CREDITS-fml.txt
+LICENSE-fml.txt
+README.txt
 
 # other
 eclipse
 run
 Paulscode*
-README.txt
 /api
 .gitignore

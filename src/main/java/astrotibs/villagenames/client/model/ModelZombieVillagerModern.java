@@ -7,7 +7,6 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -104,7 +103,7 @@ public class ModelZombieVillagerModern extends ModelBiped
         
         final IModularSkin ims = entityIn.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
 		int prof = ims.getProfession();
-		String profForge = ((EntityZombie)entityIn).getVillagerTypeForge().getRegistryName().toString();
+//		String profForge = ((EntityZombie)entityIn).getVillagerTypeForge().getRegistryName().toString();
 		
         if (this.isChild)
         {
@@ -114,8 +113,8 @@ public class ModelZombieVillagerModern extends ModelBiped
             this.bipedHead.render(scale);
             
             if (
-            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(profForge)
-            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(profForge) || !GeneralConfig.moddedVillagerHeadwear))
+            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(prof)
+            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(prof) || !GeneralConfig.moddedVillagerHeadwear))
             		)
             {
             	this.bipedHeadwear.render(scale);
@@ -147,8 +146,8 @@ public class ModelZombieVillagerModern extends ModelBiped
             
             // Added in v3.2
 			if (
-            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(profForge)
-            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(profForge) || !GeneralConfig.moddedVillagerHeadwear))
+            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(prof)
+            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(prof) || !GeneralConfig.moddedVillagerHeadwear))
             		)
             {
             	this.bipedHeadwear.render(scale);

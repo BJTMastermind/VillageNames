@@ -154,7 +154,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
     	{
     		// v3.2 - allow for modular mod villager skins
     		IModularSkin ims = zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
-    		int indexofmodprof = GeneralConfig.professionID_a.indexOf(zombie.getVillagerTypeForge().getRegistryName().toString());
+    		int indexofmodprof = GeneralConfig.professionID_a.indexOf(ims.getProfession());
     		
     		if (
     				GeneralConfig.modernVillagerSkins
@@ -251,7 +251,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 			if (
 					ims.getProfession() >= 0
 					// v3.2: Is vanilla OR is a modular type
-					&& (ims.getProfession() <= 4 || GeneralConfig.professionID_a.indexOf(zombie.getVillagerTypeForge().getRegistryName().toString())!=-1)
+					&& (ims.getProfession() <= 4 || GeneralConfig.professionID_a.indexOf(ims.getProfession())!=-1)
 					&& !zombie.isInvisible()
 					)
 			{
@@ -398,7 +398,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 				else
 				{
 					// Mod profession skins
-					int indexofmodprof = GeneralConfig.professionID_a.indexOf(zombie.getVillagerTypeForge().getRegistryName().toString());
+					int indexofmodprof = GeneralConfig.professionID_a.indexOf(ims.getProfession());
 					if (indexofmodprof > -1) // Has a skin asset mapping
 					{
 						final String zombieCareerProfRootname = (String) GeneralConfig.zombieCareerAsset_a.get(indexofmodprof);

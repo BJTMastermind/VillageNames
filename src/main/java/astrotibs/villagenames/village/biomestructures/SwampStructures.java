@@ -54,7 +54,6 @@ import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 public class SwampStructures
 {
@@ -6771,7 +6770,7 @@ public class SwampStructures
                 		(double)z + 0.5D,
                 		random.nextFloat()*360, 0.0F);
                 zombie.enablePersistence();
-                VillagerRegistry.setRandomProfession(zombie, random);
+                zombie.setVillagerType(random.nextInt(5)); // VillagerRegistry.setRandomProfession(zombie, random); doesn't work anymore for 1.9??
                 
                 if (GeneralConfig.nameEntities)
             	{
