@@ -171,9 +171,15 @@ public class ModObjects {
 	public static final String dyeGreenBOP = DOM_BIOMESOPLENTY + ":green_dye";
 	public static final String dyeWhiteBOP = DOM_BIOMESOPLENTY + ":white_dye";
 	public static final String dyeBlackBOP = DOM_BIOMESOPLENTY + ":black_dye";
+
+	// Grass
+	public static final String grass_BOP = DOM_BIOMESOPLENTY + ":grass"; // 2: Loamy Grass
 	
 	// Kelp and Kelp Accessories
 	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
+
+	// Loamy Grass Path
+	public static final String loamyGrassPath_BoP = DOM_BIOMESOPLENTY + ":grass_path";
 	
 	// Mossy Stone
 	public static final String mossyCobblestoneStairsVBE = DOM_VANILLABUILDERSEXTENSION + ":stairsstonemoss";
