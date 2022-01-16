@@ -192,11 +192,18 @@ public class ModObjects {
 	public static final String dyeWhiteBOP = DOM_BIOMESOPLENTY + ":white_dye";
 	public static final String dyeBlackBOP = DOM_BIOMESOPLENTY + ":black_dye";
 
+	// Grass
+	public static final String grass_BOP = DOM_BIOMESOPLENTY + ":grass"; // 2: Loamy Grass
+
 	// Iron Nuggets
 	public static final String nuggetRC = "railcraft:nugget"; // Iron Nugget is 0
+	public static final String nuggetTC = "thaumcraft:nugget"; // There is only the one nugget
 	
 	// Kelp and Kelp Accessories
 	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
+
+	// Loamy Grass Path
+	public static final String loamyGrassPath_BoP = DOM_BIOMESOPLENTY + ":grass_path";
 	
 	// Mossy Stone
 	public static final String mossyCobblestoneStairsVBE = DOM_VANILLABUILDERSEXTENSION + ":stairsStoneMoss";
@@ -958,13 +965,23 @@ public class ModObjects {
 	// TODO - added in 1.11
 	public static ItemStack chooseModIronNugget()
 	{
-		Item moditem = null;
-		// TODO - Railcraft available in 1.10
-		moditem = FunctionsVN.getItemFromName(ModObjects.nuggetRC);
-		if (moditem != null) {return new ItemStack(moditem, 1, 0);}
-		// TODO - Thermal Foundation available in 1.10
-		// TODO - Tinkers Construct available in 1.8
+		String[] modprioritylist = GeneralConfig.modIronNugget;
 		
+		for (String mod : modprioritylist)
+		{
+			Item moditem=null;
+			
+			if (mod.toLowerCase().trim().equals("thaumcraft"))
+			{
+				moditem = FunctionsVN.getItemFromName(ModObjects.nuggetTC);
+				if (moditem != null) {return new ItemStack(moditem, 1);}
+			}
+			else if (mod.toLowerCase().trim().equals("railcraft"))
+			{
+				moditem = FunctionsVN.getItemFromName(ModObjects.nuggetRC);
+				if (moditem != null) {return new ItemStack(moditem, 1, 0);}
+			}
+		}
 		return null;
 	}
 	

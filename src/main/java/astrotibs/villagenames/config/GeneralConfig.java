@@ -83,6 +83,7 @@ public class GeneralConfig {
 	public static boolean swampHutMushroomPot;
 	
 	public static String[] modBountifulStone;
+	public static String[] modIronNugget;
 	public static String[] modPrismarine;
 	public static String[] modSandstone;
 	public static String[] modWoodenTable;
@@ -427,6 +428,13 @@ public class GeneralConfig {
  				"vanillabuildersextension",
  				},
  				"Priority order for referencing Granite, Diorite, and Andesite for e.g. villager trade offers. The version highest on the list and registered in your game will be used."
+ 				);
+		
+	    modIronNugget = config.getStringList("Mod Priority: Iron Nugget", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+ 				"thaumcraft",
+ 				"railcraft",
+ 				},
+ 				"Priority order for referencing Iron Nuggets for e.g. village chest loot. The version highest on the list and registered in your game will be used."
  				);
 	    
 	    modPrismarine = config.getStringList("Mod Priority: Prismarine", Reference.CATEGORY_MOD_INTEGRATION, new String[]{

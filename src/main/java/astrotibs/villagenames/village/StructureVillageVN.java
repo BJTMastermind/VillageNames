@@ -1123,11 +1123,29 @@ public class StructureVillageVN
     	do
     	{
     		BlockPos pos = new BlockPos(posX, surfaceY, posZ);
-    		Block surfaceBlock = world.getBlockState(pos).getBlock();
+    		IBlockState surfaceBlockState = world.getBlockState(pos);
+    		Block surfaceBlock = surfaceBlockState.getBlock();
+    		int surfaceMeta = surfaceBlockState.getBlock().getMetaFromState(surfaceBlockState);
+    		
+    		// Replace loamy grass with loamy grass path
+    		if (Block.getBlockFromName(ModObjects.grass_BOP) != null
+    				&& surfaceBlock==Block.getBlockFromName(ModObjects.grass_BOP)
+    				&& surfaceMeta==2
+    				&& world.isAirBlock(new BlockPos(posX, surfaceY, posZ).up()))
+    		{
+    			Block modblock = Block.getBlockFromName(ModObjects.loamyGrassPath_BoP);
+				
+    			if (modblock != null)
+				{
+					world.setBlockState(pos, modblock.getDefaultState(), 2);
+					return surfaceY;
+				}
+    		}
     		
     		// Replace grass with grass path
-    		
-    		if ((surfaceBlock instanceof BlockGrass || surfaceBlock instanceof BlockDirt) && world.isAirBlock(new BlockPos(posX, surfaceY, posZ).up()))
+    		if ((surfaceBlock instanceof BlockGrass || surfaceBlock instanceof BlockDirt
+    				|| (surfaceBlock.getMaterial(surfaceBlockState) == Material.GRASS && surfaceBlock.isBlockNormalCube(surfaceBlockState)) 
+    				) && world.isAirBlock(new BlockPos(posX, surfaceY, posZ).up()))
     		{
     	    	IBlockState grassPath = getBiomeSpecificBlockState(Blocks.GRASS_PATH.getDefaultState(), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, grassPath, 2);
