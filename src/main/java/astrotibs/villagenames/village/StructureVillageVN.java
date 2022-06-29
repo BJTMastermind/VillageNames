@@ -1223,6 +1223,7 @@ public class StructureVillageVN
     		IBlockState surfaceBlockState = world.getBlockState(pos);
     		Block surfaceBlock = surfaceBlockState.getBlock();
     		int surfaceMeta = surfaceBlockState.getBlock().getMetaFromState(surfaceBlockState);
+    		String targetBlockRegistryName = Block.REGISTRY.getNameForObject(surfaceBlock).toString();
     		
     		// Replace loamy grass with loamy grass path
     		if (Block.getBlockFromName(ModObjects.grass_BOP) != null
@@ -1255,12 +1256,24 @@ public class StructureVillageVN
     	    	IBlockState gravel = getBiomeSpecificBlockState(Blocks.GRAVEL.getDefaultState(), materialType, biome, disallowModSubs);
     	    	IBlockState cobblestone = getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, gravel, 2);
-    			world.setBlockState(pos.down(), cobblestone, 2);
+    			
+    			// Add cobblestone supports
+    			int yDownScan = surfaceY;
+    			if (MathHelper.abs(posX)%2==0 && MathHelper.abs(posZ)%2==0)
+    			{
+    				while(world.getBlockState(new BlockPos(posX, --yDownScan, posZ)).getMaterial().isLiquid() && yDownScan>0)
+    				{
+    					world.setBlockState(new BlockPos(posX, yDownScan, posZ), cobblestone, 2);
+    				}
+    			}
+    			
     			return surfaceY;
     		}
     		
     		// Replace lava with two-layer COBBLESTONE
-    		if (surfaceBlock==Blocks.LAVA || surfaceBlock==Blocks.FLOWING_LAVA)
+    		if (surfaceBlock==Blocks.LAVA || surfaceBlock==Blocks.FLOWING_LAVA
+					|| targetBlockRegistryName.contains("streams:river/tile.lava")
+					)
     		{
     	    	IBlockState cobblestone = getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, cobblestone, 2);
@@ -1271,7 +1284,9 @@ public class StructureVillageVN
     		// Replace other liquid or ice with planks
     		if (surfaceBlock.getDefaultState().getMaterial().isLiquid() 
     				|| surfaceBlock instanceof BlockIce || surfaceBlock instanceof BlockPackedIce 
-    				|| surfaceBlock.getClass().toString().substring(6).equals(ModObjects.mudBOP_classPath)
+					|| targetBlockRegistryName.equals(ModObjects.mudBOP)
+					|| targetBlockRegistryName.equals(ModObjects.quicksandBOP)
+					|| targetBlockRegistryName.contains("streams:river/tile.water")
     				)
     		{
     	    	IBlockState planks = getBiomeSpecificBlockState(Blocks.PLANKS.getStateFromMeta(0), materialType, biome, disallowModSubs);

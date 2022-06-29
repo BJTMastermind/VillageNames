@@ -332,7 +332,7 @@ public class ModObjects {
 	public static final String mossyStoneBrickStairs_FV = DOM_FUTUREVERSIONS + ":mossystonebrickstairs";
 	
 	// Mud
-	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
+	public static final String mudBOP = "biomesoplenty:mud";
 
 	// Pressure Plates
 	public static final String pressurePlateSpruceQu = DOM_QUARK + ":spruce_pressure_plate";
@@ -348,6 +348,9 @@ public class ModObjects {
 	public static final String prismarineSlab_FV = DOM_FUTUREVERSIONS + ":slabPrismarineRough";
 	public static final String prismarineWall_Qu = DOM_QUARK + ":prismarine_rough_wall";
 	public static final String prismarineWall_FV = DOM_FUTUREVERSIONS + ":wallPrismarineRough";
+
+	// Quicksand
+	public static final String quicksandBOP = "biomesoplenty:sand";
 	
 	// Smithing Table
 	public static final String smithingTableFMC = DOM_FUTUREMC + ":smithing_table";
