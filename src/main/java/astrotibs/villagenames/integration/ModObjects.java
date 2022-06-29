@@ -146,10 +146,10 @@ public class ModObjects {
 	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
 	
 	// Mud
-	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
+	public static final String mudBOP = "biomesoplenty:mud";
 	
 	// Quicksand
-	public static final String quicksandBOP_classPath = "biomesoplenty.common.block.BlockBOPSand";
+	public static final String quicksandBOP = "biomesoplenty:sand";
 
 	// Wooden Table
 	public static final String table_BC = "bibliocraft:Table";

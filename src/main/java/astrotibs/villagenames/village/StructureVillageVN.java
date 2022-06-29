@@ -1069,6 +1069,7 @@ public class StructureVillageVN
     	{
     		BlockPos pos = new BlockPos(posX, surfaceY, posZ);
     		Block surfaceBlock = world.getBlockState(pos).getBlock();
+    		String targetBlockRegistryName = Block.blockRegistry.getNameForObject(surfaceBlock).toString();
     		
     		// Replace grass with grass path
     		if ((surfaceBlock instanceof BlockGrass || surfaceBlock instanceof BlockDirt
@@ -1091,19 +1092,33 @@ public class StructureVillageVN
     		}
     		
     		// Replace lava with two-layer cobblestone
-    		if (surfaceBlock==Blocks.lava || surfaceBlock==Blocks.flowing_lava)
+    		if (surfaceBlock==Blocks.lava || surfaceBlock==Blocks.flowing_lava
+					|| targetBlockRegistryName.contains("streams:river/tile.lava")
+					)
     		{
     	    	IBlockState cobblestone = getBiomeSpecificBlockState(Blocks.cobblestone.getStateFromMeta(0), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, cobblestone, 2);
-    			world.setBlockState(pos.down(), cobblestone, 2);
+    			
+    			// Add cobblestone supports
+    			int yDownScan = surfaceY;
+    			if (MathHelper.abs_int(posX)%2==0 && MathHelper.abs_int(posZ)%2==0)
+    			{
+    				while(world.getBlockState(new BlockPos(posX, --yDownScan, posZ)).getBlock().getMaterial().isLiquid() && yDownScan>0)
+    				{
+    					world.setBlockState(new BlockPos(posX, yDownScan, posZ), cobblestone, 2);
+    				}
+    			}
+    			
     			return surfaceY;
     		}
     		
     		// Replace other liquid or ice with planks
     		if (surfaceBlock.getMaterial().isLiquid() 
     				|| surfaceBlock instanceof BlockIce || surfaceBlock instanceof BlockPackedIce 
-    				|| surfaceBlock.getClass().toString().substring(6).equals(ModObjects.mudBOP_classPath)
-    				|| surfaceBlock.getClass().toString().substring(6).equals(ModObjects.quicksandBOP_classPath)
+					|| targetBlockRegistryName.equals(ModObjects.mudBOP)
+					|| targetBlockRegistryName.equals(ModObjects.quicksandBOP)
+					|| targetBlockRegistryName.contains("streams:river/tile.water")
+					|| targetBlockRegistryName.contains("streams:river/ice")
     				)
     		{
     	    	IBlockState planks = getBiomeSpecificBlockState(Blocks.planks.getStateFromMeta(0), materialType, biome, disallowModSubs);
