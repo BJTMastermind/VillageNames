@@ -161,12 +161,15 @@ public class ModObjects {
 	// Mossy Stone
 	
 	// Mud
-	public static final String mudBOP_classPath = "biomesoplenty.common.block.BlockBOPMud";
+	public static final String mudBOP = "biomesoplenty:mud";
 	
 	// Prismarine
 	public static final String prismarineStairs_Qu = DOM_QUARK + ":prismarine_stairs";
 	public static final String prismarineSlab_Qu = DOM_QUARK + ":prismarine_slab";
 	public static final String prismarineWall_Qu = DOM_QUARK + ":prismarine_rough_wall";
+
+	// Quicksand
+	public static final String quicksandBOP = "biomesoplenty:sand";
 	
 	// Smooth Sandstone
 	public static final String smoothSandstoneQu = DOM_QUARK + ":sandstone_new";
