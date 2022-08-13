@@ -216,6 +216,8 @@ public class GeneralConfig {
 				"eu_shady_merchant|eu_shady_merchant|extrautils2:shady_merchant",
 				// MiniHeads
 				"mh_retailer|mh_retailer|miniheads:storeowner",
+				// PneumaticCraft
+				"pc_mechanic||pneumaticcraft:mechanic",
 				// Tolkien Tweaks - Mobs Edition
 				"ttm_coin_trader|ttm_coin_trader|tolkienmobs:coin_trader",
 				"ttm_grocery_store|ttm_grocery_store|tolkienmobs:grocery_store",
@@ -413,7 +415,7 @@ public class GeneralConfig {
 		        //"villager||"+Reference.TQShopkeeperClass,
 		        
 				// Twilight Forest
-				"angel-goblin|Questing Ram|twilightforest.entity.passive.EntityTFQuestRam",
+				"angel-golem-goblin|Questing Ram|twilightforest.entity.passive.EntityTFQuestRam",
 				
 				// Witchery
 				"villager|Guard|com.emoniph.witchery.entity.EntityVillageGuard",
