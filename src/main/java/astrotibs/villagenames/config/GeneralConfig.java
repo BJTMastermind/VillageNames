@@ -369,7 +369,7 @@ public class GeneralConfig {
 		        //"villager||"+Reference.TQFugitiveClass,
 		        //"villager||"+Reference.TQShopkeeperClass,
 				// Twilight Forest
-				"angel-goblin|Questing Ram|twilightforest.entity.passive.EntityTFQuestRam",
+				"angel-golem-goblin|Questing Ram|twilightforest.entity.passive.EntityTFQuestRam",
 				
 				// Witchery
 				"villager|Guard|com.emoniph.witchery.entity.EntityVillageGuard",
