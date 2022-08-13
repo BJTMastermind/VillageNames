@@ -168,6 +168,7 @@ public class GeneralConfig {
 				"for_apiarist|for_apiarist|80", // Forestry
 				"for_arborist|for_arborist|81", // Forestry
 				"psy_dealer||87", // Psychedelicraft
+				"pc_mechanic||125", // PneumaticCraft
 				"thc_wizard||190", // Thaumcraft
 				"thc_banker||191", // Thaumcraft
 				"fa_archaeologist||303", // Fossils and Archaeology
@@ -360,7 +361,7 @@ public class GeneralConfig {
 				"goblin||thaumcraft.common.entities.monster.EntityPech",
 				
 				// Twilight Forest
-				"angel-goblin|Questing Ram|twilightforest.entity.passive.EntityTFQuestRam",
+				"angel-golem-goblin|Questing Ram|twilightforest.entity.passive.EntityTFQuestRam",
 				
 				// Witchery
 				"villager|Guard|com.emoniph.witchery.entity.EntityVillageGuard",
@@ -455,6 +456,7 @@ public class GeneralConfig {
 				"Brewer|10|0", // Growthcraft
 				"Apiarist|14|4", // Growthcraft
 				"Swordsmith|66|5", // More Swords mod version 2
+				"Mechanic|125|3", // PneumaticCraft
 				"Wizard|190|2", // Thaumcraft
 				"Banker|191|0", // Thaumcraft
 				"Archaeologist|303|2", // Fossils and Archaeology

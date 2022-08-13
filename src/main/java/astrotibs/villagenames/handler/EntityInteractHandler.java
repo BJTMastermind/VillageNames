@@ -336,8 +336,8 @@ public class EntityInteractHandler {
 						if (
 								(target instanceof EntityVillager && GeneralConfig.nameEntities)
 								|| (target instanceof EntityIronGolem && GeneralConfig.nameGolems && !targetPlayerCreated)
-								|| GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").contains(targetClassPath)
-								|| GeneralConfig.modNameMappingClickable_map.get("ClassPaths").contains(targetClassPath)
+								|| (GeneralConfig.nameEntities && GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").contains(targetClassPath))
+								|| (GeneralConfig.nameEntities && GeneralConfig.modNameMappingClickable_map.get("ClassPaths").contains(targetClassPath))
 								) {
 							// If so, you should be prevented from naming the entity.
 							event.setCanceled(true);
@@ -1127,7 +1127,8 @@ public class EntityInteractHandler {
 					}
 				}
 				// Entity is a custom automatic config entry.
-				else if ( GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").contains(targetClassPath) ) {
+				else if (GeneralConfig.nameEntities && GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").contains(targetClassPath))
+				{
 					if ( ((customName.trim()).equals("") || customName.equals(null))
 							&&
 							!((String) ((GeneralConfig.modNameMappingAutomatic_map.get("AddOrRemove")).get( GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").indexOf(targetClassPath) ))).trim().equals("remove")
