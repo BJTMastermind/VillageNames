@@ -975,16 +975,14 @@ public class NameGenerator {
 	 */
 	public static String getCareerTag(String entityClasspath, int villagerProfession, String villagerProfessionForge, int villagerCareer, String targetPName)
 	{
-		String careerTag = "(";
+		StringBuilder careerTag = (new StringBuilder()).append("(");
 		
 		// The entity is identified in the "clickable" or "automatic" config entry
 		if ( GeneralConfig.modNameMappingClickable_map.get("ClassPaths").contains(entityClasspath) ) {
-			careerTag += (String) ((GeneralConfig.modNameMappingClickable_map.get("Professions")).get( GeneralConfig.modNameMappingClickable_map.get("ClassPaths").indexOf(entityClasspath) ));
-			careerTag = careerTag.trim();
+			careerTag.append(((String) ((GeneralConfig.modNameMappingClickable_map.get("Professions")).get( GeneralConfig.modNameMappingClickable_map.get("ClassPaths").indexOf(entityClasspath) ))).trim());
 		}
 		else if ( GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").contains(entityClasspath) ) {
-			careerTag += (String) ((GeneralConfig.modNameMappingAutomatic_map.get("Professions")).get( GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").indexOf(entityClasspath) ));
-			careerTag = careerTag.trim();
+			careerTag.append(((String) ((GeneralConfig.modNameMappingAutomatic_map.get("Professions")).get( GeneralConfig.modNameMappingAutomatic_map.get("ClassPaths").indexOf(entityClasspath) ))).trim());
 		}
 		
 		// Handle More Planets's Nibiru Villager
@@ -993,13 +991,13 @@ public class NameGenerator {
 				) {
 			switch (villagerProfession%3) {
 			case 0: // Farmer profession
-				careerTag += "Farmer";
+				careerTag.append("Farmer");
 				break;
 			case 1: // Librarian profession
-				careerTag += "Librarian";
+				careerTag.append("Librarian");
 				break;
 			case 2: // Priest profession
-				careerTag += "Medic";
+				careerTag.append("Medic");
 				break;
 			}
 		}
@@ -1007,14 +1005,42 @@ public class NameGenerator {
 		// Removed in v3.2 because there is an official Nitwit
 		/*
 		// VN Nitwit
-		else if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) {
+		else if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit"))
+		{
 			String nitwitCareer = (
 					(GeneralConfig.nitwitProfession.trim()).equals("")
 					|| (GeneralConfig.nitwitProfession.toLowerCase().trim()).equals("null")
 					) ? "" :  GeneralConfig.nitwitProfession;
-				careerTag += nitwitCareer;
-			}
+				careerTag.append(nitwitCareer;
+		}
 		*/
+		
+		else if (!Reference.VANILLA_PROFESSIONS.contains(villagerProfessionForge))
+		{
+			int index_profession_concat_career = Math.max(
+					GeneralConfig.modProfessionMapping_map.get("IDs_concat_careers").indexOf((new StringBuilder()).append(villagerProfessionForge).append(-99).toString()),
+					GeneralConfig.modProfessionMapping_map.get("IDs_concat_careers").indexOf((new StringBuilder()).append(villagerProfessionForge).append(villagerCareer).toString())
+					);
+			
+			if (index_profession_concat_career != -1)
+			{
+				try
+				{
+					String otherModProfString = (String) ((GeneralConfig.modProfessionMapping_map.get("Professions")).get(index_profession_concat_career));
+					otherModProfString = otherModProfString.replaceAll("\\(", "");
+					otherModProfString = otherModProfString.replaceAll("\\)", "");
+					otherModProfString = otherModProfString.trim();
+					if ((otherModProfString.toLowerCase()).equals("null")) {otherModProfString = "";}
+					
+					careerTag.append(otherModProfString);
+				}
+				catch (Exception e)
+				{
+					//If something went wrong in the profession mapping, return empty parentheses
+					if (GeneralConfig.debugMessages) {LogHelper.info("Error evaluating mod profession ID. Check your formatting!");}
+				}
+			}
+		}
 		
 		// Unfortunately, the I18n is client-side only, and this method is only called server-side.
 		// I have to plug in the English versions for BOTH sides.
@@ -1025,113 +1051,77 @@ public class NameGenerator {
 			case 0: // Farmer profession
 				switch(villagerCareer) {
 				case 1:
-					//try {careerTag += I18n.format("entity.Villager.farmer");}
-					//catch (Exception e) {careerTag += "Farmer";}
-					careerTag += "Farmer";
+					careerTag.append("Farmer");
 					break;
 				case 2:
-					//try {careerTag += I18n.format("entity.Villager.fisherman");}
-					//catch (Exception e) {careerTag += "Fisherman";}
-					careerTag += "Fisherman";
+					careerTag.append("Fisherman");
 					break;
 				case 3:
-					//try {careerTag += I18n.format("entity.Villager.shepherd");}
-					//catch (Exception e) {careerTag += "Shepherd";}
-					careerTag += "Shepherd";
+					careerTag.append("Shepherd");
 					break;
 				case 4:
-					//try {careerTag += I18n.format("entity.Villager.fletcher");}
-					//catch (Exception e) {careerTag += "Fletcher";}
-					careerTag += "Fletcher";
+					careerTag.append("Fletcher");
 					break;
 				default:
-					//try {careerTag += I18n.format("entity.Villager.farmer");}
-					//catch (Exception e) {careerTag += "Farmer";}
-					careerTag += "Farmer";
+					careerTag.append("Farmer");
 					break;
 				}
 				break;
 			case 1: // Librarian profession
 				switch(villagerCareer) {
 				case 1:
-					//try {careerTag += I18n.format("entity.Villager.librarian");}
-					//catch (Exception e) {careerTag += "Librarian";}
-					careerTag += "Librarian";
+					careerTag.append("Librarian");
 					break;
 				case 2:
-					//try {careerTag += I18n.format("entity.Villager.cartographer");}
-					//catch (Exception e) {careerTag += "Cartographer";}
-					careerTag += "Cartographer";
+					careerTag.append("Cartographer");
 					break;
 				default:
-					//try {careerTag += I18n.format("entity.Villager.librarian");}
-					//catch (Exception e) {careerTag += "Librarian";}
-					careerTag += "Librarian";
+					careerTag.append("Librarian");
 					break;
 				}
 				break;
 			case 2: // Priest profession
 				switch(villagerCareer) {
 				case 1:
-					//try {careerTag += I18n.format("entity.Villager.cleric");}
-					//catch (Exception e) {careerTag += "Cleric";}
-					careerTag += "Cleric";
+					careerTag.append("Cleric");
 					break;
 				default:
-					//try {careerTag += I18n.format("entity.Villager.priest");}
-					//catch (Exception e) {careerTag += "Priest";}
-					careerTag += "Priest";
+					careerTag.append("Priest");
 					break;
 				}
 				break;
 			case 3: // Blacksmith profession
 				switch(villagerCareer) {
 				case 1:
-					//try {careerTag += I18n.format("entity.Villager.armor");}
-					//catch (Exception e) {careerTag += "Armorer";}
-					careerTag += "Armorer";
+					careerTag.append("Armorer");
 					break;
 				case 2:
-					//try {careerTag += I18n.format("entity.Villager.weapon");}
-					//catch (Exception e) {careerTag += "Weapon Smith";}
-					careerTag += "Weaponsmith"; // Changed in v3.1
+					careerTag.append("Weaponsmith");
 					break;
 				case 3:
-					//try {careerTag += I18n.format("entity.Villager.tool");}
-					//catch (Exception e) {careerTag += "Tool Smith";}
-					careerTag += "Toolsmith"; // Changed in v3.1
+					careerTag.append("Toolsmith");
 					break;
 				case 4:
-					careerTag += "Mason"; // Added in v3.1
+					careerTag.append("Mason");
 					break;
 				default:
-					//try {careerTag += I18n.format("entity.Villager.blacksmith");}
-					//catch (Exception e) {careerTag += "Blacksmith";}
-					careerTag += "Blacksmith";
+					careerTag.append("Blacksmith");
 					break;
 				}
 				break;
 			case 4: // Butcher profession
 				switch(villagerCareer) {
 				case 1:
-					//try {careerTag += I18n.format("entity.Villager.butcher");}
-					//catch (Exception e) {careerTag += "Butcher";}
-					careerTag += "Butcher";
+					careerTag.append("Butcher");
 					break;
 				case 2:
-					//try {careerTag += I18n.format("entity.Villager.leather");}
-					//catch (Exception e) {careerTag += "Leatherworker";}
-					careerTag += "Leatherworker";
+					careerTag.append("Leatherworker");
 					break;
 				default:
-					//try {careerTag += I18n.format("entity.Villager.butcher");}
-					//catch (Exception e) {careerTag += "Butcher";}
-					careerTag += "Butcher";
+					careerTag.append("Butcher");
 					break;
 				}
 				break;
-			
-			// Re-enabled in v3.2 because there is a vanilla Nitwit
 			case 5: // Nitwit profession
 				String nitwitCareer = (
 						(GeneralConfig.nitwitProfession.trim()).equals("")
@@ -1139,42 +1129,21 @@ public class NameGenerator {
 						) ? "" :  GeneralConfig.nitwitProfession;
 				switch(villagerCareer) {
 				case 1:
-					careerTag += nitwitCareer;
+					careerTag.append(nitwitCareer);
 					break;
 				default:
-					careerTag += nitwitCareer;
+					careerTag.append(nitwitCareer);
 					break;
 				}
 				break;
-				
-			}
-			
-			// Changed in v3.2 to utilize ProfessionForge
-			if (villagerProfession > 5)
-			{
-				try
-				{
-					String otherModProfString = (String) ((GeneralConfig.modProfessionMapping_map.get("Professions")).get( GeneralConfig.modProfessionMapping_map.get("IDs").indexOf(villagerProfessionForge) ));
-					otherModProfString = otherModProfString.replaceAll("\\(", "");
-					otherModProfString = otherModProfString.replaceAll("\\)", "");
-					otherModProfString = otherModProfString.trim();
-					if ((otherModProfString.toLowerCase()).equals("null")) {otherModProfString = "";}
-					
-					careerTag += otherModProfString;
-				}
-				catch (Exception e)
-				{
-					//If something went wrong in the profession mapping, return empty parentheses
-					if (GeneralConfig.debugMessages) {LogHelper.info("Error evaluating mod profession ID. Check your formatting!");}
-				}
 			}
 		}
 		
-		careerTag += ")";
+		careerTag.append(")");
 		
-		if (careerTag.equals("()")) careerTag = "";
+		if (careerTag.toString().equals("()")) {careerTag = (new StringBuilder()).append("");}
 		
-		return careerTag;
+		return careerTag.toString();
 	}
 	
 	
