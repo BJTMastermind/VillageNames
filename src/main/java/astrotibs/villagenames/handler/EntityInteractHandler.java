@@ -201,9 +201,12 @@ public class EntityInteractHandler {
 					&& target instanceof EntityVillager)
 			{
 		    	try {
-		    		villagerMappedProfession =  
-		    				(Integer) ((targetProfession >= 0 && targetProfession <= 5)
-		    				? targetProfession : ((GeneralConfig.modProfessionMapping_map.get("VanillaProfMaps")).get( GeneralConfig.modProfessionMapping_map.get("IDs").indexOf(targetPName) )));
+		    		int indexofmodprof = GeneralConfig.modProfessionMapping_map.get("IDs").indexOf(targetProfession);
+		    		int careerID = (Integer) GeneralConfig.modProfessionMapping_map.get("careerID").get(indexofmodprof);
+		    		
+		    		villagerMappedProfession = 
+		    				targetProfession > 5 && (careerID == -99 || targetCareer == careerID)
+		    				? (Integer)GeneralConfig.modProfessionMapping_map.get("VanillaProfMaps").get(indexofmodprof) : targetProfession;
 		    		}
 		    	catch (Exception e) {LogHelper.error("Error evaluating mod profession ID. Check your formatting!");}
 			}

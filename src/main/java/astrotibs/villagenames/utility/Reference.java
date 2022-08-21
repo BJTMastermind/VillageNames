@@ -1,5 +1,7 @@
 package astrotibs.villagenames.utility;
 
+import java.util.ArrayList;
+
 import net.minecraft.util.text.TextFormatting;
 
 public class Reference
@@ -105,4 +107,16 @@ public class Reference
     SNOWY_BUILDING_STUB =   "SnowyStructures$Snowy",
     JUNGLE_BUILDING_STUB =   "JungleStructures$Jungle",
     SWAMP_BUILDING_STUB =   "SwampStructures$Swamp";
+    
+    // Vanilla professions
+    public static final ArrayList<String> VANILLA_PROFESSIONS = new ArrayList<String>();
+    static
+    {
+    	VANILLA_PROFESSIONS.add("minecraft:farmer");
+    	VANILLA_PROFESSIONS.add("minecraft:librarian");
+    	VANILLA_PROFESSIONS.add("minecraft:priest");
+    	VANILLA_PROFESSIONS.add("minecraft:smith");
+    	VANILLA_PROFESSIONS.add("minecraft:butcher");
+    	VANILLA_PROFESSIONS.add("minecraft:nitwit");
+    }
 }
