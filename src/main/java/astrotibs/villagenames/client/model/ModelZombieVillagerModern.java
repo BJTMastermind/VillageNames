@@ -1,5 +1,7 @@
 package astrotibs.villagenames.client.model;
 
+import java.util.List;
+
 import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.ieep.ExtendedZombieVillager;
 import net.minecraft.client.model.ModelBiped;
@@ -93,7 +95,38 @@ public class ModelZombieVillagerModern extends ModelBiped
     {
         this.setRotationAngles(p_78088_2_, p_78088_3_, p_78088_4_, p_78088_5_, p_78088_6_, scale, entityIn);
         GlStateManager.pushMatrix();
-
+        
+        final ExtendedZombieVillager ieep = ExtendedZombieVillager.get(((EntityZombie)entityIn));
+		int prof = ieep.getProfession();
+		int careerID = ieep.getCareer();
+		
+		List<Integer> professionID_whitelist = GeneralConfig.moddedVillagerHeadwearWhitelist_map.get("professionID");
+    	int index_of_career_on_whitelist = professionID_whitelist.indexOf(prof);
+    	List<String> profession_career_whitelist = GeneralConfig.moddedVillagerHeadwearWhitelist_map.get("IDs_concat_careers");
+    	int index_of_profession_career_on_whitelist = profession_career_whitelist.indexOf((new StringBuilder()).append(prof).append(careerID).toString());
+		
+    	List<Integer> professionID_blacklist = GeneralConfig.moddedVillagerHeadwearBlacklist_map.get("professionID");
+		int index_of_career_on_blacklist = professionID_blacklist.indexOf(prof);
+    	List<String> profession_career_blacklist = GeneralConfig.moddedVillagerHeadwearBlacklist_map.get("IDs_concat_careers");
+    	int index_of_profession_career_on_blacklist = profession_career_blacklist.indexOf((new StringBuilder()).append(prof).append(careerID).toString());
+		
+        boolean render_headwear = 
+        		!(prof > 4
+    				& ( // and
+    						index_of_career_on_whitelist==-1 // is not whitelisted
+    						|
+    						(index_of_career_on_whitelist!=-1 // or it is whitelisted, but the career doesn't match up
+								& profession_career_whitelist.indexOf((new StringBuilder()).append(prof).append(-99).toString())==-1
+								& index_of_profession_career_on_whitelist==-1)
+    						)
+    				& // and... 
+    					(!GeneralConfig.moddedVillagerHeadwear // headwear is disabled
+    					| (index_of_career_on_blacklist!=-1 // headwear is blacklisted
+							& (profession_career_blacklist.indexOf((new StringBuilder()).append(prof).append(-99).toString())!=-1
+							| index_of_profession_career_on_whitelist!=-1))
+    					)
+            		);
+        
         if (this.isChild)
         {
             float f = 2.0F;
@@ -101,12 +134,7 @@ public class ModelZombieVillagerModern extends ModelBiped
             GlStateManager.translate(0.0F, 16.0F * scale, 0.0F);
             this.bipedHead.render(scale);
             
-            final ExtendedZombieVillager ezv = ExtendedZombieVillager.get(((EntityZombie)entityIn));
-			int prof = ezv.getProfession();
-            if (
-            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(prof)
-            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(prof) || !GeneralConfig.moddedVillagerHeadwear))
-            		)
+            if (render_headwear)
             {
             	this.bipedHeadwear.render(scale);
             }
@@ -135,13 +163,7 @@ public class ModelZombieVillagerModern extends ModelBiped
             this.bipedRightLeg.render(scale);
             this.bipedLeftLeg.render(scale);
             
-            // Added in v3.2
-            final ExtendedZombieVillager ezv = ExtendedZombieVillager.get(((EntityZombie)entityIn));
-			int prof = ezv.getProfession();
-			if (
-            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(prof)
-            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(prof) || !GeneralConfig.moddedVillagerHeadwear))
-            		)
+			if (render_headwear)
             {
             	this.bipedHeadwear.render(scale);
             }

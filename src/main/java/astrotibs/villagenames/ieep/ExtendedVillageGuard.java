@@ -16,7 +16,7 @@ public class ExtendedVillageGuard implements IExtendedEntityProperties
 {
 
     public    final static String Identifier = "VillagerInfo";
-   protected final static String InitializedKey = "Defined";               // Controls if a village guard was assigned a profession
+   protected final static String InitializedKey = "Defined"; // Controls if a village guard was assigned a profession
     
     //@SuppressWarnings("unused")
     private final EntityLiving guard;
@@ -28,7 +28,7 @@ public class ExtendedVillageGuard implements IExtendedEntityProperties
     // Properties
     //---------------------------------------------------------
     
-    private Boolean hasValidData;      // TODO: Attempt to refactor and get rid of this property
+    private Boolean hasValidData; // TODO: Attempt to refactor and get rid of this property
     
     
     

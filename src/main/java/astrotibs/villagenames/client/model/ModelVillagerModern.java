@@ -1,8 +1,11 @@
 package astrotibs.villagenames.client.model;
 
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 import astrotibs.villagenames.config.GeneralConfig;
+import astrotibs.villagenames.ieep.ExtendedVillager;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.model.ModelVillager;
 import net.minecraft.entity.Entity;
@@ -16,7 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author AstroTibs
  */
 
-// Added in v3.1
 @SideOnly(Side.CLIENT)
 public class ModelVillagerModern extends ModelVillager
 {
@@ -80,15 +82,37 @@ public class ModelVillagerModern extends ModelVillager
 	{
 		super.render(entity, f, f1, f2, f3, f4, f5);
 		
-		int prof = ((EntityVillager)entity).getProfession();
+		EntityVillager villager = (EntityVillager)entity;
+		int prof = villager.getProfession();
+    	int careerID = (ExtendedVillager.get(villager)).getCareer();//ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
+    	
+    	List<Integer> professionID_whitelist = GeneralConfig.moddedVillagerHeadwearWhitelist_map.get("professionID");
+    	int index_of_career_on_whitelist = professionID_whitelist.indexOf(prof);
+    	List<String> profession_career_whitelist = GeneralConfig.moddedVillagerHeadwearWhitelist_map.get("IDs_concat_careers");
+    	int index_of_profession_career_on_whitelist = profession_career_whitelist.indexOf((new StringBuilder()).append(prof).append(careerID).toString());
 		
+    	List<Integer> professionID_blacklist = GeneralConfig.moddedVillagerHeadwearBlacklist_map.get("professionID");
+		int index_of_career_on_blacklist = professionID_blacklist.indexOf(prof);
+    	List<String> profession_career_blacklist = GeneralConfig.moddedVillagerHeadwearBlacklist_map.get("IDs_concat_careers");
+    	int index_of_profession_career_on_blacklist = profession_career_blacklist.indexOf((new StringBuilder()).append(prof).append(careerID).toString());
+
 		if (
-				prof > 5 // This is a non-vanilla villager profession
-				&& !((EntityVillager) entity).isChild() // and is not a child
-				&& !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(prof) // and is not whitelisted
-				&& // and... 
-					(GeneralConfig.moddedVillagerHeadwearBlacklist.contains(prof) // is blacklisted,
-					|| !GeneralConfig.moddedVillagerHeadwear // OR headwear is disabled
+				prof > 4 // This is a non-vanilla villager profession
+				& !villager.isChild() // and is not a child
+				
+				& ( // and
+						index_of_career_on_whitelist==-1 // is not whitelisted
+						|
+						(index_of_career_on_whitelist!=-1 // or it is whitelisted, but the career doesn't match up
+							& profession_career_whitelist.indexOf((new StringBuilder()).append(prof).append(-99).toString())==-1
+							& index_of_profession_career_on_whitelist==-1)
+						)
+				
+				& // and... 
+					(!GeneralConfig.moddedVillagerHeadwear // headwear is disabled
+					| (index_of_career_on_blacklist!=-1 // headwear is blacklisted
+						& (profession_career_blacklist.indexOf((new StringBuilder()).append(prof).append(-99).toString())!=-1
+							| index_of_profession_career_on_whitelist!=-1))
 					)
 				)
 		{
@@ -97,7 +121,7 @@ public class ModelVillagerModern extends ModelVillager
 
 		// You reach this point if the villager needs its head examined lol gottem
 		
-		if (((EntityVillager) entity).isChild())
+		if (villager.isChild())
 		{
 			//Re-upscale baby head lmao
             GL11.glPushMatrix();
