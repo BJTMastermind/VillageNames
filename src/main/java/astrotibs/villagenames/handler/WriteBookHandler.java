@@ -192,7 +192,7 @@ public class WriteBookHandler {
             	// All the machinery to make a second page should only work if the villager is named.
             	// Alternatively, do not require a name if you have the "Name Villagers" flag off.
 
-        		// Put second page call into try/catch - v3.2.2
+        		// Put second page call into try/catch
         		try {
 	            	String structureHintPageText = makeSecondPage(
 	            			event, targetClassPath, villageYouAreIn,
@@ -279,7 +279,7 @@ public class WriteBookHandler {
 
 	public static String makeSecondPage(EntityInteract event, String targetClassPath, Village villageNearVillager,
 			double targetX, double targetY, double targetZ, 
-			int playerRep, int villagerProfession, int villagerCareer, String targetPName, int villagerTradeCount
+			int playerRep, int villagerProfession, int villagerCareer, String professionForge, int villagerTradeCount
 			) {
 		
     	double radiusCoef = 64.0f; // Feature search radius is playerRep x tradeCount x radiusCoef
@@ -418,18 +418,25 @@ public class WriteBookHandler {
     	
     	// Convert a non-vanilla profession into a vanilla one for the purposes of generating a hint page
     	int villagerMappedProfession = -1; // If the below fails, do none
+    	boolean isvanilla = Reference.VANILLA_PROFESSIONS.contains(professionForge);
     	
-    	try {
-    		villagerMappedProfession =  
-    				// Changed in v3.2
-    				(Integer) ((villagerProfession >= 0 && villagerProfession <= 4)
-    				? villagerProfession : ((GeneralConfig.modProfessionMapping_map.get("VanillaProfMaps")).get( GeneralConfig.modProfessionMapping_map.get("IDs").indexOf(profForge) )));
-    		}
-    	catch (Exception e) {
+    	try
+    	{
+    		List<String> IDs_concat_careers = GeneralConfig.modProfessionMapping_map.get("IDs_concat_careers");
+    		
+    		int index_of_profession_and_career = Math.max(
+    				IDs_concat_careers.indexOf((new StringBuilder()).append(professionForge).append(-99).toString()), 
+    				IDs_concat_careers.indexOf((new StringBuilder()).append(professionForge).append(villagerCareer).toString()));
+    		
+    		villagerMappedProfession = !isvanilla && index_of_profession_and_career!= -1 ? (Integer)GeneralConfig.modProfessionMapping_map.get("VanillaProfMaps").get(index_of_profession_and_career) : villagerProfession;
+		}
+    	catch (Exception e)
+    	{
     		if(!event.getEntityLiving().worldObj.isRemote) LogHelper.error("Error evaluating mod profession ID. Check your formatting!");
-    		}
+		}
+    	
     	// Special nitwit handler
-    	if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) {villagerMappedProfession = 5;}
+    	if (professionForge.equals(Reference.MOD_ID.toLowerCase()+":nitwit")) {villagerMappedProfession = 5;}
     	
     	// ------------------------- //
     	// Find Structures by Career //
@@ -438,7 +445,7 @@ public class WriteBookHandler {
         switch (villagerMappedProfession) {
 	        case 0: // Villager is a Farmer
 
-	        	// v3.2.1 - calculate distances here
+	        	// Calculate distances here
 	        	nearestMonumentXYZ = nearestStructureLoc("Monument", event);
 	        	monumentDistSq =
 		    		(nearestMonumentXYZ[0]==0 && nearestMonumentXYZ[1]==0 && nearestMonumentXYZ[2]==0) ? Double.MAX_VALUE :

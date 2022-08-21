@@ -57,14 +57,17 @@ public class GeneralConfig {
 	public static boolean moddedVillagerHeadwear;
 
 	public static String[] moddedVillagerHeadwearGraylist;
-	public static ArrayList<String> moddedVillagerHeadwearWhitelist = new ArrayList<String>();
-	public static ArrayList<String> moddedVillagerHeadwearBlacklist = new ArrayList<String>();
+	public static Map<String, List> moddedVillagerHeadwearWhitelist_map = new HashMap<String, List>();
+	public static Map<String, List> moddedVillagerHeadwearBlacklist_map = new HashMap<String, List>();
 
 	public static String[] moddedVillagerModularSkins;
 	public static Map<String, List> moddedVillagerCareerSkins_map = new HashMap<String, List>();
 	public static ArrayList<String> careerAsset_a;
 	public static ArrayList<String> zombieCareerAsset_a;
 	public static ArrayList<String> professionID_a;
+	public static ArrayList<Integer> careerID_a;
+	public static ArrayList<String> profession_concat_career_a;
+	
     public static boolean villagerSkinTones;
     public static float villagerSkinToneVarianceAnnealing;
     public static float villagerSkinToneVarianceScale;
@@ -129,39 +132,32 @@ public class GeneralConfig {
 	    moddedVillagerHeadwear = config.getBoolean("Modded Villager Headwear", Reference.CATEGORY_VILLAGER_PROFESSIONS, false, "If modern skins are enabled: renders the headwear layer for non-vanilla villager professions, if one exists.");
 	    
 	    moddedVillagerHeadwearGraylist = config.getStringList("Modded Villager Headwear Graylist", Reference.CATEGORY_VILLAGER_PROFESSIONS, new String[]{
-				"forestry:apiarist", // Forestry Apiarist
-				"-openblocks:radio", // Open Blocks Music Merchant
-				"bewitchment:alchemist", // Bewitchment Alchemist... not sure if this is the ID because I can't get the thing to load
+				// Bewitchment Alchemist... not sure if this is the ID because I can't get the thing to load
+				"bewitchment:alchemist",
 				// Extra Utilities 2
 				"extrautils2:alchemist",
+	    		// Forestry
+	    		"forestry:apiarist",
+				// Immersive Engineering
+				"immersiveengineering:engineer|1",
+				"immersiveengineering:engineer|2",
+				"immersiveengineering:engineer|3",
+	    		// Open Blocks
+				"-openblocks:radio",
 	    		},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers. A normal value will be whitelisted: it will display that villager's headwear layer even if Modded Villager Headwear is false. "
 	    		+ "Adding a negative sign in front of the ID int will blacklist the profession so that its headwear layer never renders.");
-	    
-	    // Extract the values and populate the white and black lists
-	    for (String prof_s : moddedVillagerHeadwearGraylist)
-	    {
-	    	if (prof_s.trim().indexOf("-")==0)
-	    	{
-	    		// There is a hyphen out front, so this is a negative value. Pass it with the hyphen intact.
-	    		moddedVillagerHeadwearBlacklist.add(prof_s.trim());
-	    	}
-	    	else
-	    	{
-	    		// There is no hyphen out front, so this is a positive value.
-	    		moddedVillagerHeadwearWhitelist.add(prof_s.trim());
-	    	}
-	    }
 
-	    // Added in v3.2
+	    // Extract the values and populate the white and black lists
+	    moddedVillagerHeadwearWhitelist_map.clear();
+	    moddedVillagerHeadwearWhitelist_map = unpackModdedVillagerHeadwearGraylist(moddedVillagerHeadwearGraylist, true);
+	    moddedVillagerHeadwearBlacklist_map.clear();
+	    moddedVillagerHeadwearBlacklist_map = unpackModdedVillagerHeadwearGraylist(moddedVillagerHeadwearGraylist, false);
+	    
 	    moddedVillagerModularSkins = config.getStringList("Modded Villager Modular Skins", Reference.CATEGORY_VILLAGER_PROFESSIONS, new String[]
 	    		{
-				"for_apiarist|for_apiarist|forestry:apiarist", // Forestry
-				"for_arborist|for_arborist|forestry:arborist", // Forestry
-				"fa_archaeologist||fossil:archeologist", // Fossils and Archaeology
-				"rc_engineer|rc_engineer|railcraft:trackman", // Railcraft
-				"ob_musicmerchant||openblocks:radio", // Open Blocks
-				"myc_archivist||mystcraft:archivist", // Mystcraft
+				// ChocoCraft Plus
+				"ccp_stablehand||chococraftplus:stablehand",
 				// Cyclic
 				"cm_druid|cm_druid|cyclicmagic:druid",
 				"cm_sage|cm_sage|cyclicmagic:sage",
@@ -169,8 +165,21 @@ public class GeneralConfig {
 				"eu_alchemist|eu_alchemist|extrautils2:alchemist",
 				"eu_red_mechanic|eu_red_mechanic|extrautils2:red_mechanic",
 				"eu_shady_merchant|eu_shady_merchant|extrautils2:shady_merchant",
-				// ChocoCraft Plus
-				"ccp_stablehand||chococraftplus:stablehand",
+    			// Forestry
+				"for_apiarist|for_apiarist|forestry:apiarist",
+				"for_arborist|for_arborist|forestry:arborist",
+				// Fossils and Archaeology
+				"fa_archaeologist||fossil:archeologist",
+				// Immersive Engineering
+				"ie_engineer||immersiveengineering:engineer|1",
+				"ie_machinist||immersiveengineering:engineer|2",
+				"ie_electrician||immersiveengineering:engineer|3",
+				// Open Blocks
+				"ob_musicmerchant||openblocks:radio",
+				// Mystcraft
+				"myc_archivist||mystcraft:archivist",
+				// Railcraft
+				"rc_engineer|rc_engineer|railcraft:trackman",
 	    		},
 	    		"(If modern skins are enabled) List of profession IDs for other mods' villagers to render in the modular skin style. Format is: careerAsset|zombieCareerAsset|professionID\n"+
 	    		"careerAsset: career skin png to be overlaid onto the villager, located in assets\\"+Reference.MOD_ID.toLowerCase()+"\\textures\\entity\\villager\\profession\n"+
@@ -179,10 +188,13 @@ public class GeneralConfig {
 	    						+ "professionID: the ID associated with the mod profession.");
 	    
 	    // Assign the map now and immediately extract it into arrays for faster lookup
+	    moddedVillagerCareerSkins_map.clear();
 	    moddedVillagerCareerSkins_map = GeneralConfig.unpackModVillagerSkins(GeneralConfig.moddedVillagerModularSkins);
 	    careerAsset_a = (ArrayList<String>)moddedVillagerCareerSkins_map.get("careerAsset");
 	    zombieCareerAsset_a = (ArrayList<String>)moddedVillagerCareerSkins_map.get("zombieCareerAsset");
 	    professionID_a = (ArrayList<String>)moddedVillagerCareerSkins_map.get("professionID");
+	    careerID_a = (ArrayList<Integer>)moddedVillagerCareerSkins_map.get("careerID");
+	    profession_concat_career_a = (ArrayList<String>)moddedVillagerCareerSkins_map.get("IDs_concat_careers");
 
 
 	    villagerSkinTones = config.getBoolean("Display Skin Tones", Reference.CATEGORY_VILLAGER_SKIN_TONES, true, "Display Gaussian-distributed random skin tones assigned to villagers");
@@ -440,21 +452,8 @@ public class GeneralConfig {
 		// New mod profession mapping
 		modProfessionMapping = config.getStringList("Mod Professions", Reference.CATEGORY_MOD_INTEGRATION, new String[]
 				{
-				"Brewer|10|0", // Growthcraft
-				"Apiarist|14|4", // Growthcraft
-				"Swordsmith|66|5", // More Swords mod version 2
-				"Wizard|190|2", // Thaumcraft
-				"Banker|191|0", // Thaumcraft
-				"Archaeologist|303|2", // Fossils and Archaeology
-				"Engineer|456|3", // Railcraft
-				"Apothecary|2435|2", // Witchery
-				"Music Merchant|6156|5", // Open Blocks
-				"Brewer|6677|0", // Growthcraft Community Edition
-				"Apiarist|7766|4", // Growthcraft Community Edition
-				"Tinkerer|78943|5", // Tinkers Construct
-				"Enchanter|935153|2", 
-				"Stablehand|19940402|0", // ChocoCraft Plus
-				"Archivist|1210950779|1", // Mystcraft
+				// ChocoCraft Plus
+				"Stablehand|chococraftplus:stablehand|0",
 				// Cyclic
 				"Druid|cyclicmagic:druid|2",
 				"Sage|cyclicmagic:sage|1",
@@ -462,6 +461,21 @@ public class GeneralConfig {
 				"Alchemist|extrautils2:alchemist|2",
 				"Mechanic|extrautils2:red_mechanic|3",
 				"Shady Merchant|extrautils2:shady_merchant|-1",
+				// Forestry
+				"Apiarist|forestry:apiarist|4",
+				"Arborist|forestry:arborist|0",
+				// Fossils and Archaeology
+				"Archaeologist|fossil:archeologist|2",
+				// Immersive Engineering
+				"Engineer|immersiveengineering:engineer|3|1",
+				"Machinist|immersiveengineering:engineer|0|2",
+				"Electrician|immersiveengineering:engineer|0|3",
+				// Mystcraft
+				"Archivist|mystcraft:archivist|1",
+				// Open Blocks
+				"Music Merchant|openblocks:radio|5",
+				// Railcraft
+				"Engineer|railcraft:trackman|3",
 				},
 				"List of professions for other mods' villagers. Format is: Name|ID|pageType\n"
 				+ "Name is your choice of name for the profession.\n"
@@ -486,17 +500,21 @@ public class GeneralConfig {
 	
 	
 	/**
-	 * Inputs a (Profession|ID|vanillaType) String list and breaks it into three array lists
+	 * Inputs a (Profession|ID|vanillaType|careerID) String list and breaks it into three array lists
 	 */
-	public static Map<String, List> unpackMappedProfessions(String[] inputList) {
+	public static Map<String, List> unpackMappedProfessions(String[] inputList)
+	{
 		List<String>  otherModProfessions = new ArrayList<String>();
 		List<String> otherModIDs = new ArrayList<String>();
 		List<Integer> vanillaProfMaps = new ArrayList<Integer>();
+		List<Integer> careerID_a = new ArrayList<Integer>();
+		List<String>  IDs_concat_careers = new ArrayList<String>();
 		
-		for (String entry : inputList) {
-			// Remove parentheses
-			entry.replaceAll("\\)", "");
-			entry.replaceAll("\\(", "");
+		for (String entry : inputList)
+		{
+			entry.replaceAll("/", ""); // Forward slashses don't need to be escaped
+			entry.replaceAll("\\\\", ""); // \ is BOTH String and regex; needs to be double-escaped. See https://stackoverflow.com/questions/1701839/string-replaceall-single-backslashes-with-double-backslashes
+			entry.replaceAll("..", "");
 			// Split by pipe
 			String[] splitEntry = entry.split("\\|");
 			
@@ -504,16 +522,22 @@ public class GeneralConfig {
 			String otherModProfession="";
 			String otherModID="";
 			int vanillaProfMap=-1;
+			int careerID=-99;
 			
 			// Place entries into variables
 			try {otherModProfession = splitEntry[0].trim();}               catch (Exception e) {otherModProfession="";}
 			try {otherModID = splitEntry[1].trim();}                       catch (Exception e) {otherModID="";}
 			try {vanillaProfMap = Integer.parseInt(splitEntry[2].trim());} catch (Exception e) {vanillaProfMap=-1;}
+			try {careerID = Integer.parseInt(splitEntry[3].trim());}       catch (Exception e) {careerID=-99;}
+			String IDs_concat_career = (new StringBuilder()).append(otherModID).append(careerID).toString();
 			
-			if( !otherModProfession.equals("") && !otherModID.equals("") ) {
+			if( !otherModProfession.equals("") && !otherModID.equals("") )
+			{
 				otherModProfessions.add(otherModProfession);
 				otherModIDs.add(otherModID);
 				vanillaProfMaps.add(vanillaProfMap);
+				careerID_a.add(careerID);
+				IDs_concat_careers.add(IDs_concat_career);
 			}
 		}
 		
@@ -521,6 +545,8 @@ public class GeneralConfig {
 		map.put("Professions",otherModProfessions);
 		map.put("IDs",otherModIDs);
 		map.put("VanillaProfMaps",vanillaProfMaps);
+		map.put("careerID", careerID_a);
+		map.put("IDs_concat_careers", IDs_concat_careers);
 		
 		return map;
 	}
@@ -726,14 +752,18 @@ public class GeneralConfig {
 	
 	
 	/**
-	 * Loads the (careerAsset|zombieCareerAsset|professionID) string lists and assigns them to this instance's variables.
+	 * Loads the (careerAsset|zombieCareerAsset|professionID|careerID) string lists and assigns them to this instance's variables.
 	 */
-	public static Map<String, List> unpackModVillagerSkins(String[] inputList) {
+	public static Map<String, List> unpackModVillagerSkins(String[] inputList)
+	{
 		List<String>  careerAsset_a = new ArrayList<String>();
-		List<String> zombieCareerAsset_a = new ArrayList<String>();
-		List<String> professionID_a = new ArrayList<String>();
+		List<String>  zombieCareerAsset_a = new ArrayList<String>();
+		List<String>  professionID_a = new ArrayList<String>();
+		List<Integer> careerID_a = new ArrayList<Integer>();
+		List<String>  IDs_concat_careers = new ArrayList<String>();
 		
-		for (String entry : inputList) {
+		for (String entry : inputList)
+		{
 			// Remove slashes and double dots to prevent address abuse
 			entry.replaceAll("/", ""); // Forward slashses don't need to be escaped
 			entry.replaceAll("\\\\", ""); // \ is BOTH String and regex; needs to be double-escaped. See https://stackoverflow.com/questions/1701839/string-replaceall-single-backslashes-with-double-backslashes
@@ -745,25 +775,89 @@ public class GeneralConfig {
 			String careerAsset="";
 			String zombieCareerAsset="";
 			String professionID="";
+			int careerID=-99;
 			
 			// Place entries into variables
-			try {careerAsset = splitEntry[0].trim();}       catch (Exception e) {}
-			try {zombieCareerAsset = splitEntry[1].trim();} catch (Exception e) {}
-			try {professionID = splitEntry[2].trim();}     	catch (Exception e) {}
+			try {careerAsset = splitEntry[0].trim();}                catch (Exception e) {careerAsset="";}
+			try {zombieCareerAsset = splitEntry[1].trim();}          catch (Exception e) {zombieCareerAsset="";}
+			try {professionID = splitEntry[2].trim();}     	         catch (Exception e) {professionID="";}
+			try {careerID = Integer.parseInt(splitEntry[3].trim());} catch (Exception e) {careerID=-99;}
+			String IDs_concat_career = (new StringBuilder()).append(professionID).append(careerID).toString();
 			
-			if(!careerAsset.equals("")) { // Something was actually assigned in the try block
+			if(!careerAsset.equals("")) // Something was actually assigned in the try block
+			{
 				careerAsset_a.add(careerAsset);
 				zombieCareerAsset_a.add(zombieCareerAsset);
 				professionID_a.add(professionID);
+				careerID_a.add(careerID);
+				IDs_concat_careers.add(IDs_concat_career);
 			}
 		}
 		
 		Map<String, List> map = new HashMap();
-		map.put("careerAsset",careerAsset_a);
-		map.put("zombieCareerAsset",zombieCareerAsset_a);
-		map.put("professionID",professionID_a);
+		map.put("careerAsset", careerAsset_a);
+		map.put("zombieCareerAsset", zombieCareerAsset_a);
+		map.put("professionID", professionID_a);
+		map.put("careerID", careerID_a);
+		map.put("IDs_concat_careers", IDs_concat_careers);
 		
 		return map;
 	}
 	
+	
+	/**
+	 * Loads the (professionID|careerID) string lists and assigns them to this instance's variables.
+	 */
+	public static Map<String, List> unpackModdedVillagerHeadwearGraylist(String[] inputList, boolean isWhitelist)
+	{
+		List<String> professionID_a = new ArrayList<String>();
+		List<Integer> careerID_a = new ArrayList<Integer>();
+		List<String>  IDs_concat_careers = new ArrayList<String>();
+		
+		for (String entry : inputList)
+		{
+			// Remove slashes and double dots to prevent address abuse
+			entry.replaceAll("/", ""); // Forward slashses don't need to be escaped
+			entry.replaceAll("\\\\", ""); // \ is BOTH String and regex; needs to be double-escaped. See https://stackoverflow.com/questions/1701839/string-replaceall-single-backslashes-with-double-backslashes
+			entry.replaceAll("..", "");
+			// Split by pipe
+			String[] splitEntry = entry.split("\\|");
+			
+			// Initialize temp fields
+			String professionID="";
+			int careerID=-99;
+			
+			// Place entries into variables
+			try {professionID = splitEntry[0].trim();}     	         catch (Exception e) {professionID="";}
+			try {careerID = Integer.parseInt(splitEntry[1].trim());} catch (Exception e) {careerID=-99;}
+			String IDs_concat_career = (new StringBuilder()).append(professionID).append(careerID).toString();
+			
+			if(
+					!professionID.equals("") &&
+					((isWhitelist && professionID.indexOf("-")!=0)
+					|| (!isWhitelist && professionID.indexOf("-")==0))
+					) // Something was actually assigned in the try block
+			{
+				if (isWhitelist && professionID.indexOf("-")!=0)
+				{
+					professionID_a.add(professionID);
+					careerID_a.add(careerID);
+					IDs_concat_careers.add(IDs_concat_career);
+				}
+				else if (!isWhitelist && professionID.indexOf("-")==0)
+				{
+					professionID_a.add(professionID.substring(1));
+					careerID_a.add(careerID);
+					IDs_concat_careers.add(IDs_concat_career);
+				}
+			}
+		}
+		
+		Map<String, List> map = new HashMap();
+		map.put("professionID", professionID_a);
+		map.put("careerID", careerID_a);
+		map.put("IDs_concat_careers", IDs_concat_careers);
+		
+		return map;
+	}
 }

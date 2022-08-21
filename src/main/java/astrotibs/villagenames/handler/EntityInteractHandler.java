@@ -216,9 +216,12 @@ public class EntityInteractHandler {
 					&& target instanceof EntityVillager)
 			{
 		    	try {
-		    		villagerMappedProfession =  
-		    				(Integer) ((targetProfession >= 0 && targetProfession <= 4)
-		    				? targetProfession : ((GeneralConfig.modProfessionMapping_map.get("VanillaProfMaps")).get( GeneralConfig.modProfessionMapping_map.get("IDs").indexOf(targetPName) )));
+		    		int indexofmodprof = GeneralConfig.modProfessionMapping_map.get("IDs").indexOf(targetProfession);
+		    		int careerID = (Integer) GeneralConfig.modProfessionMapping_map.get("careerID").get(indexofmodprof);
+		    		
+		    		villagerMappedProfession = 
+		    				targetProfession > 4 && (careerID == -99 || targetCareer == careerID)
+		    				? (Integer)GeneralConfig.modProfessionMapping_map.get("VanillaProfMaps").get(indexofmodprof) : targetProfession;
 		    		}
 		    	catch (Exception e) {LogHelper.error("Error evaluating mod profession ID. Check your formatting!");}
 			}
@@ -241,6 +244,7 @@ public class EntityInteractHandler {
 						LogHelper.info("Profession: " + targetProfession 
 								+ ", ProfessionForge: " + villager.getProfessionForge().getRegistryName().toString()
 								+ ", Career: " + (ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}))
+								+ ", CareerForge: " + (ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}))
 								+ ", CareerVN: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getCareer()
 								+ (GeneralConfig.modernVillagerSkins ? ", BiomeType: " + (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getBiomeType()
 										: "")

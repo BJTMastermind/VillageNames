@@ -2,7 +2,6 @@ package astrotibs.villagenames.client.model;
 
 import astrotibs.villagenames.capabilities.IModularSkin;
 import astrotibs.villagenames.capabilities.ModularSkinProvider;
-import astrotibs.villagenames.config.GeneralConfig;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,7 +16,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author AstroTibs
  */
 
-// Added in v3.1
 @SideOnly(Side.CLIENT)
 public class ModelZombieVillagerModern extends ModelBiped
 {
@@ -103,7 +101,15 @@ public class ModelZombieVillagerModern extends ModelBiped
         
         final IModularSkin ims = entityIn.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
 		int prof = ims.getProfession();
+		int careerID = ims.getCareer();
 //		String profForge = ((EntityZombie)entityIn).getVillagerTypeForge().getRegistryName().toString();
+		
+		// Zombies don't support string-based profession IDs, so the career subtyping can't be used.
+        boolean render_headwear =
+        		!(prof > 4
+//    				& !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(prof)
+//            		& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(prof) | !GeneralConfig.moddedVillagerHeadwear)
+            		);
 		
         if (this.isChild)
         {
@@ -112,10 +118,7 @@ public class ModelZombieVillagerModern extends ModelBiped
             GlStateManager.translate(0.0F, 16.0F * scale, 0.0F);
             this.bipedHead.render(scale);
             
-            if (
-            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(prof)
-            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(prof) || !GeneralConfig.moddedVillagerHeadwear))
-            		)
+            if (render_headwear)
             {
             	this.bipedHeadwear.render(scale);
             }
@@ -144,11 +147,7 @@ public class ModelZombieVillagerModern extends ModelBiped
             this.bipedRightLeg.render(scale);
             this.bipedLeftLeg.render(scale);
             
-            // Added in v3.2
-			if (
-            		!(prof > 5 && !GeneralConfig.moddedVillagerHeadwearWhitelist.contains(prof)
-            		&& (GeneralConfig.moddedVillagerHeadwearBlacklist.contains(prof) || !GeneralConfig.moddedVillagerHeadwear))
-            		)
+			if (render_headwear)
             {
             	this.bipedHeadwear.render(scale);
             }

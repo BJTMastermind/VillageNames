@@ -19,7 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author AstroTibs
  */
 
-//Added in v3.1
 @SideOnly(Side.CLIENT)
 public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	
@@ -38,70 +37,69 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	// --- Skin resource elements --- //
 	// ------------------------------ //
 
-	// Added in v3.2
 	static final String VAD = "textures/entity/villager/"; // Villager address, because it's used so damn much
 	static final String MIDLC = (Reference.MOD_ID).toLowerCase(); // Same with Mod ID
 
 	// Base skin texture
-	private static final ResourceLocation villagerBaseSkin     = new ResourceLocation(MIDLC, VAD + "villager.png");
+	private static final ResourceLocation VILLAGER_BASE_SKIN     = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("villager.png").toString());
 	
 	// Biome-based types
-	private static final ResourceLocation villagerTypeDesert   = new ResourceLocation(MIDLC, VAD + "type/desert.png");
-	private static final ResourceLocation villagerTypeJungle   = new ResourceLocation(MIDLC, VAD + "type/jungle.png");
-	private static final ResourceLocation villagerTypePlains   = new ResourceLocation(MIDLC, VAD + "type/plains.png");
-	private static final ResourceLocation villagerTypeSavanna  = new ResourceLocation(MIDLC, VAD + "type/savanna.png");
-	private static final ResourceLocation villagerTypeSnow     = new ResourceLocation(MIDLC, VAD + "type/snow.png");
-	private static final ResourceLocation villagerTypeSwamp    = new ResourceLocation(MIDLC, VAD + "type/swamp.png");
-	private static final ResourceLocation villagerTypeTaiga    = new ResourceLocation(MIDLC, VAD + "type/taiga.png");
+	private static final ResourceLocation VILLAGER_TYPE_DESERT   = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/desert.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_JUNGLE   = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/jungle.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_PLAINS   = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/plains.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_SAVANNA  = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/savanna.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_SNOW     = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/snow.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_SWAMP    = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/swamp.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_TAIGA    = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/taiga.png").toString());
 	// Custom biome types
-	private static final ResourceLocation villagerTypeForest   = new ResourceLocation(MIDLC, VAD + "type/forest.png");
-	private static final ResourceLocation villagerTypeAquatic  = new ResourceLocation(MIDLC, VAD + "type/aquatic.png");
-	private static final ResourceLocation villagerTypeHighland = new ResourceLocation(MIDLC, VAD + "type/highland.png");
-	private static final ResourceLocation villagerTypeMushroom = new ResourceLocation(MIDLC, VAD + "type/mushroom.png");
-	private static final ResourceLocation villagerTypeMagical  = new ResourceLocation(MIDLC, VAD + "type/magical.png");
-	private static final ResourceLocation villagerTypeNether   = new ResourceLocation(MIDLC, VAD + "type/nether.png");
-	private static final ResourceLocation villagerTypeEnd      = new ResourceLocation(MIDLC, VAD + "type/end.png");
+	private static final ResourceLocation VILLAGER_TYPE_FOREST   = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/forest.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_AQUATIC  = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/aquatic.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_HIGHLAND = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/highland.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_MUSHROOM = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/mushroom.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_MAGICAL  = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/magical.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_NETHER   = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/nether.png").toString());
+	private static final ResourceLocation VILLAGER_TYPE_END      = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("type/end.png").toString());
 	
 	// Profession-based layer
-	private static final ResourceLocation villagerProfessionArmorer = new ResourceLocation(MIDLC, VAD + "profession/armorer.png");
-	private static final ResourceLocation villagerProfessionButcher = new ResourceLocation(MIDLC, VAD + "profession/butcher.png");
-	private static final ResourceLocation villagerProfessionCartographer = new ResourceLocation(MIDLC, VAD + "profession/cartographer.png");
-	private static final ResourceLocation villagerProfessionCleric = new ResourceLocation(MIDLC, VAD + "profession/cleric.png");
-	private static final ResourceLocation villagerProfessionFarmer = new ResourceLocation(MIDLC, VAD + "profession/farmer.png");
-	private static final ResourceLocation villagerProfessionFisherman = new ResourceLocation(MIDLC, VAD + "profession/fisherman.png");
-	private static final ResourceLocation villagerProfessionFletcher = new ResourceLocation(MIDLC, VAD + "profession/fletcher.png");
-	private static final ResourceLocation villagerProfessionLeatherworker = new ResourceLocation(MIDLC, VAD + "profession/leatherworker.png");
-	private static final ResourceLocation villagerProfessionLibrarian = new ResourceLocation(MIDLC, VAD + "profession/librarian.png");
-	private static final ResourceLocation villagerProfessionMason = new ResourceLocation(MIDLC, VAD + "profession/mason.png");
-	private static final ResourceLocation villagerProfessionNitwit = new ResourceLocation(MIDLC, VAD + "profession/nitwit.png");
-	private static final ResourceLocation villagerProfessionShepherd = new ResourceLocation(MIDLC, VAD + "profession/shepherd.png");
-	private static final ResourceLocation villagerProfessionToolsmith = new ResourceLocation(MIDLC, VAD + "profession/toolsmith.png");
-	private static final ResourceLocation villagerProfessionWeaponsmith = new ResourceLocation(MIDLC, VAD + "profession/weaponsmith.png");
+	private static final ResourceLocation VILLAGER_PROFESSION_ARMORER = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/armorer.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_BUTCHER = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/butcher.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_CARTOGRAPHER = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/cartographer.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_CLERIC = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/cleric.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_FARMER = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/farmer.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_FISHERMAN = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/fisherman.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_FLETCHER = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/fletcher.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_LEATHERWORKER = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/leatherworker.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_LIBRARIAN = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/librarian.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_MASON = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/mason.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_NITWIT = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/nitwit.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_SHEPHERD = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/shepherd.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_TOOLSMITH = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/toolsmith.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_WEAPONSMITH = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/weaponsmith.png").toString());
 	
 	// Profession level purses
-	private static final ResourceLocation villagerProfessionLevelStone = new ResourceLocation(MIDLC, VAD + "profession_level/stone.png");
-	private static final ResourceLocation villagerProfessionLevelIron = new ResourceLocation(MIDLC, VAD + "profession_level/iron.png");
-	private static final ResourceLocation villagerProfessionLevelGold = new ResourceLocation(MIDLC, VAD + "profession_level/gold.png");
-	private static final ResourceLocation villagerProfessionLevelEmerald = new ResourceLocation(MIDLC, VAD + "profession_level/emerald.png");
-	private static final ResourceLocation villagerProfessionLevelDiamond = new ResourceLocation(MIDLC, VAD + "profession_level/diamond.png");
+	private static final ResourceLocation VILLAGER_PROFESSION_LEVEL_STONE = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession_level/stone.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_LEVEL_IRON = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession_level/iron.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_LEVEL_GOLD = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession_level/gold.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_LEVEL_EMERALD = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession_level/emerald.png").toString());
+	private static final ResourceLocation VILLAGER_PROFESSION_LEVEL_DIAMOND = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession_level/diamond.png").toString());
 	
 	// Vanilla textures
-    private static final ResourceLocation defaultOldNitwit = new ResourceLocation(VAD + "villager.png");
-    private static final ResourceLocation defaultOldFarmer = new ResourceLocation(VAD + "farmer.png");
-    private static final ResourceLocation defaultOldLibrarian = new ResourceLocation(VAD + "librarian.png");
-    private static final ResourceLocation defaultOldPriest = new ResourceLocation(VAD + "priest.png");
-    private static final ResourceLocation defaultOldSmith = new ResourceLocation(VAD + "smith.png");
-    private static final ResourceLocation defaultOldButcher = new ResourceLocation(VAD + "butcher.png");
+    private static final ResourceLocation DEFAULT_OLD_NITWIT = new ResourceLocation((new StringBuilder()).append(VAD).append("villager.png").toString());
+    private static final ResourceLocation DEFAULT_OLD_FARMER = new ResourceLocation((new StringBuilder()).append(VAD).append("farmer.png").toString());
+    private static final ResourceLocation DEFAULT_OLD_LIBRARIAN = new ResourceLocation((new StringBuilder()).append(VAD).append("librarian.png").toString());
+    private static final ResourceLocation DEFAULT_OLD_PRIEST = new ResourceLocation((new StringBuilder()).append(VAD).append("priest.png").toString());
+    private static final ResourceLocation DEFAULT_OLD_SMITH = new ResourceLocation((new StringBuilder()).append(VAD).append("smith.png").toString());
+    private static final ResourceLocation DEFAULT_OLD_BUTCHER = new ResourceLocation((new StringBuilder()).append(VAD).append("butcher.png").toString());
 
-	// Added in v3.2: Skin tones, arranged lightest to darkest
-    private static final ResourceLocation villageSkinToneLight3 = new ResourceLocation(MIDLC, VAD + "skintone/l3.png");
-    private static final ResourceLocation villageSkinToneLight2 = new ResourceLocation(MIDLC, VAD + "skintone/l2.png");
-    private static final ResourceLocation villageSkinToneLight1 = new ResourceLocation(MIDLC, VAD + "skintone/l1.png");
-    private static final ResourceLocation villageSkinToneMedium = new ResourceLocation(MIDLC, VAD + "skintone/m0.png"); // Identical to default skin
-    private static final ResourceLocation villageSkinToneDark1 = new ResourceLocation(MIDLC, VAD + "skintone/d1.png");
-    private static final ResourceLocation villageSkinToneDark2 = new ResourceLocation(MIDLC, VAD + "skintone/d2.png");
-    private static final ResourceLocation villageSkinToneDark3 = new ResourceLocation(MIDLC, VAD + "skintone/d3.png");
-    private static final ResourceLocation villageSkinToneDark4 = new ResourceLocation(MIDLC, VAD + "skintone/d4.png");
+	// Skin tones, arranged lightest to darkest
+    private static final ResourceLocation VILLAGER_SKIN_TONE_LIGHT3 = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/l3.png").toString());
+    private static final ResourceLocation VILLAGER_SKIN_TONE_LIGHT2 = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/l2.png").toString());
+    private static final ResourceLocation VILLAGER_SKIN_TONE_LIGHT1 = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/l1.png").toString());
+    private static final ResourceLocation VILLAGER_SKIN_TONE_MEDIUM = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/m0.png").toString()); // Identical to default skin
+    private static final ResourceLocation VILLAGER_SKIN_TONE_DARK1 = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/d1.png").toString());
+    private static final ResourceLocation VILLAGER_SKIN_TONE_DARK2 = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/d2.png").toString());
+    private static final ResourceLocation VILLAGER_SKIN_TONE_DARK3 = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/d3.png").toString());
+    private static final ResourceLocation VILLAGER_SKIN_TONE_DARK4 = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/d4.png").toString());
     
 
 	/**
@@ -110,48 +108,50 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	@Override
 	protected ResourceLocation getEntityTexture(EntityVillager villager)
 	{
-		int indexofmodprof = GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString());
+		String professionForge = villager.getProfessionForge().getRegistryName().toString();
+		int career = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getCareer();
+		int indexofmodprof = GeneralConfig.professionID_a.indexOf(professionForge);
+		int profession = villager.getProfession();
 		
 		if (
 				GeneralConfig.modernVillagerSkins
-				&& villager.getProfession() >= 0
-				// Changed in v3.2 to allow modular mod villager skins; also, no official Prof 5
-				&& (villager.getProfession() <= 4 || (indexofmodprof > -1 && !((String) GeneralConfig.careerAsset_a.get(indexofmodprof)).equals("") ) )
+				& Reference.VANILLA_PROFESSIONS.contains(professionForge)
+					| GeneralConfig.profession_concat_career_a.contains((new StringBuilder()).append(professionForge).append(-99).toString()) 
+					| GeneralConfig.profession_concat_career_a.contains((new StringBuilder()).append(professionForge).append(career).toString())
 				)
 		{
-			// Added in v3.2
 			if (GeneralConfig.villagerSkinTones)
 			{
 				switch (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getSkinTone())
 				{
-					case 3: return villageSkinToneLight3;
-					case 2: return villageSkinToneLight2;
-					case 1: return villageSkinToneLight1;
+					case 3: return VILLAGER_SKIN_TONE_LIGHT3;
+					case 2: return VILLAGER_SKIN_TONE_LIGHT2;
+					case 1: return VILLAGER_SKIN_TONE_LIGHT1;
 					default:
-					case 0: return villageSkinToneMedium;
-					case -1: return villageSkinToneDark1;
-					case -2: return villageSkinToneDark2;
-					case -3: return villageSkinToneDark3;
-					case -4: return villageSkinToneDark4;
+					case 0: return VILLAGER_SKIN_TONE_MEDIUM;
+					case -1: return VILLAGER_SKIN_TONE_DARK1;
+					case -2: return VILLAGER_SKIN_TONE_DARK2;
+					case -3: return VILLAGER_SKIN_TONE_DARK3;
+					case -4: return VILLAGER_SKIN_TONE_DARK4;
 				}
 			}
-			else {return villagerBaseSkin;}
+			else {return VILLAGER_BASE_SKIN;}
 		}
 		else
 		{
 			// Condition for modern villager skins OFF
-		    switch (villager.getProfession())
+		    switch (profession)
 		    {
 		        case 0:
-		            return defaultOldFarmer;
+		            return DEFAULT_OLD_FARMER;
 		        case 1:
-		            return defaultOldLibrarian;
+		            return DEFAULT_OLD_LIBRARIAN;
 		        case 2:
-		            return defaultOldPriest;
+		            return DEFAULT_OLD_PRIEST;
 		        case 3:
-		            return defaultOldSmith;
+		            return DEFAULT_OLD_SMITH;
 		        case 4:
-		            return defaultOldButcher;
+		            return DEFAULT_OLD_BUTCHER;
 		        default:
 		        	return villager.getProfessionForge().getSkin();
 		    }
@@ -171,48 +171,54 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	    
 	    public void doRenderLayer(EntityVillager villager, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
+	    	String professionForge = villager.getProfessionForge().getRegistryName().toString();
+	    	int indexofmodprof = GeneralConfig.professionID_a.indexOf(professionForge);
+	    	int profession = villager.getProfession();
+	    	int careerID = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getCareer();//ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
+	    	
 			if (
-					villager.getProfession() >= 0
-					// v3.2: Is vanilla OR is a modular type
-					&& (villager.getProfession() <= 4 || GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString())!=-1)
-					&& !villager.isInvisible()
+					(Reference.VANILLA_PROFESSIONS.contains(professionForge)
+						| GeneralConfig.profession_concat_career_a.contains((new StringBuilder()).append(professionForge).append(-99).toString()) 
+						| GeneralConfig.profession_concat_career_a.contains((new StringBuilder()).append(professionForge).append(careerID).toString())
+						)
+					& !villager.isInvisible()
 					)
 			{
 				// Biome type skins
 				if (GeneralConfig.modernVillagerSkins)
-				{/**/
+				{
 					switch (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getBiomeType())
 					{
 						case 11:
-							this.villagerLayerRenderer.bindTexture(villagerTypeSnow); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_SNOW); break;
 						case 9:
-							this.villagerLayerRenderer.bindTexture(villagerTypeSavanna); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_SAVANNA); break;
 						case 8:
-							this.villagerLayerRenderer.bindTexture(villagerTypeDesert); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_DESERT); break;
 						case 3:
-							this.villagerLayerRenderer.bindTexture(villagerTypeForest); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_FOREST); break;
 						case 7:
-							this.villagerLayerRenderer.bindTexture(villagerTypeTaiga); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_TAIGA); break;
 						case 6:
-							this.villagerLayerRenderer.bindTexture(villagerTypeSwamp); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_SWAMP); break;
 						case 5:
-							this.villagerLayerRenderer.bindTexture(villagerTypeJungle); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_JUNGLE); break;
 						case 4:
-							this.villagerLayerRenderer.bindTexture(villagerTypeAquatic); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_AQUATIC); break;
 						case 2:
-							this.villagerLayerRenderer.bindTexture(villagerTypeHighland); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_HIGHLAND); break;
 						case 10:
-							this.villagerLayerRenderer.bindTexture(villagerTypeMushroom); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_MUSHROOM); break;
 						case 1:
-							this.villagerLayerRenderer.bindTexture(villagerTypeMagical); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_MAGICAL); break;
 						case 13:
-							this.villagerLayerRenderer.bindTexture(villagerTypeNether); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_NETHER); break;
 						case 12:
-							this.villagerLayerRenderer.bindTexture(villagerTypeEnd); break;
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_END); break;
 						default:
 						case 0:
-							this.villagerLayerRenderer.bindTexture(villagerTypePlains); break;
-					}/**/
+							this.villagerLayerRenderer.bindTexture(VILLAGER_TYPE_PLAINS); break;
+					}
 					
 				}
 	            this.villagerLayerModel.setModelAttributes(this.villagerLayerRenderer.getMainModel());
@@ -241,33 +247,32 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	    
 	    public void doRenderLayer(EntityVillager villager, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
-	    	// Changed in v3.2 to allow for modded skins
-			if (villager.getProfession() >= 0 && !villager.isInvisible() && !villager.isChild())
+	    	int profession = villager.getProfession();
+	    	
+			if (profession >= 0 & !villager.isInvisible() & !villager.isChild())
 			{
-				String villagerForgeProfessionRegistryName = villager.getProfessionForge().getRegistryName().toString();
-				if (villager.getProfession() <= 4 && villagerForgeProfessionRegistryName.length()>=10 && villagerForgeProfessionRegistryName.substring(0, 10).equals("minecraft:"))
+				String professionForge = villager.getProfessionForge().getRegistryName().toString();
+				if (Reference.VANILLA_PROFESSIONS.contains(professionForge))
 				{
 					// Profession skins
 					if (GeneralConfig.modernVillagerSkins)
 					{
-						
-						/**/
 			        	int career = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getCareer();
 						
-					    switch (villager.getProfession())
+					    switch (profession)
 					    {
 				        case 0: // Farmer type
 				        	switch (career)
 				        	{
 				        	default:
 				        	case 1:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionFarmer); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_FARMER); break;
 				        	case 2:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionFisherman); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_FISHERMAN); break;
 				        	case 3:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionShepherd); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_SHEPHERD); break;
 				        	case 4:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionFletcher); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_FLETCHER); break;
 				        	}
 				        	break;
 				        case 1: // Librarian type
@@ -275,9 +280,9 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 				        	{
 				        	default:
 				        	case 1:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionLibrarian); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_LIBRARIAN); break;
 				        	case 2:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionCartographer); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_CARTOGRAPHER); break;
 				        	}
 				        	break;
 				        case 2: // Priest type
@@ -285,21 +290,21 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 				        	{
 				        	default:
 				        	case 1:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionCleric); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_CLERIC); break;
 				        	}
 				        	break;
 				        case 3: // Smith type
 				        	switch (career)
 				        	{
 				        	case 1:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionArmorer); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_ARMORER); break;
 				        	case 2:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionWeaponsmith); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_WEAPONSMITH); break;
 				        	default:
 				        	case 3:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionToolsmith); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_TOOLSMITH); break;
 				        	case 4:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionMason); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_MASON); break;
 				        	}
 				        	break;
 				        case 4: // Butcher type
@@ -307,13 +312,13 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 				        	{
 				        	default:
 				        	case 1:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionButcher); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_BUTCHER); break;
 				        	case 2:
-				        		this.villagerLayerRenderer.bindTexture(villagerProfessionLeatherworker); break;
+				        		this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_LEATHERWORKER); break;
 				        	}
 				        	break;
-				        // Fixed in v3.2: there is no vanilla Nitwit at this stage.
-				        default: // Nitwit
+				        // There is no vanilla Nitwit at this stage.
+//				        default: // Nitwit
 				        	//this.villagerLayerRenderer.bindTexture(villagerProfessionNitwit); break;
 					    }
 					}
@@ -321,21 +326,26 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 				else
 				{
 					// Mod profession skins
-					int indexofmodprof = GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString());
-					if (
-							indexofmodprof > -1 // Has a skin asset mapping
-			        		&& !((String) GeneralConfig.careerAsset_a.get(indexofmodprof)).equals("") // That mapping isn't blank
-						)
+//					String professionForge = villager.getProfessionForge().getRegistryName().toString();
+//					int indexofmodprof = GeneralConfig.professionID_a.indexOf(professionForge);
+//			    	int careerID = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getCareer();//ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
+			    	
+					int careerID = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getCareer();//ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
+					int index_of_profession_and_career = Math.max(
+							GeneralConfig.profession_concat_career_a.indexOf((new StringBuilder()).append(professionForge).append(-99).toString()), 
+							GeneralConfig.profession_concat_career_a.indexOf((new StringBuilder()).append(professionForge).append(careerID).toString()));
+					
+					if (index_of_profession_and_career > -1)
 					{
-			        	final String profRootName = (String) (GeneralConfig.careerAsset_a.get(indexofmodprof));
-			        	final ResourceLocation modCareerSkin = new ResourceLocation(MIDLC, VAD + "profession/"+profRootName+".png");
+			        	final String profRootName = (String) (GeneralConfig.careerAsset_a.get(index_of_profession_and_career));
+			        	final ResourceLocation modCareerSkin = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("profession/").append(profRootName).append(".png").toString());
 			        	this.villagerLayerRenderer.bindTexture(modCareerSkin);
 					}
-					else
-					{
-						// If all else fails, bind the nitwit.
-						this.villagerLayerRenderer.bindTexture(villagerProfessionNitwit);
-					}
+//					else
+//					{
+//						// If all else fails, bind the nitwit.
+//						this.villagerLayerRenderer.bindTexture(villagerProfessionNitwit);
+//					}
 				}
 				
 	            this.villagerLayerRenderer.getMainModel().render(villager, p_177141_2_, p_177141_3_, p_177141_5_, p_177141_6_, p_177141_7_, scale);
@@ -364,24 +374,29 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 	    
 	    public void doRenderLayer(EntityVillager villager, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
+	    	int profession = villager.getProfession();
+	    	String professionForge = villager.getProfessionForge().getRegistryName().toString();
+	    	int careerID = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getCareer();
+	    	int index_of_profession_and_career = Math.max(
+					GeneralConfig.profession_concat_career_a.indexOf((new StringBuilder()).append(professionForge).append(-99).toString()), 
+					GeneralConfig.profession_concat_career_a.indexOf((new StringBuilder()).append(professionForge).append(careerID).toString()));
+	    	
 			if (
-					villager.getProfession() >= 0
-					// v3.2: Is vanilla OR is a modular type
-					&& (villager.getProfession() <= 4 || GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString())!=-1)
-					&& !villager.isInvisible()
+					(Reference.VANILLA_PROFESSIONS.contains(professionForge) | index_of_profession_and_career > -1)
+					& !villager.isInvisible()
 					)
 			{
 				// Profession levels
 				if (GeneralConfig.modernVillagerSkins)
 				{
-					final int profLevel = (villager.isChild() | villager.getProfession()==5) ? 0 : villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getProfessionLevel();
-					if (profLevel >= 5) {this.villagerLayerRenderer.bindTexture(villagerProfessionLevelDiamond);}
+					final int profLevel = (villager.isChild() | profession==5) ? 0 : villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getProfessionLevel();
+					if (profLevel >= 5) {this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_LEVEL_DIAMOND);}
 					switch (profLevel)
 					{
-					case 1: this.villagerLayerRenderer.bindTexture(villagerProfessionLevelStone); break;
-					case 2: this.villagerLayerRenderer.bindTexture(villagerProfessionLevelIron); break;
-					case 3: this.villagerLayerRenderer.bindTexture(villagerProfessionLevelGold); break;
-					case 4: this.villagerLayerRenderer.bindTexture(villagerProfessionLevelEmerald); break;
+					case 1: this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_LEVEL_STONE); break;
+					case 2: this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_LEVEL_IRON); break;
+					case 3: this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_LEVEL_GOLD); break;
+					case 4: this.villagerLayerRenderer.bindTexture(VILLAGER_PROFESSION_LEVEL_EMERALD); break;
 					}
 				}
 	            this.villagerLayerRenderer.getMainModel().render(villager, p_177141_2_, p_177141_3_, p_177141_5_, p_177141_6_, p_177141_7_, scale);
@@ -395,7 +410,7 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 		}
 	}
 	
-	// v3.1.1 - Added in to allow villagers to render as babies and not man-babies
+	// Added in to allow villagers to render as babies and not man-babies
 	// summon Villager ~ ~ ~ {Age:-24000}
     /**
      * Allows the render to do state modifications necessary before the model is rendered.
