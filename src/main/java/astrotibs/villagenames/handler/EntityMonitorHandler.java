@@ -524,11 +524,11 @@ public class EntityMonitorHandler {
         	EntityVillager villager = (EntityVillager)event.getEntity();
     		IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
 
-        	if (GeneralConfig.modernVillagerSkins)
+        	if (GeneralConfig.modernVillagerSkins & Reference.VANILLA_PROFESSIONS.contains(villager.getProfessionForge().getRegistryName().toString()))
         	{
             	// Initialize buying list in order to provoke the villager to choose a career
-            	villager.getRecipes(null);
-            	FunctionsVN.monitorVillagerTrades(villager);
+        		villager.getRecipes(null);
+        		FunctionsVN.monitorVillagerTrades(villager);
         	}
         	
     		NBTTagCompound compound = new NBTTagCompound();
