@@ -498,10 +498,6 @@ public class EntityInteractHandler {
 				}
 				catch (Exception e) {} // Not inside a valid Village BB, so playerIsInVillage will remain as false
 				
-				LogHelper.info("population " + population);
-				LogHelper.info("playerIsInVillage " + playerIsInVillage);
-				LogHelper.info("playerRep " + playerRep);
-				
 				if (   
 						(population == 0 || (playerIsInVillage && population == -1)) // No Villagers in the village
 						&& playerRep >= -15 // This may be redundant in the event of an empty village.
