@@ -35,6 +35,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 	
 	// Base skin texture
 	private static final ResourceLocation ZOMBIE_VILLAGER_BASE_SKIN = new ResourceLocation((Reference.MOD_ID).toLowerCase(), (new StringBuilder()).append(ZVAD).append("zombie_villager.png").toString());
+	private static final ResourceLocation ZOMBIE_VILLAGER_TIBS_SKIN = new ResourceLocation((Reference.MOD_ID).toLowerCase(), (new StringBuilder()).append(ZVAD).append("t_zv.png").toString());
 	
 	// Biome-based types
 	private static final ResourceLocation ZOMBIE_VILLAGER_TYPE_DESERT  = new ResourceLocation((Reference.MOD_ID).toLowerCase(), (new StringBuilder()).append(ZVAD).append("type/desert.png").toString());
@@ -171,7 +172,24 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 //						)
     				)
     		{
-    			return ZOMBIE_VILLAGER_BASE_SKIN;
+    	        // give @p minecraft:name_tag 1 0 {display:{Name:"Tibs"}}
+    	        // give @p minecraft:name_tag 1 0 {display:{Name:"AstroTibs"}}
+    			
+    			// summon Zombie ~ ~ ~ {IsVillager:1}
+    			
+    			String trimmed_lc_zombievillager_name = zombie.getCustomNameTag().toLowerCase().trim();
+    			if (!trimmed_lc_zombievillager_name.equals(Reference.NAME_TIBS)
+    	        		& !trimmed_lc_zombievillager_name.equals(Reference.NAME_ASTROTIBS)
+    	        		& !(trimmed_lc_zombievillager_name.length()>=11 && trimmed_lc_zombievillager_name.substring(0, 11).equals(Reference.NAME_ASTROTIBS_OPENP))
+    	        		& !(trimmed_lc_zombievillager_name.length()>=6 && trimmed_lc_zombievillager_name.substring(0, 6).equals(Reference.NAME_TIBS_OPENP))
+    	        		)
+    	        {
+    				return ZOMBIE_VILLAGER_BASE_SKIN;
+    	        }
+    			else
+    			{
+    				return ZOMBIE_VILLAGER_TIBS_SKIN;
+    			}
     		}
     		else
     		{
