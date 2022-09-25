@@ -23,7 +23,11 @@ public class Reference
     public static final int STREET_WIDTH = 3;
 
 	// Mod variables
-	public static final String ANTIQUE_ATLAS_MODID = "antiqueatlas";
+	public static final String ANTIQUE_ATLAS_MODID = "antiqueatlas",
+    NAME_TIBS = "tibs",
+    NAME_ASTROTIBS = "astrotibs",
+    NAME_TIBS_OPENP = "tibs (",
+    NAME_ASTROTIBS_OPENP = "astrotibs (";
 	
 	// Vanilla village component class paths
 	public static final String
