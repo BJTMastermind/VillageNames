@@ -156,7 +156,6 @@ public class VersionChecker extends Thread
         if (quitChecking || !GeneralConfig.versionChecker)
         {
             MinecraftForge.EVENT_BUS.unregister(instance);
-            MinecraftForge.EVENT_BUS.unregister(VersionChecker.instance);
             return;
         }
     }

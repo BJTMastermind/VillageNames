@@ -29,7 +29,6 @@ public class DevVersionWarning
             		 ));
     		
     		MinecraftForge.EVENT_BUS.unregister(instance);
-    		MinecraftForge.EVENT_BUS.unregister(VersionChecker.instance);
     	}
 	}
 }

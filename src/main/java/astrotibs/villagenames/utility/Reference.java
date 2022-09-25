@@ -18,7 +18,11 @@ public class Reference
 	public static final String GUI_FACTORY = "astrotibs.villagenames.config.gui.VNGuiFactory";
     
 	// Mod variables
-	public static final String ANTIQUE_ATLAS_MODID = "antiqueatlas";
+	public static final String ANTIQUE_ATLAS_MODID = "antiqueatlas",
+    NAME_TIBS = "tibs",
+    NAME_ASTROTIBS = "astrotibs",
+    NAME_TIBS_OPENP = "tibs (",
+    NAME_ASTROTIBS_OPENP = "astrotibs (";
 	
     // Elder Guardian class path: prior to 1.11, the Elder is just a normal Guardian with an "Elder" flag turned on.
     // This helps distinguish the two via hard-coding a faux class path

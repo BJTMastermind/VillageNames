@@ -84,7 +84,6 @@ public class EntityMonitorHandler
     	
     	if (!event.entity.worldObj.isRemote) // Encased in notremote if - v3.1
     	{
-        	// Added in v3.1
         	if (event.target instanceof EntityVillager) // Removed not-remote condition - v3.1
         	{
         		final EntityVillager villager = (EntityVillager) event.target;
@@ -147,7 +146,6 @@ public class EntityMonitorHandler
             	ezv.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(zombievillager));
             }
 
-            // Added in v3.2
             if (ezv.getSkinTone() == -99)
             {ezv.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombievillager));}
             
@@ -200,7 +198,6 @@ public class EntityMonitorHandler
             
             if (GeneralConfig.modernVillagerTrades) {FunctionsVN.modernizeVillagerTrades(villager);}
             
-        	// Added in v3.1
             ExtendedVillager ev = ExtendedVillager.get(villager);
             
             // Renovated in v3.1
@@ -235,7 +232,6 @@ public class EntityMonitorHandler
 
                 }
                 
-                // Added in v3.1
                 // Initialize trades so that the villager will be forced to pick a career
                 MerchantRecipeList buyingList = ReflectionHelper.getPrivateValue( EntityVillager.class, villager, new String[]{"buyingList", "field_70963_i"} );
                 
@@ -250,7 +246,6 @@ public class EntityMonitorHandler
             			if (GeneralConfig.debugMessages) LogHelper.warn("Could not invoke EntityVillager.populateBuyingList method");
             		}
                 }
-                // Added in v3.1trades
                 else
                 {
                 	// Remove illegal trades on the off-chance that a dependent mod was removed.
@@ -261,7 +256,7 @@ public class EntityMonitorHandler
                 		if (merchantrecipe.getItemToBuy()==null || merchantrecipe.getItemToBuy().getItem()==Item.getItemFromBlock(Blocks.air)
 								|| merchantrecipe.getItemToSell()==null || merchantrecipe.getItemToSell().getItem()==Item.getItemFromBlock(Blocks.air))
                 		{
-                			if (GeneralConfig.debugMessages) {LogHelper.info("Removing illegal trade at index " + i);} // Added in v3.1trades
+                			if (GeneralConfig.debugMessages) {LogHelper.info("Removing illegal trade at index " + i);}
                 			buyingList.remove(i);
                 			} // Remove the offending trade
                 	}
@@ -458,7 +453,6 @@ public class EntityMonitorHandler
                 }
             }
             
-            // Added in v3.1
             if (
             		zombie.isVillager()
             		&& !zombie.worldObj.isRemote
@@ -466,7 +460,7 @@ public class EntityMonitorHandler
             {
             	ExtendedZombieVillager ezv = ExtendedZombieVillager.get(zombie);
             	if (ezv.getBiomeType()==-1) {ezv.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(zombie));}
-            	if (ezv.getSkinTone()==-1) {ezv.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombie));} // Added in v3.2
+            	if (ezv.getSkinTone()==-1) {ezv.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombie));}
 
             	zombie.setCanPickUpLoot(false);
             	
@@ -637,7 +631,6 @@ public class EntityMonitorHandler
             ExtendedZombieVillager.register((EntityZombie) event.entity);
         }
         
-        // Added in v3.1
         else if (
         		event.entity instanceof EntityVillager
         		) {
