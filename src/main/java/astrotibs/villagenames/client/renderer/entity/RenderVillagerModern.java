@@ -100,6 +100,7 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
     private static final ResourceLocation VILLAGER_SKIN_TONE_DARK2 = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/d2.png").toString());
     private static final ResourceLocation VILLAGER_SKIN_TONE_DARK3 = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/d3.png").toString());
     private static final ResourceLocation VILLAGER_SKIN_TONE_DARK4 = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/d4.png").toString());
+    private static final ResourceLocation VILLAGER_SKIN_TIBS = new ResourceLocation(MIDLC, (new StringBuilder()).append(VAD).append("skintone/t_v.png").toString());
     
 
 	/**
@@ -120,22 +121,37 @@ public class RenderVillagerModern extends RenderLiving<EntityVillager> {
 					| GeneralConfig.profession_concat_career_a.contains((new StringBuilder()).append(professionForge).append(career).toString())
 				)
 		{
-			if (GeneralConfig.villagerSkinTones)
-			{
-				switch (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getSkinTone())
+	        // give @p minecraft:name_tag 1 0 {display:{Name:"Tibs"}}
+	        // give @p minecraft:name_tag 1 0 {display:{Name:"AstroTibs"}}
+	        
+			String trimmed_lc_villager_name = villager.getCustomNameTag().toLowerCase().trim();
+	        if (!trimmed_lc_villager_name.equals(Reference.NAME_TIBS)
+	        		& !trimmed_lc_villager_name.equals(Reference.NAME_ASTROTIBS)
+	        		& !(trimmed_lc_villager_name.length()>=11 && trimmed_lc_villager_name.substring(0, 11).equals(Reference.NAME_ASTROTIBS_OPENP))
+	        		& !(trimmed_lc_villager_name.length()>=6 && trimmed_lc_villager_name.substring(0, 6).equals(Reference.NAME_TIBS_OPENP))
+	        		)
+	        {
+				if (GeneralConfig.villagerSkinTones)
 				{
-					case 3: return VILLAGER_SKIN_TONE_LIGHT3;
-					case 2: return VILLAGER_SKIN_TONE_LIGHT2;
-					case 1: return VILLAGER_SKIN_TONE_LIGHT1;
-					default:
-					case 0: return VILLAGER_SKIN_TONE_MEDIUM;
-					case -1: return VILLAGER_SKIN_TONE_DARK1;
-					case -2: return VILLAGER_SKIN_TONE_DARK2;
-					case -3: return VILLAGER_SKIN_TONE_DARK3;
-					case -4: return VILLAGER_SKIN_TONE_DARK4;
+					switch (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null).getSkinTone())
+					{
+						case 3: return VILLAGER_SKIN_TONE_LIGHT3;
+						case 2: return VILLAGER_SKIN_TONE_LIGHT2;
+						case 1: return VILLAGER_SKIN_TONE_LIGHT1;
+						default:
+						case 0: return VILLAGER_SKIN_TONE_MEDIUM;
+						case -1: return VILLAGER_SKIN_TONE_DARK1;
+						case -2: return VILLAGER_SKIN_TONE_DARK2;
+						case -3: return VILLAGER_SKIN_TONE_DARK3;
+						case -4: return VILLAGER_SKIN_TONE_DARK4;
+					}
 				}
-			}
-			else {return VILLAGER_BASE_SKIN;}
+				else {return VILLAGER_BASE_SKIN;}	
+	        }
+	        else
+	        {
+	        	return VILLAGER_SKIN_TIBS;
+	        }
 		}
 		else
 		{

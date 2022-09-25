@@ -144,7 +144,6 @@ public class EntityMonitorHandler {
             	ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(zombievillager));
             }
 
-            // Added in v3.2
             if (ims.getSkinTone() == -99)
             {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombievillager));}
             
@@ -199,7 +198,6 @@ public class EntityMonitorHandler {
             
             if (GeneralConfig.modernVillagerTrades) {FunctionsVN.modernizeVillagerTrades(villager);}
             
-        	// Added in v3.1
     		IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
     		
             // Renovated in v3.1
@@ -247,7 +245,6 @@ public class EntityMonitorHandler {
             			if (GeneralConfig.debugMessages) LogHelper.warn("Could not invoke EntityVillager.populateBuyingList method");
             		}
                 }
-                // Added in v3.1trades
                 else
                 {
                 	// Remove illegal trades on the off-chance that a dependent mod was removed.
@@ -258,7 +255,7 @@ public class EntityMonitorHandler {
                 		if (merchantrecipe.getItemToBuy()==null || merchantrecipe.getItemToBuy().getItem()==Item.getItemFromBlock(Blocks.AIR)
 								|| merchantrecipe.getItemToSell()==null || merchantrecipe.getItemToSell().getItem()==Item.getItemFromBlock(Blocks.AIR))
                 		{
-                			if (GeneralConfig.debugMessages) {LogHelper.info("Removing illegal trade at index " + i);} // Added in v3.1trades
+                			if (GeneralConfig.debugMessages) {LogHelper.info("Removing illegal trade at index " + i);}
                 			buyingList.remove(i);
                 			} // Remove the offending trade
                 	}
@@ -271,7 +268,7 @@ public class EntityMonitorHandler {
     		if (ims.getCareer() == -1 ) {ims.setCareer((Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}));}
     		if (ims.getProfessionLevel() == -1 ) {ims.setProfessionLevel(0);} // Changed in v3.1trades
     		if (ims.getBiomeType() == -1 ) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
-    		if (ims.getSkinTone() == -99 ) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));} // Added in v3.2
+    		if (ims.getSkinTone() == -99 ) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));}  v3.2
     		*/
         }
     }
@@ -445,12 +442,11 @@ public class EntityMonitorHandler {
                     ServerInfoTracker.add(zombievillager, event.getEntity().world);
                 }
             }
-            // Added in v3.1
             if (!zombievillager.world.isRemote)
             {
             	IModularSkin ims = zombievillager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
             	if (ims.getBiomeType()==-1) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(zombievillager));}
-            	if (ims.getSkinTone()==-1) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombievillager));} // Added in v3.2
+            	if (ims.getSkinTone()==-1) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombievillager));}
             	
             	zombievillager.setCanPickUpLoot(false);
             	
@@ -543,9 +539,8 @@ public class EntityMonitorHandler {
     		if (ims.getCareer() == -1 ) {ims.setCareer((Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}));}
     		if (ims.getProfessionLevel() == -1 ) {ims.setProfessionLevel(0);} // Changed in v3.1trades
     		if (ims.getBiomeType() == -1 ) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
-    		if (ims.getSkinTone() == -99 ) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));} // Added in v3.2
+    		if (ims.getSkinTone() == -99 ) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));}
     		
-    		// Added in v3.1
     		if (
     				(villager.ticksExisted + villager.getEntityId())%5 == 0 // Ticks intermittently, modulated so villagers don't deliberately sync.
     				// v3.2: Changed profession to forge lookup
