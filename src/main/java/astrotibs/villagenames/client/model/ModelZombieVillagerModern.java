@@ -27,17 +27,30 @@ public class ModelZombieVillagerModern extends ModelBiped
         this(0.0F, 0.0F, false);
     }
 
-    public ModelZombieVillagerModern(float modelSize, float thiccness, boolean isOrdinaryZombie)
+    public ModelZombieVillagerModern(float modelSize, float thiccness, boolean isAnArmorLayer)
     {
-        super(modelSize, 0.0F, 64, isOrdinaryZombie ? 32 : 64);
+        super(modelSize, 0.0F, 64, isAnArmorLayer ? 32 : 64);
         
-        if (isOrdinaryZombie)
+        if (isAnArmorLayer)
         {
             this.bipedHead = new ModelRenderer(this, 0, 0);
             this.bipedHead.addBox(-4.0F, -10.0F, -4.0F, 8, 8, 8, modelSize);
             this.bipedHead.setRotationPoint(0.0F, 0.0F + thiccness, 0.0F);
+            
+            this.bipedBody = new ModelRenderer(this, 16, 16);
+            this.bipedBody.setRotationPoint(0.0F, 0.0F + thiccness, 0.0F);
+            this.bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, modelSize + 0.1F);
+            
+            this.bipedRightLeg = new ModelRenderer(this, 0, 16);
+            this.bipedRightLeg.setRotationPoint(-2.0F, 12.0F + thiccness, 0.0F);
+            this.bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize + 0.1F);
+            
+            this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
+            this.bipedLeftLeg.mirror = true;
+            this.bipedLeftLeg.setRotationPoint(2.0F, 12.0F + thiccness, 0.0F);
+            this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelSize + 0.1F);
         }
-        else // Is a Zombie Villager
+        else
         {
             this.bipedHead = new ModelRenderer(this);
             this.bipedHead.setRotationPoint(0.0F, 0.0F + thiccness, 0.0F);
@@ -66,13 +79,13 @@ public class ModelZombieVillagerModern extends ModelBiped
     		this.bipedBody = new ModelRenderer(this).setTextureSize(64, 64);
     		this.bipedBody.setRotationPoint(0.0F, 0.0F, 0.0F);
     		this.bipedBody.setTextureOffset(16, 20).addBox(-4.0F, 0.0F, -3.0F, 8, 12, 6, modelSize);
-    		this.bipedBody.setTextureOffset(0, 38).addBox(-4.0F, 0.0F, -3.0F, 8, 18, 6, modelSize + thiccness); // Changed in v3.1
+    		this.bipedBody.setTextureOffset(0, 38).addBox(-4.0F, 0.0F, -3.0F, 8, 18, 6, modelSize + thiccness);
     		
-    		this.bipedRightArm = new ModelRenderer(this, 44, 22).setTextureSize(64, 64); // Changed in v3.1
+    		this.bipedRightArm = new ModelRenderer(this, 44, 22).setTextureSize(64, 64);
     		this.bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
     		this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
     		
-    		this.bipedLeftArm = new ModelRenderer(this, 44, 22).setTextureSize(64, 64); // Changed in v3.1
+    		this.bipedLeftArm = new ModelRenderer(this, 44, 22).setTextureSize(64, 64);
     		this.bipedLeftArm.mirror = true;
     		this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, modelSize);
     		this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);

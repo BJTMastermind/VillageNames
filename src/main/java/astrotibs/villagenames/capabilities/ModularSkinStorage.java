@@ -13,14 +13,13 @@ import net.minecraftforge.common.capabilities.Capability.IStorage;
  * @author AstroTibs
  */
 
-// Added in v3.1
 public class ModularSkinStorage implements IStorage<IModularSkin>
 {
 	public final static String KEY_PROFESSION  = "Profession";
 	public final static String KEY_CAREER = "Career";
 	public final static String KEY_BIOMETYPE = "BiomeType";
 	public final static String KEY_PROFESSIONLEVEL = "ProfessionLevel";
-	public final static String KEY_SKINTONE = "SkinTone"; // Added in v3.2
+	public final static String KEY_SKINTONE = "SkinTone";
 	
 	
 	@Override
@@ -33,7 +32,7 @@ public class ModularSkinStorage implements IStorage<IModularSkin>
         nbttagcompound1.setInteger(KEY_CAREER, instance.getCareer());
         nbttagcompound1.setInteger(KEY_BIOMETYPE, instance.getBiomeType());
         nbttagcompound1.setInteger(KEY_PROFESSIONLEVEL, instance.getProfessionLevel());
-        nbttagcompound1.setInteger(KEY_SKINTONE, instance.getSkinTone()); // Added in v3.2
+        nbttagcompound1.setInteger(KEY_SKINTONE, instance.getSkinTone());
         
         compound.setTag(Reference.MOD_ID.toLowerCase(), nbttagcompound1); 
         
@@ -51,7 +50,7 @@ public class ModularSkinStorage implements IStorage<IModularSkin>
 		instance.setCareer(nbttagcompound1.getInteger(KEY_CAREER));
 		instance.setBiomeType(nbttagcompound1.hasKey(KEY_BIOMETYPE) ? nbttagcompound1.getInteger(KEY_BIOMETYPE) : -1);
 		instance.setProfessionLevel(nbttagcompound1.getInteger(KEY_PROFESSIONLEVEL));
-		instance.setSkinTone(nbttagcompound1.hasKey(KEY_SKINTONE) ? nbttagcompound1.getInteger(KEY_SKINTONE) : -99); // Added in v3.2
+		instance.setSkinTone(nbttagcompound1.hasKey(KEY_SKINTONE) ? nbttagcompound1.getInteger(KEY_SKINTONE) : -99);
 		
 	}
 

@@ -509,7 +509,6 @@ public final class VillageNames
     	   VillagerRegistry.VillagerCareer carLibrarian = profLibrarian.getCareer(1);
     	   VillagerRegistry.VillagerCareer carCartographer = new VillagerCareer(profLibrarian, "cartographer");
     	   
-    	   // Re-worked in v3.1trades
     	   if (!GeneralConfig.modernVillagerTrades) 
     	   {
     		   // Add new VN Cartographer trades
@@ -525,7 +524,7 @@ public final class VillageNames
             	   }
         	   }
     	   }
-    	   else // The modernized trade system, added in v3.1trades
+    	   else
     	   {
     		   // This is used to initialize trades. My FunctionVN.modernizeVillagerTrades will take over afterwards.
     		   carCartographer.addTrade(1, (new VillagerTradeHandler()).new CartographerStarterTrades() );
@@ -533,7 +532,6 @@ public final class VillageNames
     	   
        }    
        
-       // Added in v3.1trades
        if (GeneralConfig.modernVillagerTrades) {
     	   
     	   // summon Villager ~ ~ ~ {Profession:3}
@@ -605,12 +603,10 @@ public final class VillageNames
 	       	}
 		*/
 		
-		// Re-added in v3.1
         if (event.getSide() == Side.CLIENT) {
             //Minecraft.getMinecraft().getRenderManager().entityRenderMap.remove(EntityZombie.class);
             //Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityZombie.class, new VNRenderZombie(Minecraft.getMinecraft().getRenderManager()));
     		
-        	// Changed in v3.1
             if (GeneralConfig.modernVillagerSkins)
             {
             	//RenderingRegistry.registerEntityRenderingHandler(EntityVillager.class, new RenderVillagerModern()); // Modern modular villagers
@@ -642,7 +638,7 @@ public final class VillageNames
 	{
 	    // register server commands
 		event.registerServerCommand(new CommandName());
-		event.registerServerCommand(new CommandBanner()); // Added in v3.1.1
+		event.registerServerCommand(new CommandBanner());
 	}
 	
 	/**

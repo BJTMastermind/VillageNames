@@ -25,9 +25,6 @@ import net.minecraft.village.MerchantRecipeList;
 
 public class VillagerTradeHandler
 {
-	
-	// Added in v3.1trades
-	
 	// summon Villager ~ ~ ~ {Profession:1}
 	
 	/**
@@ -51,8 +48,6 @@ public class VillagerTradeHandler
 		}
 	}
 	
-	
-	// Added in v3.1trades
 	
 	// --------------------------- //
 	// --- Modern Mason trades --- //
@@ -186,13 +181,6 @@ public class VillagerTradeHandler
 					));
 		}
 	}
-	
-	
-	
-	
-	// ------------------------------------- //
-	// --- Trades added previous to v3.1 --- //
-	// ------------------------------------- //
 	
 	
 	public class CartographerLevel1 implements EntityVillager.ITradeList {

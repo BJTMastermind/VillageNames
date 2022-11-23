@@ -69,7 +69,7 @@ public class ServerInfoTracker
      */
     public static void add(EntityZombie zombie, World world)
     {
-    	IModularSkin ims = zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null); // Fixed in v3.1
+    	IModularSkin ims = zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
         ServerInfoTracker.add(EventType.ZOMBIE, new EventTracker(zombie, ims), world);
     }
 

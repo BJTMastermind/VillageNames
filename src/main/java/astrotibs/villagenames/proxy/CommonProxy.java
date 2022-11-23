@@ -42,7 +42,6 @@ public class CommonProxy {
 		// Achievements
 		registerAchievements();
 		
-		// Capabilities - added in v3.1
 		registerCapabilities();
 	}
 	
@@ -94,7 +93,6 @@ public class CommonProxy {
 		
 	}
 	
-	// Added in v3.1
 	protected void registerCapabilities()
 	{
 		CapabilityManager.INSTANCE.register(IModularSkin.class, new ModularSkinStorage(), ModularSkin.class);

@@ -82,7 +82,6 @@ public class EntityMonitorHandler
     }
     
     
-    // Re-added in v3.1
     @SubscribeEvent
     public void onPlayerStartTracking(PlayerEvent.StartTracking event) {
     	
@@ -133,8 +132,6 @@ public class EntityMonitorHandler
 
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-
-    	// Renovated in v3.1
     	
     	// New entity is a Zombie. Check to see if it came into being via a killed Villager.
         if (
@@ -155,7 +152,6 @@ public class EntityMonitorHandler
             if (ims.getSkinTone() == -99)
             {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombievillager));}
             
-            // Renovated in v3.1
             if (event.getWorld().isRemote) {
                 // Looks for info sent by the server that should be applied to the zombie (e.g. villager profession)
                 ClientInfoTracker.SyncZombieMessage(zombievillager);
@@ -210,7 +206,6 @@ public class EntityMonitorHandler
             
     		IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
     		
-            // Renovated in v3.1
             if (event.getWorld().isRemote)
             {
                 // Looks for info sent by the server that should be applied to the zombie (e.g. villager profession)
@@ -276,9 +271,9 @@ public class EntityMonitorHandler
     		// Try to assign a biome number if this villager has none.
     		if (ims.getProfession() == -1 ) {ims.setProfession(villager.getProfession());}
     		if (ims.getCareer() == -1 ) {ims.setCareer((Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}));}
-    		if (ims.getProfessionLevel() == -1 ) {ims.setProfessionLevel(0);} // Changed in v3.1trades
+    		if (ims.getProfessionLevel() == -1 ) {ims.setProfessionLevel(0);}
     		if (ims.getBiomeType() == -1 ) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
-    		if (ims.getSkinTone() == -99 ) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));}  v3.2
+    		if (ims.getSkinTone() == -99 ) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));}
             */
         }
 
@@ -495,8 +490,6 @@ public class EntityMonitorHandler
         	
             final EntityLiving guard = (EntityLiving) event.getEntity();
             
-            // Re-enabled in v3.1
-            
             if (event.getEntity().worldObj.isRemote)
             {
             	// Looks for info sent by the server that should be applied to the zombie (e.g. villager profession)
@@ -527,7 +520,7 @@ public class EntityMonitorHandler
         // --- Initialize villager trades and sync skin with client --- //
         
         else if (
-        		event.getEntity().getClass().toString().substring(6).equals(Reference.VILLAGER_CLASS) // Explicit vanilla villager class - v3.2.4
+        		event.getEntity().getClass().toString().substring(6).equals(Reference.VILLAGER_CLASS)
 				&& !event.getEntity().worldObj.isRemote
         		)
         {
@@ -550,13 +543,13 @@ public class EntityMonitorHandler
     		// Try to assign a biome number if this villager has none.
     		if (ims.getProfession() == -1 ) {ims.setProfession(villager.getProfession());}
     		if (ims.getCareer() == -1 ) {ims.setCareer((Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}));}
-    		if (ims.getProfessionLevel() == -1 ) {ims.setProfessionLevel(0);} // Changed in v3.1trades
+    		if (ims.getProfessionLevel() == -1 ) {ims.setProfessionLevel(0);}
     		if (ims.getBiomeType() == -1 ) {ims.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
     		if (ims.getSkinTone() == -99 ) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));}
     		
     		if (
     				(villager.ticksExisted + villager.getEntityId())%5 == 0 // Ticks intermittently, modulated so villagers don't deliberately sync.
-    				// v3.2: changed 5 to 4 because there are no Nitwits, changed profession to forge lookup
+    				// Changed 5 to 4 because there are no Nitwits, changed profession to forge lookup
     				&& ims.getProfession() >= 0 && (ims.getProfession() <=4 || GeneralConfig.professionID_a.indexOf(villager.getProfessionForge().getRegistryName().toString()) != -1) // This villager ID is specified in the configs
     				)
     		{
@@ -663,7 +656,6 @@ public class EntityMonitorHandler
             	}
             }
             
-             v3.1
             else if (
             		event.getEntity() instanceof EntityVillager
             		)

@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerVillagerArmor;
-import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -78,7 +77,6 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 	private static final ResourceLocation ZOMBIE_VILLAGER_PROFESSION_LEVEL_DIAMOND = new ResourceLocation((Reference.MOD_ID).toLowerCase(), (new StringBuilder()).append(ZVAD).append("profession_level/diamond.png").toString());
 	
 	// Vanilla textures
-    private static final ResourceLocation ZOMBIE_PIGMAN_TEXTURE = new ResourceLocation("textures/entity/zombie_pigman.png");
     private static final ResourceLocation ZOMBIE_TEXTURE = new ResourceLocation("textures/entity/zombie/zombie.png");
     
     // Re-added to allow for profession-based vanilla zombie textures
@@ -90,10 +88,10 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
     private static final ResourceLocation ZOMBIE_VILLAGER_BUTCHER_LOCATION = new ResourceLocation((new StringBuilder()).append(ZVAD).append("zombie_butcher.png").toString());
     
     
-    private final ModelBiped field_82434_o;
+    private final ModelBiped defaultModel;
     private final ModelZombieVillagerModern zombieVillagerModel;
-    private final List<LayerRenderer<EntityZombie>> field_177121_n;
-    private final List<LayerRenderer<EntityZombie>> field_177122_o;
+    private final List<LayerRenderer<EntityZombie>> villagerLayers;
+    private final List<LayerRenderer<EntityZombie>> defaultLayers;
 
     public RenderZombieVillagerModern(RenderManager renderManagerIn)
     {
@@ -105,8 +103,8 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 		//this.addLayer(new LayerZombieVillagerProfessionLevel(this));
 		
         
-        LayerRenderer layerrenderer = (LayerRenderer)this.layerRenderers.get(0);
-        this.field_82434_o = this.modelBipedMain;
+        LayerRenderer<?> layerrenderer = (LayerRenderer)this.layerRenderers.get(0);
+        this.defaultModel = this.modelBipedMain;
         this.zombieVillagerModel = new ModelZombieVillagerModern();
         this.addLayer(new LayerHeldItem(this));
         LayerBipedArmor layerbipedarmor = new LayerBipedArmor(this)
@@ -118,7 +116,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
             }
         };
         this.addLayer(layerbipedarmor);
-        this.field_177122_o = Lists.newArrayList(this.layerRenderers);
+        this.defaultLayers = Lists.newArrayList(this.layerRenderers);
 
         if (layerrenderer instanceof LayerCustomHead)
         {
@@ -128,7 +126,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 
         this.removeLayer(layerbipedarmor);
         this.addLayer(new LayerVillagerArmor(this));
-        this.field_177121_n = Lists.newArrayList(this.layerRenderers);
+        this.villagerLayers = Lists.newArrayList(this.layerRenderers);
         
     }
 
@@ -141,7 +139,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
     @Override
     public void doRender(EntityZombie entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        this.func_82427_a(entity);
+        this.swapArmor(entity);
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 
@@ -151,10 +149,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
     @Override
     protected ResourceLocation getEntityTexture(EntityZombie zombie)
     {
-    	if (zombie instanceof EntityPigZombie) { // Is a zombie pigman
-    		return ZOMBIE_PIGMAN_TEXTURE;
-    	}
-    	else if ( zombie.isVillager() ) // Is a zombie villager
+    	if ( zombie.isVillager() ) // Is a zombie villager
     	{
     		IModularSkin ims = zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
     		int profession = zombie.getVillagerType();
@@ -217,31 +212,31 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
         }
     }
     
-    private void func_82427_a(EntityZombie zombie)
+    private void swapArmor(EntityZombie zombie)
     {
         if (zombie.isVillager())
         {
             this.mainModel = this.zombieVillagerModel;
-            this.layerRenderers = this.field_177121_n;
+            this.layerRenderers = this.villagerLayers;
         }
         else
         {
-            this.mainModel = this.field_82434_o;
-            this.layerRenderers = this.field_177122_o;
+            this.mainModel = this.defaultModel;
+            this.layerRenderers = this.defaultLayers;
         }
 
         this.modelBipedMain = (ModelBiped)this.mainModel;
     }
     
     @Override
-    protected void rotateCorpse(EntityZombie bat, float p_77043_2_, float p_77043_3_, float partialTicks)
+    protected void rotateCorpse(EntityZombie entityLiving, float p_77043_2_, float p_77043_3_, float partialTicks)
     {
-        if (bat.isConverting())
+        if (entityLiving.isConverting())
         {
-            p_77043_3_ += (float)(Math.cos((double)bat.ticksExisted * 3.25D) * Math.PI * 0.25D);
+            p_77043_3_ += (float)(Math.cos((double)entityLiving.ticksExisted * 3.25D) * Math.PI * 0.25D);
         }
 
-        super.rotateCorpse(bat, p_77043_2_, p_77043_3_, partialTicks);
+        super.rotateCorpse(entityLiving, p_77043_2_, p_77043_3_, partialTicks);
     }
     
     
@@ -263,6 +258,8 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 	    @Override
 	    public void doRenderLayer(EntityZombie zombie, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
+	    	if (!zombie.isVillager()) {return;}
+	    	
 	    	IModularSkin ims = zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
 //	    	int profession = zombie.getVillagerType();
 //			int careerID = ims==null ? -1 :ims.getCareer();
@@ -344,6 +341,8 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 	    @Override
 	    public void doRenderLayer(EntityZombie zombie, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
 	    {
+	    	if (!zombie.isVillager()) {return;}
+	    	
 	    	IModularSkin ims = zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
 	    	int profession = zombie.getVillagerType();
 	    	
