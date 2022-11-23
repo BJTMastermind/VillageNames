@@ -1002,7 +1002,7 @@ public class NameGenerator {
 			}
 		}
 
-		// Removed in v3.2 because there is an official Nitwit
+		// Removed in because there is an official Nitwit
 		/*
 		// VN Nitwit
 		else if (targetPName.equals(Reference.MOD_ID.toLowerCase()+":nitwit"))

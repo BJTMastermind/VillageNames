@@ -556,7 +556,6 @@ public final class VillageNames
             //Minecraft.getMinecraft().getRenderManager().entityRenderMap.remove(EntityZombie.class);
             //Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityZombie.class, new VNRenderZombie(Minecraft.getMinecraft().getRenderManager()));
     		
-        	// Changed in v3.1
             if (GeneralConfig.modernVillagerSkins)
             {
             	//RenderingRegistry.registerEntityRenderingHandler(EntityVillager.class, new RenderVillagerModern()); // Modern modular villagers
@@ -591,7 +590,7 @@ public final class VillageNames
 	{
 	    // register server commands
 		event.registerServerCommand(new CommandName());
-		event.registerServerCommand(new CommandBanner()); // Added in v3.1.1
+		event.registerServerCommand(new CommandBanner());
 	}
 	
 	/**

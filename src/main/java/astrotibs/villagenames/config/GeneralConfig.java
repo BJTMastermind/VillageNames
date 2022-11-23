@@ -280,7 +280,7 @@ public class GeneralConfig {
 				//"demon||net.minecraft.entity.boss.EntityWither|add",
 				"villager-goblin|Witch|net.minecraft.entity.monster.EntityWitch|add",
 				"alien-golem|Elder Guardian|net.minecraft.entity.monster.EntityElderGuardian|add",
-				//"dragon-angel|Ender Dragon|net.minecraft.entity.boss.EntityDragon|add", // Re-enabled in v3.1dragon
+				//"dragon-angel|Ender Dragon|net.minecraft.entity.boss.EntityDragon|add",
 				"villager-demon|Evoker|net.minecraft.entity.monster.EntityEvoker|add",
 				"villager-demon|Vindicator|net.minecraft.entity.monster.EntityVindicator|add",
 				"villager-demon|Illusioner|net.minecraft.entity.monster.EntityIllusionIllager|add",

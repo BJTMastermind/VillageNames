@@ -37,13 +37,13 @@ public class CommonProxy {
 		MinecraftForge.EVENT_BUS.register( new WellDecorateEvent() );
 		MinecraftForge.EVENT_BUS.register( new ConfigReloader() );
 		MinecraftForge.EVENT_BUS.register( new SpawnNamingHandler() );
-		MinecraftForge.EVENT_BUS.register( new CapabilityAttach() ); //Added in v3.1
+		MinecraftForge.EVENT_BUS.register( new CapabilityAttach() );
 		if (GeneralConfig.codexChestLoot) MinecraftForge.EVENT_BUS.register(new ChestLootHandler());
 		
 		// Achievements
 		registerAchievements();
 
-		// Capabilities - added in v3.1
+		// Capabilities
 		registerCapabilities();
 	}
 	
@@ -95,7 +95,6 @@ public class CommonProxy {
 		
 	}
 
-	// Added in v3.1
 	protected void registerCapabilities()
 	{
 		CapabilityManager.INSTANCE.register(IModularSkin.class, new ModularSkinStorage(), ModularSkin.class);

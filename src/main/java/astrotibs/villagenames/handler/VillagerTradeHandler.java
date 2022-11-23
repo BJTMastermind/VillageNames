@@ -28,9 +28,6 @@ import net.minecraft.village.MerchantRecipeList;
 public class VillagerTradeHandler
 {
 
-	
-	// Added in v3.1trades
-	
 	// --------------------------- //
 	// --- Modern Mason trades --- //
 	// --------------------------- //
@@ -164,12 +161,6 @@ public class VillagerTradeHandler
 		}
 	}
 	
-	
-	
-	
-	// ------------------------------------- //
-	// --- Trades added previous to v3.1 --- //
-	// ------------------------------------- //
 	
 	
 	// ---------------------------------------------------------- //
