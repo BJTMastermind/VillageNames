@@ -90,22 +90,20 @@ public class EventTracker
         		villager.getEntityId(),
         		new Vec3i(villager.posX, villager.posY + 0.5D, villager.posZ),
         		villager.getCustomNameTag(),
-        		// Object revised in v3.1
         		new Object[] {
         				
         				villager.getProfession(),
 
-        				// Changed in v3.2 to actually use ims
         				ims.getCareer(),
         				villager.isChild(),
-        				(GeneralConfig.modernVillagerSkins) ? ims.getBiomeType() : -1, // Added in v3.1
-                		(GeneralConfig.modernVillagerSkins) ? ims.getProfessionLevel() : -1, // Added in v3.1
-						(GeneralConfig.modernVillagerSkins && GeneralConfig.villagerSkinTones) ? ims.getSkinTone() : -99 // Added in v3.2
+        				(GeneralConfig.modernVillagerSkins) ? ims.getBiomeType() : -1,
+                		(GeneralConfig.modernVillagerSkins) ? ims.getProfessionLevel() : -1,
+						(GeneralConfig.modernVillagerSkins && GeneralConfig.villagerSkinTones) ? ims.getSkinTone() : -99
         				/*
         				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}),
         				villager.isChild(),
-        				(GeneralConfig.modernVillagerSkins) ? (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getBiomeType() : -1, // Added in v3.1
-        				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}), // Added in v3.1
+        				(GeneralConfig.modernVillagerSkins) ? (villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null)).getBiomeType() : -1,
+        				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}),
         				*/
         				}
         		);
@@ -122,19 +120,18 @@ public class EventTracker
     }
 
     
-    public EventTracker(EntityZombie zombie, IModularSkin ims) { // Changed to IModularSkin in v3.1
+    public EventTracker(EntityZombie zombie, IModularSkin ims) {
     	this(
     			zombie.getEntityId(),
     			new Vec3i(zombie.posX, zombie.posY + 0.5D, zombie.posZ),
     			zombie.getCustomNameTag(),
-	   			 // Added Object structure in v3.1
 	   			new Object[] {
 	   					ims.getProfession(),
 	   					ims.getCareer(),
 	       				zombie.isChild(),
 	       				(GeneralConfig.modernVillagerSkins) ? ims.getBiomeType() : -1,
 	       				(GeneralConfig.modernVillagerSkins) ? ims.getProfessionLevel() : -1,
-        				(GeneralConfig.villagerSkinTones) ? ims.getSkinTone() : -99, // Added in v3.2
+        				(GeneralConfig.villagerSkinTones) ? ims.getSkinTone() : -99,
 	       				}
     			);
     }
@@ -143,7 +140,7 @@ public class EventTracker
      * Updates a zombie entity with the villager info this object is tracking.
      * 
      */
-    public void updateZombie(EntityJoinWorldEvent event, IModularSkin ims) // Changed to IModularSkin in v3.1
+    public void updateZombie(EntityJoinWorldEvent event, IModularSkin ims)
     {
     	EntityZombie zombie = (EntityZombie) event.getEntity();
     	
@@ -154,10 +151,9 @@ public class EventTracker
         final int profession = (Integer) extraInfo[0];
         final int career     = (Integer) extraInfo[1];
         final boolean isBaby = (Boolean) extraInfo[2];
-        // Added in v3.1
         final int biomeType = (Integer) extraInfo[3];
         final int professionLevel = (Integer) extraInfo[4];
-        final int skinTone = (Integer) extraInfo[5]; // Added in v3.2
+        final int skinTone = (Integer) extraInfo[5];
 
         // Custom name
         //if (this.getCustomName() != "") {
@@ -186,7 +182,6 @@ public class EventTracker
         // Adult or child
         zombie.setChild(isBaby);
 
-        // Re-enabled in v3.1
         // Profession
         //if ( customName.equals( I18n.format(Reference.PMSheepmanSmithUnlocalized) ) ) {
         if ( customName.equals( PMSSUnloc ) ) {
@@ -206,7 +201,6 @@ public class EventTracker
         }
         
 
-        // Added in v3.1
         // BiomeType
         if (ims.getBiomeType() <0)
         {
@@ -218,7 +212,6 @@ public class EventTracker
         }
 
 
-        // Added in v3.2
         // SkinTone
         if (ims.getSkinTone() == -99) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombie));}
         else {ims.setSkinTone(skinTone);}
@@ -249,8 +242,7 @@ public class EventTracker
      * Updates a village guard entity with the villager info this object is tracking.
      * 
      */
-    // Re-introduced in v3.1
-    public void updateGuard(LivingUpdateEvent event, IModularSkin ims) // Changed to IModularSkin in v3.1
+    public void updateGuard(LivingUpdateEvent event, IModularSkin ims)
     {
     	EntityLiving guard = (EntityLiving) event.getEntity();
     	NBTTagCompound compound = new NBTTagCompound();
@@ -288,7 +280,7 @@ public class EventTracker
         					&& ( !(guard instanceof EntityVillager) || targetAge>=0 )
         					)
         			) { // Target is named but does not have job tag: add one!
-        		customName = customName + " " + NameGenerator.getCareerTag(guard.getClass().toString().substring(6), 0, "", 0, "witcheryGuard"); // v3.2: added black ProfessionForge string
+        		customName = customName + " " + NameGenerator.getCareerTag(guard.getClass().toString().substring(6), 0, "", 0, "witcheryGuard");
         		customName = customName.trim();
 			}
         	
@@ -315,12 +307,10 @@ public class EventTracker
         final int profession = (Integer) extraInfo[0];
         final int career     = (Integer) extraInfo[1];
         final boolean isBaby = (Boolean) extraInfo[2];
-        // Added in v3.1
         final int biomeType = (Integer) extraInfo[3];
         final int professionLevel = (Integer) extraInfo[4];
-        final int skinTone = (Integer) extraInfo[5]; // Added in v3.2
+        final int skinTone = (Integer) extraInfo[5];
 
-        // Renovated in v3.1
         String customName = this.getCustomName();
         
         // Custom name
@@ -356,7 +346,6 @@ public class EventTracker
         	ims.setCareer(0);
         }
         
-        // Added in v3.1
         // BiomeType
         if (ims.getBiomeType() <0)
         {
@@ -367,7 +356,6 @@ public class EventTracker
         	ims.setBiomeType(biomeType);
         }
 
-        // Added in v3.2
         // SkinTone
         if (ims.getSkinTone() == -99) {ims.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));}
         else {ims.setSkinTone(skinTone);}

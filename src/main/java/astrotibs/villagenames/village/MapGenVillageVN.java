@@ -393,7 +393,7 @@ public class MapGenVillageVN extends MapGenVillage
         	
         	
             // === FORCE A SPECIFIC STARTER FOR TESTING PURPOSES === //
-        	//start = new JungleStructures.JungleCocoaTree(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize);
+//        	start = new PlainsStructures.PlainsMeetingPoint1(world.getBiomeProvider(), 0, random, (chunkX << 4) + 2, (chunkZ << 4) + 2, list, villageSize);
             
         	
         	

@@ -119,7 +119,6 @@ public class GeneralConfig {
 	    wellBoundary = config.getBoolean("Well boundary", Reference.CATEGORY_GENERAL, true, "Whether to surround the well with colored blocks");
 	    wellSlabs = config.getBoolean("Well slabs", Reference.CATEGORY_GENERAL, true, "Replace the cobblestone rims of wells with stone slabs, making it easier for players and villagers to escape if they fall in.");
 
-	    // Added in v3.1banner
 	    villageBanners = config.getBoolean("Village Banner", Reference.CATEGORY_GENERAL, true, "The town banner pattern is displayed at the town center.");
 	    signYaw = config.getInt("Sign Yaw", Reference.CATEGORY_GENERAL, 3, 0, 4, "If Village Banner is enabled: Degree to which well signs and banners should face inward. At 0 they face directly outward away from the well; at 4 they face each other.");
 	    

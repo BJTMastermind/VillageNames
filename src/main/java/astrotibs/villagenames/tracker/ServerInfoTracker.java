@@ -62,7 +62,6 @@ public class ServerInfoTracker
         ServerInfoTracker.add(EventType.VILLAGER, new EventTracker(villager, ims), world);
     }
     
-    // Re-introduced in v3.1
     /**
      * Adds zombie information that should be tracked on the server.
      * Used to track zombies villagers that were about to be cured.

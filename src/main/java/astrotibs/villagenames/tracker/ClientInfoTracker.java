@@ -78,9 +78,6 @@ public class ClientInfoTracker
     }
     
     
-    
-    // Reintroduced and renovated in v3.1
-    
     /**
      * Attempts to locate the entity by its ID and apply the 
      * extended properties.
@@ -105,7 +102,6 @@ public class ClientInfoTracker
     /**
      * Attempts to locate a message with Extended Properties and apply to the zombie. 
      */
-    // Reintroduced and renovated in v3.1
     @SideOnly(Side.CLIENT)
     public static void SyncZombieMessage(EntityZombie zombie) {
         
@@ -117,9 +113,9 @@ public class ClientInfoTracker
         	IModularSkin ims = zombie.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
         	ims.setProfession(msg.getProfession());
         	ims.setCareer(msg.getCareer());
-        	ims.setBiomeType(msg.getBiomeType()); // Added in v3.1
-        	ims.setProfessionLevel(msg.getProfessionLevel()); // Added in v3.1
-            ims.setSkinTone(msg.getSkinTone()); // Added in v3.2
+        	ims.setBiomeType(msg.getBiomeType());
+        	ims.setProfessionLevel(msg.getProfessionLevel());
+            ims.setSkinTone(msg.getSkinTone());
         } 
     }
     
@@ -130,7 +126,6 @@ public class ClientInfoTracker
      * Attempts to locate the entity by its ID and apply the 
      * extended properties.
      */
-    // Reintroduced and renovated in v3.1
     @SideOnly(Side.CLIENT)
     public static void SyncGuardMessage(int entityID) {
 
@@ -149,7 +144,6 @@ public class ClientInfoTracker
     /**
      * Attempts to locate a message with Extended Properties and apply to the guard. 
      */
-    // Reintroduced and renovated in v3.1
     @SideOnly(Side.CLIENT)
     public static void SyncGuardMessage(EntityLiving guard) {
         
@@ -164,11 +158,6 @@ public class ClientInfoTracker
         } 
     }
     
-    
-    
-    
-    
-    // Added in v3.1
     
     // --------------------------------- //
     // --- Modern Villager Skin part --- //
@@ -204,7 +193,7 @@ public class ClientInfoTracker
         if (
         		entity instanceof EntityVillager
         		&& ((EntityVillager)entity).getProfession() >=0
-        		//&& ((EntityVillager)entity).getProfession() <=5 Removed in v3.2 to ensure syncing
+        		//&& ((EntityVillager)entity).getProfession() <=5 Removed to ensure syncing
         		) {
             ClientInfoTracker.syncModernVillagerMessage((EntityVillager)entity);
         }
@@ -225,9 +214,9 @@ public class ClientInfoTracker
         	IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
         	ims.setProfession(msg.getProfession());
         	ims.setCareer(msg.getCareer());
-        	ims.setBiomeType(msg.getBiomeType()); // Added in v3.1
-        	ims.setProfessionLevel(msg.getProfessionLevel()); // Added in v3.1
-        	ims.setSkinTone(msg.getSkinTone()); // Added in v3.2
+        	ims.setBiomeType(msg.getBiomeType());
+        	ims.setProfessionLevel(msg.getProfessionLevel());
+        	ims.setSkinTone(msg.getSkinTone());
         } 
     }
     

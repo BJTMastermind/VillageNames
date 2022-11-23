@@ -21,7 +21,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
  *
  */
 
-// Revised in v3.1
 public class NetworkHelper
 {
 	
@@ -46,8 +45,8 @@ public class NetworkHelper
             		villagerID,
             		ims.getProfession(),
             		ims.getCareer(),
-            		ims.getBiomeType(), // Updated in v3.1
-            		ims.getProfessionLevel(), // Updated in v3.1
+            		ims.getBiomeType(),
+            		ims.getProfessionLevel(),
             		ims.getSkinTone()
             		);
             
@@ -62,12 +61,12 @@ public class NetworkHelper
         @Override
         public IMessage onMessage(MessageModernVillagerSkin message, MessageContext ctx) {
             
-            if ( // Changed if condition in v3.1
+            if (
     				//GeneralConfig.villagerCareers
     				//&& (
 					message.getEntityID() > 0
 					&& message.getProfession() >= 0
-					//&& message.getProfession() <= 5 // v3.2 - Deactivated to allow modded modular villager skins
+					//&& message.getProfession() <= 5 // Deactivated to allow modded modular villager skins
 					//&& message.getCareer() > 0 // Deactivated to allow Nitwit syncing
     				//		)
             		) { 
@@ -105,9 +104,9 @@ public class NetworkHelper
             		zombieId,
             		ims.getProfession(),
             		ims.getCareer(),
-            		ims.getBiomeType(), // Updated in v3.1
-            		ims.getProfessionLevel(), // Updated in v3.1
-            		ims.getSkinTone() // v3.2
+            		ims.getBiomeType(),
+            		ims.getProfessionLevel(),
+            		ims.getSkinTone()
             		);
             if (GeneralConfig.debugMessages) { // Debug
             	//LogHelper.info("** Sending Message: Zombie Profession **");

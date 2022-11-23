@@ -12,7 +12,6 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
  * @author AstroTibs
  */
 
-//Added in v3.1
 public class ModularSkinProvider implements ICapabilitySerializable<NBTBase>
 {
 	@CapabilityInject(IModularSkin.class)

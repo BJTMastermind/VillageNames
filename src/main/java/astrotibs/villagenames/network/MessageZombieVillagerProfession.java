@@ -20,14 +20,14 @@ public class MessageZombieVillagerProfession implements IMessage
     public MessageZombieVillagerProfession() {}
 
     public MessageZombieVillagerProfession(int entityID, int profession, int career, int biomeType, int professionLevel
-    		, int skinTone // v3.2
-    		) { // Changed in v3.1
+    		, int skinTone
+    		) {
         this.entityID = entityID;
         this.profession = profession;
         this.career = career;
-        this.biomeType = biomeType; // Added in v3.1
-        this.professionLevel = biomeType; // Added in v3.1
-        this.skinTone = skinTone; // v3.2
+        this.biomeType = biomeType;
+        this.professionLevel = biomeType;
+        this.skinTone = skinTone;
 
     }
 
@@ -36,9 +36,9 @@ public class MessageZombieVillagerProfession implements IMessage
     private int entityID;
     private int profession;
     private int career;
-    private int biomeType; // Added in v3.1
-    private int professionLevel; // Added in v3.1
-    private int skinTone; // Added in v3.2
+    private int biomeType;
+    private int professionLevel;
+    private int skinTone;
 
     
 
@@ -46,9 +46,9 @@ public class MessageZombieVillagerProfession implements IMessage
     public int getProfession() {return this.profession;}
     public int getCareer() {return this.career;}
     public int getEntityID() {return this.entityID;}
-    public int getBiomeType() {return this.biomeType;} // Added in v3.1
-    public int getProfessionLevel() {return this.professionLevel;} // Added in v3.1
-    public int getSkinTone() {return this.skinTone;} // Added in v3.2
+    public int getBiomeType() {return this.biomeType;}
+    public int getProfessionLevel() {return this.professionLevel;}
+    public int getSkinTone() {return this.skinTone;}
 
     
 
@@ -59,9 +59,9 @@ public class MessageZombieVillagerProfession implements IMessage
         this.entityID = buf.readInt();
         this.profession = buf.readInt();
         this.career = buf.readInt();
-        this.biomeType = buf.readInt(); // Added in v3.1
-        this.professionLevel = buf.readInt(); // Added in v3.1
-        this.skinTone = buf.readInt(); // Added in v3.2
+        this.biomeType = buf.readInt();
+        this.professionLevel = buf.readInt();
+        this.skinTone = buf.readInt();
 
         // note - maybe use ByteBufUtils
     }
@@ -74,9 +74,9 @@ public class MessageZombieVillagerProfession implements IMessage
         buf.writeInt(this.entityID);
         buf.writeInt(this.profession);
         buf.writeInt(this.career);
-        buf.writeInt(this.biomeType); // Added in v3.1
-        buf.writeInt(this.professionLevel); // Added in v3.1
-        buf.writeInt(this.skinTone); // Added in v3.2
+        buf.writeInt(this.biomeType);
+        buf.writeInt(this.professionLevel);
+        buf.writeInt(this.skinTone);
 
     }
 
@@ -92,12 +92,10 @@ public class MessageZombieVillagerProfession implements IMessage
         r.append(this.getProfession());
         r.append(", Career = ");
         r.append(this.getCareer());
-        // Added in v3.1
         r.append(", Biome = ");
         r.append(this.getBiomeType());
         r.append(", Profession Level = ");
         r.append(this.getProfessionLevel());
-        // v3.2
         r.append(", Skin Tone = ");
         r.append(this.getSkinTone());
         
