@@ -14,24 +14,23 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
  *
  */
 
-// Added in v3.1
 
 public class MessageModernVillagerSkin implements IMessage
 {
 	// Constructors
 	public MessageModernVillagerSkin() {}
     public MessageModernVillagerSkin(int entityID, int profession, int career, int biomeType, int professionLevel,
-    		int professionLevelVN, int careerVN // Added in v3.1trades
-    		, int skinTone // Added in v3.2
+    		int professionLevelVN, int careerVN
+    		, int skinTone
     		) {
         this.entityID = entityID;
         this.profession = profession;
         this.career = career;
         this.biomeType = biomeType;
         this.professionLevel = professionLevel;
-        this.professionLevelVN = professionLevelVN; // Added in v3.1trades
-        this.careerVN = careerVN; // Added in v3.1trades
-        this.skinTone = skinTone; // v3.2
+        this.professionLevelVN = professionLevelVN;
+        this.careerVN = careerVN;
+        this.skinTone = skinTone;
     }
 
     // Fields to be used by this message
@@ -40,9 +39,9 @@ public class MessageModernVillagerSkin implements IMessage
     private int career;
     private int biomeType;
     private int professionLevel;
-    private int professionLevelVN; // Added in v3.1trades
-    private int careerVN; // Added in v3.1trades
-    private int skinTone; // V3.2
+    private int professionLevelVN;
+    private int careerVN;
+    private int skinTone;
 
 
     // Getters
@@ -51,9 +50,9 @@ public class MessageModernVillagerSkin implements IMessage
     public int getEntityID() {return this.entityID;}
     public int getBiomeType() {return this.biomeType;}
     public int getProfessionLevel() {return this.professionLevel;}
-    public int getProfessionLevelVN() {return this.professionLevelVN;} // Added in v3.1trades
-    public int getCareerVN() {return this.careerVN;} // Added in v3.1trades
-    public int getSkinTone() {return this.skinTone;} // v3.2
+    public int getProfessionLevelVN() {return this.professionLevelVN;}
+    public int getCareerVN() {return this.careerVN;}
+    public int getSkinTone() {return this.skinTone;}
 
     
     // Reads the packet
@@ -65,9 +64,9 @@ public class MessageModernVillagerSkin implements IMessage
         this.career = buf.readInt();
         this.biomeType = buf.readInt();
         this.professionLevel = buf.readInt();
-        this.professionLevelVN = buf.readInt(); // Added in v3.1trades
-        this.careerVN = buf.readInt(); // Added in v3.1trades
-        this.skinTone = buf.readInt(); // v3.2
+        this.professionLevelVN = buf.readInt();
+        this.careerVN = buf.readInt();
+        this.skinTone = buf.readInt();
 
         // note - maybe use ByteBufUtils
     }
@@ -82,9 +81,9 @@ public class MessageModernVillagerSkin implements IMessage
         buf.writeInt(this.career);
         buf.writeInt(this.biomeType);
         buf.writeInt(this.professionLevel);
-        buf.writeInt(this.professionLevelVN); // Added in v3.1trades
-        buf.writeInt(this.careerVN); // Added in v3.1trades
-        buf.writeInt(this.skinTone); // v3.2
+        buf.writeInt(this.professionLevelVN);
+        buf.writeInt(this.careerVN);
+        buf.writeInt(this.skinTone);
 
     }
 
@@ -105,11 +104,10 @@ public class MessageModernVillagerSkin implements IMessage
         r.append(this.getBiomeType());
         r.append(", Profession Level = ");
         r.append(this.getProfessionLevel());
-        r.append(", Profession Level VN = "); // Added in v3.1trades
-        r.append(this.getProfessionLevelVN()); // Added in v3.1trades
-        r.append(", Career VN = "); // Added in v3.1trades
-        r.append(this.getCareerVN()); // Added in v3.1trades
-        // v3.2
+        r.append(", Profession Level VN = ");
+        r.append(this.getProfessionLevelVN());
+        r.append(", Career VN = ");
+        r.append(this.getCareerVN());
         r.append(", Skin Tone = ");
         r.append(this.getSkinTone());
         

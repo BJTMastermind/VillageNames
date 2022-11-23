@@ -82,7 +82,7 @@ public class ItemCodex extends Item {
     		
     		if (player.inventory.hasItem(Items.book)) {
     			
-    			MapGenStructureData structureData=null; //v3.2.1
+    			MapGenStructureData structureData=null;
     			World worldIn = player.worldObj;
     			int[ ] BB = new int[6];
     			boolean playerIsInVillage = false; // Set to true if you're in a village; used for Ghost Town achievement.
@@ -171,7 +171,6 @@ public class ItemCodex extends Item {
     			int signY = -1;
     			int signZ = -1;
 
-    			// v3.2.1
     			final boolean usingOTG = Loader.isModLoaded("openterraingenerator");
     			
     			structureLoop:
@@ -179,7 +178,6 @@ public class ItemCodex extends Item {
     				
     				try {
     					
-    					// v3.2.1
     					for (String s : usingOTG ? new String[]{"OTG",""} : new String[]{""} )
     					{
     						structureData = (MapGenStructureData)worldIn.getPerWorldStorage().loadData(MapGenStructureData.class, s+structureTypes.get(i));
@@ -201,8 +199,6 @@ public class ItemCodex extends Item {
         						
         						try {
         							
-        							// v3.2.1 - Removed "Village or Valid" condition.
-        							
         							int[] boundingBox = nbttagcompound2.getIntArray("BB");
         							// Now check to see if the player is inside the feature
         							if (
@@ -216,7 +212,7 @@ public class ItemCodex extends Item {
         								
         								// Specifically check if this is a Village.
         								// If so, you can pass this for checking the Ghost Town achievement.
-        								if (structureTypes.get(i).equals("Village") || structureTypes.get(i).equals("OTGVillage")) // v3.2.1
+        								if (structureTypes.get(i).equals("Village") || structureTypes.get(i).equals("OTGVillage"))
         								{
         									playerIsInVillage = true;
         								}
@@ -254,10 +250,10 @@ public class ItemCodex extends Item {
             					            if (structureType.equals("Temple")) {
             					            	
             					            	BiomeGenBase biomeYoureIn = world.getBiomeGenForCoords(new BlockPos(MathHelper.floor_double(player.posX), 0, MathHelper.floor_double(player.posZ)));
-            					            	String structure_id = nbttagcompound2.getString("id"); // v3.2.1 to discriminate between Temple types
+            					            	String structure_id = nbttagcompound2.getString("id");
                     							
             					            	if (
-            					            			structure_id.equals("TeJP") || // v3.2.1
+            					            			structure_id.equals("TeJP") ||
             					            			biomeYoureIn == BiomeGenBase.jungle || 
             					            			biomeYoureIn == BiomeGenBase.jungleHills ||
             					            			biomeYoureIn == BiomeGenBase.jungleEdge
@@ -267,7 +263,7 @@ public class ItemCodex extends Item {
             					            		bookType = "jungletemple";
             					            	}
             					            	else if (
-            					            			structure_id.equals("TeDP") || // v3.2.1
+            					            			structure_id.equals("TeDP") ||
             					            			biomeYoureIn == BiomeGenBase.desert ||
             					            			biomeYoureIn == BiomeGenBase.desertHills
             					            			) {
@@ -276,7 +272,7 @@ public class ItemCodex extends Item {
             					            		bookType = "desertpyramid";
             					            	}
             					            	else if (
-            					            			structure_id.equals("TeSH") || // v3.2.1
+            					            			structure_id.equals("TeSH") ||
             					            			biomeYoureIn == BiomeGenBase.swampland
             					            			) {
             					            		structureType = "SwampHut";
@@ -284,7 +280,7 @@ public class ItemCodex extends Item {
             					            		bookType = "swamphut";
             					            	}
             					            	else if (
-            					            			structure_id.equals("Iglu") || // v3.2.1
+            					            			structure_id.equals("Iglu") ||
             					            			biomeYoureIn == BiomeGenBase.icePlains ||
             					            			biomeYoureIn == BiomeGenBase.coldTaiga ||
             					            			biomeYoureIn == BiomeGenBase.iceMountains ||
@@ -313,9 +309,7 @@ public class ItemCodex extends Item {
     										
         									Random deterministic = new Random(); deterministic.setSeed(world.getSeed() + FunctionsVN.getUniqueLongForXYZ(signX, signY, signZ));
     										structureInfoArray = NameGenerator.newRandomName(nameTypes.get(i), deterministic);
-
     										
-    										// Changed color block in v3.1banner
     	                        			// Generate banner info, regardless of if we make a banner.
     	                            		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(deterministic, -1, -1);
     	                    				ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
@@ -343,7 +337,6 @@ public class ItemCodex extends Item {
     										nbttagcompound1.setBoolean("fromCodex", true);
     										if (!structureType.equals(structureTypes.get(i)) ) nbttagcompound1.setString("templeType", bookType);
     										
-    										// Added in v3.1banner
                                             // Form and append banner info
                                             nbttagcompound1.setTag("BlockEntityTag", BannerGenerator.getNBTFromBanner(villageBanner));
     										

@@ -237,10 +237,9 @@ public class NBTUpdater {
 					&& world.provider.getDimensionId()==0
 					) { // Player is in the Overworld
 				
-				MapGenStructureData structureData = null; // v3.2.1
+				MapGenStructureData structureData = null;
 				try {
 					
-					// Updated in v3.2.1 to allow for Open Terrain Generation compatibility
 	        		NBTTagCompound nbttagcompound = null;
 	        		
 	        		try

@@ -82,9 +82,9 @@ public class EntityMonitorHandler
     @SubscribeEvent
     public void onPlayerStartTracking(PlayerEvent.StartTracking event) {
     	
-    	if (!event.entity.worldObj.isRemote) // Encased in notremote if - v3.1
+    	if (!event.entity.worldObj.isRemote)
     	{
-        	if (event.target instanceof EntityVillager) // Removed not-remote condition - v3.1
+        	if (event.target instanceof EntityVillager)
         	{
         		final EntityVillager villager = (EntityVillager) event.target;
         		final ExtendedVillager properties = ExtendedVillager.get(villager);
@@ -92,7 +92,7 @@ public class EntityMonitorHandler
         	}
         	
             // Check if the player started tracking a zombie villager (happens on server-side).
-            if (FunctionsVN.isVanillaZombie(event.target)) { // Removed not-remote condition - v3.1
+            if (FunctionsVN.isVanillaZombie(event.target)) {
                 final EntityZombie zombie = (EntityZombie) event.target;
                 
                 if (zombie.isVillager()) {
@@ -105,7 +105,7 @@ public class EntityMonitorHandler
             }
             
             // Check if the player started tracking a village guard
-            else if (event.entity.getClass().toString().substring(6).equals(ModObjects.WitcheryGuardClass)) { // Removed not-remote condition and added ELSE - v3.1
+            else if (event.entity.getClass().toString().substring(6).equals(ModObjects.WitcheryGuardClass)) {
                 //final EntityZombie zombie = (EntityZombie) event.target;
             	final EntityLiving guard = (EntityLiving) event.target;
 
@@ -127,8 +127,6 @@ public class EntityMonitorHandler
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
     	
-    	// Renovated in v3.1
-    	
     	// summon Zombie ~ ~ ~ {IsVillager:1}
     	// New entity is a Zombie. Check to see if it came into being via a killed Villager.
         if (
@@ -149,7 +147,6 @@ public class EntityMonitorHandler
             if (ezv.getSkinTone() == -99)
             {ezv.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombievillager));}
             
-            // Renovated in v3.1
             if (event.world.isRemote) {
                 // Looks for info sent by the server that should be applied to the zombie (e.g. villager profession)
                 ClientInfoTracker.SyncZombieMessage(zombievillager);
@@ -200,7 +197,6 @@ public class EntityMonitorHandler
             
             ExtendedVillager ev = ExtendedVillager.get(villager);
             
-            // Renovated in v3.1
             if (event.world.isRemote)
             {
                 // Looks for info sent by the server that should be applied to the zombie (e.g. villager profession)
@@ -273,7 +269,7 @@ public class EntityMonitorHandler
         		if (ev.getBiomeType() == -1 ) {ev.setBiomeType(FunctionsVN.returnBiomeTypeForEntityLocation(villager));}
             }
             
-            // v3.2 Try to assign a skin tone number if this villager has none.
+            // Try to assign a skin tone number if this villager has none.
             if (
             		ev != null
             		&& (ExtendedVillager.get(villager)).getSkinTone()==-99
@@ -472,7 +468,7 @@ public class EntityMonitorHandler
     				// Sends a ping to everyone within 80 blocks
     				NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(zombie.dimension, zombie.lastTickPosX, zombie.lastTickPosY, zombie.lastTickPosZ, 16*5);
     				VillageNames.VNNetworkWrapper.sendToAllAround(
-    						new MessageZombieVillagerProfession(zombie.getEntityId(), ezv.getProfession(), ezv.getCareer(), ezv.getBiomeType(), ezv.getProfessionLevel(), ezv.getSkinTone()), // v3.2
+    						new MessageZombieVillagerProfession(zombie.getEntityId(), ezv.getProfession(), ezv.getCareer(), ezv.getBiomeType(), ezv.getProfessionLevel(), ezv.getSkinTone()),
     						targetPoint);
     			}
             }
@@ -639,7 +635,7 @@ public class EntityMonitorHandler
             
             // Adds the extended properties to villagers
             if (
-            		ExtendedVillager.get(villager) == null // Removed careers condition for v3.1 so that villagers always render
+            		ExtendedVillager.get(villager) == null // Removed careers condition so that villagers always render
             		) {
             	ExtendedVillager.register(villager);
             }

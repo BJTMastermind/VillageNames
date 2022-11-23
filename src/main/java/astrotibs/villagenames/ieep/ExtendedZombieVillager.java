@@ -67,7 +67,6 @@ public class ExtendedZombieVillager implements IExtendedEntityProperties
     }
     
 
-    // Added in v3.1
 	public int getBiomeType()
 	{
 		return this.biomeType;

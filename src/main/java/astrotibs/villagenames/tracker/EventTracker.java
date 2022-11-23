@@ -117,23 +117,21 @@ public class EventTracker
         		villager.getEntityId(),
         		new Vec3i(villager.posX, villager.posY + 0.5D, villager.posZ),
         		villager.getCustomNameTag(),
-        		// Object revised in v3.1trades
         		new Object[] {
         				
         				villager.getProfession(),
         				
-        				// Changed in v3.2 to actually use ieep
         				ieep.getCareer(),
 						villager.isChild(),
-        				(GeneralConfig.modernVillagerSkins) ? ieep.getBiomeType() : -1, // Added in v3.1
-        				(GeneralConfig.modernVillagerSkins) ? ieep.getProfessionLevel() : -1, // Added in v3.1
-						(GeneralConfig.modernVillagerSkins && GeneralConfig.villagerSkinTones) ? ieep.getSkinTone() : -99 // Added in v3.2
+        				(GeneralConfig.modernVillagerSkins) ? ieep.getBiomeType() : -1,
+        				(GeneralConfig.modernVillagerSkins) ? ieep.getProfessionLevel() : -1,
+						(GeneralConfig.modernVillagerSkins && GeneralConfig.villagerSkinTones) ? ieep.getSkinTone() : -99
         				/*
         				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"}),
         				villager.isChild(),
-        				(GeneralConfig.modernVillagerSkins) ? (ExtendedVillager.get(villager)).getBiomeType() : -1, // Added in v3.1
-        				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}), // Added in v3.1
-        				(GeneralConfig.modernVillagerSkins) ? (ExtendedVillager.get(villager)).getCareerVN() : 0, // Added in v3.1trades
+        				(GeneralConfig.modernVillagerSkins) ? (ExtendedVillager.get(villager)).getBiomeType() : -1,
+        				(Integer)ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"}),
+        				(GeneralConfig.modernVillagerSkins) ? (ExtendedVillager.get(villager)).getCareerVN() : 0,
         				*/
         				}
         		);
@@ -155,14 +153,13 @@ public class EventTracker
     			zombie.getEntityId(),
     			new Vec3i(zombie.posX, zombie.posY + 0.5D, zombie.posZ),
     			zombie.getCustomNameTag(), 
-	   			 // Added Object structure in v3.1
 	   			new Object[] {
 	   					ieep.getProfession(),
 	   					(ieep).getCareer(),
 	       				zombie.isChild(),
 	       				(GeneralConfig.modernVillagerSkins) ? ieep.getBiomeType() : -1,
 	       				(GeneralConfig.modernVillagerSkins) ? ieep.getProfessionLevel() : -1,
-        				(GeneralConfig.villagerSkinTones) ? ieep.getSkinTone() : -99, // Added in v3.2
+        				(GeneralConfig.villagerSkinTones) ? ieep.getSkinTone() : -99,
 	       				}
    			);
     }
@@ -183,10 +180,9 @@ public class EventTracker
         final int profession = (Integer) extraInfo[0];
         final int career     = (Integer) extraInfo[1];
         final boolean isBaby = (Boolean) extraInfo[2];
-        // Added in v3.1
         final int biomeType = (Integer) extraInfo[3];
         final int professionLevel = (Integer) extraInfo[4];
-        final int skinTone = (Integer) extraInfo[5]; // Added in v3.2
+        final int skinTone = (Integer) extraInfo[5];
 
         // Custom name
         //if (this.getCustomName() != "") {
@@ -235,7 +231,6 @@ public class EventTracker
         	ieep.setCareer(0);
         }
         
-        // Added in v3.1
         // BiomeType
         if (ieep.getBiomeType() <0)
         {
@@ -246,7 +241,6 @@ public class EventTracker
         	ieep.setBiomeType(biomeType);
         }
         
-        // Added in v3.2
         // SkinTone
         if (ieep.getSkinTone() == -99) {ieep.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(zombie));}
         else {ieep.setSkinTone(skinTone);}
@@ -336,16 +330,13 @@ public class EventTracker
         final int profession = (Integer) extraInfo[0];
         final int career     = (Integer) extraInfo[1];
         final boolean isBaby = (Boolean) extraInfo[2];
-        // Added in v3.1
         final int biomeType = (Integer) extraInfo[3];
         final int professionLevel = (Integer) extraInfo[4];
-        // Added in v3.1trades
         final int careerVN = (Integer) extraInfo[5];
-        final int skinTone = (Integer) extraInfo[6]; // Added in v3.2
+        final int skinTone = (Integer) extraInfo[6];
 
         String customName = this.getCustomName();
         
-        // Renovated in v3.1
         // Custom name
         if ( !customName.equals("") && !customName.equals(null)
         		&& !customName.equals( PMTMUnloc )
@@ -381,7 +372,6 @@ public class EventTracker
         
         
         // VN Career - used to discriminate Cartographer and Mason
-        // Added in v3.1trades
         if ( careerVN > 0 ) {
         	ieep.setCareerVN(careerVN);
         }
@@ -390,7 +380,6 @@ public class EventTracker
         }
         
         
-        // Added in v3.1
         // BiomeType
         if (ieep.getBiomeType() <0)
         {
@@ -401,7 +390,6 @@ public class EventTracker
         	ieep.setBiomeType(biomeType);
         }
 
-        // Added in v3.2
         // SkinTone
         if (ieep.getSkinTone() == -99) {ieep.setSkinTone(FunctionsVN.returnSkinToneForEntityLocation(villager));}
         else {ieep.setSkinTone(skinTone);}

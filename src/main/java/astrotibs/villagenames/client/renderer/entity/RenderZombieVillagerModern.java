@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerVillagerArmor;
-import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -77,7 +76,6 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
 	private static final ResourceLocation ZOMBIE_VILLAGER_PROFESSION_LEVEL_DIAMOND = new ResourceLocation((Reference.MOD_ID).toLowerCase(), (new StringBuilder()).append(ZVAD).append("profession_level/diamond.png").toString());
 	
 	// Vanilla textures
-    private static final ResourceLocation ZOMBIE_PIGMAN_TEXTURE = new ResourceLocation("textures/entity/zombie_pigman.png");
     private static final ResourceLocation ZOMBIE_TEXTURE = new ResourceLocation("textures/entity/zombie/zombie.png");
     private static final ResourceLocation ZOMBIE_VILLAGER_TEXTURE = new ResourceLocation("textures/entity/zombie/zombie_villager.png");
     
@@ -144,10 +142,7 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
     @Override
     protected ResourceLocation getEntityTexture(EntityZombie zombie)
     {
-    	if (zombie instanceof EntityPigZombie) { // Is a zombie pigman
-    		return ZOMBIE_PIGMAN_TEXTURE;
-    	}
-    	else if ( zombie.isVillager() ) // Is a zombie villager
+    	if ( zombie.isVillager() ) // Is a zombie villager
     	{
 //    		ExtendedZombieVillager ieep = ExtendedZombieVillager.get(zombie);
 //    		int profession = ieep.getProfession();
@@ -207,14 +202,14 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombie>
     }
     
     @Override
-    protected void rotateCorpse(EntityZombie bat, float p_77043_2_, float p_77043_3_, float partialTicks)
+    protected void rotateCorpse(EntityZombie entityLiving, float p_77043_2_, float p_77043_3_, float partialTicks)
     {
-        if (bat.isConverting())
+        if (entityLiving.isConverting())
         {
-            p_77043_3_ += (float)(Math.cos((double)bat.ticksExisted * 3.25D) * Math.PI * 0.25D);
+            p_77043_3_ += (float)(Math.cos((double)entityLiving.ticksExisted * 3.25D) * Math.PI * 0.25D);
         }
 
-        super.rotateCorpse(bat, p_77043_2_, p_77043_3_, partialTicks);
+        super.rotateCorpse(entityLiving, p_77043_2_, p_77043_3_, partialTicks);
     }
     
     

@@ -114,9 +114,9 @@ public class ClientInfoTracker
             ExtendedZombieVillager ezv = ExtendedZombieVillager.get(zombie);
             ezv.setProfession(msg.getProfession());
             ezv.setCareer(msg.getCareer());
-            ezv.setBiomeType(msg.getBiomeType()); // Added in v3.1
-            ezv.setProfessionLevel(msg.getProfessionLevel()); // Added in v3.1
-            ezv.setSkinTone(msg.getSkinTone()); // Added in v3.2
+            ezv.setBiomeType(msg.getBiomeType());
+            ezv.setProfessionLevel(msg.getProfessionLevel());
+            ezv.setSkinTone(msg.getSkinTone());
         } 
     }
 
@@ -162,13 +162,6 @@ public class ClientInfoTracker
     }
     
     
-    
-    
-    
-    
-
-    // Added in v3.1
-    
     // --------------------------------- //
     // --- Modern Villager Skin part --- //
     // --------------------------------- //
@@ -203,7 +196,7 @@ public class ClientInfoTracker
         if (
         		entity instanceof EntityVillager
         		&& ((EntityVillager)entity).getProfession() >=0
-        		//&& ((EntityVillager)entity).getProfession() <=5 Removed in v3.2 to ensure syncing
+        		//&& ((EntityVillager)entity).getProfession() <=5 Removed to ensure syncing
         		) {
             ClientInfoTracker.syncModernVillagerMessage((EntityVillager)entity);
         }
@@ -226,9 +219,9 @@ public class ClientInfoTracker
             ev.setCareer(msg.getCareer());
             ev.setBiomeType(msg.getBiomeType());
             ev.setProfessionLevel(msg.getProfessionLevel());
-            ev.setProfessionLevelVN(msg.getProfessionLevelVN()); // Added in v3.1trades
-            ev.setCareerVN(msg.getCareerVN()); // Added in v3.1trades
-            ev.setSkinTone(msg.getSkinTone()); // v3.2
+            ev.setProfessionLevelVN(msg.getProfessionLevelVN());
+            ev.setCareerVN(msg.getCareerVN());
+            ev.setSkinTone(msg.getSkinTone());
         } 
     }
     

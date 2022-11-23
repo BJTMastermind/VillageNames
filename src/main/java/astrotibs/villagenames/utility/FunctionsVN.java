@@ -43,7 +43,6 @@ import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-// Added in v3.1
 public class FunctionsVN
 {
 	// Represents the 1.14+ village types
@@ -372,7 +371,6 @@ public class FunctionsVN
     	else return entity instanceof EntityZombie;
     }
     
-    // Added in v3.1trades
     
     /**
      * Inputs a villager and checks its trades, modifying the "current level" of trades if necessary.
@@ -1385,7 +1383,6 @@ public class FunctionsVN
 									
 									// Slot 9 TODO - Globe Pattern
 
-									// Changed in v3.1banner
 									// Instead, offer a banner with the village's pattern!
 									
 		    		    			Object[] villageBannerData = BannerGenerator.getVillageBannerData(villager);
@@ -1452,7 +1449,7 @@ public class FunctionsVN
 						
     				case 8:
     					// Add treasure trade
-						if (GeneralConfig.treasureTrades) {addTreasureTrade(buyingList, villager, ev.getCareerVN(), random);} // Removed career condition in v3.1banner because a Master can sell a village banner.
+						if (GeneralConfig.treasureTrades) {addTreasureTrade(buyingList, villager, ev.getCareerVN(), random);} // Removed career condition because a Master can sell a village banner.
 						break;
 				}
 				break;
@@ -3287,8 +3284,6 @@ public class FunctionsVN
     }
     
     
-    // Added in v3.1banner
-    
     /**
      * Inputs an array of objects and a corresponding array of weights, and returns a randomly-selected element
      * with a probability proportional to its weight.
@@ -3326,7 +3321,6 @@ public class FunctionsVN
     	}
     }
 
-    // Added in v3.2
 	/**
 	 * Determine the skinTone of the biome the entity is currently in
 	 */
@@ -3462,9 +3456,8 @@ public class FunctionsVN
 		
 		
     	// Try modifying trades
-        // Modified in v3.1trades
         // Check trading list against modern trades
-        if (GeneralConfig.modernVillagerTrades // Added condition in v3.1trades
+        if (GeneralConfig.modernVillagerTrades
         		//&& villager.ticksExisted%4==0 // Check only ever four ticks
         		&& (buyingList!=null && buyingList.size()>0) )
         {

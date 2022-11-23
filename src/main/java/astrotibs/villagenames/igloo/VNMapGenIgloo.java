@@ -142,7 +142,6 @@ public class VNMapGenIgloo extends MapGenStructure
                 super(chunkX, chunkZ);
                 BiomeGenBase biomegenbase = worldIn.getBiomeGenForCoords(new BlockPos(chunkX * 16 + 8, 0, chunkZ * 16 + 8));
 
-                // Added in v3.1
         		// Get a list of tags for this biome
         		BiomeDictionary.Type[] typeTags = BiomeDictionary.getTypesForBiome(biomegenbase);
         		

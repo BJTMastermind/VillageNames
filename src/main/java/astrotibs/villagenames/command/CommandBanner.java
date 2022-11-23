@@ -14,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 
-// Added in v3.1.1
 public class CommandBanner extends CommandBase {
 
 	@Override
