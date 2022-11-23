@@ -50,7 +50,6 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-//Added in v3.1
 public class FunctionsVN
 {
 	// Represents the 1.14+ village types
@@ -379,7 +378,7 @@ public class FunctionsVN
 				return 1;// + this.myWorld.rand.nextInt(1);
 			
 			case 3: // BLACKSMITH
-				return 1 + random.nextInt(GeneralConfig.modernVillagerTrades ? 4 : 3); // Added in v3.1trades - Mason
+				return 1 + random.nextInt(GeneralConfig.modernVillagerTrades ? 4 : 3);
 			
 			case 4: // BUTCHER
 				return 1 + random.nextInt(2);
@@ -391,8 +390,6 @@ public class FunctionsVN
     }
 	
 
-    // Added in v3.1trades
-    
     /**
      * Inputs a villager and checks its trades, modifying the "current level" of trades if necessary.
      * @param villager
@@ -403,7 +400,7 @@ public class FunctionsVN
     	String villagerForgeProfessionRegistryName = villager.getProfessionForge().getRegistryName().toString();
 		if (villagerForgeProfessionRegistryName.length()<10 || !villagerForgeProfessionRegistryName.substring(0, 10).equals("minecraft:")) {return;}
     	
-    	Random random = new Random(); // v3.2.1 - deactivated seed random
+    	Random random = new Random();
     	
     	IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
     	int careerLevel = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerLevel", "field_175562_bw"});
@@ -1596,8 +1593,6 @@ public class FunctionsVN
 	    						
     							// Slot 9 TODO - Globe Pattern
 
-
-	    						// Changed in v3.1banner
 	    						// Instead, offer a banner with the village's pattern!
 	    						
 	    		    			Object[] villageBannerData = BannerGenerator.getVillageBannerData(villager);
@@ -1627,7 +1622,7 @@ public class FunctionsVN
 	        					break;
 	    					
 	    					case 6:
-	    					case 7: // Changed in v3.1banner to allow treasures up to level 8
+	    					case 7:
 	    					case 8:
 	    						if (GeneralConfig.treasureTrades) {addTreasureTrade(buyingList, villager, 2, random);}
 	    						break;
@@ -1912,7 +1907,7 @@ public class FunctionsVN
 	    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 1 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.CHAINMAIL_HELMET, 1 ), 0, 3) );
 	    								merchantRecipeArray.add(new MerchantRecipe( new ItemStack( Items.EMERALD, 4 ), new ItemStack( Item.getItemFromBlock(Blocks.AIR)), new ItemStack( Items.CHAINMAIL_CHESTPLATE, 1 ), 0, 3) );
 	    								
-	    								// Added in v3.1banner - The shield sold has a village banner on it, if applicable.
+	    								// The shield sold has a village banner on it, if applicable.
 	    								Object[] villageShieldData = BannerGenerator.getVillageBannerData(villager);
 	    								NBTTagCompound bannerForShield = new NBTTagCompound();
 	    								String villageNameForShield = "";
@@ -3405,8 +3400,6 @@ public class FunctionsVN
     }
 
     
-    // Added in v3.1banner
-    
     /**
      * Inputs an array of objects and a corresponding array of weights, and returns a randomly-selected element
      * with a probability proportional to its weight.
@@ -3444,7 +3437,6 @@ public class FunctionsVN
     	}
     }
 
-    // Added in v3.2
 	/**
 	 * Determine the skinTone of the biome the entity is currently in
 	 */
@@ -3575,13 +3567,12 @@ public class FunctionsVN
 		//career = ReflectionHelper.getPrivateValue(EntityVillager.class, villager, new String[]{"careerId", "field_175563_bv"});
 		
     	// Try modifying trades
-		// Modified in v3.1trades
         // Check trading list against modern trades
 		IModularSkin ims = villager.getCapability(ModularSkinProvider.MODULAR_SKIN, null);
 		
 		// Get the current buying list
 		MerchantRecipeList buyingList = ReflectionHelper.getPrivateValue( EntityVillager.class, villager, new String[]{"buyingList", "field_70963_i"} );
-		if (GeneralConfig.modernVillagerTrades // Added condition in v3.1trades
+		if (GeneralConfig.modernVillagerTrades
         		//&& villager.ticksExisted%4==0 // Check only ever four ticks
         		&& (buyingList!=null && buyingList.size()>0)
         		&& ims.getProfessionLevel() < careerLevel)
@@ -3630,7 +3621,7 @@ public class FunctionsVN
 						|| (career == 2 && careerLevel > 4) // Cartographer
 							)
 					&& GeneralConfig.treasureTrades
-					&& !GeneralConfig.modernVillagerTrades // Added in v3.1trades
+					&& !GeneralConfig.modernVillagerTrades
 					) { // Villager is a Cartographer. Weed out the higher-level trades
 
 				try {

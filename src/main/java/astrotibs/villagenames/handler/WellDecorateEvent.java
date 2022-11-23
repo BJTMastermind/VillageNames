@@ -41,7 +41,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class WellDecorateEvent {
 	
-	Random random = new Random(); // Enabled in v3.2.1 - To ensure simultaneous villages don't get the same name
+	Random random = new Random(); // Enabled to ensure simultaneous villages don't get the same name
 	
 	@SubscribeEvent
 	public void onPopulating(PopulateChunkEvent.Post event) {
@@ -50,8 +50,6 @@ public class WellDecorateEvent {
 				event.isHasVillageGenerated() && event.getWorld().provider.getDimension() == 0 && !VillageGeneratorConfigHandler.newVillageGenerator
 				&& !event.getWorld().isRemote
 				) {
-			
-			// v3.1.2 - Removed config pre-load values to be more human readable 
 			
 			int i = (event.getChunkX() << 4) + 8;//Villages are offset
 			int k = (event.getChunkZ() << 4) + 8;
@@ -68,8 +66,6 @@ public class WellDecorateEvent {
 			List<int[]> listWater3;
 
 			
-			
-            // Re-worked in v3.1banner
 			int inwardYaw = GeneralConfig.villageBanners ? GeneralConfig.signYaw : 4; // Value from 0 to 4 indicating how inward the signs are oriented. 0 is away from the well. 4 has the sign and banner facing each other.
 			int signLocation = random.nextInt(4); // One of the four corners             // 0=NW, 1=NE, 2=SE, 3=SW
             int signXOffset = (1-Math.abs((signLocation+1)/2-1)*2)*2;                    // NW: -2, NE: 2, SE: 2, SW: -2
@@ -238,8 +234,6 @@ public class WellDecorateEvent {
                                 			
                                 			// Set the sign now!
 
-                                			
-                                			// Changed color block in v3.1banner
                                 			// Generate banner info, regardless of if we make a banner.
                                     		Object[] newRandomBanner = BannerGenerator.randomBannerArrays(deterministic, -1, -1);
                             				ArrayList<String> patternArray = (ArrayList<String>) newRandomBanner[0];
@@ -261,8 +255,6 @@ public class WellDecorateEvent {
                                     		
                                     		// Try via NBT access
                                     		
-                                    		// Updated in v3.2.1 to allow for Open Terrain Generation compatibility
-                                    		
                                     		MapGenStructureData structureData;
                                     		NBTTagCompound nbttagcompound = null;
                                     		
@@ -281,7 +273,7 @@ public class WellDecorateEvent {
                                         		catch (Exception e1) {} // OTGVillage.dat does not exist
                                     		}
                                     		
-                                    		// v3.2.1 - At this point, you may or may not have data to work with.
+                                    		// At this point, you may or may not have data to work with.
                                     		
                                     		try
                                     		{
@@ -404,7 +396,6 @@ public class WellDecorateEvent {
                                     			event.getWorld().setBlockState(new BlockPos(x+signXOffset, y+2, z+signZOffset), Blocks.STANDING_SIGN.getStateFromMeta(signOrientation) ); //.getStateFromMeta(signOrientation)
                                     		}
 
-                                    		// Added in v3.1banner
                                     		if (GeneralConfig.wellDecorations && GeneralConfig.villageBanners && signLocation!=bannerLocation) {
                                     			
                                     			BlockPos bannerBasePos = new BlockPos(x+bannerXOffset, y+1, z+bannerZOffset);
@@ -423,7 +414,6 @@ public class WellDecorateEvent {
                                     			// Clay base OR concrete
                                     			if (GeneralConfig.concreteWell) {
                                     				
-                                    				// v3.1.2 - Moved inside this if condition to pre-empt crashes
                                     				Block concreteBlock = Blocks.CONCRETE;
 
                                         			// Block used for the well roof
@@ -462,7 +452,7 @@ public class WellDecorateEvent {
                                     				int metaSpin = random.nextInt(4)+4; // I've got to add 4 because modulo doesn't work properly with negative numbers :P
                                     				int metaChirality = random.nextBoolean() ? 1 : -1;
                                     				
-                                    				event.getWorld().setBlockState(new BlockPos(x, y+4, z), roofGlazedBlock.getStateFromMeta( (metaSpin)%4 ) ); // v3.1.2 - added modulo4 so that this matches the other three corners
+                                    				event.getWorld().setBlockState(new BlockPos(x, y+4, z), roofGlazedBlock.getStateFromMeta( (metaSpin)%4 ) );
                                     				event.getWorld().setBlockState(new BlockPos(x, y+4, z-(signZOffset/2)), roofGlazedBlock.getStateFromMeta( (metaSpin + metaChirality)%4 ) );
                                     				event.getWorld().setBlockState(new BlockPos(x-(signXOffset/2), y+4, z-(signZOffset/2)), roofGlazedBlock.getStateFromMeta( (metaSpin + metaChirality*2)%4) );
                                     				event.getWorld().setBlockState(new BlockPos(x-(signXOffset/2), y+4, z), roofGlazedBlock.getStateFromMeta( (metaSpin + metaChirality*3)%4 ) );
@@ -537,7 +527,6 @@ public class WellDecorateEvent {
                                                 nbttagcompound1.setString("sign2", signContents.signText[2].getFormattedText());
                                                 nbttagcompound1.setString("sign3", signContents.signText[3].getFormattedText());
 
-                                                // Added in v3.1banner
                                                 // Form and append banner info
                                                 nbttagcompound1.setTag("BlockEntityTag", BannerGenerator.getNBTFromBanner(villageBanner));
                                                 
@@ -654,14 +643,13 @@ public class WellDecorateEvent {
 	 */
 	public void searchHutAndReplacePot(PopulateChunkEvent.Post event, int buffer)
     {
-		MapGenStructureData structureData = null; // Made null in v3.2.1
+		MapGenStructureData structureData = null;
 		if (
 				event.getWorld().provider.getDimension()==0
 				&& !event.getWorld().isRemote
 				) { // Player is in the Overworld
 			try {
 				
-				// Updated in v3.2.1 to allow for Open Terrain Generation compatibility
         		NBTTagCompound nbttagcompound = null;
         		
         		try

@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  * @author AstroTibs
  */
 
-//Added in v3.1
 public class CapabilityAttach
 {
 	public static final ResourceLocation MODULAR_SKIN = new ResourceLocation(Reference.MOD_ID, "modularskin");

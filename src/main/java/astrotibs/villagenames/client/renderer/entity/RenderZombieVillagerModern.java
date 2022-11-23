@@ -77,7 +77,6 @@ public class RenderZombieVillagerModern extends RenderBiped<EntityZombieVillager
 	private static final ResourceLocation ZOMBIE_VILLAGER_PROFESSION_LEVEL_DIAMOND = new ResourceLocation((Reference.MOD_ID).toLowerCase(), (new StringBuilder()).append(ZVAD).append("profession_level/diamond.png").toString());
 	
 	// Vanilla textures
-    private static final ResourceLocation ZOMBIE_PIGMAN_TEXTURE = new ResourceLocation("textures/entity/zombie_pigman.png");
     private static final ResourceLocation ZOMBIE_TEXTURE = new ResourceLocation("textures/entity/zombie/zombie.png");
     
     // Re-added to allow for profession-based vanilla zombie textures

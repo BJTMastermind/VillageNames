@@ -495,7 +495,6 @@ public final class VillageNames
     	   VillagerRegistry.VillagerCareer careerLibrarian = professionLibrarian.getCareer(0);    // 1.11 changed this to 0: it's the index, not the career value
     	   VillagerRegistry.VillagerCareer careerCartographer = professionLibrarian.getCareer(1); // 1.11 changed this to 1: it's the index, not the career value
     	   
-    	   // Re-worked in v3.1trades
     	   // Add new VN Treasure trades -- limit per librarian/cartographer
     	   if (GeneralConfig.treasureTrades && !GeneralConfig.modernVillagerTrades) {
     		   for (int i=0; i<3; i++) {
@@ -505,7 +504,6 @@ public final class VillageNames
     	   }
        }
        
-       // Added in v3.1trades
        if (GeneralConfig.modernVillagerTrades) {
     	   
     	   // summon minecraft:villager ~ ~ ~ {Profession:3}
@@ -580,7 +578,7 @@ public final class VillageNames
 	{
 	    // register server commands
 		event.registerServerCommand(new CommandName());
-		event.registerServerCommand(new CommandBanner()); // Added in v3.1.1
+		event.registerServerCommand(new CommandBanner());
 	}
 	
 	/**

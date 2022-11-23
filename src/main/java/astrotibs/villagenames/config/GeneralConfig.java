@@ -764,6 +764,8 @@ public class GeneralConfig {
 				"Jam Guy|actuallyadditions:jamguy|0",
 				// Bewitchment
 				"Alchemist|bewitchment:alchemist|2",
+				// ChocoCraft Plus
+				"Stablehand|chococraftplus:stablehand|0",
 				// Custom Ideas
 				"Guard|custom:guard|-1",
 				// Cylic
