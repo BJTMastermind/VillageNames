@@ -177,6 +177,8 @@ public class GeneralConfig {
 				"immersiveengineering:engineer|3",
 				"immersiveengineering:engineer|4",
 				"immersiveengineering:engineer|5",
+				// Mine Trading Cards
+				"is_mtc:card_master",
 				// Open Blocks
 				"-openblocks:radio",
 				// Tolkien Tweaks - Mobs Edition
@@ -227,6 +229,9 @@ public class GeneralConfig {
 				"ie_electrician||immersiveengineering:engineer|3",
 				"ie_outfitter||immersiveengineering:engineer|4",
 				"ie_gunsmith||immersiveengineering:engineer|5",
+				// Mine Trading Cards
+				"mtc_cardmaster||is_mtc:card_master",
+				"mtc_cardtrader||is_mtc:card_trader",
 				// MiniHeads
 				"mh_retailer|mh_retailer|miniheads:storeowner",
 				// Mystcraft
@@ -367,6 +372,12 @@ public class GeneralConfig {
 				// Primitive Mobs
 				"villager|Summoner|net.daveyx0.primitivemobs.entity.monster.EntityDSummoner|add",
 				
+				// Special Mobs
+				"villager-goblin|Witch of Domination|fathertoast.specialmobs.entity.witch.EntityDominationWitch|add",
+				"villager-goblin|Witch of Shadows|fathertoast.specialmobs.entity.witch.EntityShadowsWitch|add",
+				"villager-goblin|Witch of the Wilds|fathertoast.specialmobs.entity.witch.EntityWildsWitch|add",
+				"villager-goblin|Witch of the Wind|fathertoast.specialmobs.entity.witch.EntityWindWitch|add",
+								
 				// Twilight Forest
 				"villager-golem||twilightforest.entity.EntityTFArmoredGiant|add",
 				"villager-golem||twilightforest.entity.EntityTFGiantMiner|add",
@@ -786,6 +797,9 @@ public class GeneralConfig {
 				"Electrician|immersiveengineering:engineer|0|3",
 				"Outfitter|immersiveengineering:engineer|0|4",
 				"Gunsmith|immersiveengineering:engineer|0|5",
+				// Mine Trading Cards
+				"Card Master|is_mtc:card_master|2",
+				"Card Trader|is_mtc:card_trader|0",
 				// MiniHeads
 				"Store Owner|miniheads:storeowner|-1",
 				// Mystcraft

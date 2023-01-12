@@ -5,7 +5,6 @@ import astrotibs.villagenames.capabilities.IModularSkin;
 import astrotibs.villagenames.capabilities.ModularSkin;
 import astrotibs.villagenames.capabilities.ModularSkinStorage;
 import astrotibs.villagenames.config.ConfigReloader;
-import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.handler.ChestLootHandler;
 import astrotibs.villagenames.handler.EntityInteractHandler;
 import astrotibs.villagenames.handler.SpawnNamingHandler;
@@ -31,12 +30,12 @@ public class CommonProxy
     
 
 	public void init(FMLInitializationEvent e) {
-		MinecraftForge.EVENT_BUS.register( new EntityInteractHandler() );
-		MinecraftForge.EVENT_BUS.register( new WellDecorateEvent() );
-		MinecraftForge.EVENT_BUS.register( new ConfigReloader() );
-		MinecraftForge.EVENT_BUS.register( new SpawnNamingHandler() );
-		MinecraftForge.EVENT_BUS.register( new CapabilityAttach() );
-		if (GeneralConfig.codexChestLoot) MinecraftForge.EVENT_BUS.register(new ChestLootHandler());
+		MinecraftForge.EVENT_BUS.register(new EntityInteractHandler());
+		MinecraftForge.EVENT_BUS.register(new WellDecorateEvent());
+		MinecraftForge.EVENT_BUS.register(new ConfigReloader());
+		MinecraftForge.EVENT_BUS.register(new SpawnNamingHandler());
+		MinecraftForge.EVENT_BUS.register(new CapabilityAttach());
+		MinecraftForge.EVENT_BUS.register(new ChestLootHandler());
 		
 		// Capabilities
 		registerCapabilities();
