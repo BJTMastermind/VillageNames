@@ -196,6 +196,7 @@ public class ModObjects {
 	public static final String grass_BOP = DOM_BIOMESOPLENTY + ":grass"; // 2: Loamy Grass
 
 	// Iron Nuggets
+	public static final String metalIE = "immersiveengineering:metal"; // Iron Nugget is 29
 	public static final String nuggetRC = "railcraft:nugget"; // Iron Nugget is 0
 	public static final String nuggetTC = "thaumcraft:nugget"; // There is only the one nugget
 	
@@ -978,6 +979,11 @@ public class ModObjects {
 			{
 				moditem = FunctionsVN.getItemFromName(ModObjects.nuggetTC);
 				if (moditem != null) {return new ItemStack(moditem, 1);}
+			}
+			else if (mod.toLowerCase().trim().equals("immersiveengineering"))
+			{
+				moditem = FunctionsVN.getItemFromName(ModObjects.metalIE);
+				if (moditem != null) {return new ItemStack(moditem, 1, 29);}
 			}
 			else if (mod.toLowerCase().trim().equals("railcraft"))
 			{

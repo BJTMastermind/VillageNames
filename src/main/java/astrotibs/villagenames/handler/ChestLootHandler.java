@@ -23,7 +23,50 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ChestLootHandler {
-
+	
+	// These values are defaults for loot population: they are assumed when not explicitly listed in the 1.14+ json loot tables.
+	private static final int
+	DEFAULT_LOOT_STACK_MINIMUM = 1,
+	DEFAULT_LOOT_STACK_MAXIMUM = 1,
+	DEFAULT_LOOT_STACK_WEIGHT = 1;
+	
+	private static final Object[][]
+	ARMORER_CHEST_LOOT_ARRAY = new Object[][]{
+		{new ItemStack(Items.IRON_INGOT), 1, 3, 2},
+		{new ItemStack(Items.BREAD), 1, 4, 4},
+		{new ItemStack(Items.IRON_HELMET), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+		{new ItemStack(Items.EMERALD), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+	},
+	TOOLSMITHY_CHEST_LOOT_ARRAY = new Object[][]{
+		{new ItemStack(Items.DIAMOND), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
+		{new ItemStack(Items.IRON_INGOT), 1, 5, 5},
+		{new ItemStack(Items.GOLD_INGOT), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
+		{new ItemStack(Items.BREAD), 1, 3, 15},
+		{new ItemStack(Items.IRON_PICKAXE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+		{new ItemStack(Items.COAL), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
+		{new ItemStack(Items.STICK), 1, 3, 20},
+		{new ItemStack(Items.IRON_SHOVEL), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+//	},
+//	WEAPONSMITH_CHEST_LOOT_ARRAY = new Object[][]{
+//		{new ItemStack(Items.DIAMOND), 1, 3, 3},
+//		{new ItemStack(Items.IRON_INGOT), 1, 5, 10},
+//		{new ItemStack(Items.GOLD_INGOT), 1, 3, 5},
+//		{new ItemStack(Items.BREAD), 1, 3, 15},
+//		{new ItemStack(Items.APPLE), 1, 3, 15},
+//		{new ItemStack(Items.IRON_PICKAXE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+//		{new ItemStack(Items.IRON_SWORD), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+//		{new ItemStack(Items.IRON_CHESTPLATE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+//		{new ItemStack(Items.IRON_HELMET), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+//		{new ItemStack(Items.IRON_LEGGINGS), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+//		{new ItemStack(Items.IRON_BOOTS), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+//		{new ItemStack(Blocks.OBSIDIAN), 3, 7, 5},
+//		{new ItemStack(Blocks.SAPLING, 1, 0), 3, 7, 5}, // Oak Sapling
+//		{new ItemStack(Items.SADDLE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 3},
+//		{new ItemStack(Items.IRON_HORSE_ARMOR), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+//		{new ItemStack(Items.GOLDEN_HORSE_ARMOR), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+//		{new ItemStack(Items.DIAMOND_HORSE_ARMOR), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+	};
+	
 	/*
 	 * Chest loot handler, needed for 1.9+
 	 */
@@ -31,60 +74,60 @@ public class ChestLootHandler {
 	public void onLootTablesLoaded(LootTableLoadEvent event) {
 		
 		final LootPool lootCategory;
-		//Bonus chest
-		if (event.getName().equals(LootTableList.CHESTS_SPAWN_BONUS_CHEST)) {
-			lootCategory = event.getTable().getPool("main"); //Pool2 might be more on par with what I need, but every chest has a "main" type.
-			// main.addEntry(new LootEntryItem(ITEM, WEIGHT, QUALITY, FUNCTIONS, CONDITIONS, NAME));
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 1, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
+		
+		if (GeneralConfig.codexChestLoot) {
+			//Bonus chest
+			if (event.getName().equals(LootTableList.CHESTS_SPAWN_BONUS_CHEST)) {
+				lootCategory = event.getTable().getPool("main"); //Pool2 might be more on par with what I need, but every chest has a "main" type.
+				// main.addEntry(new LootEntryItem(ITEM, WEIGHT, QUALITY, FUNCTIONS, CONDITIONS, NAME));
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 1, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
+				
+			// Village Blacksmiths
+			else if (event.getName().equals(LootTableList.CHESTS_VILLAGE_BLACKSMITH)) {
+				lootCategory = event.getTable().getPool("main");
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 3, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
 			
-		// Village Blacksmiths
-		else if (event.getName().equals(LootTableList.CHESTS_VILLAGE_BLACKSMITH)) {
-			lootCategory = event.getTable().getPool("main");
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 3, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
-		
-		// Mineshafts
-		else if (event.getName().equals(LootTableList.CHESTS_ABANDONED_MINESHAFT)) {
-			lootCategory = event.getTable().getPool("main");
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 2, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
-		
-		// Temples
-		else if (event.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
-			lootCategory = event.getTable().getPool("main");
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 12, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
-		else if (event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
-			lootCategory = event.getTable().getPool("main");
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 10, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
-		else if (event.getName().equals(LootTableList.CHESTS_IGLOO_CHEST)) {
-			lootCategory = event.getTable().getPool("main");
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 8, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
-		
-		// Strongholds
-		else if (event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CORRIDOR)) { // Corridor
-			lootCategory = event.getTable().getPool("main");
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 4, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
-		else if (event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CROSSING)) { // Crossing/hub
-			lootCategory = event.getTable().getPool("main");
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 15, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
-		else if (event.getName().equals(LootTableList.CHESTS_STRONGHOLD_LIBRARY)) { // Library
-			lootCategory = event.getTable().getPool("main");
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 20, 0, new LootFunction[] {new SetCount(new LootCondition[0], new RandomValueRange(1,3))}, new LootCondition[0], Reference.MOD_ID + ":codex")); }
-		
-		// Other mods -- I'm just taking a guess at the chest addresses. Neither of these mods exist above 1.7.10 anyway.
-		else if (event.getName().equals("chests/oceanFloorChest") && Loader.isModLoaded("Mariculture") ) { // Mariculture
-			lootCategory = event.getTable().getPool("main");
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 20, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
-		else if (event.getName().equals("chests/A_WIZARD_DID_IT") && Loader.isModLoaded("Artifacts") ) { // Dragon Artifacts
-			lootCategory = event.getTable().getPool("main");
-			if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 20, 0, new LootFunction[] {new SetCount(new LootCondition[0], new RandomValueRange(1,4))}, new LootCondition[0], Reference.MOD_ID + ":codex")); }
-		
+			// Mineshafts
+			else if (event.getName().equals(LootTableList.CHESTS_ABANDONED_MINESHAFT)) {
+				lootCategory = event.getTable().getPool("main");
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 2, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
+			
+			// Temples
+			else if (event.getName().equals(LootTableList.CHESTS_DESERT_PYRAMID)) {
+				lootCategory = event.getTable().getPool("main");
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 12, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
+			else if (event.getName().equals(LootTableList.CHESTS_JUNGLE_TEMPLE)) {
+				lootCategory = event.getTable().getPool("main");
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 10, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
+			else if (event.getName().equals(LootTableList.CHESTS_IGLOO_CHEST)) {
+				lootCategory = event.getTable().getPool("main");
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 8, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
+			
+			// Strongholds
+			else if (event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CORRIDOR)) { // Corridor
+				lootCategory = event.getTable().getPool("main");
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 4, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
+			else if (event.getName().equals(LootTableList.CHESTS_STRONGHOLD_CROSSING)) { // Crossing/hub
+				lootCategory = event.getTable().getPool("main");
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 15, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
+			else if (event.getName().equals(LootTableList.CHESTS_STRONGHOLD_LIBRARY)) { // Library
+				lootCategory = event.getTable().getPool("main");
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 20, 0, new LootFunction[] {new SetCount(new LootCondition[0], new RandomValueRange(1,3))}, new LootCondition[0], Reference.MOD_ID + ":codex")); }
+			
+			// Other mods -- I'm just taking a guess at the chest addresses. Neither of these mods exist above 1.7.10 anyway.
+			else if (event.getName().equals("chests/oceanFloorChest") && Loader.isModLoaded("Mariculture") ) { // Mariculture
+				lootCategory = event.getTable().getPool("main");
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 20, 0, new LootFunction[0], new LootCondition[0], Reference.MOD_ID + ":codex")); }
+			else if (event.getName().equals("chests/A_WIZARD_DID_IT") && Loader.isModLoaded("Artifacts") ) { // Dragon Artifacts
+				lootCategory = event.getTable().getPool("main");
+				if (lootCategory != null) lootCategory.addEntry(new LootEntryItem(ModItems.CODEX, 20, 0, new LootFunction[] {new SetCount(new LootCondition[0], new RandomValueRange(1,4))}, new LootCondition[0], Reference.MOD_ID + ":codex")); }			
+		}
 	}
 	
 	public static void modernVillageChests()
 	{
 		// Changed with each chest entry
 		ChestGenHooks chestGenHooks; int stacks_min; int stacks_max;
-		// These values are defaults for loot population: they are assumed when not explicitly listed in the 1.14+ json loot tables.
-		int def_min = 1; int def_max = 1; int def_weight = 1;
 		
 		
 		// ------------------------------------- //
@@ -95,7 +138,7 @@ public class ChestLootHandler {
 		
 		// --- Desert House --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_desert_house");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_DESERT_HOUSE);
 		
 		// Number of stacks in a chest
 		stacks_min=3;
@@ -105,14 +148,14 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.CLAY_BALL), def_min, def_max, def_weight},
-			{new ItemStack(Items.DYE, 1, 2), def_min, def_max, def_weight},
+			{new ItemStack(Items.CLAY_BALL), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.DYE, 1, 2), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Blocks.CACTUS), 1, 4, 10},
 			{new ItemStack(Items.WHEAT), 1, 7, 10},
 			{new ItemStack(Items.BREAD), 1, 4, 10},
-			{new ItemStack(Items.BOOK), def_min, def_max, def_weight},
+			{new ItemStack(Items.BOOK), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Blocks.DEADBUSH), 1, 3, 2},
-			{new ItemStack(Items.EMERALD), 1, 3, def_weight},
+			{new ItemStack(Items.EMERALD), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
 		})
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
@@ -122,7 +165,7 @@ public class ChestLootHandler {
 		
 		// --- Plains House --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_plains_house");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_PLAINS_HOUSE);
 		
 		// Number of stacks in a chest
 		stacks_min=3;
@@ -132,14 +175,14 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.GOLD_NUGGET), 1, 3, def_weight},
-			{new ItemStack(Blocks.YELLOW_FLOWER), def_min, def_max, 2},
-			{new ItemStack(Blocks.RED_FLOWER), def_min, def_max, def_weight},
+			{new ItemStack(Items.GOLD_NUGGET), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Blocks.YELLOW_FLOWER), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 2},
+			{new ItemStack(Blocks.RED_FLOWER), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Items.POTATO), 1, 7, 10},
 			{new ItemStack(Items.BREAD), 1, 4, 10},
 			{new ItemStack(Items.APPLE), 1, 5, 10},
-			{new ItemStack(Items.BOOK), def_min, def_max, def_weight},
-			{new ItemStack(Items.FEATHER), def_min, def_max, def_weight},
+			{new ItemStack(Items.BOOK), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.FEATHER), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Items.EMERALD), 1, 4, 2},
 			{new ItemStack(Blocks.SAPLING), 1, 2, 5}, // Oak sapling
 		})
@@ -151,7 +194,7 @@ public class ChestLootHandler {
 		
 		// --- Savanna House --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_savanna_house");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_SAVANNA_HOUSE);
 		
 		// Number of stacks in a chest
 		stacks_min=3;
@@ -161,16 +204,16 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.GOLD_NUGGET), 1, 3, def_weight},
-			{new ItemStack(Blocks.GRASS), def_min, def_max, 5},
-			{new ItemStack(Blocks.DOUBLE_PLANT, 1, 2), def_min, def_max, 5}, // Tall grass
+			{new ItemStack(Items.GOLD_NUGGET), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Blocks.GRASS), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+			{new ItemStack(Blocks.DOUBLE_PLANT, 1, 2), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5}, // Tall grass
 			{new ItemStack(Items.BREAD), 1, 4, 10},
 			{new ItemStack(Items.WHEAT_SEEDS), 1, 5, 10},
 			{new ItemStack(Items.EMERALD), 1, 4, 2},
 			{new ItemStack(Blocks.SAPLING, 1, 4), 1, 2, 10}, // Acacia
-			{new ItemStack(Items.SADDLE), def_min, def_max, def_weight},
-			{new ItemStack(Blocks.TORCH), 1, 2, def_weight},
-			{new ItemStack(Items.BUCKET), def_min, def_max, def_weight},
+			{new ItemStack(Items.SADDLE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Blocks.TORCH), 1, 2, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.BUCKET), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 		})
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
@@ -180,7 +223,7 @@ public class ChestLootHandler {
 		
 		// --- Snowy House --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_snowy_house");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_SNOWY_HOUSE);
 		
 		// Number of stacks in a chest
 		stacks_min=3;
@@ -191,13 +234,13 @@ public class ChestLootHandler {
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
 			//{new ItemStack(Blocks.BLUE_ICE), def_min, def_max, def_weight}, // TODO - Blue Ice
-			{new ItemStack(Blocks.SNOW), def_min, def_max, 4},
+			{new ItemStack(Blocks.SNOW), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 4},
 			{new ItemStack(Items.POTATO), 1, 7, 10},
 			{new ItemStack(Items.BREAD), 1, 4, 10},
 			{new ItemStack(Items.BEETROOT_SEEDS), 1, 5, 10},
-			{new ItemStack(Items.BEETROOT_SOUP), def_min, def_max, def_weight},
-			{new ItemStack(Blocks.FURNACE), def_min, def_max, def_weight},
-			{new ItemStack(Items.EMERALD), 1, 4, def_weight},
+			{new ItemStack(Items.BEETROOT_SOUP), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Blocks.FURNACE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.EMERALD), 1, 4, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Items.SNOWBALL), 1, 7, 10},
 			{new ItemStack(Items.COAL), 1, 4, 5},
 		})
@@ -209,7 +252,7 @@ public class ChestLootHandler {
 		
 		// --- Taiga House --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_taiga_house");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_TAIGA_HOUSE);
 		
 		// Number of stacks in a chest
 		stacks_min=3;
@@ -219,17 +262,17 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{ModObjects.chooseModIronNugget(), 1, 5, def_weight},
-			{new ItemStack(Blocks.TALLGRASS, 1, 2), def_min, def_max, 2}, // Fern
-			{new ItemStack(Blocks.DOUBLE_PLANT, 1, 3), def_min, def_max, 2}, // Large Fern
+			{ModObjects.chooseModIronNugget(), 1, 5, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Blocks.TALLGRASS, 1, 2), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 2}, // Fern
+			{new ItemStack(Blocks.DOUBLE_PLANT, 1, 3), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 2}, // Large Fern
 			{new ItemStack(Items.POTATO), 1, 7, 10},
 			{ModObjects.chooseModSweetBerriesItem(), 1, 7, 5},
 			{new ItemStack(Items.BREAD), 1, 4, 10},
 			{new ItemStack(Items.PUMPKIN_SEEDS), 1, 5, 5},
-			{new ItemStack(Items.PUMPKIN_PIE), def_min, def_max, def_weight},
+			{new ItemStack(Items.PUMPKIN_PIE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Items.EMERALD), 1, 4, 2},
 			{new ItemStack(Blocks.SAPLING, 1, 1), 1, 5, 5}, // Spruce Sapling
-			{ModObjects.chooseModWoodenSignItem(1), def_min, def_max, def_weight}, // Spruce Sign
+			{ModObjects.chooseModWoodenSignItem(1), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT}, // Spruce Sign
 			{new ItemStack(Blocks.LOG, 1, 1), 1, 5, 10}, // Spruce Log
 		})
 		{
@@ -240,7 +283,7 @@ public class ChestLootHandler {
 		
 		// --- Jungle House --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_jungle_house");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_JUNGLE_HOUSE);
 		
 		// Number of stacks in a chest
 		stacks_min=3;
@@ -250,16 +293,16 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.BREAD), def_min, 4, 10},
-			{new ItemStack(Items.EMERALD), def_min, 4, 2},
-			{ModObjects.chooseModIronNugget(), def_min, 5, def_weight},
-			{new ItemStack(Blocks.SAPLING, 1, 3), def_min, 5, 3}, // Jungle Sapling
-			{new ItemStack(Blocks.LOG, 1, 3), def_min, 5, 10}, // Jungle Log
-			{ModObjects.chooseModWoodenSignItem(3), def_min, def_max, def_weight}, // Jungle Sign
-			{new ItemStack(Blocks.VINE), def_min, def_max, 5},
-			{new ItemStack(Blocks.TORCH), def_min, 2, def_weight},
-			{new ItemStack(Items.FEATHER), def_min, def_max, def_weight},
-			{new ItemStack(Items.CHICKEN), def_min, 2, 3},
+			{new ItemStack(Items.BREAD), DEFAULT_LOOT_STACK_MINIMUM, 4, 10},
+			{new ItemStack(Items.EMERALD), DEFAULT_LOOT_STACK_MINIMUM, 4, 2},
+			{ModObjects.chooseModIronNugget(), DEFAULT_LOOT_STACK_MINIMUM, 5, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Blocks.SAPLING, 1, 3), DEFAULT_LOOT_STACK_MINIMUM, 5, 3}, // Jungle Sapling
+			{new ItemStack(Blocks.LOG, 1, 3), DEFAULT_LOOT_STACK_MINIMUM, 5, 10}, // Jungle Log
+			{ModObjects.chooseModWoodenSignItem(3), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT}, // Jungle Sign
+			{new ItemStack(Blocks.VINE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+			{new ItemStack(Blocks.TORCH), DEFAULT_LOOT_STACK_MINIMUM, 2, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.FEATHER), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.CHICKEN), DEFAULT_LOOT_STACK_MINIMUM, 2, 3},
 		})
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
@@ -269,7 +312,7 @@ public class ChestLootHandler {
 		
 		// --- Swamp House --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_swamp_house");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_SWAMP_HOUSE);
 		
 		// Number of stacks in a chest
 		stacks_min=3;
@@ -279,16 +322,16 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.BREAD), def_min, 4, 10},
-			{new ItemStack(Items.EMERALD), def_min, 4, def_weight},
-			{new ItemStack(Items.BOOK), def_min, def_max, def_weight},
-			{new ItemStack(Blocks.VINE), def_min, def_max, 5},
-			{new ItemStack(Items.WATER_BUCKET), def_min, 3, def_weight},
-			{new ItemStack(Items.COAL), def_min, 4, 5},
-			{new ItemStack(Items.FISH, 1, 0), def_min, 2, def_weight}, // Raw Cod
-			{new ItemStack(Blocks.OAK_FENCE), def_min, 4, 2}, // Oak Fence
-			{new ItemStack(Items.BOAT), def_min, def_max, def_weight}, // Oak Boat
-			{new ItemStack(Items.PRISMARINE_SHARD), def_min, def_max, def_weight},
+			{new ItemStack(Items.BREAD), DEFAULT_LOOT_STACK_MINIMUM, 4, 10},
+			{new ItemStack(Items.EMERALD), DEFAULT_LOOT_STACK_MINIMUM, 4, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.BOOK), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Blocks.VINE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
+			{new ItemStack(Items.WATER_BUCKET), DEFAULT_LOOT_STACK_MINIMUM, 3, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.COAL), DEFAULT_LOOT_STACK_MINIMUM, 4, 5},
+			{new ItemStack(Items.FISH, 1, 0), DEFAULT_LOOT_STACK_MINIMUM, 2, DEFAULT_LOOT_STACK_WEIGHT}, // Raw Cod
+			{new ItemStack(Blocks.OAK_FENCE), DEFAULT_LOOT_STACK_MINIMUM, 4, 2}, // Oak Fence
+			{new ItemStack(Items.BOAT), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT}, // Oak Boat
+			{new ItemStack(Items.PRISMARINE_SHARD), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 		})
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
@@ -305,7 +348,7 @@ public class ChestLootHandler {
 		
 		// --- Armorer --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_armorer");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_ARMORER);
 		
 		// Number of stacks in a chest
 		stacks_min=1;
@@ -314,12 +357,7 @@ public class ChestLootHandler {
 		chestGenHooks.setMin(stacks_min); chestGenHooks.setMax(stacks_max+1);
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
-		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.IRON_INGOT), 1, 3, 2},
-			{new ItemStack(Items.BREAD), 1, 4, 4},
-			{new ItemStack(Items.IRON_HELMET), def_min, def_max, def_weight},
-			{new ItemStack(Items.EMERALD), def_min, def_max, def_weight},
-		})
+		for (Object[] chestItemObject : ARMORER_CHEST_LOOT_ARRAY)
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
 		}
@@ -328,7 +366,7 @@ public class ChestLootHandler {
 		
 		// --- Butcher --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_butcher");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_BUTCHER);
 		
 		// Number of stacks in a chest
 		stacks_min=1;
@@ -338,7 +376,7 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.EMERALD), def_min, def_max, def_weight},
+			{new ItemStack(Items.EMERALD), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Items.PORKCHOP), 1, 3, 6},
 			{new ItemStack(Items.WHEAT), 1, 3, 6},
 			{new ItemStack(Items.BEEF), 1, 3, 6},
@@ -353,7 +391,7 @@ public class ChestLootHandler {
 		
 		// --- Cartographer --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_cartographer");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_CARTOGRAPHER);
 		
 		// Number of stacks in a chest
 		stacks_min=1;
@@ -365,7 +403,7 @@ public class ChestLootHandler {
 		for (Object[] chestItemObject : new Object[][]{
 			{new ItemStack(Items.MAP), 1, 3, 10},
 			{new ItemStack(Items.PAPER), 1, 5, 15},
-			{new ItemStack(Items.COMPASS), def_min, def_max, 5},
+			{new ItemStack(Items.COMPASS), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 5},
 			{new ItemStack(Items.BREAD), 1, 4, 15},
 			{new ItemStack(Items.STICK), 1, 2, 5},
 		})
@@ -375,14 +413,14 @@ public class ChestLootHandler {
 		// Add codex
 		if (GeneralConfig.codexChestLoot)
 		{
-			chestGenHooks.addItem(new WeightedRandomChestContent(new ItemStack(ModItems.CODEX), def_min, 2, 4));
+			chestGenHooks.addItem(new WeightedRandomChestContent(new ItemStack(ModItems.CODEX), DEFAULT_LOOT_STACK_MINIMUM, 2, 4));
 		}
 		
 		
 		
 		// --- Farm --- //
 		// Custom by AstroTibs
-		chestGenHooks = ChestGenHooks.getInfo("vn_farm");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_FARM);
 		
 		// Number of stacks in a chest
 		stacks_min=1;
@@ -392,14 +430,14 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.EMERALD), def_min, def_max, def_weight},
-			{new ItemStack(Items.WHEAT_SEEDS), def_min, 5, 5},
-			{new ItemStack(Items.POTATO), def_min, 5, 2},
-			{new ItemStack(Items.CARROT), def_min, 5, 2},
-			{new ItemStack(Items.BEETROOT_SEEDS), def_min, 5, def_weight},
-			{new ItemStack(Items.PUMPKIN_SEEDS), def_min, 5, def_weight},
-			{new ItemStack(Items.REEDS), def_min, 5, def_weight},
-			{new ItemStack(Items.BUCKET), def_min, def_max, def_weight},
+			{new ItemStack(Items.EMERALD), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.WHEAT_SEEDS), DEFAULT_LOOT_STACK_MINIMUM, 5, 5},
+			{new ItemStack(Items.POTATO), DEFAULT_LOOT_STACK_MINIMUM, 5, 2},
+			{new ItemStack(Items.CARROT), DEFAULT_LOOT_STACK_MINIMUM, 5, 2},
+			{new ItemStack(Items.BEETROOT_SEEDS), DEFAULT_LOOT_STACK_MINIMUM, 5, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.PUMPKIN_SEEDS), DEFAULT_LOOT_STACK_MINIMUM, 5, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.REEDS), DEFAULT_LOOT_STACK_MINIMUM, 5, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.BUCKET), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 		})
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
@@ -409,7 +447,7 @@ public class ChestLootHandler {
 		
 		// --- Fisher Cottage --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_fisher");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_FISHER);
 		
 		// Number of stacks in a chest
 		stacks_min=1;
@@ -419,12 +457,12 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.EMERALD), def_min, def_max, def_weight},
+			{new ItemStack(Items.EMERALD), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Items.FISH), 1, 3, 2},
-			{new ItemStack(Items.FISH, 1, 1), 1, 3, def_weight},
-			{new ItemStack(Items.WATER_BUCKET), 1, 3, def_weight},
-			{ModObjects.chooseModBarrelItem(), 1, 3, def_weight},
-			{new ItemStack(Items.CLAY_BALL), def_min, def_max, def_weight},
+			{new ItemStack(Items.FISH, 1, 1), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.WATER_BUCKET), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
+			{ModObjects.chooseModBarrelItem(), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.CLAY_BALL), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Items.WHEAT_SEEDS), 1, 3, 3},
 			{new ItemStack(Items.COAL), 1, 3, 2},
 		})
@@ -436,7 +474,7 @@ public class ChestLootHandler {
 		
 		// --- Fletcher --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_fletcher");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_FLETCHER);
 		
 		// Number of stacks in a chest
 		stacks_min=1;
@@ -446,7 +484,7 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.EMERALD), def_min, def_max, def_weight},
+			{new ItemStack(Items.EMERALD), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Items.ARROW), 1, 3, 2},
 			{new ItemStack(Items.FEATHER), 1, 3, 6},
 			{new ItemStack(Items.EGG), 1, 3, 2},
@@ -461,7 +499,7 @@ public class ChestLootHandler {
 		
 		// --- Library --- //
 		// Custom
-		chestGenHooks = ChestGenHooks.getInfo("vn_library");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_LIBRARY);
 		
 		// Number of stacks in a chest
 		stacks_min=1;
@@ -471,13 +509,13 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.PAPER), def_min, 3, def_weight},
-			{new ItemStack(Items.DYE, 1, 0), def_min, 3, 6}, // Ink sac
-			{new ItemStack(Items.FEATHER), def_min, 3, 6},
-			{new ItemStack(Items.WRITABLE_BOOK), def_min, def_max, def_weight},
-			{new ItemStack(Items.BOOK), def_min, 3, 3},
-			{new ItemStack(Items.APPLE), def_min, def_max, 15},
-			{new ItemStack(Items.EMERALD), def_min, def_max, def_weight},
+			{new ItemStack(Items.PAPER), DEFAULT_LOOT_STACK_MINIMUM, 3, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.DYE, 1, 0), DEFAULT_LOOT_STACK_MINIMUM, 3, 6}, // Ink sac
+			{new ItemStack(Items.FEATHER), DEFAULT_LOOT_STACK_MINIMUM, 3, 6},
+			{new ItemStack(Items.WRITABLE_BOOK), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.BOOK), DEFAULT_LOOT_STACK_MINIMUM, 3, 3},
+			{new ItemStack(Items.APPLE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 15},
+			{new ItemStack(Items.EMERALD), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			//{new ItemStack(FunctionsVN.getItemFromName(ModObjects.dustyBook_LB)), def_min, def_max, 2}, // Lost Book
 		})
 		{
@@ -486,14 +524,14 @@ public class ChestLootHandler {
 		// Add codex
 		if (GeneralConfig.codexChestLoot)
 		{
-			chestGenHooks.addItem(new WeightedRandomChestContent(new ItemStack(ModItems.CODEX), def_min, 2, 4));
+			chestGenHooks.addItem(new WeightedRandomChestContent(new ItemStack(ModItems.CODEX), DEFAULT_LOOT_STACK_MINIMUM, 2, 4));
 		}
 		
 		
 		
 		// --- Mason --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_mason");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_MASON);
 		
 		// Number of stacks in a chest
 		stacks_min=1;
@@ -505,14 +543,14 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.CLAY_BALL), 1, 3, def_weight},
-			{new ItemStack(Items.FLOWER_POT), def_min, def_max, def_weight},
-			{new ItemStack(Blocks.STONE), def_min, def_max, 2},
-			{new ItemStack(Blocks.STONEBRICK), def_min, def_max, 2},
+			{new ItemStack(Items.CLAY_BALL), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.FLOWER_POT), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Blocks.STONE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 2},
+			{new ItemStack(Blocks.STONEBRICK), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 2},
 			{new ItemStack(Items.BREAD), 1, 4, 4},
-			{new ItemStack(Items.DYE, 1, 11), def_min, def_max, def_weight},
-			{new ItemStack(smoothStoneBlockState.getBlock(), 1, smoothStoneBlockState.getBlock().getMetaFromState(smoothStoneBlockState)), def_min, def_max, def_weight},
-			{new ItemStack(Items.EMERALD), def_min, def_max, def_weight},
+			{new ItemStack(Items.DYE, 1, 11), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(smoothStoneBlockState.getBlock(), 1, smoothStoneBlockState.getBlock().getMetaFromState(smoothStoneBlockState)), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.EMERALD), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 		})
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
@@ -520,14 +558,14 @@ public class ChestLootHandler {
 		// Add codex
 		if (GeneralConfig.codexChestLoot)
 		{
-			chestGenHooks.addItem(new WeightedRandomChestContent(new ItemStack(ModItems.CODEX), def_min, def_max, def_weight));
+			chestGenHooks.addItem(new WeightedRandomChestContent(new ItemStack(ModItems.CODEX), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT));
 		}
 		
 		
 		
 		// --- Shepherd --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_shepherd");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_SHEPHERD);
 		
 		// Number of stacks in a chest
 		stacks_min=1;
@@ -542,8 +580,8 @@ public class ChestLootHandler {
 			{new ItemStack(Blocks.WOOL, 1, 7), 1, 3, 2}, // Gray
 			{new ItemStack(Blocks.WOOL, 1, 12), 1, 3, 2}, // Brown
 			{new ItemStack(Blocks.WOOL, 1, 8), 1, 3, 2}, // Light Gray
-			{new ItemStack(Items.EMERALD), def_min, def_max, def_weight},
-			{new ItemStack(Items.SHEARS), def_min, def_max, def_weight},
+			{new ItemStack(Items.EMERALD), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.SHEARS), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
 			{new ItemStack(Items.WHEAT), 1, 6, 6},
 		})
 		{
@@ -554,7 +592,7 @@ public class ChestLootHandler {
 		
 		// --- Tannery --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_tannery");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_TANNERY);
 		
 		// Number of stacks in a chest
 		stacks_min=1;
@@ -564,14 +602,14 @@ public class ChestLootHandler {
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
 		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.LEATHER), 1, 3, def_weight},
-			{new ItemStack(Items.LEATHER_CHESTPLATE), def_min, def_max, 2},
-			{new ItemStack(Items.LEATHER_BOOTS), def_min, def_max, 2},
-			{new ItemStack(Items.LEATHER_HELMET), def_min, def_max, 2},
+			{new ItemStack(Items.LEATHER), 1, 3, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.LEATHER_CHESTPLATE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 2},
+			{new ItemStack(Items.LEATHER_BOOTS), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 2},
+			{new ItemStack(Items.LEATHER_HELMET), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 2},
 			{new ItemStack(Items.BREAD), 1, 4, 5},
-			{new ItemStack(Items.LEATHER_LEGGINGS), def_min, def_max, 2},
-			{new ItemStack(Items.SADDLE), def_min, def_max, def_weight},
-			{new ItemStack(Items.EMERALD), 1, 4, def_weight},
+			{new ItemStack(Items.LEATHER_LEGGINGS), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 2},
+			{new ItemStack(Items.SADDLE), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.EMERALD), 1, 4, DEFAULT_LOOT_STACK_WEIGHT},
 		})
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
@@ -581,7 +619,7 @@ public class ChestLootHandler {
 		
 		// --- Temple --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_temple");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_TEMPLE);
 		
 		// Number of stacks in a chest
 		stacks_min=3;
@@ -594,9 +632,9 @@ public class ChestLootHandler {
 			{new ItemStack(Items.REDSTONE), 1, 4, 2},
 			{new ItemStack(Items.BREAD), 1, 4, 7},
 			{new ItemStack(Items.ROTTEN_FLESH), 1, 4, 7},
-			{new ItemStack(Items.DYE), 1, 11, def_weight}, // Lapis Lazuli
-			{new ItemStack(Items.GOLD_INGOT), 1, 4, def_weight},
-			{new ItemStack(Items.EMERALD), 1, 4, def_weight},
+			{new ItemStack(Items.DYE), 1, 11, DEFAULT_LOOT_STACK_WEIGHT}, // Lapis Lazuli
+			{new ItemStack(Items.GOLD_INGOT), 1, 4, DEFAULT_LOOT_STACK_WEIGHT},
+			{new ItemStack(Items.EMERALD), 1, 4, DEFAULT_LOOT_STACK_WEIGHT},
 		})
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
@@ -606,7 +644,7 @@ public class ChestLootHandler {
 		
 		// --- Toolsmith --- //
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_toolsmith");
+		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_TOOLSMITH);
 		
 		// Number of stacks in a chest
 		stacks_min=3;
@@ -615,60 +653,34 @@ public class ChestLootHandler {
 		chestGenHooks.setMin(stacks_min); chestGenHooks.setMax(stacks_max+1);
 		
 		// Register chest entries: ItemStack, stackMin, stackMax, weight
-		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.DIAMOND), 1, 3, def_weight},
-			{new ItemStack(Items.IRON_INGOT), 1, 5, 5},
-			{new ItemStack(Items.GOLD_INGOT), 1, 3, def_weight},
-			{new ItemStack(Items.BREAD), 1, 3, 15},
-			{new ItemStack(Items.IRON_PICKAXE), def_min, def_max, 5},
-			{new ItemStack(Items.COAL), 1, 3, def_weight},
-			{new ItemStack(Items.STICK), 1, 3, 20},
-			{new ItemStack(Items.IRON_SHOVEL), def_min, def_max, 5},
-		})
+		for (Object[] chestItemObject : TOOLSMITHY_CHEST_LOOT_ARRAY)
 		{
 			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
 		}
 		// Add codex
 		if (GeneralConfig.codexChestLoot)
 		{
-			chestGenHooks.addItem(new WeightedRandomChestContent(new ItemStack(ModItems.CODEX), def_min, def_max, 3));
+			chestGenHooks.addItem(new WeightedRandomChestContent(new ItemStack(ModItems.CODEX), DEFAULT_LOOT_STACK_MINIMUM, DEFAULT_LOOT_STACK_MAXIMUM, 3));
 		}
 		
 		
 		
 		// --- Weaponsmith --- //
+		// Contents are identical to vanilla blacksmith chest!
 		
-		chestGenHooks = ChestGenHooks.getInfo("vn_weaponsmith");
-		
-		// Number of stacks in a chest
-		stacks_min=3;
-		stacks_max=8;
-		
-		chestGenHooks.setMin(stacks_min); chestGenHooks.setMax(stacks_max+1);
-		
-		// Register chest entries: ItemStack, stackMin, stackMax, weight
-		for (Object[] chestItemObject : new Object[][]{
-			{new ItemStack(Items.DIAMOND), 1, 3, 3},
-			{new ItemStack(Items.IRON_INGOT), 1, 5, 10},
-			{new ItemStack(Items.GOLD_INGOT), 1, 3, 5},
-			{new ItemStack(Items.BREAD), 1, 3, 15},
-			{new ItemStack(Items.APPLE), 1, 3, 15},
-			{new ItemStack(Items.IRON_PICKAXE), def_min, def_max, 5},
-			{new ItemStack(Items.IRON_SWORD), def_min, def_max, 5},
-			{new ItemStack(Items.IRON_CHESTPLATE), def_min, def_max, 5},
-			{new ItemStack(Items.IRON_HELMET), def_min, def_max, 5},
-			{new ItemStack(Items.IRON_LEGGINGS), def_min, def_max, 5},
-			{new ItemStack(Items.IRON_BOOTS), def_min, def_max, 5},
-			{new ItemStack(Blocks.OBSIDIAN), 3, 7, 5},
-			{new ItemStack(Blocks.SAPLING, 1, 0), 3, 7, 5}, // Oak Sapling
-			{new ItemStack(Items.SADDLE), def_min, def_max, 3},
-			{new ItemStack(Items.IRON_HORSE_ARMOR), def_min, def_max, def_weight},
-			{new ItemStack(Items.GOLDEN_HORSE_ARMOR), def_min, def_max, def_weight},
-			{new ItemStack(Items.DIAMOND_HORSE_ARMOR), def_min, def_max, def_weight},
-		})
-		{
-			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
-		}
+//		chestGenHooks = ChestGenHooks.getInfo(Reference.VN_WEAPONSMITH);
+//		
+//		// Number of stacks in a chest
+//		stacks_min=3;
+//		stacks_max=8;
+//		
+//		chestGenHooks.setMin(stacks_min); chestGenHooks.setMax(stacks_max+1);
+//		
+//		// Register chest entries: ItemStack, stackMin, stackMax, weight
+//		for (Object[] chestItemObject : WEAPONSMITH_CHEST_LOOT_ARRAY)
+//		{
+//			if (chestItemObject[0] != null) {chestGenHooks.addItem(new WeightedRandomChestContent((ItemStack)chestItemObject[0], (Integer)chestItemObject[1], (Integer)chestItemObject[2], (Integer)chestItemObject[3]));}
+//		}
 		
 	}
 	
@@ -677,13 +689,13 @@ public class ChestLootHandler {
 		switch (villageType)
 		{
 		default:
-		case PLAINS:  return "vn_plains_house";
-		case DESERT:  return "vn_desert_house";
-		case TAIGA:   return "vn_taiga_house";
-		case SAVANNA: return "vn_savanna_house";
-		case SNOWY:   return "vn_snowy_house";
-		case JUNGLE:  return "vn_jungle_house";
-		case SWAMP:   return "vn_swamp_house";
+		case PLAINS:  return Reference.VN_PLAINS_HOUSE;
+		case DESERT:  return Reference.VN_DESERT_HOUSE;
+		case TAIGA:   return Reference.VN_TAIGA_HOUSE;
+		case SAVANNA: return Reference.VN_SAVANNA_HOUSE;
+		case SNOWY:   return Reference.VN_SNOWY_HOUSE;
+		case JUNGLE:  return Reference.VN_JUNGLE_HOUSE;
+		case SWAMP:   return Reference.VN_SWAMP_HOUSE;
 		}
 	}
 }

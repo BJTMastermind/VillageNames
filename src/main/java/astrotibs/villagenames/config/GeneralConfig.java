@@ -445,6 +445,7 @@ public class GeneralConfig {
 		
 	    modIronNugget = config.getStringList("Mod Priority: Iron Nugget", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
  				"thaumcraft",
+ 				"industrialengineering",
  				"railcraft",
  				},
  				"Priority order for referencing Iron Nuggets for e.g. village chest loot. The version highest on the list and registered in your game will be used."
