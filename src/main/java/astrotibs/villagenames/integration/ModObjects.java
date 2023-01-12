@@ -141,6 +141,7 @@ public class ModObjects {
 	
 	// Iron Nuggets
 	public static final String nuggetTC = "thaumcraft:nugget";
+	public static final String metalIE = "immersiveengineering:metal"; // Iron Nugget is 29
 	
 	// Kelp and Kelp Accessories
 	public static final String kelpBOP = DOM_BIOMESOPLENTY + ":seaweed";
@@ -452,10 +453,23 @@ public class ModObjects {
 	// Iron Nugget
 	public static ItemStack chooseModIronNugget()
 	{
-		Item moditem=null;
+		String[] modprioritylist = GeneralConfig.modIronNugget;
 		
-		moditem = FunctionsVN.getItemFromName(ModObjects.nuggetTC);
-		if (moditem != null) {return new ItemStack(moditem, 1);}
+		for (String mod : modprioritylist)
+		{
+			Item moditem=null;
+			
+			if (mod.toLowerCase().trim().equals("thaumcraft"))
+			{
+				moditem = FunctionsVN.getItemFromName(ModObjects.nuggetTC);
+				if (moditem != null) {return new ItemStack(moditem, 1, 0);}
+			}
+			else if (mod.toLowerCase().trim().equals("immersiveengineering"))
+			{
+				moditem = FunctionsVN.getItemFromName(ModObjects.metalIE);
+				if (moditem != null) {return new ItemStack(moditem, 1, 29);}
+			}
+		}
 		
 		return null;
 	}

@@ -81,7 +81,8 @@ public class GeneralConfig {
 	public static boolean treasureTrades;
 	public static boolean writtenBookTrade;
 	public static boolean swampHutMushroomPot;
-
+	
+	public static String[] modIronNugget;
 	public static String[] modWoodenTable;
 	
 	public static String[] zombieCureCatalysts;
@@ -409,7 +410,14 @@ public class GeneralConfig {
 		
 		harvestcraftCropFarmRate = config.getFloat("Crop rate: Harvestcraft", Reference.CATEGORY_MOD_INTEGRATION, 0.25F, 0F, 1F, "Generate Harvestcraft crops in farms. Only used with Village Generator. Set to 0 for no HC crops.");
 		antiqueAtlasMarkerNames = config.getBoolean("Antique Atlas: Village Marker Names", Reference.CATEGORY_MOD_INTEGRATION, true, "Label a new village marker with the village's name in your Antique Atlases.");
-	    
+		
+	    modIronNugget = config.getStringList("Mod Priority: Iron Nugget", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+ 				"thaumcraft",
+ 				"immersiveengineering",
+ 				},
+ 				"Priority order for referencing Iron Nuggets for e.g. village chest loot. The version highest on the list and registered in your game will be used."
+ 				);
+		
 	    modWoodenTable = config.getStringList("Mod Priority: Table", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
 	    		"minecraft",
 	    		"bibliocraft",

@@ -4221,7 +4221,7 @@ public class SavannaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_butcher");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_BUTCHER);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
     		
@@ -4698,7 +4698,7 @@ public class SavannaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_cartographer");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_CARTOGRAPHER);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -7632,7 +7632,7 @@ public class SavannaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_mason");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_MASON);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -13831,7 +13831,7 @@ public class SavannaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_tannery");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_TANNERY);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -16312,7 +16312,7 @@ public class SavannaStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_weaponsmith");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(ChestGenHooks.VILLAGE_BLACKSMITH);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
