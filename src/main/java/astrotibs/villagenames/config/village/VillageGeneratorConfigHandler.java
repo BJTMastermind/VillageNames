@@ -17,7 +17,7 @@ public class VillageGeneratorConfigHandler
 	
 	// --- Villages --- //
 	public static boolean newVillageGenerator;
-
+	
 	public static float newVillageSizeMaximum;
 	public static float newVillageSizeMinimum;
 	public static float newVillageSizeMode;

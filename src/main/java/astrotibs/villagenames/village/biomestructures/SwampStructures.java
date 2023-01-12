@@ -56,6 +56,7 @@ import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
+import net.minecraft.world.storage.loot.LootTableList;
 
 public class SwampStructures
 {
@@ -3226,9 +3227,9 @@ public class SwampStructures
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
         	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
-        	if (te instanceof IInventory)
+        	if (te instanceof TileEntityChest)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_armorer");
+    			ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_ARMORER);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -4859,7 +4860,7 @@ public class SwampStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_fisher");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_FISHER);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -6159,7 +6160,7 @@ public class SwampStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_fletcher");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_FLETCHER);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -7374,7 +7375,7 @@ public class SwampStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_farm");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_FARM);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -8602,7 +8603,7 @@ public class SwampStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_library");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_LIBRARY);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -9178,7 +9179,7 @@ public class SwampStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_mason");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_MASON);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -11386,7 +11387,7 @@ public class SwampStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_shepherd");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_SHEPHERD);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
 			
@@ -16333,9 +16334,9 @@ public class SwampStructures
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
         	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
-        	if (te instanceof IInventory)
+        	if (te instanceof TileEntityChest)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_toolsmith");
+    			ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_TOOLSMITH);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
@@ -16820,10 +16821,9 @@ public class SwampStructures
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
         	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
-        	if (te instanceof IInventory)
+        	if (te instanceof TileEntityChest)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_weaponsmith");
-            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+        		((TileEntityChest)te).setLootTable(LootTableList.CHESTS_VILLAGE_BLACKSMITH, random.nextLong());
         	}
     		
     		
