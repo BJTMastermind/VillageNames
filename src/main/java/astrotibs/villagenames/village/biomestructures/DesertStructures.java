@@ -42,6 +42,7 @@ import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
+import net.minecraft.world.storage.loot.LootTableList;
 
 public class DesertStructures
 {
@@ -11930,7 +11931,7 @@ public class DesertStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_temple");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_TEMPLE);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
@@ -12859,12 +12860,11 @@ public class DesertStructures
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
         	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
-        	if (te instanceof IInventory)
+        	if (te instanceof TileEntityChest)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_toolsmith");
+        		ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_TOOLSMITH);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
-        	
             
             // Doors
             for (int[] uvwoor : new int[][]{ // u, v, w, orientation, isShut (1/0 for true/false), isRightHanded (1/0 for true/false)
@@ -13362,10 +13362,9 @@ public class DesertStructures
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
         	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
-        	if (te instanceof IInventory)
+        	if (te instanceof TileEntityChest)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_weaponsmith");
-            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+        		((TileEntityChest)te).setLootTable(LootTableList.CHESTS_VILLAGE_BLACKSMITH, random.nextLong());
         	}
         	
             

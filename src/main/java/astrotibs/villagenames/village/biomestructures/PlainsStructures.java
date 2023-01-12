@@ -15,6 +15,7 @@ import astrotibs.villagenames.name.NameGenerator;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.FunctionsVN.MaterialType;
 import astrotibs.villagenames.utility.LogHelper;
+import astrotibs.villagenames.utility.Reference;
 import astrotibs.villagenames.village.StructureVillageVN;
 import astrotibs.villagenames.village.StructureVillageVN.StartVN;
 import astrotibs.villagenames.village.chestloot.ChestGenHooks;
@@ -45,6 +46,7 @@ import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
+import net.minecraft.world.storage.loot.LootTableList;
 
 public class PlainsStructures
 {
@@ -4982,7 +4984,7 @@ public class PlainsStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_cartographer");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_CARTOGRAPHER);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -5388,7 +5390,7 @@ public class PlainsStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_fisher");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_FISHER);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
             
@@ -6355,7 +6357,7 @@ public class PlainsStructures
             	int w=3;
             	int v= 1;
             	
-            	while (w==3 || w==9)
+            	while (w==3 || w==9 || (u==1 && (w==1 || w==11)))
             	{
             		u = random.nextInt(STRUCTURE_WIDTH);
                 	w = 1+random.nextInt(STRUCTURE_DEPTH-2);
@@ -10652,9 +10654,9 @@ public class PlainsStructures
             	// Villager
             	int u=0;
             	int w=3;
-            	int v= 1;
+            	int v=1;
             	
-            	while (w==3)
+            	while (w==3 || (u==7 && w==5))
             	{
             		u = random.nextInt(STRUCTURE_WIDTH);
                 	w = 1+random.nextInt(STRUCTURE_DEPTH-2);
@@ -15587,7 +15589,7 @@ public class PlainsStructures
         	TileEntity te = world.getTileEntity(chestPos);
         	if (te instanceof IInventory)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_tannery");
+            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo(Reference.VN_TANNERY);
             	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
         	}
         	
@@ -17355,10 +17357,9 @@ public class PlainsStructures
             BlockPos chestPos = new BlockPos(this.getXWithOffset(chestU, chestW), this.getYWithOffset(chestV), this.getZWithOffset(chestU, chestW));
         	world.setBlockState(chestPos, Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(chestO, this.getCoordBaseMode())), 2);
         	TileEntity te = world.getTileEntity(chestPos);
-        	if (te instanceof IInventory)
+        	if (te instanceof TileEntityChest)
         	{
-            	ChestGenHooks chestGenHook = ChestGenHooks.getInfo("vn_weaponsmith");
-            	WeightedRandomChestContent.generateChestContents(random, chestGenHook.getItems(random), (TileEntityChest)te, chestGenHook.getCount(random));
+        		((TileEntityChest)te).setLootTable(LootTableList.CHESTS_VILLAGE_BLACKSMITH, random.nextLong());
         	}
         	
             
