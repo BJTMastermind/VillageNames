@@ -1769,13 +1769,13 @@ public class PlainsStructures
             
         	
             // Sod filling
-            this.fillWithBlocks(world, structureBB, 1, 1, 1, 3, 1, 1, Blocks.grass.getDefaultState(), Blocks.grass.getDefaultState(), false);
+            this.fillWithBlocks(world, structureBB, 1, 0, 1, 3, 0, 1, Blocks.grass.getDefaultState(), Blocks.grass.getDefaultState(), false);
             // Trapdoor rim
         	IBlockState biomeTrapdoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.trapdoor.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(this.coordBaseMode.getHorizontalIndex()%2==0 ? 6 : 4), 0, 1, 1, structureBB); // Left
-        	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(this.coordBaseMode.getHorizontalIndex()%2==0 ? 7 : 5), 4, 1, 1, structureBB); // Right
-        	this.fillWithBlocks(world, structureBB, 1, 1, 0, 3, 1, 0, biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{4, 7, 5, 6})[this.coordBaseMode.getHorizontalIndex()]), biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{4, 7, 5, 6})[this.coordBaseMode.getHorizontalIndex()]), false); // Front
-        	this.fillWithBlocks(world, structureBB, 1, 1, 2, 3, 1, 2, biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{5, 6, 4, 7})[this.coordBaseMode.getHorizontalIndex()]), biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{5, 6, 4, 7})[this.coordBaseMode.getHorizontalIndex()]), false); // Back
+        	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(this.coordBaseMode.getHorizontalIndex()%2==0 ? 6 : 4), 0, 0, 1, structureBB); // Left
+        	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(this.coordBaseMode.getHorizontalIndex()%2==0 ? 7 : 5), 4, 0, 1, structureBB); // Right
+        	this.fillWithBlocks(world, structureBB, 1, 0, 0, 3, 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{4, 7, 5, 6})[this.coordBaseMode.getHorizontalIndex()]), biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{4, 7, 5, 6})[this.coordBaseMode.getHorizontalIndex()]), false); // Front
+        	this.fillWithBlocks(world, structureBB, 1, 0, 2, 3, 0, 2, biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{5, 6, 4, 7})[this.coordBaseMode.getHorizontalIndex()]), biomeTrapdoorState.getBlock().getStateFromMeta((new int[]{5, 6, 4, 7})[this.coordBaseMode.getHorizontalIndex()]), false); // Back
         	// Flowers on top
         	for (int f=0; f<3; f++)
         	{
@@ -1786,7 +1786,7 @@ public class PlainsStructures
         		Block flowerblock = flowerindex == 9 ? Blocks.yellow_flower : Blocks.red_flower;
         		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), 1+f, 2, 1, structureBB);
+        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), 1+f, 1, 1, structureBB);
         		// Upper half of double flower block
         		//if (flowerindex>9) {this.setBlockState(world, flowerblock, 11, 1+f, 3, 1, structureBB);} // Meta is always 11?
         	}
