@@ -1780,13 +1780,13 @@ public class PlainsStructures
         	
         	
             // Sod filling
-            this.fillWithBlocks(world, structureBB, 1, 1, 1, 3, 1, 1, Blocks.GRASS.getDefaultState(), Blocks.GRASS.getDefaultState(), false);
+            this.fillWithBlocks(world, structureBB, 1, 0, 1, 3, 0, 1, Blocks.GRASS.getDefaultState(), Blocks.GRASS.getDefaultState(), false);
             // Trapdoor rim
         	IBlockState biomeTrapdoorState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.TRAPDOOR.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(6), 0, 1, 1, structureBB); // Left
-        	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(7), 4, 1, 1, structureBB); // Right
-        	this.fillWithBlocks(world, structureBB, 1, 1, 0, 3, 1, 0, biomeTrapdoorState.getBlock().getStateFromMeta(5), biomeTrapdoorState.getBlock().getStateFromMeta(5), false); // Front
-        	this.fillWithBlocks(world, structureBB, 1, 1, 2, 3, 1, 2, biomeTrapdoorState.getBlock().getStateFromMeta(4), biomeTrapdoorState.getBlock().getStateFromMeta(4), false); // Back
+        	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(6), 0, 0, 1, structureBB); // Left
+        	this.setBlockState(world, biomeTrapdoorState.getBlock().getStateFromMeta(7), 4, 0, 1, structureBB); // Right
+        	this.fillWithBlocks(world, structureBB, 1, 0, 0, 3, 0, 0, biomeTrapdoorState.getBlock().getStateFromMeta(5), biomeTrapdoorState.getBlock().getStateFromMeta(5), false); // Front
+        	this.fillWithBlocks(world, structureBB, 1, 0, 2, 3, 0, 2, biomeTrapdoorState.getBlock().getStateFromMeta(4), biomeTrapdoorState.getBlock().getStateFromMeta(4), false); // Back
         	// Flowers on top
         	for (int f=0; f<3; f++)
         	{
@@ -1797,7 +1797,7 @@ public class PlainsStructures
         		Block flowerblock = flowerindex == 9 ? Blocks.YELLOW_FLOWER : Blocks.RED_FLOWER;
         		int flowermeta = new int[]{0,1,2,3,4,5,6,7,8,0,0,1}[flowerindex];
         		
-        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), 1+f, 2, 1, structureBB);
+        		this.setBlockState(world, flowerblock.getStateFromMeta(flowermeta), 1+f, 1, 1, structureBB);
         		// Upper half of double flower block
         		//if (flowerindex>9) {this.setBlockState(world, flowerblock, 11, 1+f, 3, 1, structureBB);} // Meta is always 11?
         	}
