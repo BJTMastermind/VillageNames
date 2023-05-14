@@ -34,10 +34,15 @@ public class ModBlocksVN {
 	public static final Block BLACK_GLAZED_TERRACOTTA = new BlockGlazedTerracotta(EnumDyeColor.BLACK);
 	
 	public static void init() {
-		GameRegistry.registerBlock(LUNARIN_GOLD_BRICK, "lunarinGoldBrick");
-		GameRegistry.registerBlock(LUNARIN_IRON_BRICK, "lunarinIronBrick");
 		
-		if (GeneralConfig.addConcrete) {
+		if (GeneralConfig.addLunarinBlocks)
+		{
+			GameRegistry.registerBlock(LUNARIN_GOLD_BRICK, "lunarinGoldBrick");
+			GameRegistry.registerBlock(LUNARIN_IRON_BRICK, "lunarinIronBrick");
+		}
+		
+		if (GeneralConfig.addConcrete)
+		{
 			GameRegistry.registerBlock(CONCRETE, ItemBlockMetaColor.class, "concrete");
 			GameRegistry.registerBlock(CONCRETE_POWDER, ItemBlockMetaColor.class, "concrete_powder");
 			GameRegistry.registerBlock(WHITE_GLAZED_TERRACOTTA, "glazed_terracotta_white");
