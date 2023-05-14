@@ -85,6 +85,9 @@ public class ModObjects {
 	
 	// Bark
 	public static final String barkQu = DOM_QUARK + ":bark";
+	
+	// Barrel
+	public static final String barrelRus = "rustic:barrel";
 
 	// Bed
 	public static final String bedQu = DOM_QUARK + ":colored_bed_item";
@@ -484,12 +487,19 @@ public class ModObjects {
 	// Barrel
 	public static ItemStack chooseModBarrelItem()
 	{
+		Item moditem=FunctionsVN.getItemFromName(ModObjects.barrelRus);
+		
+		if (moditem != null) {return new ItemStack(moditem, 1);}
+		
 		return null;
 	}
-	// Uses furnace metas. 1 is vertical, and horizontal are 2, 3, 4, 5. 0 is inverted
-	public static IBlockState chooseModBarrelBlockState()
+	public static IBlockState chooseModBarrelBlockState(EnumFacing coordBaseMode, int orientationIfBarrel, int orientationIfChest)
 	{
-		return null;
+		Block modblock=Block.getBlockFromName(ModObjects.barrelRus);
+		
+		if (modblock != null) {return modblock.getDefaultState();}
+		
+		return Blocks.CHEST.getStateFromMeta(StructureVillageVN.chooseFurnaceMeta(orientationIfChest, coordBaseMode));
 	}
 	
 	

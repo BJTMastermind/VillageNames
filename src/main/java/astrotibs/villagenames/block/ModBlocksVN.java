@@ -45,8 +45,11 @@ public class ModBlocksVN {
         GameRegistry.register(CONCRETE_POWDER, new ResourceLocation(Reference.MOD_ID, "concrete_powder"));
         GameRegistry.register(new ItemBlockMetaColor(CONCRETE_POWDER), new ResourceLocation(Reference.MOD_ID, "concrete_powder"));
         
-        registerBlock(LUNARIN_GOLD_BRICK, "lunaringoldbrick");
-        registerBlock(LUNARIN_IRON_BRICK, "lunarinironbrick");
+		if (GeneralConfig.addLunarinBlocks)
+		{
+	        registerBlock(LUNARIN_GOLD_BRICK, "lunaringoldbrick");
+	        registerBlock(LUNARIN_IRON_BRICK, "lunarinironbrick");
+		}
         
 		if (GeneralConfig.addConcrete) {
 			registerBlock(WHITE_GLAZED_TERRACOTTA, "glazed_terracotta_white" );
