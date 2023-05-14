@@ -1,6 +1,7 @@
 package astrotibs.villagenames.init;
 
 import astrotibs.villagenames.block.ModBlocksVN;
+import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.item.ModItems;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
@@ -11,8 +12,11 @@ import net.minecraft.item.Item;
 public class InventoryRender {
 	public static void init() {
 		//Blocks
-		InventoryBlockRender(ModBlocksVN.LUNARIN_GOLD_BRICK, "lunarinGoldBrick");
-		InventoryBlockRender(ModBlocksVN.LUNARIN_IRON_BRICK, "lunarinIronBrick");
+		if (GeneralConfig.addLunarinBlocks)
+		{
+			InventoryBlockRender(ModBlocksVN.LUNARIN_GOLD_BRICK, "lunarinGoldBrick");
+			InventoryBlockRender(ModBlocksVN.LUNARIN_IRON_BRICK, "lunarinIronBrick");
+		}
 		//Items
 		InventoryItemRender(ModItems.CODEX, "codex");
 		InventoryItemRender(ModItems.END_CITY_BOOK, "endcitybook");

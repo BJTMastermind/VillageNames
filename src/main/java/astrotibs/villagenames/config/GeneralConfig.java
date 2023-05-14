@@ -28,6 +28,7 @@ public class GeneralConfig {
 	public static boolean villageBanners;
 	public static int signYaw;
 	
+	public static boolean addLunarinBlocks;
 	public static boolean addConcrete;
 	public static boolean concreteWell;
 	
@@ -261,6 +262,7 @@ public class GeneralConfig {
  		
 	    versionChecker = config.getBoolean("Version Checker", Reference.CATEGORY_MISCELLANEOUS, true, "Displays a client-side chat message on login if there's an update available.");
 	    codexChestLoot = config.getBoolean("Codex Chest Loot", Reference.CATEGORY_MISCELLANEOUS, true, "The Codex can appear as rare chest loot.");
+	    addLunarinBlocks = config.getBoolean("Add Lunarin Blocks", Reference.CATEGORY_MISCELLANEOUS, true, "Adds an original brick-style block for iron and gold");
 	    //allowInGameConfig = config.getBoolean("Allow in-game config access", Reference.CATEGORY_MISCELLANEOUS, true, "Set this to false to deacactivate the in-game config GUI, in case it conflicts with other mods.");
 	    debugMessages = config.getBoolean("Debug messages", Reference.CATEGORY_MISCELLANEOUS, false, "Print debug messages to the console, print the class paths of entities and blocks you right-click.");
 	    swampHutMushroomPot = config.getBoolean("Swamp Hut Mushroom", Reference.CATEGORY_MISCELLANEOUS, true, "1.8+ has a bug where the clay pot in the Witch's swamp hut is empty. This flag will correctly place a red mushroom in the pot.");
