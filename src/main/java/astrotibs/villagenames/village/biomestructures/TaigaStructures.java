@@ -43,6 +43,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class TaigaStructures
@@ -289,7 +290,7 @@ public class TaigaStructures
         	
         	
         	// Sign
-        	if (GeneralConfig.nameSign)
+        	if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
         		int signXBB = 2;
     			int signYBB = 2;
@@ -691,7 +692,7 @@ public class TaigaStructures
             
             
         	// Signs
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 4;
     			int signYBB = 5;

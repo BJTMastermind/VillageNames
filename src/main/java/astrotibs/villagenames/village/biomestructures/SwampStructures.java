@@ -57,6 +57,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class SwampStructures
@@ -484,7 +485,7 @@ public class SwampStructures
         	
             // Sign
             IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signU = 3;
     			int signV = 1;
@@ -1044,7 +1045,7 @@ public class SwampStructures
 			int signV = 2;
 			int signW = 1;
             IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.STANDING_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
 
     			int signO = 4;
@@ -1371,7 +1372,7 @@ public class SwampStructures
 			int signV = 3;
 			int signW = 1;
             IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WALL_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
     			int signO = 2;
                 int signX = this.getXWithOffset(signU, signW);
@@ -1754,7 +1755,7 @@ public class SwampStructures
         	
             // Sign
             IBlockState biomeStandingSignState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.WALL_SIGN.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signU = 6;
     			int signV = 1;

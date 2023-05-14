@@ -126,7 +126,8 @@ public class ModObjects {
 	// Barrel
 	public static final String barrelFMC = DOM_FUTUREMC + ":barrel";
 	public static final String barrelFV = DOM_FUTUREVERSIONS + ":barrel";
-
+	public static final String barrelRus = "rustic:barrel";
+	
 	// Bell
 	public static final String bellFMC = DOM_FUTUREMC + ":bell";
 	public static final String bellFV = DOM_FUTUREVERSIONS + ":bell";
@@ -938,6 +939,12 @@ public class ModObjects {
 							{1,5,1,5},
 						})[orientationIfBarrel][coordBaseMode.getHorizontalIndex()]
 						);}
+			}
+			else if (mod.toLowerCase().trim().equals("rustic"))
+			{
+				Block modblock=Block.getBlockFromName(ModObjects.barrelRus);
+				
+				if (modblock != null) {return modblock.getDefaultState();}
 			}
 		}
 		

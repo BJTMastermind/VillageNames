@@ -481,7 +481,7 @@ public final class VillageNames
 	       		TextFormatting.GREEN +
 	       		"Generates random names for villages, villagers, and other structures and entities.";
        
-       event.getModMetadata().logoFile = "assets"+File.separator+"villagenames"+File.separator+"vn_banner.png";
+       event.getModMetadata().logoFile = "assets/villagenames/vn_banner.png";
        
        
        // --- New Villager Profession/Career stuff --- //

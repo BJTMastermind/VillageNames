@@ -44,6 +44,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class SavannaStructures
@@ -410,7 +411,7 @@ public class SavannaStructures
         	
         	
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 7;
     			int signYBB = 1;
@@ -760,7 +761,7 @@ public class SavannaStructures
         	}
         	
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 9;
     			int signYBB = 2;
@@ -1112,7 +1113,7 @@ public class SavannaStructures
         	this.setBlockState(world, Blocks.STAINED_HARDENED_CLAY.getStateFromMeta(GeneralConfig.useVillageColors ? townColor : 4), 4, 3, 5, structureBB);
         	
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 3;
     			int signYBB = 3;
@@ -1451,7 +1452,7 @@ public class SavannaStructures
         	
         	
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 4;
     			int signYBB = 3;

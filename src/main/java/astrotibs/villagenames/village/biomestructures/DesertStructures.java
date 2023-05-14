@@ -41,6 +41,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class DesertStructures
@@ -317,7 +318,7 @@ public class DesertStructures
             
             
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 6;
     			int signYBB = 2;
@@ -666,7 +667,7 @@ public class DesertStructures
             
             
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 8;
     			int signYBB = 1;
@@ -1142,7 +1143,7 @@ public class DesertStructures
         	
         	
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 8;
     			int signYBB = 2;

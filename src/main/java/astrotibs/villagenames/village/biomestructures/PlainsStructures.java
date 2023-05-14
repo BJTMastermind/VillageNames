@@ -45,6 +45,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureVillagePieces;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class PlainsStructures
@@ -305,7 +306,7 @@ public class PlainsStructures
             
             
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 4;
     			int signYBB = 2;
@@ -664,7 +665,7 @@ public class PlainsStructures
             
             
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 6;
     			int signYBB = 2;
@@ -1020,7 +1021,7 @@ public class PlainsStructures
         	
         	        	        	
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 2;
     			int signYBB = 2;
@@ -1420,7 +1421,7 @@ public class PlainsStructures
         	}
         	
             // Signs
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signXBB = 5;
     			int signYBB = 4;
@@ -9320,7 +9321,7 @@ public class PlainsStructures
             
             
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signU = 6;
     			int signV = 2;
@@ -9753,7 +9754,7 @@ public class PlainsStructures
             
             
             // Sign
-            if (GeneralConfig.nameSign)
+            if (GeneralConfig.nameSign && !(Loader.isModLoaded("toroquest") && GeneralConfig.TQVillageNames))
             {
             	int signU = 5;
     			int signV = 2;

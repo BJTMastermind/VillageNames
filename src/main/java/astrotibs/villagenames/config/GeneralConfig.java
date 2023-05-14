@@ -28,8 +28,8 @@ public class GeneralConfig {
 	public static boolean villageBanners;
 	public static int signYaw;
 	
+	public static boolean addLunarinBlocks;
 	public static boolean concreteWell;
-	
 	
 	public static boolean codexChestLoot;
 	public static boolean versionChecker;
@@ -312,6 +312,7 @@ public class GeneralConfig {
 	    zombieCureGroups_map = unpackZombieCureGroups(zombieCureGroups);
 	    
 	    versionChecker = config.getBoolean("Version Checker", Reference.CATEGORY_MISCELLANEOUS, true, "Displays a client-side chat message on login if there's an update available.");
+	    addLunarinBlocks = config.getBoolean("Add Lunarin Blocks", Reference.CATEGORY_MISCELLANEOUS, true, "Adds an original brick-style block for iron and gold");
 	    codexChestLoot = config.getBoolean("Codex Chest Loot", Reference.CATEGORY_MISCELLANEOUS, true, "The Codex can appear as rare chest loot.");
 	    debugMessages = config.getBoolean("Debug messages", Reference.CATEGORY_MISCELLANEOUS, false, "Print debug messages to the console, print the class paths of entities and blocks you right-click.");
 	    swampHutMushroomPot = config.getBoolean("Swamp Hut Mushroom", Reference.CATEGORY_MISCELLANEOUS, true, "1.8+ has a bug where the clay pot in the Witch's swamp hut is empty. This flag will correctly place a red mushroom in the pot.");
@@ -511,6 +512,7 @@ public class GeneralConfig {
 		modBarrel = config.getStringList("Mod Priority: Barrel", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
 	    		"futuremc",
  				"futureversions",
+ 				"rustic",
  				},
  				"Priority order for referencing Barrels for village generation and villager trades. The version highest on the list and registered in your game will be used."
  				);

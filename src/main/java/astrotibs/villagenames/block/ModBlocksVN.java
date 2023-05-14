@@ -1,6 +1,7 @@
 package astrotibs.villagenames.block;
 
 import astrotibs.villagenames.VillageNames;
+import astrotibs.villagenames.config.GeneralConfig;
 import astrotibs.villagenames.utility.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,9 +17,11 @@ public class ModBlocksVN {
 	
 	public static void init() {
 		
-		registerBlock(LUNARIN_GOLD_BRICK, "lunaringoldbrick", CreativeTabs.BUILDING_BLOCKS, true);
-        registerBlock(LUNARIN_IRON_BRICK, "lunarinironbrick", CreativeTabs.BUILDING_BLOCKS, true);
-		
+		if (GeneralConfig.addLunarinBlocks)
+		{
+			registerBlock(LUNARIN_GOLD_BRICK, "lunaringoldbrick", CreativeTabs.BUILDING_BLOCKS, true);
+	        registerBlock(LUNARIN_IRON_BRICK, "lunarinironbrick", CreativeTabs.BUILDING_BLOCKS, true);
+		}
     }
 	
     public static Block registerBlock(Block block, String blockName, CreativeTabs tab, boolean registerItemModels)
