@@ -37,10 +37,14 @@ public class ModBlocksVN {
 	
 	public static void init() {
 		
-		GameRegistry.registerBlock(lunarinGoldBrick, "lunarinGoldBrick");
-		GameRegistry.registerBlock(lunarinIronBrick, "lunarinIronBrick");
+		if (GeneralConfig.addLunarinBlocks)
+		{
+			GameRegistry.registerBlock(lunarinGoldBrick, "lunarinGoldBrick");
+			GameRegistry.registerBlock(lunarinIronBrick, "lunarinIronBrick");
+		}
 		
-		if (GeneralConfig.addConcrete) {
+		if (GeneralConfig.addConcrete)
+		{
 			GameRegistry.registerBlock(blockConcrete, ItemBlockMetaColor.class, "concrete");
 			GameRegistry.registerBlock(blockConcretePowder, ItemBlockMetaColor.class, "concrete_powder");
 			GameRegistry.registerBlock(blockGlazedTerracottaWhite, "glazed_terracotta_white");

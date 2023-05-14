@@ -611,6 +611,7 @@ public class StructureVillageVN
         	if (block == Blocks.snow_layer)                    {blockstate=Blocks.air.getDefaultState(); break;}
         	if (block == Blocks.ice)                           {blockstate=Blocks.planks.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.packed_ice)                    {blockstate=Blocks.cobblestone.getDefaultState(); break;}
+        	if (block != null && block == ModObjects.chooseModBlueIceBlockState().getBlock()) {blockstate=Blocks.stonebrick.getDefaultState(); break;}
         	
         	break;
         	
@@ -649,6 +650,7 @@ public class StructureVillageVN
         	// No snow conversion because snow is okay in spruce biomes
         	if (block == Blocks.ice)                           {blockstate=Blocks.planks.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.packed_ice)                    {blockstate=Blocks.cobblestone.getDefaultState(); break;}
+        	if (block != null && block == ModObjects.chooseModBlueIceBlockState().getBlock()) {blockstate=Blocks.stonebrick.getDefaultState(); break;}
         	
         	break;
         	
@@ -683,6 +685,7 @@ public class StructureVillageVN
         	if (block == Blocks.snow_layer)                    {blockstate=Blocks.air.getDefaultState(); break;}
         	if (block == Blocks.ice)                           {blockstate=Blocks.planks.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.packed_ice)                    {blockstate=Blocks.cobblestone.getDefaultState(); break;}
+        	if (block != null && block == ModObjects.chooseModBlueIceBlockState().getBlock()) {blockstate=Blocks.stonebrick.getDefaultState(); break;}
         	
         	break;
         	
@@ -747,6 +750,7 @@ public class StructureVillageVN
         	if (block == Blocks.snow_layer)                    {blockstate=Blocks.air.getDefaultState(); break;}
         	if (block == Blocks.ice)                           {blockstate=Blocks.planks.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.packed_ice)                    {blockstate=Blocks.mossy_cobblestone.getDefaultState(); break;}
+        	if (block != null && block == ModObjects.chooseModBlueIceBlockState().getBlock()) {blockstate=Blocks.stonebrick.getStateFromMeta(1); break;}
         	
         	break;
         	
@@ -781,6 +785,7 @@ public class StructureVillageVN
         	if (block == Blocks.snow_layer)                    {blockstate=Blocks.air.getDefaultState(); break;}
         	if (block == Blocks.ice)                           {blockstate=Blocks.planks.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.packed_ice)                    {blockstate=Blocks.cobblestone.getDefaultState(); break;}
+        	if (block != null && block == ModObjects.chooseModBlueIceBlockState().getBlock()) {blockstate=Blocks.stonebrick.getDefaultState(); break;}
         	
         	break;
         	
@@ -815,6 +820,7 @@ public class StructureVillageVN
         	if (block == Blocks.snow_layer)                    {blockstate=Blocks.air.getDefaultState(); break;}
         	if (block == Blocks.ice)                           {blockstate=Blocks.planks.getStateFromMeta(woodMeta); break;}
         	if (block == Blocks.packed_ice)                    {blockstate=Blocks.cobblestone.getDefaultState(); break;}
+        	if (block != null && block == ModObjects.chooseModBlueIceBlockState().getBlock()) {blockstate=Blocks.stonebrick.getDefaultState(); break;}
         	
         	break;
         	
@@ -862,6 +868,7 @@ public class StructureVillageVN
         	if (block == Blocks.snow_layer)                    {blockstate=Blocks.air.getDefaultState(); break;}
         	if (block == Blocks.ice)                           {blockstate=Blocks.sandstone.getStateFromMeta(0); break;}
         	if (block == Blocks.packed_ice)                    {blockstate=Blocks.sandstone.getStateFromMeta(2); break;} // Cut sandstone
+        	if (block != null && block == ModObjects.chooseModBlueIceBlockState().getBlock()) {blockstate=Blocks.sandstone.getStateFromMeta(2); break;} // Chiseled sandstone
         	
         	break;
         	
@@ -886,6 +893,7 @@ public class StructureVillageVN
         	if (block == Blocks.snow_layer)                    {blockstate=Blocks.air.getDefaultState(); break;}
         	if (block == Blocks.ice)                           {blockstate=Blocks.hardened_clay.getDefaultState(); break;}
         	if (block == Blocks.packed_ice)                    {blockstate=Blocks.hardened_clay.getDefaultState(); break;}
+        	if (block != null && block == ModObjects.chooseModBlueIceBlockState().getBlock()) {blockstate=Blocks.hardened_clay.getDefaultState(); break;}
         	
         	break;
         	
@@ -956,6 +964,7 @@ public class StructureVillageVN
         	if (block == Blocks.snow_layer)                    {blockstate=Blocks.air.getDefaultState(); break;}
         	if (block == Blocks.ice)                           {blockstate=Blocks.brown_mushroom_block.getStateFromMeta(0); break;} // Pores on all six sides
         	if (block == Blocks.packed_ice)                    {blockstate=Blocks.brown_mushroom_block.getStateFromMeta(14); break;} // Cap on all six sides
+        	if (block != null && block == ModObjects.chooseModBlueIceBlockState().getBlock()) {blockstate=Blocks.brown_mushroom_block.getStateFromMeta(14); break;} // Cap on all six sides
         	
         	break;
         	
@@ -1078,6 +1087,17 @@ public class StructureVillageVN
     		{
     	    	IBlockState grassPath = getBiomeSpecificBlockState(ModObjects.chooseModPathState(), materialType, biome, disallowModSubs);
     			world.setBlockState(pos, grassPath, 2);
+    			
+    			// Check if below block is also grass path, and replace it to prevent path-on-path stacks
+				int yDownScan = surfaceY;
+				for (int i=1; i<=4; i++)
+				{
+					if (surfaceY-i > 0 && world.getBlockState(pos.down(i)).getBlock() == ModObjects.chooseModPathState().getBlock() && world.getBlockState(pos.down(i)).getBlock() != Blocks.gravel)
+					{
+						world.setBlockState(pos.down(i), Blocks.dirt.getDefaultState(), 2);
+					}
+				}    			
+    			
     			return surfaceY;
     		}
     		
@@ -1103,7 +1123,7 @@ public class StructureVillageVN
     			int yDownScan = surfaceY;
     			if (MathHelper.abs_int(posX)%2==0 && MathHelper.abs_int(posZ)%2==0)
     			{
-    				while(world.getBlockState(new BlockPos(posX, --yDownScan, posZ)).getBlock().getMaterial().isLiquid() && yDownScan>0)
+    				while(yDownScan > 0 && world.getBlockState(new BlockPos(posX, --yDownScan, posZ)).getBlock().getMaterial().isLiquid())
     				{
     					world.setBlockState(new BlockPos(posX, yDownScan, posZ), cobblestone, 2);
     				}
@@ -1132,7 +1152,7 @@ public class StructureVillageVN
     			if (MathHelper.abs_int(posX)%2==0 && MathHelper.abs_int(posZ)%2==0)
     			{
     				IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.log.getStateFromMeta(0), materialType, biome, disallowModSubs);
-    				while(world.getBlockState(new BlockPos(posX, --yDownScan, posZ)).getBlock().getMaterial().isLiquid() && yDownScan>0)
+    				while(yDownScan > 0 && world.getBlockState(new BlockPos(posX, --yDownScan, posZ)).getBlock().getMaterial().isLiquid())
     				{
     					world.setBlockState(new BlockPos(posX, yDownScan, posZ), biomeLogVertState, 2);
     				}

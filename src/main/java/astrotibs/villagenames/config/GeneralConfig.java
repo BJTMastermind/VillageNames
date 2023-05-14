@@ -27,6 +27,7 @@ public class GeneralConfig {
 	public static boolean villageBanners;
 	public static int signYaw;
 	
+	public static boolean addLunarinBlocks;
 	public static boolean addConcrete;
 	public static boolean concreteWell;
 	public static boolean addIgloos;
@@ -251,6 +252,7 @@ public class GeneralConfig {
 	    //pyramidTerracotta = config.getBoolean("Pyramid Terracotta", Reference.CATEGORY_MISCELLANEOUS, true, "Replace the wool blocks in desert pyramids with terracotta as in 1.8+");
 	    swampHutMushroomPot = config.getBoolean("Swamp Hut Mushroom", Reference.CATEGORY_MISCELLANEOUS, true, "1.8+ has a bug where the clay pot in the Witch's swamp hut is empty. This flag will correctly place a red mushroom in the pot.");
 	    //addOceanMonuments = config.getBoolean("Add Monuments", Reference.CATEGORY_MISCELLANEOUS, true, "Generate Ocean Monuments, Prismarine, Guardians, and absorbent Sponges");
+	    addLunarinBlocks = config.getBoolean("Add Lunarin Blocks", Reference.CATEGORY_MISCELLANEOUS, true, "Adds an original brick-style block for iron and gold");
 	    addIgloos = config.getBoolean("Add Igloos", Reference.CATEGORY_MISCELLANEOUS, true, "Generate Igloos from 1.9+");
 	    biomedictIgloos = config.getBoolean("Allow Igloos in modded biomes", Reference.CATEGORY_MISCELLANEOUS, false, "Igloos can generate in mods' snowy plains biomes, rather than just vanilla's Ice Plains and Cold Taiga");
 	    

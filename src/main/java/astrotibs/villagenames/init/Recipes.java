@@ -32,17 +32,20 @@ public class Recipes {
 	public static void init() {
 		// This is just a method inside this class that will register all the recipes.
 		
-		// Shapeless oreDict recipe
-		GameRegistry.addRecipe(new ShapelessOreRecipe( new ItemStack(ModBlocksVN.lunarinGoldBrick),
-				"ingotGold", "ingotGold", "ingotGold", "ingotGold",	"ingotGold", "ingotGold" )); // Much better
-		// Turn Lunarin block back to ingots
-		GameRegistry.addRecipe(new ShapelessOreRecipe( new ItemStack(Items.gold_ingot, 6),new ItemStack(ModBlocksVN.lunarinGoldBrick) ));
-		
-		// Shapeless oreDict recipe
-		GameRegistry.addRecipe(new ShapelessOreRecipe( new ItemStack(ModBlocksVN.lunarinIronBrick),
-				"ingotIron", "ingotIron", "ingotIron", "ingotIron",	"ingotIron", "ingotIron" )); // Much better
-		// Turn Lunarin block back to ingots
-		GameRegistry.addRecipe(new ShapelessOreRecipe( new ItemStack(Items.iron_ingot, 6),	new ItemStack(ModBlocksVN.lunarinIronBrick) ));
+		if (GeneralConfig.addLunarinBlocks)
+		{
+			// Shapeless oreDict recipe
+			GameRegistry.addRecipe(new ShapelessOreRecipe( new ItemStack(ModBlocksVN.lunarinGoldBrick),
+					"ingotGold", "ingotGold", "ingotGold", "ingotGold",	"ingotGold", "ingotGold" )); // Much better
+			// Turn Lunarin block back to ingots
+			GameRegistry.addRecipe(new ShapelessOreRecipe( new ItemStack(Items.gold_ingot, 6),new ItemStack(ModBlocksVN.lunarinGoldBrick) ));
+			
+			// Shapeless oreDict recipe
+			GameRegistry.addRecipe(new ShapelessOreRecipe( new ItemStack(ModBlocksVN.lunarinIronBrick),
+					"ingotIron", "ingotIron", "ingotIron", "ingotIron",	"ingotIron", "ingotIron" )); // Much better
+			// Turn Lunarin block back to ingots
+			GameRegistry.addRecipe(new ShapelessOreRecipe( new ItemStack(Items.iron_ingot, 6),	new ItemStack(ModBlocksVN.lunarinIronBrick) ));
+		}
 		
 		if (GeneralConfig.addConcrete) {
 			
