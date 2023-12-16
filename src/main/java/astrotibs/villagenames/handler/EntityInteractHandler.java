@@ -1275,6 +1275,8 @@ public class EntityInteractHandler {
     // Will also be used to monitor player rep in 1.9+
     @SubscribeEvent
     public void onPlayerAttackEntity(AttackEntityEvent event) {
+
+    	if (event==null || event.target==null || event.target.worldObj==null) {return;}
     	
     	if (!event.target.worldObj.isRemote
     		&& event.entity.dimension == 0 // Only applies to the Overworld
