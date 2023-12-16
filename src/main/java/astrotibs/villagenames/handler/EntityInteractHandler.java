@@ -1459,6 +1459,8 @@ public class EntityInteractHandler {
     @SubscribeEvent
     public void onPlayerAttackEntity(AttackEntityEvent event) {
     	
+    	if (event==null || event.getTarget()==null || event.getTarget().world==null) {return;}
+    	
     	if (!event.getTarget().world.isRemote
     		&& event.getEntity().dimension == 0 // Only applies to the Overworld
     		&& event.getTarget() instanceof EntityLiving) {
