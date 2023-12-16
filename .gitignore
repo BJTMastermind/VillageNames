@@ -1,5 +1,5 @@
 # eclipse
-/bin
+bin
 *.launch
 .settings
 .metadata
@@ -13,24 +13,20 @@ out
 *.iml
 .idea
 
-# forge
-CREDITS.txt
-forge-*
-LICENSE.txt
-README.txt
-changelog.txt
-
 # gradle
 build
 .gradle
-gradle*
 
 # other
-eclipse
-run
+*.zip
 *Paulscode*
-/api
-.gitignore
-
-# Junk added by AstroTibs
-1.12 ITradeList.txt
+LICENSE.txt
+api
+changelog.txt
+gradle.properties
+gradle*
+CREDITS.txt
+eclipse
+README*
+run
+settings.gradle
