@@ -56,7 +56,7 @@ public class PlainsStructures
 	
 	// --- Fountain --- //
 	
-    public static class PlainsFountain01 extends StartVN
+    public static class PlainsFountain01 extends StructureVillageVN.StartVN
     {
         // Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
@@ -156,42 +156,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
         	
         	// Generate or otherwise obtain village name and banner and colors
         	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
@@ -416,7 +385,7 @@ public class PlainsStructures
     
     // --- Well --- //
     
-    public static class PlainsMeetingPoint1 extends StartVN
+    public static class PlainsMeetingPoint1 extends StructureVillageVN.StartVN
     {
         // Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
@@ -519,43 +488,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
         	// Generate or otherwise obtain village name and banner and colors
         	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
         			this.getXWithOffset(4, 4),
@@ -787,7 +724,7 @@ public class PlainsStructures
 
     // --- Market --- //
     
-    public static class PlainsMeetingPoint2 extends StartVN
+    public static class PlainsMeetingPoint2 extends StructureVillageVN.StartVN
     {
         // Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
@@ -896,43 +833,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
         	// Generate or otherwise obtain village name and banner and colors
         	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
         			this.getXWithOffset(4, 4),
@@ -1146,7 +1051,7 @@ public class PlainsStructures
     
 	// --- Tree --- //
 	
-    public static class PlainsMeetingPoint3 extends StartVN
+    public static class PlainsMeetingPoint3 extends StructureVillageVN.StartVN
     {
         // Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
@@ -1250,43 +1155,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
         	// Generate or otherwise obtain village name and banner and colors
         	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
         			this.getXWithOffset(5, 5),
@@ -1568,24 +1441,8 @@ public class PlainsStructures
     
     // --- Flower planter ---//
     
-    public static class PlainsAccessory1 extends StructureVillagePieces.Village
+    public static class PlainsAccessory1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"     ",
@@ -1614,9 +1471,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -1631,6 +1488,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
         
         public static PlainsAccessory1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -1660,73 +1521,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -1735,43 +1530,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
         	
             // Sod filling
             this.fillWithBlocks(world, structureBB, 1, 0, 1, 3, 0, 1, Blocks.GRASS.getDefaultState(), Blocks.GRASS.getDefaultState(), false);
@@ -1810,25 +1573,8 @@ public class PlainsStructures
 
     // --- Small Animal Pen --- //
     
-    public static class PlainsAnimalPen1 extends StructureVillagePieces.Village
+    public static class PlainsAnimalPen1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Here are values to assign to the bounding box
     	private static final int STRUCTURE_WIDTH = 6;
     	public static final int STRUCTURE_HEIGHT = 8;
@@ -1850,9 +1596,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -1867,6 +1613,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsAnimalPen1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -1896,73 +1646,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -2121,25 +1805,8 @@ public class PlainsStructures
     
     // --- Large Animal Pen --- //
     
-    public static class PlainsAnimalPen2 extends StructureVillagePieces.Village
+    public static class PlainsAnimalPen2 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Here are values to assign to the bounding box
     	private static final int STRUCTURE_WIDTH = 11;
     	public static final int STRUCTURE_HEIGHT = 7;
@@ -2161,9 +1828,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -2178,6 +1845,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsAnimalPen2 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -2208,73 +1879,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -2442,26 +2047,8 @@ public class PlainsStructures
     
     // --- Decorated Animal Pen --- //
     
-    public static class PlainsAnimalPen3 extends StructureVillagePieces.Village
+    public static class PlainsAnimalPen3 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
         // Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"   FFFFFFFF",
@@ -2494,9 +2081,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -2511,6 +2098,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsAnimalPen3 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -2540,73 +2131,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -2616,66 +2141,12 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
-        	
-        	// Add fences
-        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-            for (int w = 0; w < STRUCTURE_DEPTH; ++w) {for (int u = new int[]{2,2,0,0,0,0,0,3}[w]; u <= new int[]{8,8,8,10,10,10,10,10}[w]; ++u) {
-                    // Add a fence
-                    if (u==new int[]{2,2,0,0,0,0,0,3}[w] || u==new int[]{8,8,8,10,10,10,10,10}[w] || w==0 || w==STRUCTURE_DEPTH-1)
-                    {
-                    	this.setBlockState(world, biomeFenceState, u, 1, w, structureBB);
-                    }
-            }}
-            // Add fences missed by above algorithm
-            for (int uw[] : new int[][]{
-            	{1,2}, 
-            	{2,2},
-            	{9,3},
-            	{8,3},
-            	{1,6},
-            	{2,6},
-            	{3,6},
-            	})
-            {
-            	this.setBlockState(world, biomeFenceState, uw[0], 1, uw[1], structureBB);
-            }
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
+            
             // Add decor foundations
             for (int uw[] : new int[][]{
             	{0,0}, 
@@ -2684,66 +2155,6 @@ public class PlainsStructures
             {
             	this.setBlockState(world, biomeDirtState, uw[0], 0, uw[1], structureBB);
         		this.replaceAirAndLiquidDownwards(world, biomeFillerState, uw[0], GROUND_LEVEL-2, uw[1], structureBB);
-            }
-            
-            // Fence gate
-        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE_GATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
-        	for (int[] uvwos : new int[][]{
-            	{5,1,0, 2, 0},
-            	})
-            {
-            	this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.chooseFenceGateMeta(uvwos[3], uvwos[4]==1)), uvwos[0], uvwos[1], uvwos[2], structureBB);
-            }
-            
-            // Torches
-            for (int i : new int[]{0,2})
-            {
-            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(0), 4+i, 2, 0, structureBB);
-            }
-        	
-
-        	// Grass
-        	for (int[] uuvvwwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 2:forward, 3:backward
-        		// Front accent
-        		{2,0,0, 8,0,1}, {0,0,2, 8,0,2}, {0,0,3, 10,0,6}, {3,0,7, 10,0,7}, 
-        		})
-            {
-        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeGrassState, biomeGrassState, false);
-            }
-            
-            // Cross-shaped watering hole
-            for (int u=0; u<3; u++) {for (int w=0; w<3; w++) {
-            	if (u==1 || w==1) {this.setBlockState(world, Blocks.FLOWING_WATER.getStateFromMeta(0), 6+u, 0, 4+w, structureBB);}
-            }}
-            
-            
-            // Animal in the pen
-            if (!this.entitiesGenerated)
-            {
-            	entitiesGenerated = true;
-            	
-            	if (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<1)
-            	{
-	            	for (int[] uvw : new int[][]{
-	        			{1, 1, 4},
-	        			{5, 1, 2},
-	        			{5, 1, 5},
-	        			})
-	        		{
-	                	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
-	                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
-	                	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
-	                	{
-	                		String[] petname_a = NameGenerator.newRandomName("pet", random);
-	                		animal.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
-	                	}
-	                    animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
-	                    world.spawnEntityInWorld(animal);
-	                    
-	                    // Dirt block underneath
-	                    //this.setBlockState(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
-	        		}
-            	}
             }
             
             
@@ -2810,6 +2221,90 @@ public class PlainsStructures
             		}            		
             	}
             }
+        	
+        	
+        	// Add fences
+        	IBlockState biomeFenceState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+            for (int w = 0; w < STRUCTURE_DEPTH; ++w) {for (int u = new int[]{2,2,0,0,0,0,0,3}[w]; u <= new int[]{8,8,8,10,10,10,10,10}[w]; ++u) {
+                    // Add a fence
+                    if (u==new int[]{2,2,0,0,0,0,0,3}[w] || u==new int[]{8,8,8,10,10,10,10,10}[w] || w==0 || w==STRUCTURE_DEPTH-1)
+                    {
+                    	this.setBlockState(world, biomeFenceState, u, 1, w, structureBB);
+                    }
+            }}
+            // Add fences missed by above algorithm
+            for (int uw[] : new int[][]{
+            	{1,2}, 
+            	{2,2},
+            	{9,3},
+            	{8,3},
+            	{1,6},
+            	{2,6},
+            	{3,6},
+            	})
+            {
+            	this.setBlockState(world, biomeFenceState, uw[0], 1, uw[1], structureBB);
+            }
+            
+            // Fence gate
+        	IBlockState biomeFenceGateState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.OAK_FENCE_GATE.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
+        	for (int[] uvwos : new int[][]{
+            	{5,1,0, 2, 0},
+            	})
+            {
+            	this.setBlockState(world, biomeFenceGateState.getBlock().getStateFromMeta(StructureVillageVN.chooseFenceGateMeta(uvwos[3], uvwos[4]==1)), uvwos[0], uvwos[1], uvwos[2], structureBB);
+            }
+            
+            // Torches
+            for (int i : new int[]{0,2})
+            {
+            	this.setBlockState(world, Blocks.TORCH.getStateFromMeta(0), 4+i, 2, 0, structureBB);
+            }
+        	
+
+        	// Grass
+        	for (int[] uuvvwwo : new int[][]{ // Orientation - 0: leftward, 1: rightward, 2:forward, 3:backward
+        		// Front accent
+        		{2,0,0, 8,0,1}, {0,0,2, 8,0,2}, {0,0,3, 10,0,6}, {3,0,7, 10,0,7}, 
+        		})
+            {
+        		this.fillWithBlocks(world, structureBB, uuvvwwo[0], uuvvwwo[1], uuvvwwo[2], uuvvwwo[3], uuvvwwo[4], uuvvwwo[5], biomeGrassState, biomeGrassState, false);
+            }
+            
+            // Cross-shaped watering hole
+            for (int u=0; u<3; u++) {for (int w=0; w<3; w++) {
+            	if (u==1 || w==1) {this.setBlockState(world, Blocks.FLOWING_WATER.getStateFromMeta(0), 6+u, 0, 4+w, structureBB);}
+            }}
+            
+            
+            // Animal in the pen
+            if (!this.entitiesGenerated)
+            {
+            	entitiesGenerated = true;
+            	
+            	if (VillageGeneratorConfigHandler.villageAnimalRestrictionLevel<1)
+            	{
+	            	for (int[] uvw : new int[][]{
+	        			{1, 1, 4},
+	        			{5, 1, 2},
+	        			{5, 1, 5},
+	        			})
+	        		{
+	                	BlockPos animalPos = new BlockPos((double)this.getXWithOffset(uvw[0], uvw[2]) + 0.5D, (double)this.getYWithOffset(uvw[1]) + 0.5D, (double)this.getZWithOffset(uvw[0], uvw[2]) + 0.5D);
+	                	EntityLiving animal = StructureVillageVN.getVillageAnimal(world, animalPos, random, true, this.materialType==MaterialType.MUSHROOM);
+	                	if (VillageGeneratorConfigHandler.nameVillageHorses && GeneralConfig.nameEntities && animal instanceof EntityHorse)
+	                	{
+	                		String[] petname_a = NameGenerator.newRandomName("pet", random);
+	                		animal.setCustomNameTag((petname_a[1]+" "+petname_a[2]+" "+petname_a[3]).trim());
+	                	}
+	                    animal.setLocationAndAngles(animalPos.getX(), animalPos.getY(), animalPos.getZ(), random.nextFloat()*360F, 0.0F);
+	                    world.spawnEntityInWorld(animal);
+	                    
+	                    // Dirt block underneath
+	                    //this.setBlockState(world, biomeDirtState, uvw[0], uvw[1]-1, uvw[2], structureBB);
+	        		}
+            	}
+            }
             
             // Clean items
             if (VillageGeneratorConfigHandler.cleanDroppedItems) {StructureVillageVN.cleanEntityItems(world, this.boundingBox);}
@@ -2828,26 +2323,8 @@ public class PlainsStructures
     
     // --- Armorer House --- //
     
-    public static class PlainsArmorerHouse1 extends StructureVillagePieces.Village
+    public static class PlainsArmorerHouse1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"        ",
@@ -2881,9 +2358,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -2898,6 +2375,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsArmorerHouse1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -2927,73 +2408,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -3003,42 +2418,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
         	
         	// Cobblestone
         	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
@@ -3219,26 +2603,8 @@ public class PlainsStructures
     
     // --- Large House --- //
     
-    public static class PlainsBigHouse1 extends StructureVillagePieces.Village
+    public static class PlainsBigHouse1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"           ",
@@ -3270,9 +2636,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -3287,6 +2653,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsBigHouse1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -3316,73 +2686,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -3392,43 +2696,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Log frame
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
@@ -3628,26 +2900,8 @@ public class PlainsStructures
     
     // --- Small Butcher Shop --- //
     
-    public static class PlainsButcherShop1 extends StructureVillagePieces.Village
+    public static class PlainsButcherShop1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"            ",
@@ -3683,9 +2937,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -3700,6 +2954,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsButcherShop1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -3729,73 +2987,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -3805,43 +2997,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
         	
             // Log frame
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
@@ -4108,26 +3268,8 @@ public class PlainsStructures
     
     // --- Large Butcher Shop --- //
     
-    public static class PlainsButcherShop2 extends StructureVillagePieces.Village
+    public static class PlainsButcherShop2 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"FFFFFF ",
@@ -4167,9 +3309,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -4184,6 +3326,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsButcherShop2 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -4213,73 +3359,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -4290,52 +3370,20 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Decor
             for (int decorUVW[] : new int[][]{
-            	{6, 0, 5, 0},
-            	{0, 0, 14, 1},
+            	{6, 0, 5},
+            	{0, 0, 14},
             	})
             {
                 // Add foundations
-            	this.setBlockState(world, decorUVW[3]==1 ? biomeGrassState : biomeDirtState, decorUVW[0], decorUVW[1], decorUVW[2], structureBB);
+            	this.setBlockState(world, biomeTopState, decorUVW[0], decorUVW[1], decorUVW[2], structureBB);
         		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
         		
                 // The actual decor
@@ -4642,26 +3690,8 @@ public class PlainsStructures
     
     // --- Cartographer House --- //
     
-    public static class PlainsCartographer1 extends StructureVillagePieces.Village
+    public static class PlainsCartographer1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"       ",
@@ -4696,9 +3726,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -4713,6 +3743,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsCartographer1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -4742,73 +3776,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -4818,43 +3786,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Log Frame
             // Corners
@@ -5064,26 +4000,8 @@ public class PlainsStructures
     
     // --- Fisher Cottage --- //
     
-    public static class PlainsFisherCottage1 extends StructureVillagePieces.Village
+    public static class PlainsFisherCottage1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"    FFFF  ",
@@ -5119,9 +4037,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -5136,6 +4054,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsFisherCottage1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -5165,73 +4087,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -5241,43 +4097,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Log Frame
             // Corners
@@ -5523,26 +4347,8 @@ public class PlainsStructures
     
     // --- Fletcher House --- //
     
-    public static class PlainsFletcherHouse1 extends StructureVillagePieces.Village
+    public static class PlainsFletcherHouse1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"           ",
@@ -5576,9 +4382,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -5593,6 +4399,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsFletcherHouse1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -5622,73 +4432,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -5698,42 +4442,75 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
         	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
+            // Decor
+            for (int decorUVW[] : new int[][]{
+            	{1, 1, 1},
+            	})
+            {
+                // Add foundations
+            	this.setBlockState(world, biomeTopState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
+        		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
         		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+                // The actual decor
+        		for (int j=0; j<decorUVW.length; j++)
+                {
+        			int decorHeightY = decorUVW[1];
+        			
+        			// Set random seed
+                	Random randomFromXYZ = new Random();
+                	randomFromXYZ.setSeed(
+        					world.getSeed() +
+        					FunctionsVN.getUniqueLongForXYZ(
+        							this.getXWithOffset(decorUVW[0], decorUVW[2]),
+        							this.getYWithOffset(decorHeightY),
+        							this.getZWithOffset(decorUVW[0], decorUVW[2])
+        							)
+                			);
+                	
+                	// Get ground level
+                	if (this.decorHeightY.size()<(j+1))
+                	{
+                		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
+                		// Add new ground level
+                		//decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
+                		this.decorHeightY.add(decorHeightY);
+                	}
+                	else
+                	{
+                		// There is already (presumably) a value for this ground level, so this decor is being multiply generated.
+                		// Retrieve ground level
+                		decorHeightY = this.decorHeightY.get(j);
+                	}
+                	
+                	
+                	// Generate decor
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, VillageGeneratorConfigHandler.allowTaigaTroughs && !VillageGeneratorConfigHandler.restrictTaigaTroughs);
+                	
+                	for (BlueprintData b : decorBlueprint)
+                	{
+                		// Place block indicated by blueprint
+                		this.setBlockState(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos(), decorUVW[2]+b.getWPos(), structureBB);
+                		
+                		// Fill below if flagged
+                		if ((b.getfillFlag()&1)!=0)
+                		{
+                			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()-1, decorUVW[2]+b.getWPos(), structureBB);
+                		}
+                		
+                		// Clear above if flagged
+                		if ((b.getfillFlag()&2)!=0)
+                		{
+                			this.clearCurrentPositionBlocksUpwards(world, decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()+1, decorUVW[2]+b.getWPos(), structureBB);
+                		}            		
+                	}
+                }
+            }
         	
             // The grass patch in front
             for (int[] uwg : new int[][]{ // g is grass type
@@ -5945,72 +4722,6 @@ public class PlainsStructures
             	}
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
             }
-        	
-            // Decor
-            for (int decorUVW[] : new int[][]{
-            	{1, 1, 1},
-            	})
-            {
-                // Add foundations
-            	this.setBlockState(world, biomeDirtState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
-        		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
-        		
-                // The actual decor
-        		for (int j=0; j<decorUVW.length; j++)
-                {
-        			int decorHeightY = decorUVW[1];
-        			
-        			// Set random seed
-                	Random randomFromXYZ = new Random();
-                	randomFromXYZ.setSeed(
-        					world.getSeed() +
-        					FunctionsVN.getUniqueLongForXYZ(
-        							this.getXWithOffset(decorUVW[0], decorUVW[2]),
-        							this.getYWithOffset(decorHeightY),
-        							this.getZWithOffset(decorUVW[0], decorUVW[2])
-        							)
-                			);
-                	
-                	// Get ground level
-                	if (this.decorHeightY.size()<(j+1))
-                	{
-                		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
-                		// Add new ground level
-                		//decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
-                		this.decorHeightY.add(decorHeightY);
-                	}
-                	else
-                	{
-                		// There is already (presumably) a value for this ground level, so this decor is being multiply generated.
-                		// Retrieve ground level
-                		decorHeightY = this.decorHeightY.get(j);
-                	}
-                	
-                	
-                	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, VillageGeneratorConfigHandler.allowTaigaTroughs && !VillageGeneratorConfigHandler.restrictTaigaTroughs);
-                	
-                	for (BlueprintData b : decorBlueprint)
-                	{
-                		// Place block indicated by blueprint
-                		this.setBlockState(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos(), decorUVW[2]+b.getWPos(), structureBB);
-                		
-                		// Fill below if flagged
-                		if ((b.getfillFlag()&1)!=0)
-                		{
-                			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()-1, decorUVW[2]+b.getWPos(), structureBB);
-                		}
-                		
-                		// Clear above if flagged
-                		if ((b.getfillFlag()&2)!=0)
-                		{
-                			this.clearCurrentPositionBlocksUpwards(world, decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()+1, decorUVW[2]+b.getWPos(), structureBB);
-                		}            		
-                	}
-                }
-            }
-            
-			//LogHelper.info("Fletcher house spawned at " + this.getXWithOffset(4, 0) + " " + this.getYWithOffset(1) + " " + this.getZWithOffset(4, 0) + " with horizIndex " + this.getCoordBaseMode());
             
     		// Entities
             if (!this.entitiesGenerated)
@@ -6045,26 +4756,8 @@ public class PlainsStructures
     
     // --- Large Farm --- //
     
-    public static class PlainsLargeFarm1 extends StructureVillagePieces.Village
+    public static class PlainsLargeFarm1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Here are values to assign to the bounding box
     	private static final int STRUCTURE_WIDTH = 9;
     	public static final int STRUCTURE_HEIGHT = 6;
@@ -6086,9 +4779,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -6103,6 +4796,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsLargeFarm1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -6132,73 +4829,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
@@ -6385,26 +5016,8 @@ public class PlainsStructures
     
     // --- Plains Large Library --- //
     
-    public static class PlainsLibrary1 extends StructureVillagePieces.Village
+    public static class PlainsLibrary1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"                 ",
@@ -6440,9 +5053,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -6457,6 +5070,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
         
         public static PlainsLibrary1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -6486,73 +5103,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -6562,43 +5113,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Stone
         	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
@@ -6872,26 +5391,8 @@ public class PlainsStructures
     
     // --- Plains Small Library --- //
     
-    public static class PlainsLibrary2 extends StructureVillagePieces.Village
+    public static class PlainsLibrary2 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"         ",
@@ -6924,9 +5425,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -6941,6 +5442,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
         
         public static PlainsLibrary2 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -6970,73 +5475,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -7046,42 +5485,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
             
             // Stone
@@ -7355,26 +5762,8 @@ public class PlainsStructures
     
     // --- Plains Mason House --- //
     
-    public static class PlainsMasonsHouse1 extends StructureVillagePieces.Village
+    public static class PlainsMasonsHouse1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
             	"         ",
@@ -7407,9 +5796,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -7424,6 +5813,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
         
         public static PlainsMasonsHouse1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -7453,73 +5846,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -7529,42 +5856,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
             
             // Stone
@@ -7801,26 +6096,8 @@ public class PlainsStructures
     
     // --- Plains Medium House 1 --- //
     
-    public static class PlainsMediumHouse1 extends StructureVillagePieces.Village
+    public static class PlainsMediumHouse1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"           ",
@@ -7858,9 +6135,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -7875,6 +6152,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
         
         public static PlainsMediumHouse1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -7904,73 +6185,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -8006,42 +6221,75 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
-        	
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
+            
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
+
+            // Decor
+            for (int decorUVW[] : new int[][]{
+            	{0, GROUND_LEVEL, 10},
+            	})
+            {
+                // Add foundations
+            	this.setBlockState(world, biomeTopState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
+        		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
         		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+                // The actual decor
+        		for (int j=0; j<decorUVW.length; j++)
+                {
+        			int decorHeightY = decorUVW[1];
+        			
+        			// Set random seed
+                	Random randomFromXYZ = new Random();
+                	randomFromXYZ.setSeed(
+        					world.getSeed() +
+        					FunctionsVN.getUniqueLongForXYZ(
+        							this.getXWithOffset(decorUVW[0], decorUVW[2]),
+        							this.getYWithOffset(decorHeightY),
+        							this.getZWithOffset(decorUVW[0], decorUVW[2])
+        							)
+                			);
+                	
+                	// Get ground level
+                	if (this.decorHeightY.size()<(j+1))
+                	{
+                		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
+                		// Add new ground level
+                		//decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
+                		this.decorHeightY.add(decorHeightY);
+                	}
+                	else
+                	{
+                		// There is already (presumably) a value for this ground level, so this decor is being multiply generated.
+                		// Retrieve ground level
+                		decorHeightY = this.decorHeightY.get(j);
+                	}
+                	
+                	
+                	// Generate decor
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, VillageGeneratorConfigHandler.allowTaigaTroughs && !VillageGeneratorConfigHandler.restrictTaigaTroughs);
+                	
+                	for (BlueprintData b : decorBlueprint)
+                	{
+                		// Place block indicated by blueprint
+                		this.setBlockState(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos(), decorUVW[2]+b.getWPos(), structureBB);
+                		
+                		// Fill below if flagged
+                		if ((b.getfillFlag()&1)!=0)
+                		{
+                			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()-1, decorUVW[2]+b.getWPos(), structureBB);
+                		}
+                		
+                		// Clear above if flagged
+                		if ((b.getfillFlag()&2)!=0)
+                		{
+                			this.clearCurrentPositionBlocksUpwards(world, decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()+1, decorUVW[2]+b.getWPos(), structureBB);
+                		}            		
+                	}
+                }
+            }
             
             
             // Stone
@@ -8299,72 +6547,6 @@ public class PlainsStructures
             	}
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
             }
-        	
-        	
-
-            // Decor
-            for (int decorUVW[] : new int[][]{
-            	{0, GROUND_LEVEL, 10},
-            	})
-            {
-                // Add foundations
-            	this.setBlockState(world, biomeDirtState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
-        		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
-        		
-                // The actual decor
-        		for (int j=0; j<decorUVW.length; j++)
-                {
-        			int decorHeightY = decorUVW[1];
-        			
-        			// Set random seed
-                	Random randomFromXYZ = new Random();
-                	randomFromXYZ.setSeed(
-        					world.getSeed() +
-        					FunctionsVN.getUniqueLongForXYZ(
-        							this.getXWithOffset(decorUVW[0], decorUVW[2]),
-        							this.getYWithOffset(decorHeightY),
-        							this.getZWithOffset(decorUVW[0], decorUVW[2])
-        							)
-                			);
-                	
-                	// Get ground level
-                	if (this.decorHeightY.size()<(j+1))
-                	{
-                		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
-                		// Add new ground level
-                		//decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
-                		this.decorHeightY.add(decorHeightY);
-                	}
-                	else
-                	{
-                		// There is already (presumably) a value for this ground level, so this decor is being multiply generated.
-                		// Retrieve ground level
-                		decorHeightY = this.decorHeightY.get(j);
-                	}
-                	
-                	
-                	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, VillageGeneratorConfigHandler.allowTaigaTroughs && !VillageGeneratorConfigHandler.restrictTaigaTroughs);
-                	
-                	for (BlueprintData b : decorBlueprint)
-                	{
-                		// Place block indicated by blueprint
-                		this.setBlockState(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos(), decorUVW[2]+b.getWPos(), structureBB);
-                		
-                		// Fill below if flagged
-                		if ((b.getfillFlag()&1)!=0)
-                		{
-                			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()-1, decorUVW[2]+b.getWPos(), structureBB);
-                		}
-                		
-                		// Clear above if flagged
-                		if ((b.getfillFlag()&2)!=0)
-                		{
-                			this.clearCurrentPositionBlocksUpwards(world, decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()+1, decorUVW[2]+b.getWPos(), structureBB);
-                		}            		
-                	}
-                }
-            }
             
             
     		// Villagers
@@ -8409,26 +6591,8 @@ public class PlainsStructures
     
     // --- Plains Medium House 2 --- //
     
-    public static class PlainsMediumHouse2 extends StructureVillagePieces.Village
+    public static class PlainsMediumHouse2 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"             ",
@@ -8460,9 +6624,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -8477,6 +6641,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
         
         public static PlainsMediumHouse2 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -8506,73 +6674,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -8582,42 +6684,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
             
             // Stone
@@ -8890,26 +6960,8 @@ public class PlainsStructures
     
     // --- Plains Large Market (building) --- //
     
-    public static class PlainsMeetingPoint4 extends StructureVillagePieces.Village
+    public static class PlainsMeetingPoint4 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"FFFFFFFFFFFFFFFF",
@@ -8944,9 +6996,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -8961,6 +7013,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
         
         public static PlainsMeetingPoint4 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -8990,73 +7046,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -9066,42 +7056,77 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
+            // Follow the blueprint to set up the starting foundation
+        	this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
+            
+            // Decor
+            for (int decorUVW[] : new int[][]{
+            	{1, GROUND_LEVEL, 1},
+            	{2, GROUND_LEVEL, 8},
+            	{13, GROUND_LEVEL, 7},
+            	})
+            {
+                // Add foundations
+            	this.setBlockState(world, biomeTopState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
+        		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
         		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+                // The actual decor
+        		for (int j=0; j<decorUVW.length; j++)
+                {
+        			int decorHeightY = decorUVW[1];
+        			
+        			// Set random seed
+                	Random randomFromXYZ = new Random();
+                	randomFromXYZ.setSeed(
+        					world.getSeed() +
+        					FunctionsVN.getUniqueLongForXYZ(
+        							this.getXWithOffset(decorUVW[0], decorUVW[2]),
+        							this.getYWithOffset(decorHeightY),
+        							this.getZWithOffset(decorUVW[0], decorUVW[2])
+        							)
+                			);
+                	
+                	// Get ground level
+                	if (this.decorHeightY.size()<(j+1))
+                	{
+                		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
+                		// Add new ground level
+                		//decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
+                		this.decorHeightY.add(decorHeightY);
+                	}
+                	else
+                	{
+                		// There is already (presumably) a value for this ground level, so this decor is being multiply generated.
+                		// Retrieve ground level
+                		decorHeightY = this.decorHeightY.get(j);
+                	}
+                	
+                	
+                	// Generate decor
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, VillageGeneratorConfigHandler.allowTaigaTroughs && !VillageGeneratorConfigHandler.restrictTaigaTroughs);
+                	
+                	for (BlueprintData b : decorBlueprint)
+                	{
+                		// Place block indicated by blueprint
+                		this.setBlockState(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos(), decorUVW[2]+b.getWPos(), structureBB);
+                		
+                		// Fill below if flagged
+                		if ((b.getfillFlag()&1)!=0)
+                		{
+                			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()-1, decorUVW[2]+b.getWPos(), structureBB);
+                		}
+                		
+                		// Clear above if flagged
+                		if ((b.getfillFlag()&2)!=0)
+                		{
+                			this.clearCurrentPositionBlocksUpwards(world, decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()+1, decorUVW[2]+b.getWPos(), structureBB);
+                		}            		
+                	}
+                }
+            }
             
             
             // Stone
@@ -9229,73 +7254,6 @@ public class PlainsStructures
         			((BlockSapling)biomeSaplingState.getBlock()).generateTree(world, new BlockPos(this.getXWithOffset(uvwss[0], uvwss[2]), this.getYWithOffset(uvwss[1]), this.getZWithOffset(uvwss[0], uvwss[2])), biomeSaplingState, world.rand);
                 }
             }
-        	
-            
-            // Decor
-            for (int decorUVW[] : new int[][]{
-            	{1, GROUND_LEVEL, 1},
-            	{2, GROUND_LEVEL, 8},
-            	{13, GROUND_LEVEL, 7},
-            	})
-            {
-                // Add foundations
-            	this.setBlockState(world, biomeDirtState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
-        		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
-        		
-                // The actual decor
-        		for (int j=0; j<decorUVW.length; j++)
-                {
-        			int decorHeightY = decorUVW[1];
-        			
-        			// Set random seed
-                	Random randomFromXYZ = new Random();
-                	randomFromXYZ.setSeed(
-        					world.getSeed() +
-        					FunctionsVN.getUniqueLongForXYZ(
-        							this.getXWithOffset(decorUVW[0], decorUVW[2]),
-        							this.getYWithOffset(decorHeightY),
-        							this.getZWithOffset(decorUVW[0], decorUVW[2])
-        							)
-                			);
-                	
-                	// Get ground level
-                	if (this.decorHeightY.size()<(j+1))
-                	{
-                		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
-                		// Add new ground level
-                		//decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
-                		this.decorHeightY.add(decorHeightY);
-                	}
-                	else
-                	{
-                		// There is already (presumably) a value for this ground level, so this decor is being multiply generated.
-                		// Retrieve ground level
-                		decorHeightY = this.decorHeightY.get(j);
-                	}
-                	
-                	
-                	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, VillageGeneratorConfigHandler.allowTaigaTroughs && !VillageGeneratorConfigHandler.restrictTaigaTroughs);
-                	
-                	for (BlueprintData b : decorBlueprint)
-                	{
-                		// Place block indicated by blueprint
-                		this.setBlockState(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos(), decorUVW[2]+b.getWPos(), structureBB);
-                		
-                		// Fill below if flagged
-                		if ((b.getfillFlag()&1)!=0)
-                		{
-                			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()-1, decorUVW[2]+b.getWPos(), structureBB);
-                		}
-                		
-                		// Clear above if flagged
-                		if ((b.getfillFlag()&2)!=0)
-                		{
-                			this.clearCurrentPositionBlocksUpwards(world, decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()+1, decorUVW[2]+b.getWPos(), structureBB);
-                		}            		
-                	}
-                }
-            }
 
             
             // Fences
@@ -9412,26 +7370,8 @@ public class PlainsStructures
     
     // --- Plains Small Market --- //
     
-    public static class PlainsMeetingPoint5 extends StructureVillagePieces.Village
+    public static class PlainsMeetingPoint5 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"FFFFFFFFFFF",
@@ -9466,9 +7406,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -9483,6 +7423,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
         
         public static PlainsMeetingPoint5 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -9512,73 +7456,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -9588,80 +7466,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
-            // Dirt
-            for(int[] uuww : new int[][]{
-            	{1,0,2, 1,0,4}, 
-            	{4,0,7, 6,0,7}, 
-            	{9,0,2, 9,0,4}, 
-            	})
-            {
-                this.fillWithBlocks(world, structureBB, uuww[0], uuww[1], uuww[2], uuww[3], uuww[4], uuww[5], biomeDirtState, biomeDirtState, false);
-            }
-            
-            
-            // Tall grass
-            for (int[] uw : new int[][]{
-            	{0,0}, {0,6}, {0,9}, 
-            	{1,1}, {1,5}, {1,6}, {1,7}, {1,8}, 
-            	{2,0}, {2,5}, 
-            	{3,8}, {3,9}, 
-            	{6,9},
-            	{7,0}, {7,5}, 
-            	{8,1}, {8,7}, {8,9}, 
-            	{9,1}, 
-            })
-            {
-            	this.setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(1), uw[0], GROUND_LEVEL, uw[1], structureBB);
-            }
-            
-            // Double-tall grass
-            for (int[] uw : new int[][]{
-            	{5,8},
-            	{7,8}, 
-            })
-            {
-				this.setBlockState(world, Blocks.DOUBLE_PLANT.getStateFromMeta(2), uw[0], GROUND_LEVEL, uw[1], structureBB);
-				this.setBlockState(world, Blocks.DOUBLE_PLANT.getStateFromMeta(11), uw[0], GROUND_LEVEL+1, uw[1], structureBB);
-            }
-            
-        	
             
             // Decor
             for (int decorUVW[] : new int[][]{
@@ -9670,7 +7479,7 @@ public class PlainsStructures
             	})
             {
                 // Add foundations
-            	this.setBlockState(world, biomeDirtState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
+            	this.setBlockState(world, biomeTopState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
         		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
         		
                 // The actual decor
@@ -9726,6 +7535,42 @@ public class PlainsStructures
                 		}            		
                 	}
                 }
+            }
+            
+            // Dirt
+            for(int[] uuww : new int[][]{
+            	{1,0,2, 1,0,4}, 
+            	{4,0,7, 6,0,7}, 
+            	{9,0,2, 9,0,4}, 
+            	})
+            {
+                this.fillWithBlocks(world, structureBB, uuww[0], uuww[1], uuww[2], uuww[3], uuww[4], uuww[5], biomeDirtState, biomeDirtState, false);
+            }
+            
+            
+            // Tall grass
+            for (int[] uw : new int[][]{
+            	{0,0}, {0,6}, {0,9}, 
+            	{1,1}, {1,5}, {1,6}, {1,7}, {1,8}, 
+            	{2,0}, {2,5}, 
+            	{3,8}, {3,9}, 
+            	{6,9},
+            	{7,0}, {7,5}, 
+            	{8,1}, {8,7}, {8,9}, 
+            	{9,1}, 
+            })
+            {
+            	this.setBlockState(world, Blocks.TALLGRASS.getStateFromMeta(1), uw[0], GROUND_LEVEL, uw[1], structureBB);
+            }
+            
+            // Double-tall grass
+            for (int[] uw : new int[][]{
+            	{5,8},
+            	{7,8}, 
+            })
+            {
+				this.setBlockState(world, Blocks.DOUBLE_PLANT.getStateFromMeta(2), uw[0], GROUND_LEVEL, uw[1], structureBB);
+				this.setBlockState(world, Blocks.DOUBLE_PLANT.getStateFromMeta(11), uw[0], GROUND_LEVEL+1, uw[1], structureBB);
             }
 
             
@@ -9849,26 +7694,8 @@ public class PlainsStructures
     
     // --- Shepherd's House --- //
     
-    public static class PlainsShepherdsHouse1 extends StructureVillagePieces.Village
+    public static class PlainsShepherdsHouse1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		" F FFFFFFF   ",
@@ -9902,9 +7729,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -9919,6 +7746,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsShepherdsHouse1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -9948,73 +7779,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -10025,42 +7790,76 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
+        	
+            // Decor
+            for (int decorUVW[] : new int[][]{
+            	{0, GROUND_LEVEL, 0},
+            	{1, GROUND_LEVEL, 8},
+            	})
+            {
+                // Add foundations
+            	this.setBlockState(world, biomeTopState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
+        		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
         		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+                // The actual decor
+        		for (int j=0; j<decorUVW.length; j++)
+                {
+        			int decorHeightY = decorUVW[1];
+        			
+        			// Set random seed
+                	Random randomFromXYZ = new Random();
+                	randomFromXYZ.setSeed(
+        					world.getSeed() +
+        					FunctionsVN.getUniqueLongForXYZ(
+        							this.getXWithOffset(decorUVW[0], decorUVW[2]),
+        							this.getYWithOffset(decorHeightY),
+        							this.getZWithOffset(decorUVW[0], decorUVW[2])
+        							)
+                			);
+                	
+                	// Get ground level
+                	if (this.decorHeightY.size()<(j+1))
+                	{
+                		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
+                		// Add new ground level
+                		//decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
+                		this.decorHeightY.add(decorHeightY);
+                	}
+                	else
+                	{
+                		// There is already (presumably) a value for this ground level, so this decor is being multiply generated.
+                		// Retrieve ground level
+                		decorHeightY = this.decorHeightY.get(j);
+                	}
+                	
+                	
+                	// Generate decor
+                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, VillageGeneratorConfigHandler.allowTaigaTroughs && !VillageGeneratorConfigHandler.restrictTaigaTroughs);
+                	
+                	for (BlueprintData b : decorBlueprint)
+                	{
+                		// Place block indicated by blueprint
+                		this.setBlockState(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos(), decorUVW[2]+b.getWPos(), structureBB);
+                		
+                		// Fill below if flagged
+                		if ((b.getfillFlag()&1)!=0)
+                		{
+                			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()-1, decorUVW[2]+b.getWPos(), structureBB);
+                		}
+                		
+                		// Clear above if flagged
+                		if ((b.getfillFlag()&2)!=0)
+                		{
+                			this.clearCurrentPositionBlocksUpwards(world, decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()+1, decorUVW[2]+b.getWPos(), structureBB);
+                		}            		
+                	}
+                }
+            }
         	
             
             // Log Frame
@@ -10251,75 +8050,8 @@ public class PlainsStructures
             	}
             	StructureVillageVN.setPathSpecificBlock(world, this.materialType, this.biome, this.disallowModSubs, this.getXWithOffset(pathU, pathW), this.getYWithOffset(pathV-1), this.getZWithOffset(pathU, pathW), false);
             }
-        	
-        	
-            // Decor
-            for (int decorUVW[] : new int[][]{
-            	{0, GROUND_LEVEL, 0},
-            	{1, GROUND_LEVEL, 8},
-            	})
-            {
-                // Add foundations
-            	this.setBlockState(world, biomeDirtState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
-        		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
-        		
-                // The actual decor
-        		for (int j=0; j<decorUVW.length; j++)
-                {
-        			int decorHeightY = decorUVW[1];
-        			
-        			// Set random seed
-                	Random randomFromXYZ = new Random();
-                	randomFromXYZ.setSeed(
-        					world.getSeed() +
-        					FunctionsVN.getUniqueLongForXYZ(
-        							this.getXWithOffset(decorUVW[0], decorUVW[2]),
-        							this.getYWithOffset(decorHeightY),
-        							this.getZWithOffset(decorUVW[0], decorUVW[2])
-        							)
-                			);
-                	
-                	// Get ground level
-                	if (this.decorHeightY.size()<(j+1))
-                	{
-                		// There are fewer stored ground levels than this decor number, so this is being generated for the first time.
-                		// Add new ground level
-                		//decorHeightY = StructureVillageVN.getAboveTopmostSolidOrLiquidBlockVN(world, this.getXWithOffset(uvw[0], uvw[2]), this.getZWithOffset(uvw[0], uvw[2]))-this.boundingBox.minY;
-                		this.decorHeightY.add(decorHeightY);
-                	}
-                	else
-                	{
-                		// There is already (presumably) a value for this ground level, so this decor is being multiply generated.
-                		// Retrieve ground level
-                		decorHeightY = this.decorHeightY.get(j);
-                	}
-                	
-                	
-                	// Generate decor
-                	ArrayList<BlueprintData> decorBlueprint = StructureVillageVN.getRandomDecorBlueprint(this.villageType, this.materialType, this.disallowModSubs, this.biome, this.getCoordBaseMode(), randomFromXYZ, VillageGeneratorConfigHandler.allowTaigaTroughs && !VillageGeneratorConfigHandler.restrictTaigaTroughs);
-                	
-                	for (BlueprintData b : decorBlueprint)
-                	{
-                		// Place block indicated by blueprint
-                		this.setBlockState(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos(), decorUVW[2]+b.getWPos(), structureBB);
-                		
-                		// Fill below if flagged
-                		if ((b.getfillFlag()&1)!=0)
-                		{
-                			this.replaceAirAndLiquidDownwards(world, b.getBlockState(), decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()-1, decorUVW[2]+b.getWPos(), structureBB);
-                		}
-                		
-                		// Clear above if flagged
-                		if ((b.getfillFlag()&2)!=0)
-                		{
-                			this.clearCurrentPositionBlocksUpwards(world, decorUVW[0]+b.getUPos(), decorHeightY+b.getVPos()+1, decorUVW[2]+b.getWPos(), structureBB);
-                		}            		
-                	}
-                }
-            }
             
-			//LogHelper.info("Fletcher house spawned at " + this.getXWithOffset(4, 0) + " " + this.getYWithOffset(1) + " " + this.getZWithOffset(4, 0) + " with horizIndex " + this.getCoordBaseMode());
-            
+			
     		// Entities
             if (!this.entitiesGenerated)
             {
@@ -10371,26 +8103,8 @@ public class PlainsStructures
     
     // --- Small Farm --- //
     
-    public static class PlainsSmallFarm1 extends StructureVillagePieces.Village
+    public static class PlainsSmallFarm1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Here are values to assign to the bounding box
     	private static final int STRUCTURE_WIDTH = 9;
     	public static final int STRUCTURE_HEIGHT = 6;
@@ -10412,9 +8126,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -10429,6 +8143,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsSmallFarm1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -10458,73 +8176,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
             IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
@@ -10685,26 +8337,8 @@ public class PlainsStructures
     
     // --- Small House 1 --- //
     
-    public static class PlainsSmallHouse1 extends StructureVillagePieces.Village
+    public static class PlainsSmallHouse1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"       ",
@@ -10736,9 +8370,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -10753,6 +8387,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsSmallHouse1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -10782,73 +8420,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -10875,43 +8447,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Log Frame
             // Corners
@@ -11110,26 +8650,8 @@ public class PlainsStructures
     
     // --- Small House 2 --- //
     
-    public static class PlainsSmallHouse2 extends StructureVillagePieces.Village
+    public static class PlainsSmallHouse2 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"       ",
@@ -11161,9 +8683,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -11178,6 +8700,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsSmallHouse2 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -11207,73 +8733,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -11300,43 +8760,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Log Frame
             // Corners
@@ -11529,26 +8957,8 @@ public class PlainsStructures
     
     // --- Small House 3 --- //
     
-    public static class PlainsSmallHouse3 extends StructureVillagePieces.Village
+    public static class PlainsSmallHouse3 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"       ",
@@ -11580,9 +8990,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -11597,6 +9007,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsSmallHouse3 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -11626,73 +9040,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -11703,43 +9051,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Log Frame
             // Corners
@@ -11956,26 +9272,8 @@ public class PlainsStructures
     
     // --- Small House 4 --- //
     
-    public static class PlainsSmallHouse4 extends StructureVillagePieces.Village
+    public static class PlainsSmallHouse4 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"       ",
@@ -12007,9 +9305,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -12024,6 +9322,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsSmallHouse4 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -12053,73 +9355,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -12130,43 +9366,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Log Frame
             // Corners
@@ -12378,26 +9582,8 @@ public class PlainsStructures
     
     // --- Small House 5 --- //
     
-    public static class PlainsSmallHouse5 extends StructureVillagePieces.Village
+    public static class PlainsSmallHouse5 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"   F     ",
@@ -12431,9 +9617,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -12448,6 +9634,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsSmallHouse5 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -12477,73 +9667,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -12554,72 +9678,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
-            
-        	// Vertical logs
-        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-            for (int[] uw : new int[][]{
-            	// Corner posts
-            	{1,1,3, 1,7,3}, {7,1,3, 7,7,3}, 
-            	{1,1,7, 1,7,7}, {7,1,7, 7,7,7}, 
-            	// Window frames
-            	{3,3,7, 3,3,7}, {5,3,7, 5,3,7}, 
-            	{3,6,7, 3,6,7}, {5,6,7, 5,6,7}, 
-            	})
-            {
-            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeLogVertState, biomeLogVertState, false);
-            }
-            
-
-            // Stone
-        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
-            for(int[] uuvvww : new int[][]{
-            	// Left
-            	{1,1,4, 1,1,6}, 
-            	// Right
-            	{7,1,4, 7,1,6}, {2,1,7, 6,1,7}, 
-            	// Front
-            	{2,1,2, 2,4,2}, {6,1,2, 6,4,2}, {3,1,1, 5,4,1}, 
-            	})
-            {
-            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
-            }
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
         	
             // Decor
@@ -12630,7 +9692,7 @@ public class PlainsStructures
             	})
             {
                 // Add foundations
-            	this.setBlockState(world, biomeDirtState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
+            	this.setBlockState(world, biomeTopState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
         		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
         		
                 // The actual decor
@@ -12686,6 +9748,36 @@ public class PlainsStructures
                 		}            		
                 	}
                 }
+            }
+        	
+            
+        	// Vertical logs
+        	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+            for (int[] uw : new int[][]{
+            	// Corner posts
+            	{1,1,3, 1,7,3}, {7,1,3, 7,7,3}, 
+            	{1,1,7, 1,7,7}, {7,1,7, 7,7,7}, 
+            	// Window frames
+            	{3,3,7, 3,3,7}, {5,3,7, 5,3,7}, 
+            	{3,6,7, 3,6,7}, {5,6,7, 5,6,7}, 
+            	})
+            {
+            	this.fillWithBlocks(world, structureBB, uw[0], uw[1], uw[2], uw[3], uw[4], uw[5], biomeLogVertState, biomeLogVertState, false);
+            }
+            
+
+            // Stone
+        	IBlockState biomeCobblestoneState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.COBBLESTONE.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
+            for(int[] uuvvww : new int[][]{
+            	// Left
+            	{1,1,4, 1,1,6}, 
+            	// Right
+            	{7,1,4, 7,1,6}, {2,1,7, 6,1,7}, 
+            	// Front
+            	{2,1,2, 2,4,2}, {6,1,2, 6,4,2}, {3,1,1, 5,4,1}, 
+            	})
+            {
+            	this.fillWithBlocks(world, structureBB, uuvvww[0], uuvvww[1], uuvvww[2], uuvvww[3], uuvvww[4], uuvvww[5], biomeCobblestoneState, biomeCobblestoneState, false);	
             }
             
             // Planks
@@ -12905,26 +9997,8 @@ public class PlainsStructures
     
     // --- Small House 6 --- //
     
-    public static class PlainsSmallHouse6 extends StructureVillagePieces.Village
+    public static class PlainsSmallHouse6 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"       ",
@@ -12956,9 +10030,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -12973,6 +10047,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsSmallHouse6 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -13002,73 +10080,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -13079,43 +10091,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Log Frame
             // Corners
@@ -13351,26 +10331,8 @@ public class PlainsStructures
     
     // --- Small House 7 --- //
     
-    public static class PlainsSmallHouse7 extends StructureVillagePieces.Village
+    public static class PlainsSmallHouse7 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"        ",
@@ -13402,9 +10364,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -13419,6 +10381,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsSmallHouse7 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -13448,73 +10414,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -13525,43 +10425,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Vertical logs
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
@@ -13793,26 +10661,8 @@ public class PlainsStructures
     
     // --- Small House 8 --- //
     
-    public static class PlainsSmallHouse8 extends StructureVillagePieces.Village
+    public static class PlainsSmallHouse8 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"    F    ",
@@ -13845,9 +10695,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -13862,6 +10712,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsSmallHouse8 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -13891,73 +10745,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -13968,43 +10756,11 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-        	
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
+            
             
             // Vertical logs
         	IBlockState biomeLogVertState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.LOG.getStateFromMeta(0), this.materialType, this.biome, this.disallowModSubs);
@@ -14236,26 +10992,8 @@ public class PlainsStructures
     
     // --- Cobblestone Stable --- //
     
-    public static class PlainsStable1 extends StructureVillagePieces.Village
+    public static class PlainsStable1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"FFFFFF          ",
@@ -14289,9 +11027,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -14306,6 +11044,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsStable1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -14335,73 +11077,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -14411,42 +11087,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
         	
             // Decor
@@ -14456,7 +11100,7 @@ public class PlainsStructures
             	})
             {
                 // Add foundations
-            	this.setBlockState(world, biomeDirtState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
+            	this.setBlockState(world, biomeTopState, decorUVW[0], decorUVW[1]-1, decorUVW[2], structureBB);
         		this.replaceAirAndLiquidDownwards(world, biomeFillerState, decorUVW[0], decorUVW[1]-2, decorUVW[2], structureBB);
         		
                 // The actual decor
@@ -14740,26 +11384,8 @@ public class PlainsStructures
     
     // --- Terracotta Stable --- //
     
-    public static class PlainsStable2 extends StructureVillagePieces.Village
+    public static class PlainsStable2 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		" F               ",
@@ -14791,9 +11417,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -14808,6 +11434,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsStable2 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -14837,73 +11467,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -14913,42 +11477,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
 
             // Stained terracotta
@@ -15193,26 +11725,8 @@ public class PlainsStructures
     
     // --- Tannery --- //
     
-    public static class PlainsTannery1 extends StructureVillagePieces.Village
+    public static class PlainsTannery1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"          ",
@@ -15245,9 +11759,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -15262,6 +11776,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsTannery1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -15291,73 +11809,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -15367,42 +11819,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
 
             // Cobblestone
@@ -15647,26 +12067,8 @@ public class PlainsStructures
     
     // --- Terracotta Temple --- //
     
-    public static class PlainsTemple3 extends StructureVillagePieces.Village
+    public static class PlainsTemple3 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"       ",
@@ -15702,9 +12104,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -15719,6 +12121,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsTemple3 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -15748,73 +12154,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -15824,42 +12164,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
 
             // Terracotta
@@ -16084,26 +12392,8 @@ public class PlainsStructures
     
     // --- Cobblestone Temple --- //
     
-    public static class PlainsTemple4 extends StructureVillagePieces.Village
+    public static class PlainsTemple4 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"  FFF  ",
@@ -16138,9 +12428,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -16155,6 +12445,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsTemple4 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -16184,73 +12478,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -16260,42 +12488,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
 
             // Cobblestone
@@ -16526,26 +12722,8 @@ public class PlainsStructures
     
     // --- Tool Smithy --- //
     
-    public static class PlainsToolSmith1 extends StructureVillagePieces.Village
+    public static class PlainsToolSmith1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"            ",
@@ -16579,9 +12757,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -16596,6 +12774,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsToolSmith1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -16625,73 +12807,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -16701,42 +12817,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
 
             // Cobblestone
@@ -16936,26 +13020,8 @@ public class PlainsStructures
     
     // --- Weapon Smithy --- //
     
-    public static class PlainsWeaponsmith1 extends StructureVillagePieces.Village
+    public static class PlainsWeaponsmith1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Make foundation with blanks as empty air and F as foundation spaces
         private static final String[] foundationPattern = new String[]{
         		"           ",
@@ -16989,9 +13055,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -17006,6 +13072,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsWeaponsmith1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -17035,73 +13105,7 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
@@ -17111,42 +13115,10 @@ public class PlainsStructures
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
         	
         	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            }}
+        	this.clearSpaceAbove(world, structureBB, this.STRUCTURE_WIDTH, this.STRUCTURE_DEPTH, this.GROUND_LEVEL);
             
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
+            // Follow the blueprint to set up the starting foundation
+            this.establishFoundation(world, structureBB, this.foundationPattern, this.GROUND_LEVEL, this.materialType, this.disallowModSubs, this.biome, biomeTopState, biomeFillerState);
             
 
             // Cobblestone
@@ -17454,26 +13426,8 @@ public class PlainsStructures
     
     // --- Road Decor --- //
     
-    public static class PlainsStreetDecor1 extends StructureVillagePieces.Village
+    public static class PlainsStreetDecor1 extends StructureVillageVN.VNComponent
     {
-    	// Stuff to be used in the construction
-    	public boolean entitiesGenerated = false;
-    	public ArrayList<Integer> decorHeightY = new ArrayList();
-    	public FunctionsVN.VillageType villageType=null;
-    	public FunctionsVN.MaterialType materialType=null;
-    	public boolean disallowModSubs=false;
-    	public int townColor=-1;
-    	public int townColor2=-1;
-    	public int townColor3=-1;
-    	public int townColor4=-1;
-    	public int townColor5=-1;
-    	public int townColor6=-1;
-    	public int townColor7=-1;
-    	public String namePrefix="";
-    	public String nameRoot="";
-    	public String nameSuffix="";
-    	public Biome biome = null;
-    	
     	// Here are values to assign to the bounding box
     	public static final int STRUCTURE_WIDTH = 3;
     	public static final int STRUCTURE_DEPTH = 6;
@@ -17495,9 +13449,9 @@ public class PlainsStructures
             this.setCoordBaseMode(coordBaseMode);
             this.boundingBox = boundingBox;
             // Additional stuff to be used in the construction
-            if (start!=null)
+        	if (start!=null)
             {
-            	this.villageType=start.villageType;
+        		this.villageType=start.villageType;
             	this.materialType=start.materialType;
             	this.disallowModSubs=start.disallowModSubs;
             	this.townColor=start.townColor;
@@ -17512,6 +13466,10 @@ public class PlainsStructures
             	this.nameSuffix=start.nameSuffix;
             	this.biome=start.biome;
             }
+        	
+        	if (this.biome==null) {this.biome = start.worldChunkMngr.getBiomeGenerator(new BlockPos((boundingBox.minX + boundingBox.maxX)/2, 64, (boundingBox.minZ + boundingBox.maxZ)/2));}
+        	if (this.materialType==null) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(this.biome);}
+        	if (this.villageType==null) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(this.biome);}
         }
 
         public static PlainsStreetDecor1 buildComponent(StartVN villagePiece, List pieces, Random random, int x, int y, int z, EnumFacing coordBaseMode, int componentType)
@@ -17541,121 +13499,13 @@ public class PlainsStructures
         	
         	// In the event that this village construction is resuming after being unloaded
         	// you may need to reestablish the village name/color/type info
-            if (
-                	this.townColor==-1
-                	|| this.townColor2==-1
-                	|| this.townColor3==-1
-                	|| this.townColor4==-1
-                	|| this.townColor5==-1
-                	|| this.townColor6==-1
-                	|| this.townColor7==-1
-                	|| this.nameRoot.equals("")
-            		)
-            {
-            	NBTTagCompound villageNBTtag = StructureVillageVN.getOrMakeVNInfo(world, 
-            			(this.boundingBox.minX+this.boundingBox.maxX)/2,
-            			(this.boundingBox.minY+this.boundingBox.maxY)/2,
-            			(this.boundingBox.minZ+this.boundingBox.maxZ)/2);
-            	
-            	// Load the values of interest into memory
-            	this.townColor = villageNBTtag.getInteger("townColor");
-            	this.townColor2 = villageNBTtag.getInteger("townColor2");
-            	this.townColor3 = villageNBTtag.getInteger("townColor3");
-            	this.townColor4 = villageNBTtag.getInteger("townColor4");
-            	this.townColor5 = villageNBTtag.getInteger("townColor5");
-            	this.townColor6 = villageNBTtag.getInteger("townColor6");
-            	this.townColor7 = villageNBTtag.getInteger("townColor7");
-            	this.namePrefix = villageNBTtag.getString("namePrefix");
-            	this.nameRoot = villageNBTtag.getString("nameRoot");
-            	this.nameSuffix = villageNBTtag.getString("nameSuffix");
-            	
-            }
-            
-        	BiomeProvider biomeProvider = world.getBiomeProvider();
-        	int bbCenterX = (this.boundingBox.minX+this.boundingBox.maxX)/2; int bbCenterZ = (this.boundingBox.minZ+this.boundingBox.maxZ)/2;
-            Biome biome = biomeProvider.getBiomeGenerator(new BlockPos(bbCenterX, 64, bbCenterZ));
-			Map<String, ArrayList<String>> mappedBiomes = VillageGeneratorConfigHandler.unpackBiomes(VillageGeneratorConfigHandler.spawnBiomesNames);
-            
-			if (this.villageType==null)
-			{
-    			try {
-                	String mappedVillageType = (String) (mappedBiomes.get("VillageTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedVillageType.equals("")) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.villageType = FunctionsVN.VillageType.getVillageTypeFromName(mappedVillageType, FunctionsVN.VillageType.PLAINS);}
-                	}
-    			catch (Exception e) {this.villageType = FunctionsVN.VillageType.getVillageTypeFromBiome(biomeProvider, bbCenterX, bbCenterZ);}
-			}
-			
-			if (this.materialType==null)
-			{
-    			try {
-                	String mappedMaterialType = (String) (mappedBiomes.get("MaterialTypes")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedMaterialType.equals("")) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-                	else {this.materialType = FunctionsVN.MaterialType.getMaterialTypeFromName(mappedMaterialType, FunctionsVN.MaterialType.OAK);}
-                	}
-    			catch (Exception e) {this.materialType = FunctionsVN.MaterialType.getMaterialTemplateForBiome(biomeProvider, bbCenterX, bbCenterZ);}
-				
-			}
-			
-			if (!this.disallowModSubs)
-			{
-    			try {
-                	String mappedBlockModSubs = (String) (mappedBiomes.get("DisallowModSubs")).get(mappedBiomes.get("BiomeNames").indexOf(biome.getBiomeName()));
-                	if (mappedBlockModSubs.toLowerCase().trim().equals("nosub")) {this.disallowModSubs = true;}
-                	else {this.disallowModSubs = false;}
-                	}
-    			catch (Exception e) {this.disallowModSubs = false;}
-			}
-        	// Reestablish biome if start was null or something
-            if (this.biome==null) {this.biome = world.getBiomeGenForCoords(new BlockPos((this.boundingBox.minX+this.boundingBox.maxX)/2, 0, (this.boundingBox.minZ+this.boundingBox.maxZ)/2));}
+        	this.populateVillageFields(world);
         	
         	IBlockState biomeDirtState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.DIRT.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	IBlockState biomeGrassState = StructureVillageVN.getBiomeSpecificBlockState(Blocks.GRASS.getDefaultState(), this.materialType, this.biome, this.disallowModSubs);
         	// Establish top and filler blocks, substituting Grass and Dirt if they're null
+        	IBlockState biomeTopState=biomeGrassState; if (this.biome!=null && this.biome.topBlock!=null) {biomeTopState=this.biome.topBlock;}
         	IBlockState biomeFillerState=biomeDirtState; if (this.biome!=null && this.biome.fillerBlock!=null) {biomeFillerState=this.biome.fillerBlock;}
-        	/*
-        	// Clear space above
-            for (int u = 0; u < STRUCTURE_WIDTH; ++u) {for (int w = 0; w < STRUCTURE_DEPTH; ++w) {
-            	this.clearCurrentPositionBlocksUpwards(world, u, GROUND_LEVEL, w, structureBB);
-            	// Make dirt foundation
-            	this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-            	// top with grass
-            	this.setBlockState(world, biomeGrassState, u, GROUND_LEVEL-1, w, structureBB);
-            }}
-            
-        	// Follow the blueprint to set up the starting foundation
-        	for (int w=0; w < foundationPattern.length; w++) {for (int u=0; u < foundationPattern[0].length(); u++) {
-        		
-        		String unitLetter = foundationPattern[foundationPattern.length-1-w].substring(u, u+1).toUpperCase();
-    			int posX = this.getXWithOffset(u, w);
-    			int posY = this.getYWithOffset(GROUND_LEVEL-1);
-    			int posZ = this.getZWithOffset(u, w);
-    					
-        		if (unitLetter.equals("F"))
-        		{
-        			// If marked with F: fill with dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-        		else if (unitLetter.equals("P"))
-        		{
-        			// If marked with P: fill with dirt foundation and top with block-and-biome-appropriate path
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-1+(world.getBlockState(new BlockPos(posX, posY, posZ)).isNormalCube()?-1:0), w, structureBB);
-        			StructureVillageVN.setPathSpecificBlock(world, materialType, biome, disallowModSubs, posX, posY, posZ, false);
-        		}
-        		else if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation
-        			this.replaceAirAndLiquidDownwards(world, biomeFillerState, u, GROUND_LEVEL-2, w, structureBB);
-        		}
-        		
-        		// Then, if the top is dirt with a non-full cube above it, make it grass
-        		if (world.getBlockState(new BlockPos(posX, posY, posZ)).getBlock()==biomeFillerState.getBlock() && !world.getBlockState(new BlockPos(posX, posY+1, posZ)).isNormalCube())
-        		{
-        			// If the space is blank and the block itself is dirt, add dirt foundation and then cap with grass:
-        			this.setBlockState(world, biomeTopState, u, GROUND_LEVEL-1, w, structureBB);
-        		}
-            }}
-            */
             
             // Decor
         			
@@ -17715,7 +13565,8 @@ public class PlainsStructures
 	            	}
             	}
             	
-            	this.replaceAirAndLiquidDownwards(world, biomeFillerState, uvw[0], decorHeightY-1, uvw[2], structureBB);
+            	this.replaceAirAndLiquidDownwards(world, biomeFillerState, uvw[0], decorHeightY-2, uvw[2], structureBB);
+            	this.setBlockState(world, biomeTopState, uvw[0], decorHeightY-1, uvw[2], structureBB);
             	this.clearCurrentPositionBlocksUpwards(world, uvw[0], decorHeightY+1, uvw[2], structureBB);
             	
             	// Get ground level

@@ -9,10 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 import astrotibs.villagenames.utility.Reference;
-import net.minecraftforge.common.config.Configuration;
 
 public class GeneralConfig {
-	public static Configuration config;
+	public static ConfigurationVN config;
 	
 	//public static String[] blackList;
 	public static boolean wellSlabs;
@@ -95,7 +94,7 @@ public class GeneralConfig {
 	{
 		if (config == null)
 		{
-			config = new Configuration(configFile);
+			config = new ConfigurationVN(configFile);
 			loadConfiguration();
 		}
 	}
@@ -132,7 +131,7 @@ public class GeneralConfig {
 
 	    moddedVillagerHeadwear = config.getBoolean("Modded Villager Headwear", Reference.CATEGORY_VILLAGER_PROFESSIONS, false, "If modern skins are enabled: renders the headwear layer for non-vanilla villager professions, if one exists.");
 	    
-	    moddedVillagerHeadwearGraylist = config.getStringList("Modded Villager Headwear Graylist", Reference.CATEGORY_VILLAGER_PROFESSIONS, new String[]{
+	    moddedVillagerHeadwearGraylist = config.getStringListWithoutDefaultsInComment("Modded Villager Headwear Graylist", Reference.CATEGORY_VILLAGER_PROFESSIONS, new String[]{
 				// Bewitchment Alchemist... not sure if this is the ID because I can't get the thing to load
 				"bewitchment:alchemist",
 				// Extra Utilities 2
@@ -155,7 +154,7 @@ public class GeneralConfig {
 	    moddedVillagerHeadwearBlacklist_map.clear();
 	    moddedVillagerHeadwearBlacklist_map = unpackModdedVillagerHeadwearGraylist(moddedVillagerHeadwearGraylist, false);
 	    
-	    moddedVillagerModularSkins = config.getStringList("Modded Villager Modular Skins", Reference.CATEGORY_VILLAGER_PROFESSIONS, new String[]
+	    moddedVillagerModularSkins = config.getStringListWithoutDefaultsInComment("Modded Villager Modular Skins", Reference.CATEGORY_VILLAGER_PROFESSIONS, new String[]
 	    		{
 				// ChocoCraft Plus
 				"ccp_stablehand||chococraftplus:stablehand",
@@ -213,7 +212,7 @@ public class GeneralConfig {
  		
     	//--------------Miscellaneous-----------------//
 	    
-	    zombieCureCatalysts = config.getStringList("Zombie Cure Catalysts", Reference.CATEGORY_GENERAL, new String[]{
+	    zombieCureCatalysts = config.getStringListWithoutDefaultsInComment("Zombie Cure Catalysts", Reference.CATEGORY_GENERAL, new String[]{
  				"vanilla|net.minecraft.block.BlockBed|tile.bed|-1",
  				"vanilla|net.minecraft.block.BlockPane|tile.fenceIron|-1"
  				},
@@ -229,7 +228,7 @@ public class GeneralConfig {
 	    zombieCureCatalysts_map.clear();
 	    zombieCureCatalysts_map = unpackZombieCureCatalysts(zombieCureCatalysts);
 	    
-	    zombieCureGroups = config.getStringList("Zombie Cure Groups", Reference.CATEGORY_GENERAL, new String[]{
+	    zombieCureGroups = config.getStringListWithoutDefaultsInComment("Zombie Cure Groups", Reference.CATEGORY_GENERAL, new String[]{
  				"vanilla|0.3|14"
  				},
  				"When curing a zombie villager, all blocks of the same named group will use these stats. "
@@ -262,7 +261,7 @@ public class GeneralConfig {
 	    
 		// Automatic Names
 		
-		modNameMappingAutomatic = config.getStringList("Automatic Names", Reference.CATEGORY_NAMING, new String[]{
+		modNameMappingAutomatic = config.getStringListWithoutDefaultsInComment("Automatic Names", Reference.CATEGORY_NAMING, new String[]{
 				
 				// Minecraft
 				//"demon||net.minecraft.entity.boss.EntityWither|add",
@@ -341,7 +340,7 @@ public class GeneralConfig {
 
 		// Clickable Names
 	    
-		modNameMappingClickable = config.getStringList("Clickable Names", Reference.CATEGORY_NAMING, new String[]{
+		modNameMappingClickable = config.getStringListWithoutDefaultsInComment("Clickable Names", Reference.CATEGORY_NAMING, new String[]{
 				
 				// Galacticraft
 				"alien||micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager",
@@ -392,7 +391,7 @@ public class GeneralConfig {
 
 		
 		// Forced pet names
-		entitiesNameableLikePets = config.getStringList("Entities Nameable Like Pets", Reference.CATEGORY_NAMING, new String[]{
+		entitiesNameableLikePets = config.getStringListWithoutDefaultsInComment("Entities Nameable Like Pets", Reference.CATEGORY_NAMING, new String[]{
 				},
 				"List of class paths of entities that receive a random Pet name when right-clicked with a blank nametag, irrespective of if they're tamed or who tamed them.\n"
 				+ "Use this for entities that can't receive a Pet name in the intended way (typically because owner ID is stored differently or not stored at all)."
@@ -408,7 +407,7 @@ public class GeneralConfig {
 		harvestcraftCropFarmRate = config.getFloat("Crop rate: Harvestcraft", Reference.CATEGORY_MOD_INTEGRATION, 0.25F, 0F, 1F, "Generate Harvestcraft crops in farms. Only used with Village Generator. Set to 0 for no HC crops.");
 		antiqueAtlasMarkerNames = config.getBoolean("Antique Atlas: Village Marker Names", Reference.CATEGORY_MOD_INTEGRATION, true, "Label a new village marker with the village's name in your Antique Atlases.");
 
-	    modWoodenTable = config.getStringList("Mod Priority: Table", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+	    modWoodenTable = config.getStringListWithoutDefaultsInComment("Mod Priority: Table", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
 	    		"mrcrayfishsfurnituremod",
 	    		"minecraft",
 	    		"bibliocraft",
@@ -418,7 +417,7 @@ public class GeneralConfig {
  				);
 		
 		// Mapping for modded structures, and the creatures that can name them
-		modStructureNames = config.getStringList("Mod Structures", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
+		modStructureNames = config.getStringListWithoutDefaultsInComment("Mod Structures", Reference.CATEGORY_MOD_INTEGRATION, new String[]{
 				
 				// Galacticraft
 				"alienvillage|MoonVillage|Moon Village|Moon|moonvillage|micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager",
@@ -452,7 +451,7 @@ public class GeneralConfig {
 		modStructureNames_map = unpackModStructures(modStructureNames);
 		
 		// New mod profession mapping
-		modProfessionMapping = config.getStringList("Mod Professions", Reference.CATEGORY_MOD_INTEGRATION, new String[]
+		modProfessionMapping = config.getStringListWithoutDefaultsInComment("Mod Professions", Reference.CATEGORY_MOD_INTEGRATION, new String[]
 				{
 				// ChocoCraft Plus
 				"Stablehand|chococraftplus:stablehand|0",

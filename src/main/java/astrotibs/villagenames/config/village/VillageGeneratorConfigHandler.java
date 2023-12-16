@@ -6,14 +6,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import astrotibs.villagenames.config.ConfigurationVN;
 import astrotibs.villagenames.utility.FunctionsVN;
 import astrotibs.villagenames.utility.LogHelper;
 import astrotibs.villagenames.utility.Reference;
-import net.minecraftforge.common.config.Configuration;
 
 public class VillageGeneratorConfigHandler
 {
-	public static Configuration config;
+	public static ConfigurationVN config;
 	
 	// --- Villages --- //
 	public static boolean newVillageGenerator;
@@ -545,7 +545,7 @@ public class VillageGeneratorConfigHandler
 	{
 		if (config == null)
 		{
-			config = new Configuration(configFile);
+			config = new ConfigurationVN(configFile);
 			loadConfiguration();
 		}
 	}
@@ -1498,18 +1498,18 @@ public class VillageGeneratorConfigHandler
 		
 		// --- Decor --- //
 		allowTaigaTroughs = config.getBoolean("Decor: Allow Taiga Troughs", Reference.CATEGORY_VILLAGE_GENERATOR, true, "Set to false to completely disallow the trough as decor in taiga villages");
-		restrictTaigaTroughs = config.getBoolean("Decor: Restrict Taiga Troughs", Reference.CATEGORY_VILLAGE_GENERATOR, true, "Limit taiga troughs only to the well or as street decor. "
+		restrictTaigaTroughs = config.getBoolean("Decor: Restrict Taiga Troughs", Reference.CATEGORY_VILLAGE_GENERATOR, false, "Limit taiga troughs only to the well or as street decor. "
 				+ "Setting this to false allows them in any flagged taiga decor location, at the risk of them cutting into the parent structure.");
 		
 		
-		componentVillageTypes = config.getStringList("Component Village Types", Reference.CATEGORY_VILLAGE_GENERATOR,
+		componentVillageTypes = config.getStringListWithoutDefaultsInComment("Component Village Types", Reference.CATEGORY_VILLAGE_GENERATOR,
 				FunctionsVN.joinTwoStringArrays(MODERN_VANILLA_COMPONENT_VILLAGE_TYPE_DEFAULTS, new String[] {
 						// Mod buildings
 						"forestry.apiculture.worldgen.VillageApiaristHouse|plains taiga savanna swamp",
 						}),
 				"List of village components that only appear in certain village types. Format is: classPaths|villageTypes\n"
 				+ "classPaths: The class address to the specific structure component. If debugMessages is true, every time a village generates, a list of village components not yet specified on this list will be printed to the console.\n"
-					+ "villageTypes: list of the types this component can appear in. Multiple types can be separator with a delimiter of your choice, aside from | (pipe). Leave this blank, or enter something that doesn't include a village type, to prevent the component from spawning."
+   				+ "villageTypes: list of the types this component can appear in. Multiple types can be separator with a delimiter of your choice, aside from | (pipe). Use the word \"all\" or \"any\" (no quotes) to allow them to spawn in any village type. Leave this blank, or enter something that doesn't include a village type, to prevent the component from spawning."
 				);
 		
 		
@@ -1527,7 +1527,7 @@ public class VillageGeneratorConfigHandler
 				+ "\n3: Do not spawn any village components that would have animals"
 				);
 		
-		spawnBiomesNames = config.getStringList("Spawn Biome Names", Reference.CATEGORY_VILLAGE_GENERATOR,
+		spawnBiomesNames = config.getStringListWithoutDefaultsInComment("Spawn Biome Names", Reference.CATEGORY_VILLAGE_GENERATOR,
 				new String[] {
 						// Vanilla
 						"Plains",
